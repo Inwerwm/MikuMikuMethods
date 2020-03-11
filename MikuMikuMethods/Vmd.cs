@@ -34,7 +34,7 @@ namespace MikuMikuMethods
          * SOFTWARE.
         */
 
-        class VocaloidMotionData
+        public class VocaloidMotionData
         {
             public static readonly Encoding Encoding = Encoding.GetEncoding("Shift_JIS");
 
