@@ -262,7 +262,7 @@ namespace MikuMikuMethods
         public struct VmdCameraFrameData : IVmdFrameData
         {
             public uint FrameTime { get; set; }
-            public float Length { get; set; }
+            public float Distance { get; set; }
             public Vector3 Pos { get; set; }
             public Vector3 Rot { get; set; }
 
@@ -273,12 +273,13 @@ namespace MikuMikuMethods
             public byte[] InterpolatePointD { get; set; }
             public byte[] InterpolatePointA { get; set; }
 
+            public uint ViewAngle { get; set; }
             byte Pers { get; set; }
 
-            public VmdCameraFrameData(uint frameTime, float length, Vector3 pos, Vector3 rot) : this()
+            public VmdCameraFrameData(uint frameTime, float distance, Vector3 pos, Vector3 rot) : this()
             {
                 FrameTime = frameTime;
-                Length = length;
+                Distance = distance;
                 Pos = pos;
                 Rot = rot;
 
@@ -289,13 +290,14 @@ namespace MikuMikuMethods
                 InterpolatePointD = new byte[] { 64, 64, 64, 64 };
                 InterpolatePointA = new byte[] { 64, 64, 64, 64 };
 
+                ViewAngle = 30;
                 Pers = 0;
             }
 
             public VmdCameraFrameData(BinaryReader reader)
             {
                 FrameTime = reader.ReadUInt32();
-                Length = reader.ReadSingle();
+                Distance = reader.ReadSingle();
                 Pos = reader.ReadVector3();
                 Rot = reader.ReadVector3();
 
@@ -306,13 +308,14 @@ namespace MikuMikuMethods
                 InterpolatePointD = reader.ReadBytes(4);
                 InterpolatePointA = reader.ReadBytes(4);
 
+                ViewAngle = reader.ReadUInt32();
                 Pers = reader.ReadByte();
             }
 
             public void Write(BinaryWriter writer)
             {
                 writer.Write(FrameTime);
-                writer.Write(Length);
+                writer.Write(Distance);
                 writer.Write(Pos);
                 writer.Write(Rot);
                 writer.Write(InterpolatePointX);
@@ -321,6 +324,7 @@ namespace MikuMikuMethods
                 writer.Write(InterpolatePointR);
                 writer.Write(InterpolatePointD);
                 writer.Write(InterpolatePointA);
+                writer.Write(ViewAngle);
                 writer.Write(Pers);
             }
 

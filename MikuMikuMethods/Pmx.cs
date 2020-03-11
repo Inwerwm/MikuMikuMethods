@@ -5,8 +5,10 @@ namespace MikuMikuMethods
 {
     namespace Pmx
     {
-        class Pmx
+        public class Pmx
         {
+            private static readonly byte[] MAGIC_BYTES = { 0x50, 0x4d, 0x58, 0x20 };// PMX
+
             /// <summary>ヘッダ get</summary>
             public Header Header { get; private set; }
 
@@ -68,73 +70,76 @@ namespace MikuMikuMethods
 
             public void Read(string path)
             {
-                throw new NotImplementedException("Pmx.Readメソッドは未実装です");
+                //throw new NotImplementedException("Pmx.Readメソッドは未実装です");
+                FilePath = path;
+
+
             }
         }
-        class Body
+        public class Body
         {
             public Body()
             {
                 throw new NotImplementedException("Pmx.Bodyクラスは未実装です");
             }
         }
-        class Bone
+        public class Bone
         {
             public Bone()
             {
                 throw new NotImplementedException("Pmx.Boneクラスは未実装です");
             }
         }
-        class Node
+        public class Node
         {
             public Node()
             {
                 throw new NotImplementedException("Pmx.Nodeクラスは未実装です");
             }
         }
-        class Header
+        public class Header
         {
             public Header()
             {
                 throw new NotImplementedException("Pmx.Headerクラスは未実装です");
             }
         }
-        class Joint
+        public class Joint
         {
             public Joint()
             {
                 throw new NotImplementedException("Pmx.Jointクラスは未実装です");
             }
         }
-        class Material
+        public class Material
         {
             public Material()
             {
                 throw new NotImplementedException("Pmx.Materialクラスは未実装です");
             }
         }
-        class ModelInfo
+        public class ModelInfo
         {
             public ModelInfo()
             {
                 throw new NotImplementedException("Pmx.ModelInfoクラスは未実装です");
             }
         }
-        class Morph
+        public class Morph
         {
             public Morph()
             {
                 throw new NotImplementedException("Pmx.Morphクラスは未実装です");
             }
         }
-        class SoftBody
+        public class SoftBody
         {
             public SoftBody()
             {
                 throw new NotImplementedException("Pmx.SoftBodyクラスは未実装です");
             }
         }
-        class Vertex
+        public class Vertex
         {
             public Vertex()
             {
