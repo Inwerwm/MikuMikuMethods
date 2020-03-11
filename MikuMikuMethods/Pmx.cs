@@ -9,6 +9,16 @@ namespace MikuMikuMethods
 {
     namespace Pmx
     {
-
+        class Pmx { }
+        class Body { }
+        class Bone { }
+        class Node { }
+        class Header { }
+        class Joint { }
+        class Material { }
+        class ModelInfo { }
+        class Morph { }
+        class SoftBody { }
+        class Vertex { }
     }
 }

@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MikuMikuEffect.cs" />
     <Compile Include="MMDUtilities.cs" />
     <Compile Include="Pmx.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
