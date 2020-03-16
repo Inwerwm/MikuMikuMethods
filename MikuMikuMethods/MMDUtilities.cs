@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace MikuMikuMethods.Utilities
@@ -237,6 +238,27 @@ namespace MikuMikuMethods.Utilities
                 category = setCategory;
             }
             orderCount++;
+        }
+    }
+
+    public static class Order
+    {
+        public static List<T> ByMap<T>(List<int> map, List<T> query) where T : new()
+        {
+            var r = new List<T>();
+
+            for (int i = 0; i < map.Count; i++)
+            {
+                int id = map[i];
+                while (r.Count <= id)
+                {
+                    r.Add(new T());
+                }
+
+                r[id] = query[i];
+            }
+
+            return r;
         }
     }
 }
