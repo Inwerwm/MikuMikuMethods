@@ -249,13 +249,17 @@ namespace MikuMikuMethods.Utilities
 
             for (int i = 0; i < map.Count; i++)
             {
+                if (map[i] < 0)
+                    continue;
+
                 int id = map[i];
                 while (r.Count <= id)
                 {
                     r.Add(new T());
                 }
 
-                r[id] = query[i];
+                if (query.Count > i)
+                    r[id] = query[i];
             }
 
             return r;
