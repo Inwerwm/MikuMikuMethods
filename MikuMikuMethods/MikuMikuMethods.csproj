@@ -29,6 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\MikuMikuMethods.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -43,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BinaryIOExtensions.cs" />
+    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="MikuMikuEffect.cs" />
     <Compile Include="MMDUtilities.cs" />
     <Compile Include="PMX\CloneUtil.cs" />
