@@ -459,7 +459,7 @@ namespace MikuMikuMethods.Vmd
         }
     }
 
-    class VmdMotionFrameDataEqualityComparer : IEqualityComparer<VmdMotionFrameData>
+    public class VmdMotionFrameDataEqualityComparer : IEqualityComparer<VmdMotionFrameData>
     {
         public bool Equals(VmdMotionFrameData x, VmdMotionFrameData y)
         {
@@ -478,7 +478,7 @@ namespace MikuMikuMethods.Vmd
         }
     }
 
-    class VmdMorphFrameDataEqualityComparer : IEqualityComparer<VmdMorphFrameData>
+    public class VmdMorphFrameDataEqualityComparer : IEqualityComparer<VmdMorphFrameData>
     {
         public bool Equals(VmdMorphFrameData x, VmdMorphFrameData y)
         {
