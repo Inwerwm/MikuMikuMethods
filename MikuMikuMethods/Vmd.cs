@@ -131,50 +131,66 @@ namespace MikuMikuMethods.Vmd
             }
         }
 
-        public void Read(BinaryReader reader)
+        /// <summary>
+        /// VMDを読み込む
+        /// </summary>
+        /// <returns>EndOfStreamExceptionが発生した場合 true を返す</returns>
+        public bool Read(BinaryReader reader)
         {
-            byte[] bChar = reader.ReadBytes(HEADER_LENGTH);
-            header = new string(Encoding.GetChars(bChar));
-            bChar = reader.ReadBytes(MODEL_NAME_LENGTH);
-            ModelName = new string(Encoding.GetChars(bChar));
-
-            uint len = reader.ReadUInt32();
-            for (int i = 0; i < len; i++)
+            try
             {
-                MotionFrames.Add(new VmdMotionFrameData(reader));
+                byte[] bChar = reader.ReadBytes(HEADER_LENGTH);
+                header = new string(Encoding.GetChars(bChar));
+                bChar = reader.ReadBytes(MODEL_NAME_LENGTH);
+                ModelName = new string(Encoding.GetChars(bChar));
+
+                uint len = reader.ReadUInt32();
+                for (int i = 0; i < len; i++)
+                {
+                    MotionFrames.Add(new VmdMotionFrameData(reader));
+                }
+
+                len = reader.ReadUInt32();
+                for (int i = 0; i < len; i++)
+                {
+                    MorphFrames.Add(new VmdMorphFrameData(reader));
+                }
+
+                //camera
+                len = reader.ReadUInt32();
+                for (int i = 0; i < len; i++)
+                {
+                    CameraFrames.Add(new VmdCameraFrameData(reader));
+                }
+
+                //light
+                len = reader.ReadUInt32();
+                for (int i = 0; i < len; i++)
+                {
+                    LightFrames.Add(new VmdLightFrameData(reader));
+                }
+
+                //self shadow
+                len = reader.ReadUInt32();
+                for (int i = 0; i < len; i++)
+                {
+                    ShadowFrames.Add(new VmdShadowFrameData(reader));
+                }
+
+                len = reader.ReadUInt32();
+                for (int i = 0; i < len; i++)
+                {
+                    PropertyFrames.Add(new VmdPropertyFrameData(reader));
+                }
+                return false;
             }
-
-            len = reader.ReadUInt32();
-            for (int i = 0; i < len; i++)
+            catch (EndOfStreamException)
             {
-                MorphFrames.Add(new VmdMorphFrameData(reader));
+                return true;
             }
-
-            //camera
-            len = reader.ReadUInt32();
-            for (int i = 0; i < len; i++)
+            catch (Exception)
             {
-                CameraFrames.Add(new VmdCameraFrameData(reader));
-            }
-
-            //light
-            len = reader.ReadUInt32();
-            for (int i = 0; i < len; i++)
-            {
-                LightFrames.Add(new VmdLightFrameData(reader));
-            }
-
-            //self shadow
-            len = reader.ReadUInt32();
-            for (int i = 0; i < len; i++)
-            {
-                ShadowFrames.Add(new VmdShadowFrameData(reader));
-            }
-
-            len = reader.ReadUInt32();
-            for (int i = 0; i < len; i++)
-            {
-                PropertyFrames.Add(new VmdPropertyFrameData(reader));
+                throw;
             }
         }
 
