@@ -4,7 +4,10 @@ using System.Text.RegularExpressions;
 
 namespace MikuMikuMethods.Utilities
 {
-    public static class BoneNameComparer
+    /// <summary>
+    /// ボーン名を扱いやすい順序で並び替える
+    /// </summary>
+    public class BoneNameComparer : IComparer<string>
     {
         static private int orderCount;
 
@@ -13,7 +16,7 @@ namespace MikuMikuMethods.Utilities
             orderCount = 0;
         }
 
-        static public int Compare(string x, string y)
+        public int Compare(string x, string y)
         {
             if (x == y)
                 return 0;
@@ -223,7 +226,7 @@ namespace MikuMikuMethods.Utilities
             return result;
         }
 
-        static private string ZenToHanNum(this string s)
+        static private string ZenToHanNum(string s)
         {
             return Regex.Replace(s, "[０-９]", p => ((char)(p.Value[0] - '０' + '0')).ToString());
         }
