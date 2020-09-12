@@ -36,6 +36,11 @@ namespace MikuMikuMethods.Vmd
     {
         public static readonly Encoding Encoding = Encoding.GetEncoding("Shift_JIS");
 
+        /// <summary>
+        /// カメラモードVMDのモデル名;
+        /// </summary>
+        public static readonly string CAMERA_DATA_NAME = "カメラ・照明";
+
         public const int HEADER_LENGTH = 30;
         public const int MODEL_NAME_LENGTH = 20;
         public const int BONE_NAME_LENGTH = 15;
@@ -140,9 +145,9 @@ namespace MikuMikuMethods.Vmd
             try
             {
                 byte[] bChar = reader.ReadBytes(HEADER_LENGTH);
-                header = new string(Encoding.GetChars(bChar));
+                header = new string(Encoding.GetChars(bChar)).Trim('\0');
                 bChar = reader.ReadBytes(MODEL_NAME_LENGTH);
-                ModelName = new string(Encoding.GetChars(bChar));
+                ModelName = new string(Encoding.GetChars(bChar)).Trim('\0');
 
                 uint len = reader.ReadUInt32();
                 for (int i = 0; i < len; i++)
@@ -209,8 +214,6 @@ namespace MikuMikuMethods.Vmd
 
             if (opt.Contains(GetKeyIgnoring.ZeroValue))
             {
-                //motions = MotionFrames.Where(f => (f.Pos != Vector3.Zero) || (f.Rot != Quaternion.Identity)).GroupBy(f => f.Name.Trim('\0'));
-                //morphs = MorphFrames.Where(f => f.Weigth!=0).GroupBy(f => f.Name.Trim('\0'));
                 motions = motions.Where(g => g.Where(f => (f.Pos != Vector3.Zero) || (f.Rot != Quaternion.Identity)).Count() != 0);
                 morphs = morphs.Where(g => g.Where(f => f.Weigth != 0).Count() != 0);
             }
@@ -225,7 +228,7 @@ namespace MikuMikuMethods.Vmd
             if (!opt.Contains(GetKeyIgnoring.Motion))
             {
                 names.AddRange(motions.Select(g => g.Key));
-                names.Sort(Utilities.BoneNameComparer.Compare);
+                names.Sort(new Utilities.BoneNameComparer());
             }
 
             if (!opt.Contains(GetKeyIgnoring.Morph))

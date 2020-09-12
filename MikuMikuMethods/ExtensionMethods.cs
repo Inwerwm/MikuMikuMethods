@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MikuMikuMethods.Vmd;
+using System;
 
 namespace MikuMikuMethods
 {
@@ -31,5 +32,19 @@ namespace MikuMikuMethods
                 throw new ArgumentOutOfRangeException("下限値が上限値よりも大きいです。");
             return i.CompareTo(lower) * upper.CompareTo(i) > 0;
         }
+    }
+
+    public static class VMDExtensions
+    {
+        public static string Name(this FrameType type) => type switch
+        {
+            FrameType.Camera => "Camera",
+            FrameType.Light => "Light",
+            FrameType.Morph => "Morph",
+            FrameType.Motion => "Motion",
+            FrameType.Property => "Property",
+            FrameType.Shadow => "Shadow",
+            _ => "Invalid"
+        };
     }
 }

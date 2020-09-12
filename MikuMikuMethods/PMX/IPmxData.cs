@@ -11,6 +11,4 @@ namespace MikuMikuMethods.Pmx
         void Read(BinaryReader reader, PmxHeaderData header);
         void ReadPmd(BinaryReader reader, PmxHeaderData header);
     }
-
-
 }

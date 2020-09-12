@@ -30,8 +30,37 @@ namespace MikuMikuMethods.Vmd
      * SOFTWARE.
     */
 
+    public enum FrameType
+    {
+        /// <summary>
+        /// カメラ
+        /// </summary>
+        Camera,
+        /// <summary>
+        /// 照明
+        /// </summary>
+        Light,
+        /// <summary>
+        /// 影
+        /// </summary>
+        Shadow,
+        /// <summary>
+        /// 表示・IK
+        /// </summary>
+        Property,
+        /// <summary>
+        /// モーフ
+        /// </summary>
+        Morph,
+        /// <summary>
+        /// モーション
+        /// </summary>
+        Motion,
+    }
+
     public interface IVmdFrameData : IComparable<IVmdFrameData>
     {
+        FrameType Type { get; }
         uint FrameTime { get; set; }
 
         void Write(BinaryWriter writer);
@@ -44,6 +73,7 @@ namespace MikuMikuMethods.Vmd
 
     public struct VmdMotionFrameData : IVmdModelFrameData
     {
+        public FrameType Type => FrameType.Motion;
         public string Name { get; set; }
         public uint FrameTime { get; set; }
         public Vector3 Pos { get; set; }
@@ -190,7 +220,7 @@ namespace MikuMikuMethods.Vmd
         public VmdMotionFrameData(BinaryReader reader)
         {
             byte[] bName = reader.ReadBytes(VocaloidMotionData.BONE_NAME_LENGTH);
-            Name = new string(VocaloidMotionData.Encoding.GetChars(bName));
+            Name = new string(VocaloidMotionData.Encoding.GetChars(bName)).Trim('\0');
             FrameTime = reader.ReadUInt32();
             Pos = reader.ReadVector3();
             Rot = reader.ReadQuaternion();
@@ -225,6 +255,7 @@ namespace MikuMikuMethods.Vmd
 
     public struct VmdMorphFrameData : IVmdModelFrameData
     {
+        public FrameType Type => FrameType.Morph;
         public string Name { get; set; }
         public uint FrameTime { get; set; }
         public float Weigth { get; set; }
@@ -246,7 +277,7 @@ namespace MikuMikuMethods.Vmd
         public VmdMorphFrameData(BinaryReader reader)
         {
             byte[] bName = reader.ReadBytes(VocaloidMotionData.MORPH_NAME_LENGTH);
-            Name = new string(VocaloidMotionData.Encoding.GetChars(bName));
+            Name = new string(VocaloidMotionData.Encoding.GetChars(bName)).Trim('\0');
             FrameTime = reader.ReadUInt32();
             Weigth = reader.ReadSingle();
         }
@@ -259,6 +290,7 @@ namespace MikuMikuMethods.Vmd
 
     public struct VmdCameraFrameData : IVmdFrameData
     {
+        public FrameType Type => FrameType.Camera;
         public uint FrameTime { get; set; }
         public float Distance { get; set; }
         public Vector3 Pos { get; set; }
@@ -334,6 +366,7 @@ namespace MikuMikuMethods.Vmd
 
     public struct VmdLightFrameData : IVmdFrameData
     {
+        public FrameType Type => FrameType.Light;
         public uint FrameTime { get; set; }
         public Vector3 RGB { get; set; }
         public Vector3 Pos { get; set; }
@@ -367,6 +400,7 @@ namespace MikuMikuMethods.Vmd
 
     public struct VmdShadowFrameData : IVmdFrameData
     {
+        public FrameType Type => FrameType.Shadow;
         public uint FrameTime { get; set; }
         public byte Mode { get; set; }
         public float Dist { get; set; }
@@ -401,6 +435,7 @@ namespace MikuMikuMethods.Vmd
 
     public struct VmdPropertyFrameData : IVmdFrameData
     {
+        public FrameType Type => FrameType.Property;
         public uint FrameTime { get; set; }
         public bool IsVisible { get; set; }
         public Dictionary<string, bool> IKEnabled { get; set; }
@@ -459,6 +494,29 @@ namespace MikuMikuMethods.Vmd
         }
     }
 
+    /// <summary>
+    /// 名前とフレーム時が一致するか
+    /// </summary>
+    public class VmdModelFrameDataEqualityComparer : IEqualityComparer<IVmdModelFrameData>
+    {
+        public bool Equals(IVmdModelFrameData x, IVmdModelFrameData y)
+        {
+            if (x.Name == y.Name && x.FrameTime == y.FrameTime)
+                return true;
+            else
+                return false;
+        }
+
+        public int GetHashCode(IVmdModelFrameData obj)
+        {
+            var hashCode = -1058630834;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(obj.Name);
+            hashCode = hashCode * -1521134295 + obj.FrameTime.GetHashCode();
+            return hashCode;
+        }
+    }
+
+    /*
     public class VmdMotionFrameDataEqualityComparer : IEqualityComparer<VmdMotionFrameData>
     {
         public bool Equals(VmdMotionFrameData x, VmdMotionFrameData y)
@@ -496,4 +554,5 @@ namespace MikuMikuMethods.Vmd
             return hashCode;
         }
     }
+    */
 }
