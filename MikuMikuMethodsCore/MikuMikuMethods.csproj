@@ -2,6 +2,22 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <Version>2.0.0</Version>
+    <Authors>Inwerwm</Authors>
+    <Product />
+    <PackageProjectUrl>https://github.com/Inwerwm/MikuMikuMethods</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Inwerwm/MikuMikuMethods</RepositoryUrl>
+    <NeutralLanguage>ja</NeutralLanguage>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>F:\MMD\_Programs\MikuMikuMethods\MikuMikuMethodsCore\MikuMikuMethods.xml</DocumentationFile>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>F:\MMD\_Programs\MikuMikuMethods\MikuMikuMethodsCore\MikuMikuMethods.xml</DocumentationFile>
   </PropertyGroup>
 
 </Project>
