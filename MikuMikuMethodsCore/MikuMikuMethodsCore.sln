@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30711.63
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MikuMikuMethodsCore", "MikuMikuMethodsCore.csproj", "{E61F820C-66BB-4D52-810D-A6D7F788FFA1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MikuMikuMethods", "MikuMikuMethods.csproj", "{E61F820C-66BB-4D52-810D-A6D7F788FFA1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
