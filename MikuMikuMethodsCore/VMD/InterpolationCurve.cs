@@ -2,6 +2,9 @@
 
 namespace MikuMikuMethods.VMD
 {
+    /// <summary>
+    /// 補間項目
+    /// </summary>
     public enum InterpolationItem
     {
         /// <summary>

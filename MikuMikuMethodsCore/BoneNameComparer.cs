@@ -4,6 +4,9 @@ using System.Text.RegularExpressions;
 
 namespace MikuMikuMethods
 {
+    /// <summary>
+    /// ボーン名の比較クラス
+    /// </summary>
     public class BoneNameComparer : IComparer<string>
     {
         static private int orderCount;
@@ -13,6 +16,14 @@ namespace MikuMikuMethods
             orderCount = 0;
         }
 
+        /// <summary>
+        /// 比較
+        /// </summary>
+        /// <returns>
+        /// <para>0未満 - このインスタンスはotherよりソート順が前である</para>
+        /// <para>0 - このインスタンスはotherとソート順が同じである</para>
+        /// <para>0超 - このインスタンスはotherよりソート順が後である</para>
+        /// </returns>
         public int Compare(string x, string y)
         {
             if (x == y)

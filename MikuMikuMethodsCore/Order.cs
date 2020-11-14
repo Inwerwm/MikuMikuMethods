@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace MikuMikuMethods
 {
+    /// <summary>
+    /// 整列メソッド集
+    /// </summary>
     public static class Order
     {
         /// <summary>

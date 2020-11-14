@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace MikuMikuMethods.VMD
 {
+    /// <summary>
+    /// フレームの種類
+    /// </summary>
     public enum FrameType
     {
         /// <summary>
@@ -35,16 +38,42 @@ namespace MikuMikuMethods.VMD
         Motion,
     }
 
+    /// <summary>
+    /// フレームのインターフェイス
+    /// </summary>
     public interface IVocaloidFrame:IComparable<IVocaloidFrame>
     {
+        /// <summary>
+        /// フレームの種類
+        /// </summary>
         FrameType FrameType { get; }
+        /// <summary>
+        /// フレームの名前
+        /// </summary>
         string Name { get; set; }
+        /// <summary>
+        /// フレームの時間
+        /// </summary>
         uint Frame { get; set; }
 
+        /// <summary>
+        /// カメラ系フレームか？
+        /// </summary>
         bool IsCameraType { get; }
+        /// <summary>
+        /// モデル系フレームか？
+        /// </summary>
         bool IsModelType { get; }
 
+        /// <summary>
+        /// 読み込み
+        /// </summary>
+        /// <param name="reader"></param>
         void Read(BinaryReader reader);
+        /// <summary>
+        /// 書き込み
+        /// </summary>
+        /// <param name="writer"></param>
         void Write(BinaryWriter writer);
     }
 }
