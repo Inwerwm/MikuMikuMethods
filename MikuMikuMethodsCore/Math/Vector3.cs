@@ -16,7 +16,7 @@ namespace MikuMikuMethods.Math
         /// </summary>
         public Vector3()
         {
-            InitializeElements(2);
+            InitializeElements(3);
         }
 
         /// <summary>
@@ -25,7 +25,7 @@ namespace MikuMikuMethods.Math
         /// <param name="origin">元となるコレクション</param>
         public Vector3(IEnumerable<T> origin)
         {
-            InitializeElements(2, origin);
+            InitializeElements(3, origin);
         }
 
         /// <summary>
