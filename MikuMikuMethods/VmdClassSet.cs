@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Numerics;
 
 namespace MikuMikuMethods.Vmd
@@ -189,8 +190,30 @@ namespace MikuMikuMethods.Vmd
 
         private void WriteInterpolateData(BinaryWriter writer)
         {
-            byte[][] interpolatePoint = new byte[][] { InterpolatePointX, InterpolatePointY, InterpolatePointZ, InterpolatePointR };
+            var interpolatePoints = new byte[16];
+            for(int i = 0; i < 4; i++)
+            {
+                interpolatePoints[i * 4] = InterpolatePointX[i];
+                interpolatePoints[i * 4 + 1] = InterpolatePointY[i];
+                interpolatePoints[i * 4 + 2] = InterpolatePointZ[i];
+                interpolatePoints[i * 4 + 3] = InterpolatePointR[i];
+            }
 
+            byte[] dist = new byte[64];
+            for(int i = 0; i < 4; i++)
+            {
+                int j = 0;
+                foreach (var num in interpolatePoints.Skip(i))
+                {
+                    dist[i * 16 + j] = num;
+                    j++;
+                }
+            }
+            writer.Write(dist);
+
+            /*
+            byte[][] interpolatePoints = new byte[][] { InterpolatePointX, InterpolatePointY, InterpolatePointZ, InterpolatePointR };
+             
             byte[] distPart = new byte[16];
 
             for (int i = 0; i < 4; i++)
@@ -202,6 +225,8 @@ namespace MikuMikuMethods.Vmd
             }
 
             byte[] dist = new byte[64];
+
+
 
             for (int i = 0; i < 4; i++)
             {
@@ -215,6 +240,7 @@ namespace MikuMikuMethods.Vmd
             dist[2] = Physics[0];
             dist[3] = Physics[1];
             writer.Write(dist);
+            */
         }
 
         public VmdMotionFrameData(BinaryReader reader)
