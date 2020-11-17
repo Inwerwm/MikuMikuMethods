@@ -173,5 +173,7 @@ namespace MikuMikuMethods.Math
         public new Vector2<T> ModAllInvert(dynamic scalar) => new Vector2<T>(this.Select(e => (T)(scalar % e)));
 
         #endregion
+
+        public Vector3<T> ToVector3() => new Vector3<T>(this);
     }
 }
