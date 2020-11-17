@@ -1,11 +1,8 @@
 ﻿using MikuMikuMethods.Extension;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MikuMikuMethods.VMD
 {
@@ -231,9 +228,10 @@ namespace MikuMikuMethods.VMD
         /// コンストラクタ
         /// </summary>
         /// <param name="frame">フレーム</param>
-        public VocaloidShadowFrame()
+        public VocaloidShadowFrame(uint frame = 0)
         {
             Name = "セルフ影";
+            Frame = frame;
             Mode = 1;
             Range = 8875 * 0.00001f;
         }
