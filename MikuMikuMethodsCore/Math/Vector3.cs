@@ -80,11 +80,7 @@ namespace MikuMikuMethods.Math
         public static T operator *(Vector3<T> x, Vector3<T> y) => x.Dot(y);
 
         /// <summary>
-        /// <para>外積(クロス積)</para>
-        /// <para>二項で次元数が異なる場合、小さい方の次元を大きい方に合わせ、初期値を充填する</para>
-        /// <para>1,3,7次元ではクロス積を計算する</para>
-        /// <para>2,4-6次元では不足要素に初期値を充填した3,7次元ベクトルとみなしクロス積を計算する</para>
-        /// <para>8次元以上では例外を吐く</para>
+        /// 外積(クロス積)
         /// </summary>
         public static Vector3<T> operator ^(Vector3<T> x, Vector3<T> y) => x.Cross(y);
 

@@ -281,6 +281,7 @@ namespace MikuMikuMethods.Math
         public IEnumerator<T> GetEnumerator() => ((IEnumerable<T>)elements).GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => elements.GetEnumerator();
+
         #endregion
     }
 }
