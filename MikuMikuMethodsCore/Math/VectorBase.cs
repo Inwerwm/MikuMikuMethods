@@ -245,6 +245,33 @@ namespace MikuMikuMethods.Math
 
         #endregion
 
+        /// <summary>
+        /// 要素を複製する
+        /// </summary>
+        /// <param name="origin">元となるベクトル</param>
+        protected void CopyElements(VectorBase<T> origin)
+        {
+            elements = origin.elements;
+        }
+
+        /// <summary>
+        /// 要素を複製する
+        /// </summary>
+        /// <param name="dimension">次元数</param>
+        /// <param name="origin">元となるベクトル</param>
+        protected void CopyElements(int dimension, VectorBase<T> origin)
+        {
+            if (elements.Length != dimension)
+                elements = new T[dimension];
+
+            var elms = new T[dimension];
+            if (origin.Dimension > dimension)
+                elms = origin.Take(dimension).ToArray();
+            else
+                elms = origin.elements;
+
+            elms.CopyTo(elements, 0);
+        }
 
         #region IEnumerable<T>
         /// <summary>
