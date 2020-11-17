@@ -32,7 +32,7 @@ namespace MikuMikuMethods.VMD
         /// <param name="frame">フレーム</param>
         public VocaloidPropertyFrame(uint frame = 0)
         {
-            Name = "Property";
+            Name = "プロパティ";
             Frame = frame;
 
             IKEnabled = new();
@@ -148,7 +148,7 @@ namespace MikuMikuMethods.VMD
         /// <summary>
         /// 移動量
         /// </summary>
-        public Vector3 Move { get; set; }
+        public Vector3 Position { get; set; }
         /// <summary>
         /// 回転量
         /// </summary>
@@ -169,7 +169,7 @@ namespace MikuMikuMethods.VMD
             Name = name;
             Frame = frame;
             InterpolationCurves = new();
-            CreateInterpolationCurves();
+            InitializeInterpolationCurves();
         }
 
         /// <summary>
@@ -178,33 +178,33 @@ namespace MikuMikuMethods.VMD
         public VocaloidMotionFrame(BinaryReader reader)
         {
             InterpolationCurves = new();
-            CreateInterpolationCurves();
+            InitializeInterpolationCurves();
             Read(reader);
         }
 
-        private void CreateInterpolationCurves()
+        private void InitializeInterpolationCurves()
         {
-            InterpolationCurves.Add(InterpolationItem.XMove, new());
-            InterpolationCurves.Add(InterpolationItem.YMove, new());
-            InterpolationCurves.Add(InterpolationItem.ZMove, new());
+            InterpolationCurves.Add(InterpolationItem.XPosition, new());
+            InterpolationCurves.Add(InterpolationItem.YPosition, new());
+            InterpolationCurves.Add(InterpolationItem.ZPosition, new());
             InterpolationCurves.Add(InterpolationItem.Rotation, new());
         }
 
         private byte[] CreateInterpolationMatrix()
         {
             // 補間曲線をbyte配列化
-            var xMovePoints = InterpolationCurves[InterpolationItem.XMove].ToBytes();
-            var yMovePoints = InterpolationCurves[InterpolationItem.YMove].ToBytes();
-            var zMovePoints = InterpolationCurves[InterpolationItem.ZMove].ToBytes();
+            var xPositionPoints = InterpolationCurves[InterpolationItem.XPosition].ToBytes();
+            var yPositionPoints = InterpolationCurves[InterpolationItem.YPosition].ToBytes();
+            var zPositionPoints = InterpolationCurves[InterpolationItem.ZPosition].ToBytes();
             var rotationPoints = InterpolationCurves[InterpolationItem.Rotation].ToBytes();
 
             // 形式に合わせて1行に整列
             var pointsRow = new byte[16];
             for (int i = 0; i < 4; i++)
             {
-                pointsRow[i * 4 + 0] = xMovePoints[i];
-                pointsRow[i * 4 + 1] = yMovePoints[i];
-                pointsRow[i * 4 + 2] = zMovePoints[i];
+                pointsRow[i * 4 + 0] = xPositionPoints[i];
+                pointsRow[i * 4 + 1] = yPositionPoints[i];
+                pointsRow[i * 4 + 2] = zPositionPoints[i];
                 pointsRow[i * 4 + 3] = rotationPoints[i];
             }
 
@@ -232,14 +232,14 @@ namespace MikuMikuMethods.VMD
 
             //各種パラメータを読み込み
             Frame = reader.ReadUInt32();
-            Move = reader.ReadVector3();
+            Position = reader.ReadVector3();
             Rotation = reader.ReadQuaternion();
 
             //補間曲線を読み込み
             var interpolationMatrix = reader.ReadBytes(64).Select((num, i) => (num, i));
-            InterpolationCurves[InterpolationItem.XMove].FromBytes(interpolationMatrix.Where(elm => elm.i % 4 == 0).Select(elm => elm.num));
-            InterpolationCurves[InterpolationItem.YMove].FromBytes(interpolationMatrix.Where(elm => elm.i % 4 == 1).Select(elm => elm.num));
-            InterpolationCurves[InterpolationItem.ZMove].FromBytes(interpolationMatrix.Where(elm => elm.i % 4 == 2).Select(elm => elm.num));
+            InterpolationCurves[InterpolationItem.XPosition].FromBytes(interpolationMatrix.Where(elm => elm.i % 4 == 0).Select(elm => elm.num));
+            InterpolationCurves[InterpolationItem.YPosition].FromBytes(interpolationMatrix.Where(elm => elm.i % 4 == 1).Select(elm => elm.num));
+            InterpolationCurves[InterpolationItem.ZPosition].FromBytes(interpolationMatrix.Where(elm => elm.i % 4 == 2).Select(elm => elm.num));
             InterpolationCurves[InterpolationItem.Rotation].FromBytes(interpolationMatrix.Where(elm => elm.i % 4 == 3).Select(elm => elm.num));
         }
 
@@ -250,7 +250,7 @@ namespace MikuMikuMethods.VMD
         {
             writer.Write(Name, Specifications.BoneNameLength, Encoding.ShiftJIS, '\0');
             writer.Write(Frame);
-            writer.Write(Move);
+            writer.Write(Position);
             writer.Write(Rotation);
             writer.Write(CreateInterpolationMatrix());
         }
