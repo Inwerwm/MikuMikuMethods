@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MikuMikuMethods.Extension
 {
@@ -115,6 +112,27 @@ namespace MikuMikuMethods.Extension
             writer.Write(value.Y);
             writer.Write(value.Z);
             writer.Write(value.W);
+        }
+
+        /// <summary>
+        /// 指定長で文字列をバイナリに書き込み
+        /// </summary>
+        /// <param name="value">書き込む文字列</param>
+        /// <param name="length">書き込む長さ</param>
+        /// <param name="encoding">エンコード形式</param>
+        /// <param name="filler">余った領域に充填する文字</param>
+        public static void Write(this BinaryWriter writer, string value, int length, System.Text.Encoding encoding, char filler = '\0')
+        {
+            if (value.Length > length)
+                throw new ArgumentOutOfRangeException("指定文字列が転写領域長より長いです。");
+
+            //fillerで充填した書き込み用配列を生成
+            var bytesToWrite = encoding.GetBytes(Enumerable.Repeat(filler, length).ToArray());
+
+            //書き込み用配列に文字列を転写
+            encoding.GetBytes(value).CopyTo(bytesToWrite, 0);
+
+            writer.Write(bytesToWrite);
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MikuMikuMethods.VMD
 {
@@ -100,9 +102,29 @@ namespace MikuMikuMethods.VMD
         }
 
         /// <summary>
+        /// バイト配列から値を指定する
+        /// </summary>
+        /// <param name="bytes">{EarlyControlePoint.X, EarlyControlePoint.Y, LateControlePoint.X, LateControlePoint.Y}</param>
+        public void FromBytes(IEnumerable<byte> bytes)
+        {
+            try
+            {
+                earlyControlePoint.X = bytes.ElementAt(0);
+                earlyControlePoint.Y = bytes.ElementAt(1);
+                lateControlePoint.X = bytes.ElementAt(2);
+                lateControlePoint.Y = bytes.ElementAt(3);
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                throw new ArgumentException("補間曲線をバイト列から設定する時は少なくとも4つの要素が必要です。", ex);
+            }
+
+        }
+
+        /// <summary>
         /// バイト配列で返す
         /// {始点側制御点X, 始点側制御点Y, 終点側制御点X, 終点側制御点Y}
         /// </summary>
-        public byte[] Tobytes => new byte[] { EarlyControlePoint.X, EarlyControlePoint.Y, LateControlePoint.X, LateControlePoint.Y };
+        public byte[] ToBytes() => new byte[] { EarlyControlePoint.X, EarlyControlePoint.Y, LateControlePoint.X, LateControlePoint.Y };
     }
 }

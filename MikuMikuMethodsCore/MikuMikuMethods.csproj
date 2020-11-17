@@ -20,4 +20,8 @@
     <DocumentationFile>F:\MMD\_Programs\MikuMikuMethods\MikuMikuMethodsCore\MikuMikuMethods.xml</DocumentationFile>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
+  </ItemGroup>
+
 </Project>
