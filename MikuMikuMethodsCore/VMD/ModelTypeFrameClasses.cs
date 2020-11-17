@@ -1,11 +1,8 @@
 ﻿using MikuMikuMethods.Extension;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MikuMikuMethods.VMD
 {
@@ -103,7 +100,7 @@ namespace MikuMikuMethods.VMD
         /// </summary>
         /// <param name="name">ボーン名</param>
         /// <param name="frame">フレーム時間</param>
-        public VocaloidMorphFrame(string name,uint frame = 0)
+        public VocaloidMorphFrame(string name, uint frame = 0)
         {
             Name = name;
             Frame = frame;
@@ -160,7 +157,7 @@ namespace MikuMikuMethods.VMD
         /// <summary>
         /// 補間曲線
         /// </summary>
-        public Dictionary<InterpolationItem,InterpolationCurve> InterpolationCurves { get; init; }
+        public Dictionary<InterpolationItem, InterpolationCurve> InterpolationCurves { get; init; }
 
         /// <summary>
         /// コンストラクタ
@@ -232,14 +229,14 @@ namespace MikuMikuMethods.VMD
         {
             //ボーン名を読み込み
             Name = reader.ReadString(Specifications.BoneNameLength, Encoding.ShiftJIS, '\0');
-            
+
             //各種パラメータを読み込み
             Frame = reader.ReadUInt32();
             Move = reader.ReadVector3();
             Rotation = reader.ReadQuaternion();
 
             //補間曲線を読み込み
-            var interpolationMatrix = reader.ReadBytes(64).Select((num,i)=>(num,i));
+            var interpolationMatrix = reader.ReadBytes(64).Select((num, i) => (num, i));
             InterpolationCurves[InterpolationItem.XMove].FromBytes(interpolationMatrix.Where(elm => elm.i % 4 == 0).Select(elm => elm.num));
             InterpolationCurves[InterpolationItem.YMove].FromBytes(interpolationMatrix.Where(elm => elm.i % 4 == 1).Select(elm => elm.num));
             InterpolationCurves[InterpolationItem.ZMove].FromBytes(interpolationMatrix.Where(elm => elm.i % 4 == 2).Select(elm => elm.num));
