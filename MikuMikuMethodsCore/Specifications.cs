@@ -15,5 +15,15 @@ namespace MikuMikuMethods
         /// ボーン名の領域長
         /// </summary>
         public static readonly int BoneNameLength = 15;
+
+        /// <summary>
+        /// モーフ名の領域長
+        /// </summary>
+        public static readonly int MorphNameLength = 15;
+
+        /// <summary>
+        /// IK名の領域長
+        /// </summary>
+        public static readonly int IKNameLength = 20;
     }
 }

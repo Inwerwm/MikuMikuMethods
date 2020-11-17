@@ -62,6 +62,20 @@ namespace MikuMikuMethods.Extension
             vec.W = reader.ReadSingle();
             return vec;
         }
+
+        /// <summary>
+        /// 指定文字数の文字列をバイナリから読み込む
+        /// </summary>
+        /// <param name="length">文字数</param>
+        /// <param name="encoding">エンコード形式</param>
+        /// <param name="filler">除去する文字 nullなら除去しない</param>
+        /// <returns>読み込んだ文字列</returns>
+        public static string ReadString(this BinaryReader reader,int length, System.Text.Encoding encoding, char? filler = null)
+        {
+            var readBytes = reader.ReadBytes(length);
+            string str = encoding.GetString(readBytes);
+            return filler is null ? str : str.Trim((char)filler);
+        }
     }
 
     /// <summary>
