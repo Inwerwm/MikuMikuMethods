@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MikuMikuMethods
+namespace MikuMikuMethods.VMD
 {
     /// <summary>
     /// 仕様によって定められた変数
@@ -25,5 +25,10 @@ namespace MikuMikuMethods
         /// IK名の領域長
         /// </summary>
         public static readonly int IKNameLength = 20;
+
+        /// <summary>
+        /// カメラVMDファイルのモデル名
+        /// </summary>
+        public static readonly string CameraTypeVMDName = "カメラ・照明";
     }
 }
