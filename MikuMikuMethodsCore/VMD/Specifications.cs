@@ -12,6 +12,26 @@ namespace MikuMikuMethods.VMD
     public static class Specifications
     {
         /// <summary>
+        /// カメラVMDファイルのモデル名
+        /// </summary>
+        public static readonly string CameraTypeVMDName = "カメラ・照明";
+
+        /// <summary>
+        /// VMDファイルのヘッダー文字列
+        /// </summary>
+        public static readonly string HeaderString = "Vocaloid Motion Data 0002";
+
+        /// <summary>
+        /// VMDファイルのヘッダー部の領域長
+        /// </summary>
+        public static readonly int HeaderLength = 30;
+
+        /// <summary>
+        /// モデル名の領域長
+        /// </summary>
+        public static readonly int ModelNameLength = 20;
+
+        /// <summary>
         /// ボーン名の領域長
         /// </summary>
         public static readonly int BoneNameLength = 15;
@@ -25,10 +45,5 @@ namespace MikuMikuMethods.VMD
         /// IK名の領域長
         /// </summary>
         public static readonly int IKNameLength = 20;
-
-        /// <summary>
-        /// カメラVMDファイルのモデル名
-        /// </summary>
-        public static readonly string CameraTypeVMDName = "カメラ・照明";
     }
 }
