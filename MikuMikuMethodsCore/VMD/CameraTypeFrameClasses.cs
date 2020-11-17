@@ -10,7 +10,7 @@ namespace MikuMikuMethods.VMD
     /// <summary>
     /// カメラフレーム
     /// </summary>
-    class VocaloidCameraFrame : VocaloidCameraTypeFrame
+    public class VocaloidCameraFrame : VocaloidCameraTypeFrame
     {
         public override FrameType FrameType => VMD.FrameType.Camera;
 
@@ -28,7 +28,7 @@ namespace MikuMikuMethods.VMD
     /// <summary>
     /// 照明フレーム
     /// </summary>
-    class VocaloidLightFrame : VocaloidCameraTypeFrame
+    public class VocaloidLightFrame : VocaloidCameraTypeFrame
     {
         public override FrameType FrameType => FrameType.Light;
 
@@ -46,7 +46,7 @@ namespace MikuMikuMethods.VMD
     /// <summary>
     /// 影フレーム
     /// </summary>
-    class VocaloidShadowFrame : VocaloidCameraTypeFrame
+    public class VocaloidShadowFrame : VocaloidCameraTypeFrame
     {
         public override FrameType FrameType => FrameType.Shadow;
 
