@@ -187,6 +187,7 @@ namespace MikuMikuMethods.VMD
         private void WriteFrames<T>(BinaryWriter writer, List<T> frames) where T : IVocaloidFrame
         {
             writer.Write((uint)frames.Count);
+            // 時間で降順に書き込むと読み込みが早くなる(らしい)
             foreach (var f in frames.OrderByDescending(f => f.Frame))
             {
                 f.Write(writer);
