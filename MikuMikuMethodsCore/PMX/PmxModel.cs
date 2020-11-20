@@ -30,9 +30,10 @@ namespace MikuMikuMethods.PMX
         /// </summary>
         public List<PmxBone> Bones { get; } = new();
         /// <summary>
-        /// 面
+        /// <para>面</para>
+        /// <para>全材質内の面リストを結合したもの</para>
         /// </summary>
-        public List<PmxFace> Faces { get; }
+        public List<PmxFace> Faces => Materials.SelectMany(m => m.Faces).ToList();
         /// <summary>
         /// ジョイント
         /// </summary>
