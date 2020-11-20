@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace MikuMikuMethods
 {
+    /// <summary>
+    /// <para>MMD関係で使用するエンコードのアダプタクラス</para>
+    /// <para>Shift JIS がそのままだと使えないので作った</para>
+    /// </summary>
     static class Encoding
     {
         private static bool ProviderIsRegistered { get; set; }
@@ -22,5 +26,9 @@ namespace MikuMikuMethods
                 return System.Text.Encoding.GetEncoding("Shift_JIS");
             }
         }
+
+        public static System.Text.Encoding Unicode => System.Text.Encoding.Unicode;
+
+        public static System.Text.Encoding UTF8 => System.Text.Encoding.UTF8;
     }
 }
