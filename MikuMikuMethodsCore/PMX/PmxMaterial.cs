@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,6 +13,96 @@ namespace MikuMikuMethods.PMX
     /// </summary>
     public class PmxMaterial : IPmxData
     {
+        /// <summary>
+        /// 材質名
+        /// </summary>
+        public string Name { get; set; }
+        /// <summary>
+        /// 材質名(英語)
+        /// </summary>
+        public string NameEn { get; set; }
+        /// <summary>
+        /// メモ
+        /// </summary>
+        public string Memo { get; set; }
+
+        /// <summary>
+        /// 拡散色
+        /// </summary>
+        public ColorF Diffuse { get; set; }
+        /// <summary>
+        /// 反射色
+        /// </summary>
+        public ColorF Specular { get; set; }
+        /// <summary>
+        /// 環境色
+        /// </summary>
+        public ColorF Ambient { get; set; }
+        /// <summary>
+        /// 反射強度
+        /// </summary>
+        public float ReflectionIntensity { get; set; }
+
+        /// <summary>
+        /// 両面描画
+        /// </summary>
+        public bool EnableBothSideDraw { get; set; }
+        /// <summary>
+        /// セルフ影描画
+        /// </summary>
+        public bool EnableSelfShadow { get; set; }
+        /// <summary>
+        /// 影マップへの描画
+        /// </summary>
+        public bool EnableSelfShadowMap { get; set; }
+        /// <summary>
+        /// 地面影描画
+        /// </summary>
+        public bool EnableShadow { get; set; }
+        /// <summary>
+        /// 頂点色有効性
+        /// </summary>
+        public bool EnableVertexColor { get; set; }
+
+        /// <summary>
+        /// エッジ有効
+        /// </summary>
+        public bool EnableEdge { get; set; }
+        /// <summary>
+        /// エッジ太さ
+        /// </summary>
+        public float EdgeWidth { get; set; }
+        /// <summary>
+        /// エッジ色
+        /// </summary>
+        public ColorF EdgeColor { get; set; }
+
+        /// <summary>
+        /// 面
+        /// </summary>
+        public List<PmxFace> Faces { get; } = new();
+        /// <summary>
+        /// 描画プリミティブタイプ
+        /// </summary>
+        public PrimitiveType Primitive { get; set; }
+
+        /// <summary>
+        /// トゥーンパス
+        /// </summary>
+        public string ToonPath { get; set; }
+        /// <summary>
+        /// スフィアマップパス
+        /// </summary>
+        public string SpherePath { get; set; }
+        /// <summary>
+        /// スフィア種別
+        /// </summary>
+        public SphereMode SphereMode { get; set; }
+        /// <summary>
+        /// テクスチャパス
+        /// </summary>
+        public string TexturePath { get; set; }
+
         /// <summary>
         /// データをバイナリから読み込む
         /// </summary>
@@ -29,5 +120,47 @@ namespace MikuMikuMethods.PMX
         {
             throw new NotImplementedException();
         }
+    }
+
+    /// <summary>
+    /// 描画プリミティブタイプ
+    /// </summary>
+    public enum PrimitiveType
+    {
+        /// <summary>
+        /// Line List
+        /// </summary>
+        Line,
+        /// <summary>
+        /// Point List
+        /// </summary>
+        Point,
+        /// <summary>
+        /// Triangle List
+        /// </summary>
+        Tri
+    }
+
+    /// <summary>
+    /// スフィア種別
+    /// </summary>
+    public enum SphereMode
+    {
+        /// <summary>
+        /// 無効
+        /// </summary>
+        None,
+        /// <summary>
+        /// 乗算
+        /// </summary>
+        Mul,
+        /// <summary>
+        /// 加算
+        /// </summary>
+        Add,
+        /// <summary>
+        /// サブテクスチャ
+        /// </summary>
+        SubTex
     }
 }
