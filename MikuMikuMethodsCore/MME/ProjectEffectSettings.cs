@@ -19,13 +19,25 @@ namespace MikuMikuMethods.MME
         /// <summary>
         /// 内包オブジェクトのリスト
         /// </summary>
-        public List<ObjectInfo> Objects => new();
+        public List<ObjectInfo> Objects { get; init; }
 
         /// <summary>
         /// <para>エフェクト設定のリスト</para>
         /// <para>MMEエフェクト割当画面の各タブに相当</para>
         /// </summary>
-        public List<EffectSettings> Effects => new();
+        public List<EffectSettings> Effects { get; init; }
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        public ProjectEffectSettings()
+        {
+            Version = 3;
+            Objects = new();
+            Effects = new();
+        }
+
+
 
         /// <summary>
         /// EMMファイルから読み込み

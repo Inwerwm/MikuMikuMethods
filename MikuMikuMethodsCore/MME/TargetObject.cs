@@ -19,12 +19,12 @@ namespace MikuMikuMethods.MME
         /// <summary>
         /// オブジェクトに適用するエフェクトの情報
         /// </summary>
-        public FxInfo Effect => new();
+        public FxInfo Effect { get; init; }
 
         /// <summary>
         /// サブセット展開されたときの各材質に適用するエフェクトの情報
         /// </summary>
-        public List<FxInfo> Subsets => new();
+        public List<FxInfo> Subsets { get; init; }
 
         /// <summary>
         /// オブジェクト情報を指定してインスタンスを生成
@@ -32,6 +32,8 @@ namespace MikuMikuMethods.MME
         /// <param name="key">オブジェクト情報</param>
         public TargetObject(ObjectInfo key)
         {
+            Effect = new();
+            Subsets = new();
             Key = key;
         }
     }

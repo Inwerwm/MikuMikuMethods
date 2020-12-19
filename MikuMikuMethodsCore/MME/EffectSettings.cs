@@ -33,12 +33,13 @@ namespace MikuMikuMethods.MME
         /// <summary>
         /// 設定対象オブジェクトのリスト
         /// </summary>
-        public List<TargetObject> Objects => new();
+        public List<TargetObject> Objects { get; init; }
 
         private List<ObjectInfo> ObjectKeys { get; init; }
 
         private EffectSettings(List<ObjectInfo> keys)
         {
+            Objects = new();
             ObjectKeys = keys;
         }
 
@@ -71,9 +72,9 @@ namespace MikuMikuMethods.MME
         public void Read(StreamReader reader)
         {
             string line;
-            while((line = reader.ReadLine()) != "")
+            while(!string.IsNullOrEmpty(line = reader.ReadLine()))
             {
-                var lineData = line.Split('=', StringSplitOptions.RemoveEmptyEntries);
+                var lineData = line.Split('=', StringSplitOptions.TrimEntries);
                 var objectKey = lineData[0];
                 var data = lineData[1];
 
@@ -94,36 +95,45 @@ namespace MikuMikuMethods.MME
                 var objKeyId = objectKey.Split('[');
                 objectKey = objKeyId[0];
 
-                TargetObject obj = new(ObjectKeys.First(info => info.Name == objectKey));
+                TargetObject obj;
 
                 // サブセット添字が存在しなければオブジェクトに対する設定とみなす
                 if (objKeyId.Length == 1)
                 {
+                    obj = new(ObjectKeys.First(info => info.Name == objectKey));
                     if (isShowSetting)
                         obj.Effect.Show = bool.Parse(data);
                     else
                         obj.Effect.Path = data;
 
+                    Objects.Add(obj);
                     continue;
                 }
 
                 // サブセットに対する設定
+                obj = Objects.First(o => o.Key.Name == objectKey);
                 var subsetId = int.Parse(objKeyId[1].Replace("]", ""));
                 // 設定サブセット添字よりオブジェクトに設定されたエフェクトの数が少ない場合
                 // 設定サブセット添字の数まで中身を増やす
                 while(obj.Subsets.Count <= subsetId)
                 {
-                    obj.Subsets.Add(new());
+                    obj.Subsets.Add(new FxInfo());
                 }
 
                 if (isShowSetting)
                     obj.Subsets[subsetId].Show = bool.Parse(data);
                 else
                     obj.Subsets[subsetId].Path = data;
+
+
             }
         }
 
-        internal void Write(StreamWriter writer)
+        /// <summary>
+        /// 書き込み
+        /// </summary>
+        /// <param name="writer">書き込みストリーム</param>
+        public void Write(StreamWriter writer)
         {
             var ownerString = Category switch
             {
@@ -145,7 +155,7 @@ namespace MikuMikuMethods.MME
                     if (!string.IsNullOrEmpty(sub.effect.Path))
                         writer.WriteLine($"{obj.Key.Name}[{sub.i}] = {sub.effect.Path}");
                     if (sub.effect.Show != null)
-                        writer.WriteLine($"{obj.Key.Name}.show = {sub.effect.Show.Value.ToString().ToLower()}");
+                        writer.WriteLine($"{obj.Key.Name}[{sub.i}].show = {sub.effect.Show.Value.ToString().ToLower()}");
                 }
             }
         }
