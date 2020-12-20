@@ -10,7 +10,7 @@ namespace MikuMikuMethods
     /// <para>MMD関係で使用するエンコードのアダプタクラス</para>
     /// <para>Shift JIS がそのままだと使えないので作った</para>
     /// </summary>
-    static class Encoding
+    public static class Encoding
     {
         private static bool ProviderIsRegistered { get; set; }
 
