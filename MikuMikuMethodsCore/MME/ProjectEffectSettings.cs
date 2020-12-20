@@ -90,7 +90,7 @@ namespace MikuMikuMethods.MME
                     _ => throw new InvalidOperationException("EMMオブジェクト読み込みで不正なオブジェクト読み込みがなされました。")
                 };
 
-                Objects.Add(new(type, int.Parse(Regex.Replace(objectKey, @"[^0-9]", ""))));
+                Objects.Add(new(type, int.Parse(Regex.Replace(objectKey, @"[^0-9]", ""))) { Path = path });
             }
         }
 

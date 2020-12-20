@@ -23,6 +23,7 @@ namespace UnitTest
                 writer.WriteLine(@"Pmd2.show = true");
                 writer.WriteLine(@"Pmd4.show = false");
                 writer.WriteLine(@"Pmd5 = モデル5.fx");
+                writer.WriteLine(@"Pmd5.show = false");
                 writer.WriteLine(@"Pmd5[0] = モデル5-0.fx");
                 writer.WriteLine(@"Pmd5[1] = モデル5-1.fx");
                 writer.WriteLine(@"Pmd5[4] = モデル5-4.fx");
@@ -61,6 +62,7 @@ namespace UnitTest
                 Assert.AreEqual(@"Pmd2.show = true", reader.ReadLine());
                 Assert.AreEqual(@"Pmd4.show = false", reader.ReadLine());
                 Assert.AreEqual(@"Pmd5 = モデル5.fx", reader.ReadLine());
+                Assert.AreEqual(@"Pmd5.show = false", reader.ReadLine());
                 Assert.AreEqual(@"Pmd5[0] = モデル5-0.fx", reader.ReadLine());
                 Assert.AreEqual(@"Pmd5[1] = モデル5-1.fx", reader.ReadLine());
                 Assert.AreEqual(@"Pmd5[4] = モデル5-4.fx", reader.ReadLine());
@@ -74,16 +76,38 @@ namespace UnitTest
         public void Test_ProjectEffectSettings()
         {
             /// 準備
-            
 
+            const string sourcePath = "TestData/ルベシア_NumberNine.emm";
+            const string resultPath = "TestData/Result.emm";
+
+            string allSource;
+            using (StreamReader reader = new(sourcePath, Encoding.ShiftJIS))
+            {
+                allSource = reader.ReadToEnd();
+            }
 
             /// テスト
-            
 
+            ProjectEffectSettings emm = new();
+            using (StreamReader reader = new(sourcePath, Encoding.ShiftJIS))
+            {
+                emm.Read(reader);
+            }
+
+            using (StreamWriter writer = new(resultPath, false, Encoding.ShiftJIS))
+            {
+                emm.Write(writer);
+            }
 
             /// 結果
-            
-            
+
+            string allResult;
+            using (StreamReader reader = new(resultPath, Encoding.ShiftJIS))
+            {
+                allResult = reader.ReadToEnd();
+            }
+
+            Assert.AreEqual(allSource, allResult);
         }
     }
 }

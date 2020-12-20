@@ -100,13 +100,15 @@ namespace MikuMikuMethods.MME
                 // サブセット添字が存在しなければオブジェクトに対する設定とみなす
                 if (objKeyId.Length == 1)
                 {
-                    obj = new(ObjectKeys.First(info => info.Name == objectKey));
+                    obj = Objects.FirstOrDefault(o => o.Key.Name == objectKey)
+                       ?? new(ObjectKeys.First(info => info.Name == objectKey));
                     if (isShowSetting)
                         obj.Effect.Show = bool.Parse(data);
                     else
                         obj.Effect.Path = data;
 
-                    Objects.Add(obj);
+                    if (!Objects.Contains(obj))
+                        Objects.Add(obj);
                     continue;
                 }
 
