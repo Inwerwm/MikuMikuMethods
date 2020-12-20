@@ -10,7 +10,7 @@ namespace MikuMikuMethods.PMX
     /// <summary>
     /// 頂点
     /// </summary>
-    public class PmxVertex:IPmxData
+    public class PmxVertex : IPmxData
     {
         /// <summary>
         /// データをバイナリから読み込む
@@ -29,4 +29,5 @@ namespace MikuMikuMethods.PMX
         {
             throw new NotImplementedException();
         }
+    }
 }

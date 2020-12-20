@@ -37,8 +37,6 @@ namespace MikuMikuMethods.MME
             Effects = new();
         }
 
-
-
         /// <summary>
         /// EMMファイルから読み込み
         /// </summary>

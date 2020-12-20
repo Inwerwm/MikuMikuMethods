@@ -69,6 +69,22 @@ namespace UnitTest
                 Assert.AreEqual(@"Pmd5[6].show = true", reader.ReadLine());
             }
         }
+
+        [TestMethod]
+        public void Test_ProjectEffectSettings()
+        {
+            /// €”õ
+            
+
+
+            /// ƒeƒXƒg
+            
+
+
+            /// Œ‹‰Ê
+            
+            
+        }
     }
 }
 
