@@ -15,12 +15,16 @@ namespace UnitTest
         [TestMethod]
         public void Test_PolygonMovieMaker()
         {
+            PolygonMovieMaker pmm = new();
             using(FileStream stream = new("TestData/testProject.pmm", FileMode.Open))
             using(BinaryReader reader = new(stream, MikuMikuMethods.Encoding.ShiftJIS))
             {
-                PolygonMovieMaker pmm = new();
                 pmm.Read(reader);
             }
+
+            Assert.AreEqual("Polygon Movie maker 0002", pmm.Version);
+            Assert.IsTrue(pmm.EditorState.IsCameraMode);
+            Assert.AreEqual(1, pmm.EditorState.ModelCount);
         }
     }
 }

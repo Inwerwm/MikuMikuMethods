@@ -10,7 +10,7 @@ namespace MikuMikuMethods.PMM
     /// <summary>
     /// MMD編集画面状態情報
     /// </summary>
-    public struct EditorState
+    public class EditorState
     {
         /// <summary>
         /// 出力解像度幅
