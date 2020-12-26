@@ -9,25 +9,17 @@ namespace MikuMikuMethods.MME
     /// <summary>
     /// オブジェクト情報
     /// </summary>
-    public class ObjectInfo
+    public abstract class ObjectInfo
     {
-        /// <summary>
-        /// オブジェクトの種別
-        /// </summary>
-        public ObjectType Type { get; init; }
-
-        private string TypeString => Type switch
-        {
-            ObjectType.Model => "Pmd",
-            ObjectType.Accessory => "Acs",
-            ObjectType.Object => "Obj",
-            _ => throw new NotImplementedException(),
-        };
-
         /// <summary>
         /// オブジェクトの番号
         /// </summary>
         public int Index { get; init; }
+
+        /// <summary>
+        /// オブジェクトのキーを表す文字列
+        /// </summary>
+        public abstract string Name { get; }
 
         /// <summary>
         /// オブジェクトのパス
@@ -35,18 +27,11 @@ namespace MikuMikuMethods.MME
         public string Path { get; set; }
 
         /// <summary>
-        /// オブジェクトのキーを表す文字列
-        /// </summary>
-        public string Name => $"{TypeString}{Index}";
-
-        /// <summary>
         /// コンストラクタ
         /// </summary>
-        /// <param name="type">オブジェクトの種別</param>
-        /// <param name="index">オブジェクトの番号</param>
-        public ObjectInfo(ObjectType type, int index)
+        /// <param name="index">オブジェクト番号</param>
+        protected ObjectInfo(int index)
         {
-            Type = type;
             Index = index;
         }
     }

@@ -82,15 +82,17 @@ namespace MikuMikuMethods.MME
                 var objectKey = lineData.ElementAt(0);
                 var path = lineData.ElementAt(1);
 
-                var type = Regex.Replace(objectKey, @"[0-9]", "") switch
+                int objectIndex = int.Parse(Regex.Replace(objectKey, @"[^0-9]", ""));
+                ObjectInfo obj = Regex.Replace(objectKey, @"[0-9]", "") switch
                 {
-                    "Pmd" => ObjectType.Model,
-                    "Acs" => ObjectType.Accessory,
-                    "Obj" => ObjectType.Object,
+                    "Pmd" => new ModelInfo(objectIndex),
+                    "Acs" => new AccessoryInfo(objectIndex),
+                    "Obj" => new EmdObjectInfo(objectIndex),
                     _ => throw new InvalidOperationException("EMMオブジェクト読み込みで不正なオブジェクト読み込みがなされました。")
                 };
 
-                Objects.Add(new(type, int.Parse(Regex.Replace(objectKey, @"[^0-9]", ""))) { Path = path });
+                obj.Path = path;
+                Objects.Add(obj);
             }
         }
 

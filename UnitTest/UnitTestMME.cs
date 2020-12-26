@@ -33,11 +33,11 @@ namespace UnitTest
             }
 
             List<ObjectInfo> keys = new();
-            keys.Add(new(ObjectType.Model, 1) { Path = "モデル1" });
-            keys.Add(new(ObjectType.Model, 2) { Path = "モデル2" });
-            keys.Add(new(ObjectType.Model, 3) { Path = "モデル3" });
-            keys.Add(new(ObjectType.Model, 4) { Path = "モデル4" });
-            keys.Add(new(ObjectType.Model, 5) { Path = "モデル5" });
+            keys.Add(new ModelInfo(1) { Path = "モデル1" });
+            keys.Add(new ModelInfo(2) { Path = "モデル2" });
+            keys.Add(new ModelInfo(3) { Path = "モデル3" });
+            keys.Add(new ModelInfo(4) { Path = "モデル4" });
+            keys.Add(new ModelInfo(5) { Path = "モデル5" });
 
             // テストのためのインスタンスを生成
             EffectSettings target = new(keys, EffectCategory.Effect);
