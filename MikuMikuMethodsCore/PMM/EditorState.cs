@@ -67,11 +67,6 @@ namespace MikuMikuMethods.PMM
         public byte SelectedModelIndex { get; set; }
 
         /// <summary>
-        /// モデル数
-        /// </summary>
-        public byte ModelCount { get; set; }
-
-        /// <summary>
         /// ファイルから読み込み
         /// </summary>
         /// <param name="reader">バイナリファイル</param>
@@ -94,7 +89,6 @@ namespace MikuMikuMethods.PMM
             DoesOpenSelfShadowPanel = reader.ReadByte() == 1;
 
             SelectedModelIndex = reader.ReadByte();
-            ModelCount = reader.ReadByte();
         }
     }
 }

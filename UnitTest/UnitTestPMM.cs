@@ -24,7 +24,6 @@ namespace UnitTest
 
             Assert.AreEqual("Polygon Movie maker 0002", pmm.Version);
             Assert.IsTrue(pmm.EditorState.IsCameraMode);
-            Assert.AreEqual(1, pmm.EditorState.ModelCount);
         }
     }
 }
