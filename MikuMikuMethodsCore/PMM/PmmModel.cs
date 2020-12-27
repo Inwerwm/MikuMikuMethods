@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using MikuMikuMethods.Extension;
+using System.Collections.Generic;
+using System.IO;
 
 namespace MikuMikuMethods.PMM
 {
@@ -113,6 +115,89 @@ namespace MikuMikuMethods.PMM
             BoneFrames = new();
             InitialMorphFrames = new();
             MorphFrames = new();
+        }
+
+        /// <summary>
+        /// バイナリデータから読み込み
+        /// </summary>
+        /// <param name="reader">読み込むファイル</param>
+        public void Read(BinaryReader reader)
+        {
+            Index = reader.ReadByte();
+            Name = reader.ReadString();
+            NameEn = reader.ReadString();
+            Path = reader.ReadString(256, Encoding.ShiftJIS, '\0');
+            
+            _ = reader.ReadByte();
+
+            var boneCount = reader.ReadInt32();
+            for (int i = 0; i < boneCount; i++)
+            {
+                BoneNames.Add(reader.ReadString());
+            }
+
+            var morphCount = reader.ReadInt32();
+            for (int i = 0; i < morphCount; i++)
+            {
+                MorphNames.Add(reader.ReadString());
+            }
+
+            var ikCount = reader.ReadInt32();
+            for (int i = 0; i < ikCount; i++)
+            {
+                IKBoneIndices.Add(reader.ReadInt32());
+            }
+
+            var parentableBoneCount = reader.ReadInt32();
+            for (int i = 0; i < parentableBoneCount; i++)
+            {
+                ParentableBoneIndices.Add(reader.ReadInt32());
+            }
+
+            RenderOrder = reader.ReadByte();
+
+            Visible = reader.ReadByte() == 1;
+            SelectedBoneIndex = reader.ReadInt32();
+            SelectedMorphIndices = (reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32());
+
+            var nodeCount = reader.ReadByte();
+            for (int i = 0; i < nodeCount; i++)
+            {
+                FrameEditor.DoesOpenNode.Add(reader.ReadByte() == 1);
+            }
+
+            FrameEditor.VerticalScrollState = reader.ReadInt32();
+            FrameEditor.LastFrame = reader.ReadInt32();
+
+            for (int i = 0; i < boneCount; i++)
+            {
+                PmmBoneFrame boneFrame = new();
+
+                boneFrame.Read(reader, null);
+            }
+
+            var boneFrameCount = reader.ReadInt32();
+            for (int i = 0; i < boneFrameCount; i++)
+            {
+                PmmBoneFrame boneFrame = new();
+
+                boneFrame.Read(reader, reader.ReadInt32());
+            }
+
+            for (int i = 0; i < morphCount; i++)
+            {
+                PmmMorphFrame morphFrame = new();
+
+                morphFrame.Read(reader, null);
+            }
+
+            var morphFrameCount = reader.ReadInt32();
+            for (int i = 0; i < morphFrameCount; i++)
+            {
+                PmmMorphFrame morphFrame = new();
+
+                morphFrame.Read(reader, reader.ReadInt32());
+            }
         }
     }
 

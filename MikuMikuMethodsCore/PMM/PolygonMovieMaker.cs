@@ -22,10 +22,16 @@ namespace MikuMikuMethods.PMM
         /// PMMファイルのバージョン情報
         /// </summary>
         public string Version { get; private set; }
+        
         /// <summary>
         /// 編集画面状態情報
         /// </summary>
         public EditorState EditorState { get; init; }
+
+        /// <summary>
+        /// モデル
+        /// </summary>
+        public List<PmmModel> Models { get; init; }
 
         /// <summary>
         /// コンストラクタ
@@ -33,17 +39,26 @@ namespace MikuMikuMethods.PMM
         public PolygonMovieMaker()
         {
             EditorState = new();
+            Models = new();
         }
 
         /// <summary>
         /// バイナリデータから読み込み
         /// </summary>
-        /// <param name="reader">読み込むファイル</param>
+        /// <param name="reader">読み込むファイル ShiftJISエンコードで読み込むこと</param>
         public void Read(BinaryReader reader)
         {
             Version = reader.ReadString(30, Encoding.ShiftJIS, '\0');
 
             EditorState.Read(reader);
+
+            var modelCount = reader.ReadByte();
+            for (int i = 0; i < modelCount; i++)
+            {
+                PmmModel model = new();
+                model.Read(reader);
+                Models.Add(model);
+            }
         }
     }
 }
