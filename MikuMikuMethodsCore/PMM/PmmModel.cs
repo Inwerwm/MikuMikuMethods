@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace MikuMikuMethods.PMM
 {
+    /// <summary>
+    /// PMM内のモデル情報
+    /// </summary>
     public class PmmModel
     {
         /// <summary>
@@ -79,6 +82,18 @@ namespace MikuMikuMethods.PMM
         /// 選択中のモーフID
         /// </summary>
         public (int Brow, int Eye, int Lip, int Other) SelectedMorphIndices { get; set; }
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        public PmmModel()
+        {
+            FrameEditor = new();
+            BoneNames = new();
+            MorphNames = new();
+            IKBoneIndices = new();
+            ParentableBoneIndices = new();
+        }
     }
 
     /// <summary>
@@ -88,9 +103,9 @@ namespace MikuMikuMethods.PMM
     {
         /// <summary>
         /// <para>行数</para>
-        /// <para>3(root, 表示・IK・外観, 表情) + 表情枠総数</para>
+        /// <para>root, 表示・IK・外観, 表情 + 表情枠</para>
         /// </summary>
-        public byte RowCount { get; private set; }
+        public byte RowCount => (byte)(3 + DoesOpenNode.Count);
 
         /// <summary>
         /// 垂直スクロール状態
@@ -106,5 +121,13 @@ namespace MikuMikuMethods.PMM
         /// 最終フレーム
         /// </summary>
         public int LastFrame { get; set; }
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        public FrameEditorState()
+        {
+            DoesOpenNode = new();
+        }
     }
 }
