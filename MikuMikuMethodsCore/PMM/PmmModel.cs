@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MikuMikuMethods.PMM
 {
-    class PmmModel
+    public class PmmModel
     {
         /// <summary>
         /// モデル管理番号
@@ -29,6 +29,11 @@ namespace MikuMikuMethods.PMM
         public string Path { get; set; }
 
         /// <summary>
+        /// 表示
+        /// </summary>
+        public bool Visible { get; set; }
+
+        /// <summary>
         /// <para>モデル描画順</para>
         /// <para>これが狂うとモデルセレクタの選択と実際に動くモデルに齟齬が発生する</para>
         /// <para>セレクタ一覧が描画順に基づいて作られるためだと思われる</para>
@@ -36,57 +41,30 @@ namespace MikuMikuMethods.PMM
         public byte RenderOrder { get; set; }
 
         /// <summary>
-        /// <para>キーフレーム編集行数</para>
-        /// <para>3(root, 表示・IK・外観, 表情) + 表情枠総数</para>
+        /// キーフレーム編集画面の状態
         /// </summary>
-        public byte KeyframeRowCount { get; private set; }
+        public FrameEditorState FrameEditor { get; init; }
 
-        /// <summary>
-        /// キーフレーム編集画面の垂直スクロール状態
-        /// </summary>
-        public int VerticalScrollState { get; set; }
-
-        /// <summary>
-        /// 最終フレーム数
-        /// </summary>
-        public int LastFrame { get; set; }
-
-        /// <summary>
-        /// 表示
-        /// </summary>
-        public bool Visible { get; set; }
-
-        /// <summary>
-        /// ボーン数
-        /// </summary>
-        public int BoneCount => BoneNames.Count;
         /// <summary>
         /// ボーン名
         /// </summary>
         public List<string> BoneNames { get; init; }
 
         /// <summary>
-        /// モーフ数
-        /// </summary>
-        public int MorphCount => MorphNames.Count;
-        /// <summary>
         /// モーフ名
         /// </summary>
         public List<string> MorphNames { get; init; }
 
-        /// <summary>
-        /// IK数
-        /// </summary>
-        public int IKCount => IKBoneIndices.Count;
         /// <summary>
         /// IK設定されたボーンID
         /// </summary>
         public List<int> IKBoneIndices { get; init; }
 
         /// <summary>
-        /// 外部親にできるボーン数
+        /// 表示枠の数(表示、表情含む)
         /// </summary>
-        public int ParentableBoneCount => ParentableBoneIndices.Count;
+        public byte NodeCount => (byte)FrameEditor.DoesOpenNode.Count;
+
         /// <summary>
         /// 外部親にできるボーンのID
         /// </summary>
@@ -98,31 +76,35 @@ namespace MikuMikuMethods.PMM
         public int SelectedBoneIndex { get; set; }
 
         /// <summary>
-        /// 選択中の眉モーフID
+        /// 選択中のモーフID
         /// </summary>
-        public int SelectedMorphBlowIndex { get; set; }
+        public (int Brow, int Eye, int Lip, int Other) SelectedMorphIndices { get; set; }
+    }
+
+    /// <summary>
+    /// キーフレーム編集画面の状態
+    /// </summary>
+    public class FrameEditorState
+    {
         /// <summary>
-        /// 選択中の目モーフID
+        /// <para>行数</para>
+        /// <para>3(root, 表示・IK・外観, 表情) + 表情枠総数</para>
         /// </summary>
-        public int SelectedMorphEyeIndex { get; set; }
-        /// <summary>
-        /// 選択中の口モーフID
-        /// </summary>
-        public int SelectedMorphLipIndex { get; set; }
-        /// <summary>
-        /// 選択中の他モーフID
-        /// </summary>
-        public int SelectedMorphOtherIndex { get; set; }
+        public byte RowCount { get; private set; }
 
         /// <summary>
-        /// 表示枠の数(表示、表情含む)
+        /// 垂直スクロール状態
         /// </summary>
-        public byte NodeCount => (byte)DoesOpenNode.Count;
+        public int VerticalScrollState { get; set; }
+
         /// <summary>
         /// 表情枠展開状態
         /// </summary>
         public List<bool> DoesOpenNode { get; init; }
 
-
+        /// <summary>
+        /// 最終フレーム
+        /// </summary>
+        public int LastFrame { get; set; }
     }
 }
