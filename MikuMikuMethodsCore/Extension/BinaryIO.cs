@@ -74,7 +74,7 @@ namespace MikuMikuMethods.Extension
         {
             var readBytes = reader.ReadBytes(length);
             string str = encoding.GetString(readBytes);
-            return filler is null ? str : str.Substring(str.IndexOf(filler.Value));
+            return filler is null ? str : str.Remove(str.IndexOf(filler.Value));
         }
     }
 
