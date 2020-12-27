@@ -39,27 +39,27 @@ namespace MikuMikuMethods.PMM
         /// <summary>
         /// カメラ操作パネル開閉状態
         /// </summary>
-        public bool doesOpenCameraPanel { get; set; }
+        public bool DoesOpenCameraPanel { get; set; }
         /// <summary>
         /// ライト操作パネル開閉状態
         /// </summary>
-        public bool doesOpenLightPanel { get; set; }
+        public bool DoesOpenLightPanel { get; set; }
         /// <summary>
         /// アクセサリ操作パネル開閉状態
         /// </summary>
-        public bool doesOpenAccessaryPanel { get; set; }
+        public bool DoesOpenAccessaryPanel { get; set; }
         /// <summary>
         /// ボーン操作パネル開閉状態
         /// </summary>
-        public bool doesOpenBonePanel { get; set; }
+        public bool DoesOpenBonePanel { get; set; }
         /// <summary>
         /// 表情操作パネル開閉状態
         /// </summary>
-        public bool doesOpenMorphPanel { get; set; }
+        public bool DoesOpenMorphPanel { get; set; }
         /// <summary>
         /// セルフ影操作パネル開閉状態
         /// </summary>
-        public bool doesOpenSelfShadowPanel { get; set; }
+        public bool DoesOpenSelfShadowPanel { get; set; }
 
         /// <summary>
         /// 選択中のモデルインデックス
@@ -86,12 +86,12 @@ namespace MikuMikuMethods.PMM
 
             IsCameraMode = reader.ReadByte() == 1;
 
-            doesOpenCameraPanel = reader.ReadByte() == 1;
-            doesOpenLightPanel = reader.ReadByte() == 1;
-            doesOpenAccessaryPanel = reader.ReadByte() == 1;
-            doesOpenBonePanel = reader.ReadByte() == 1;
-            doesOpenMorphPanel = reader.ReadByte() == 1;
-            doesOpenSelfShadowPanel = reader.ReadByte() == 1;
+            DoesOpenCameraPanel = reader.ReadByte() == 1;
+            DoesOpenLightPanel = reader.ReadByte() == 1;
+            DoesOpenAccessaryPanel = reader.ReadByte() == 1;
+            DoesOpenBonePanel = reader.ReadByte() == 1;
+            DoesOpenMorphPanel = reader.ReadByte() == 1;
+            DoesOpenSelfShadowPanel = reader.ReadByte() == 1;
 
             SelectedModelIndex = reader.ReadByte();
             ModelCount = reader.ReadByte();
