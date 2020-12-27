@@ -124,10 +124,11 @@ namespace MikuMikuMethods.PMM
         public void Read(BinaryReader reader)
         {
             Index = reader.ReadByte();
+
             Name = reader.ReadString();
             NameEn = reader.ReadString();
             Path = reader.ReadString(256, Encoding.ShiftJIS, '\0');
-            
+
             _ = reader.ReadByte();
 
             var boneCount = reader.ReadInt32();
@@ -172,31 +173,31 @@ namespace MikuMikuMethods.PMM
             for (int i = 0; i < boneCount; i++)
             {
                 PmmBoneFrame boneFrame = new();
-
                 boneFrame.Read(reader, null);
+                InitialBoneFrames.Add(boneFrame);
             }
 
             var boneFrameCount = reader.ReadInt32();
             for (int i = 0; i < boneFrameCount; i++)
             {
                 PmmBoneFrame boneFrame = new();
-
                 boneFrame.Read(reader, reader.ReadInt32());
+                BoneFrames.Add(boneFrame);
             }
 
             for (int i = 0; i < morphCount; i++)
             {
                 PmmMorphFrame morphFrame = new();
-
                 morphFrame.Read(reader, null);
+                InitialMorphFrames.Add(morphFrame);
             }
 
             var morphFrameCount = reader.ReadInt32();
             for (int i = 0; i < morphFrameCount; i++)
             {
                 PmmMorphFrame morphFrame = new();
-
                 morphFrame.Read(reader, reader.ReadInt32());
+                MorphFrames.Add(morphFrame);
             }
         }
     }
@@ -210,7 +211,7 @@ namespace MikuMikuMethods.PMM
         /// <para>行数</para>
         /// <para>root, 表示・IK・外観, 表情 + 表情枠</para>
         /// </summary>
-        public byte RowCount => (byte)(3 + DoesOpenNode.Count);
+        public byte RowCount => (byte)DoesOpenNode.Count;
 
         /// <summary>
         /// 垂直スクロール状態

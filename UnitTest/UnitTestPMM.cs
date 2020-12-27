@@ -24,6 +24,12 @@ namespace UnitTest
 
             Assert.AreEqual("Polygon Movie maker 0002", pmm.Version);
             Assert.IsTrue(pmm.EditorState.IsCameraMode);
+            Assert.AreEqual(1, pmm.Models.Count);
+            Assert.AreEqual("ルベシア・シェリングヴェーヌ", pmm.Models[0].Name);
+            Assert.AreEqual("Rybecia Sherringvaine", pmm.Models[0].NameEn);
+            Assert.AreEqual(16, pmm.Models[0].FrameEditor.RowCount);
+            Assert.IsNull(pmm.Models[0].InitialBoneFrames[0].Index);
+            Assert.AreEqual(1, pmm.Models[0].InitialBoneFrames[0].Offset.Y);
         }
     }
 }
