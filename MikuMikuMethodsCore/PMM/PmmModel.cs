@@ -89,7 +89,15 @@ namespace MikuMikuMethods.PMM
         /// </summary>
         public List<PmmBoneFrame> BoneFrames { get; init; }
 
+        /// <summary>
+        /// 初期位置のモーフフレーム
+        /// </summary>
+        public List<PmmMorphFrame> InitialMorphFrames { get; init; }
 
+        /// <summary>
+        /// ボーンのキーフレーム
+        /// </summary>
+        public List<PmmMorphFrame> MorphFrames { get; init; }
 
         /// <summary>
         /// コンストラクタ
@@ -103,6 +111,8 @@ namespace MikuMikuMethods.PMM
             ParentableBoneIndices = new();
             InitialBoneFrames = new();
             BoneFrames = new();
+            InitialMorphFrames = new();
+            MorphFrames = new();
         }
     }
 
