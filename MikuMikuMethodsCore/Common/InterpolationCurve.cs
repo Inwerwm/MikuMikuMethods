@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MikuMikuMethods.VMD
+namespace MikuMikuMethods
 {
     /// <summary>
     /// 補間項目
