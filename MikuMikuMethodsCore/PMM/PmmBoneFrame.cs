@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -11,34 +12,8 @@ namespace MikuMikuMethods.PMM
     /// <summary>
     /// ボーンフレーム情報
     /// </summary>
-    public class PmmBoneFrame
+    public class PmmBoneFrame : PmmFrame
     {
-        /// <summary>
-        /// <para>フレーム番号</para>
-        /// <para>初期フレームには振られないのでnullを入れる</para>
-        /// </summary>
-        public int? Index { get; set; }
-
-        /// <summary>
-        /// 所在フレーム
-        /// </summary>
-        public int Frame { get; set; }
-
-        /// <summary>
-        /// <para>直前のキーフレームのID</para>
-        /// <para>存在しなければ0</para>
-        /// </summary>
-        public int PreviousFrameIndex { get; set; }
-        /// <summary>
-        /// 直後のキーフレームのID
-        /// </summary>
-        public int NextFrameIndex { get; set; }
-
-        /// <summary>
-        /// 補間曲線
-        /// </summary>
-        public ReadOnlyDictionary<InterpolationItem,InterpolationCurve> InterpolationCurces { get; init; }
-
         /// <summary>
         /// 移動量
         /// </summary>
@@ -50,9 +25,9 @@ namespace MikuMikuMethods.PMM
         public Quaternion Rotate { get; set; }
 
         /// <summary>
-        /// 選択されているか
+        /// 補間曲線
         /// </summary>
-        public bool IsSelected { get; set; }
+        public ReadOnlyDictionary<InterpolationItem,InterpolationCurve> InterpolationCurces { get; init; }
 
         /// <summary>
         /// 物理が有効か
@@ -71,6 +46,16 @@ namespace MikuMikuMethods.PMM
             curveDic.Add(InterpolationItem.Rotation, new());
 
             InterpolationCurces = new(curveDic);
+        }
+
+        /// <summary>
+        /// バイナリデータから読み込み
+        /// </summary>
+        /// <param name="reader">読み込むファイル</param>
+        /// <param name="index">フレームID</param>
+        public override void Read(BinaryReader reader, int? index)
+        {
+
         }
     }
 }
