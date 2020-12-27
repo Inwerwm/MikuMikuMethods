@@ -25,7 +25,15 @@ namespace MikuMikuMethods.PMM
         /// <param name="index">フレームID</param>
         public override void Read(BinaryReader reader, int? index)
         {
+            Index = index;
 
+            Frame = reader.ReadInt32();
+            PreviousFrameIndex = reader.ReadInt32();
+            NextFrameIndex = reader.ReadInt32();
+
+            Weight = reader.ReadSingle();
+
+            IsSelected = reader.ReadByte() == 1;
         }
     }
 }

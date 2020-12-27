@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MikuMikuMethods.Extension;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -55,7 +56,21 @@ namespace MikuMikuMethods.PMM
         /// <param name="index">フレームID</param>
         public override void Read(BinaryReader reader, int? index)
         {
+            Index = index;
 
+            Frame = reader.ReadInt32();
+            PreviousFrameIndex = reader.ReadInt32();
+            NextFrameIndex = reader.ReadInt32();
+            
+            InterpolationCurces[InterpolationItem.XPosition].FromBytes(reader.ReadBytes(4));
+            InterpolationCurces[InterpolationItem.YPosition].FromBytes(reader.ReadBytes(4));
+            InterpolationCurces[InterpolationItem.ZPosition].FromBytes(reader.ReadBytes(4));
+            InterpolationCurces[InterpolationItem.Rotation].FromBytes(reader.ReadBytes(4));
+
+            Offset = reader.ReadVector3();
+            Rotate = reader.ReadQuaternion();
+            IsSelected = reader.ReadByte() == 1;
+            EnablePhysic = reader.ReadByte() == 0;
         }
     }
 }
