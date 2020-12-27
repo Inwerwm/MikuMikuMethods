@@ -80,6 +80,18 @@ namespace MikuMikuMethods.PMM
         public (int Brow, int Eye, int Lip, int Other) SelectedMorphIndices { get; set; }
 
         /// <summary>
+        /// 初期位置のボーンフレーム
+        /// </summary>
+        public List<PmmBoneFrame> InitialBoneFrames { get; init; }
+
+        /// <summary>
+        /// ボーンのキーフレーム
+        /// </summary>
+        public List<PmmBoneFrame> BoneFrames { get; init; }
+
+
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
         public PmmModel()
@@ -89,6 +101,8 @@ namespace MikuMikuMethods.PMM
             MorphNames = new();
             IKBoneIndices = new();
             ParentableBoneIndices = new();
+            InitialBoneFrames = new();
+            BoneFrames = new();
         }
     }
 
