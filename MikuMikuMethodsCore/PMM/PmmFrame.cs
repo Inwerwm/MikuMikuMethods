@@ -32,12 +32,5 @@ namespace MikuMikuMethods.PMM
         /// 選択されているか
         /// </summary>
         public bool IsSelected { get; set; }
-
-        /// <summary>
-        /// バイナリデータから読み込み
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        /// <param name="index">フレームID</param>
-        public abstract void Read(BinaryReader reader, int? index);
     }
 }
