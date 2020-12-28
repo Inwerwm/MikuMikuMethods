@@ -115,6 +115,7 @@ namespace MikuMikuMethods.PMM
         /// </summary>
         public PmmModel()
         {
+            RenderConfig = new();
             FrameEditor = new();
             Uncomitted = new();
             BoneNames = new();
