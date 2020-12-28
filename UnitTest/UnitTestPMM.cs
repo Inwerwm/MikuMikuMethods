@@ -39,12 +39,18 @@ namespace UnitTest
         [TestMethod]
         public void Test_PmmModel()
         {
-            Assert.AreEqual("ルベシア・シェリングヴェーヌ", pmm.Models[0].Name);
-            Assert.AreEqual("Rybecia Sherringvaine", pmm.Models[0].NameEn);
-            Assert.AreEqual(@"C:\MMD\_モデル(人物)\_quappa-el\EL-D2M-Rybecia_Shader\ルベシア.pmx", pmm.Models[0].Path);
-            Assert.AreEqual(16, pmm.Models[0].FrameEditor.RowCount);
-            Assert.IsNull(pmm.Models[0].InitialBoneFrames[0].Index);
-            Assert.AreEqual(1, pmm.Models[0].InitialBoneFrames[0].Offset.Y);
+            PmmModel Rybecia = pmm.Models[0];
+            Assert.AreEqual("ルベシア・シェリングヴェーヌ", Rybecia.Name);
+            Assert.AreEqual("Rybecia Sherringvaine", Rybecia.NameEn);
+            Assert.AreEqual(@"C:\MMD\_モデル(人物)\_quappa-el\EL-D2M-Rybecia_Shader\ルベシア.pmx", Rybecia.Path);
+
+            Assert.AreEqual(1, Rybecia.RenderConfig.RenderOrder);
+            Assert.AreEqual(1, Rybecia.RenderConfig.CalculateOrder);
+
+            Assert.AreEqual(16, Rybecia.FrameEditor.RowCount);
+
+            Assert.IsNull(Rybecia.InitialBoneFrames[0].Index);
+            Assert.AreEqual(1, Rybecia.InitialBoneFrames[0].Offset.Y);
         }
     }
 }
