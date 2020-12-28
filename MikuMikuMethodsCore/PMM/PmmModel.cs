@@ -157,14 +157,14 @@ namespace MikuMikuMethods.PMM
 
             RenderOrder = reader.ReadByte();
 
-            Visible = reader.ReadByte() == 1;
+            Visible = reader.ReadBoolean();
             SelectedBoneIndex = reader.ReadInt32();
             SelectedMorphIndices = (reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32());
 
             var nodeCount = reader.ReadByte();
             for (int i = 0; i < nodeCount; i++)
             {
-                FrameEditor.DoesOpenNode.Add(reader.ReadByte() == 1);
+                FrameEditor.DoesOpenNode.Add(reader.ReadBoolean());
             }
 
             FrameEditor.VerticalScrollState = reader.ReadInt32();

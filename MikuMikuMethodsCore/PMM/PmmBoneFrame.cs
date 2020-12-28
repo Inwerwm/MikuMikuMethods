@@ -54,7 +54,7 @@ namespace MikuMikuMethods.PMM
         /// </summary>
         /// <param name="reader">読み込むファイル</param>
         /// <param name="index">フレームID</param>
-        public override void Read(BinaryReader reader, int? index)
+        public void Read(BinaryReader reader, int? index)
         {
             Index = index;
 
@@ -69,8 +69,8 @@ namespace MikuMikuMethods.PMM
 
             Offset = reader.ReadVector3();
             Rotate = reader.ReadQuaternion();
-            IsSelected = reader.ReadByte() == 1;
-            EnablePhysic = reader.ReadByte() == 0;
+            IsSelected = reader.ReadBoolean();
+            EnablePhysic = !reader.ReadBoolean();
         }
     }
 }

@@ -23,7 +23,7 @@ namespace MikuMikuMethods.PMM
         /// </summary>
         /// <param name="reader">読み込むファイル</param>
         /// <param name="index">フレームID</param>
-        public override void Read(BinaryReader reader, int? index)
+        public void Read(BinaryReader reader, int? index)
         {
             Index = index;
 
@@ -33,7 +33,7 @@ namespace MikuMikuMethods.PMM
 
             Weight = reader.ReadSingle();
 
-            IsSelected = reader.ReadByte() == 1;
+            IsSelected = reader.ReadBoolean();
         }
     }
 }
