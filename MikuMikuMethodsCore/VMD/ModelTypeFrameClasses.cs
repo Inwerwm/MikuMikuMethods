@@ -214,7 +214,7 @@ namespace MikuMikuMethods.VMD
             {
                 // pointsRowから始めのi個を抜かしてrowへ転写
                 var row = new byte[16];
-                pointsRow.CopyTo(row, i);
+                pointsRow.Skip(i).ToArray().CopyTo(row, i);
 
                 interpolateMatrix.AddRange(row);
             }
