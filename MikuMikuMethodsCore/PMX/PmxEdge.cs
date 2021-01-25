@@ -15,7 +15,7 @@ namespace MikuMikuMethods.PMX
         /// <summary>
         /// 構成頂点
         /// </summary>
-        public PmxVertex[] Vertices { get; }
+        public PmxVertex[] Vertices { get; } = new PmxVertex[2];
 
         /// <summary>
         /// 辺を反転する
