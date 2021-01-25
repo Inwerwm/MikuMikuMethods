@@ -35,5 +35,20 @@ namespace MikuMikuMethods.PMM
 
             IsSelected = reader.ReadBoolean();
         }
+
+        /// <summary>
+        /// ファイルに書込
+        /// </summary>
+        /// <param name="writer">出力対象バイナリファイル</param>
+        public void Write(BinaryWriter writer)
+        {
+            writer.Write(Frame);
+            writer.Write(PreviousFrameIndex);
+            writer.Write(NextFrameIndex);
+
+            writer.Write(Weight);
+
+            writer.Write(IsSelected);
+        }
     }
 }
