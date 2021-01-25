@@ -13,6 +13,23 @@ namespace MikuMikuMethods.PMX
     public class PmxModelInfo : IPmxData
     {
         /// <summary>
+        /// モデル名
+        /// </summary>
+        public string Name { get; set; }
+        /// <summary>
+        /// モデル名(英語)
+        /// </summary>
+        public string NameEn { get; set; }
+        /// <summary>
+        /// モデルのコメント
+        /// </summary>
+        public string Comment { get; set; }
+        /// <summary>
+        /// モデルのコメント(英語)
+        /// </summary>
+        public string CommentEn { get; set; }
+
+        /// <summary>
         /// データをバイナリから読み込む
         /// </summary>
         /// <param name="reader">読み込み対象のリーダー</param>
