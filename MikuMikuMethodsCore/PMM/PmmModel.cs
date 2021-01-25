@@ -224,7 +224,7 @@ namespace MikuMikuMethods.PMM
             for (int i = 0; i < configFrameCount; i++)
             {
                 PmmConfigFrame configFrame = new();
-                configFrame.Read(reader, null, ikCount, parentableBoneCount);
+                configFrame.Read(reader, reader.ReadInt32(), ikCount, parentableBoneCount);
                 ConfigFrames.Add(configFrame);
             }
 
@@ -265,6 +265,135 @@ namespace MikuMikuMethods.PMM
             RenderConfig.EdgeWidth = reader.ReadSingle();
             RenderConfig.EnableSelfShadow = reader.ReadBoolean();
             RenderConfig.CalculateOrder = reader.ReadByte();
+        }
+
+        /// <summary>
+        /// ファイルに書込
+        /// </summary>
+        /// <param name="writer">出力対象バイナリファイル</param>
+        public void Write(BinaryWriter writer)
+        {
+            writer.Write(Index);
+
+            writer.Write(Name);
+            writer.Write(NameEn);
+            writer.Write(Path);
+
+            // キーフレームエディタの行数
+            // 3([root]、表示・IK・外観、表情) + 表示枠の数
+            writer.Write(3 + NodeCount);
+
+            // ボーン数
+            writer.Write(BoneNames.Count);
+            foreach (var item in BoneNames)
+            {
+                writer.Write(item);
+            }
+
+            // モーフ数
+            writer.Write(MorphNames.Count);
+            foreach (var item in MorphNames)
+            {
+                writer.Write(item);
+            }
+
+            // IK数
+            writer.Write(IKBoneIndices.Count);
+            foreach (var item in IKBoneIndices)
+            {
+                writer.Write(item);
+            }
+
+            // 外部親設定可能なボーン数
+            writer.Write(ParentableBoneIndices.Count);
+            foreach (var item in ParentableBoneIndices)
+            {
+                writer.Write(item);
+            }
+
+            writer.Write(RenderConfig.RenderOrder);
+
+            writer.Write(Uncomitted.Visible);
+            writer.Write(SelectedBoneIndex);
+            writer.Write(SelectedMorphIndices.Brow);
+            writer.Write(SelectedMorphIndices.Eye);
+            writer.Write(SelectedMorphIndices.Lip);
+            writer.Write(SelectedMorphIndices.Other);
+
+            // 表情枠数
+            writer.Write(NodeCount);
+            foreach (var item in FrameEditor.DoesOpenNode)
+            {
+                writer.Write(item);
+            }
+
+            writer.Write(FrameEditor.VerticalScrollState);
+            writer.Write(FrameEditor.LastFrame);
+
+            foreach (var item in InitialBoneFrames)
+            {
+                item.Write(writer);
+            }
+
+            writer.Write(BoneFrames.Count);
+            foreach (var item in BoneFrames)
+            {
+                writer.Write(item.Index.Value);
+                item.Write(writer);
+            }
+
+            foreach (var item in InitialMorphFrames)
+            {
+                item.Write(writer);
+            }
+
+            writer.Write(MorphFrames.Count);
+            foreach (var item in MorphFrames)
+            {
+                writer.Write(item.Index.Value);
+                item.Write(writer);
+            }
+
+            InitialConfigFrame.Write(writer);
+
+            writer.Write(ConfigFrames.Count);
+            foreach (var item in ConfigFrames)
+            {
+                writer.Write(item.Index.Value);
+                item.Write(writer);
+            }
+
+            foreach (var item in Uncomitted.Bones)
+            {
+                writer.Write(item.Offset);
+                writer.Write(item.Rotate);
+                writer.Write(item.IsThis);
+                writer.Write(item.EnablePhysic);
+                writer.Write(item.RowIsSelected);
+            }
+
+            foreach (var item in Uncomitted.MorphWeights)
+            {
+                writer.Write(item);
+            }
+
+            foreach (var item in Uncomitted.IKEnable)
+            {
+                writer.Write(item);
+            }
+
+            foreach (var item in Uncomitted.ParentSettings)
+            {
+                writer.Write(item.StartFrame);
+                writer.Write(item.EndFrame);
+                writer.Write(item.ModelIndex);
+                writer.Write(item.BoneIndex);
+            }
+
+            writer.Write(RenderConfig.EnableAlphaBlend);
+            writer.Write(RenderConfig.EdgeWidth);
+            writer.Write(RenderConfig.EnableSelfShadow);
+            writer.Write(RenderConfig.CalculateOrder);
         }
     }
 
