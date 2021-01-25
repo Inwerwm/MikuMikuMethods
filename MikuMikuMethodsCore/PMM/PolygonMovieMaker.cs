@@ -43,7 +43,7 @@ namespace MikuMikuMethods.PMM
         }
 
         /// <summary>
-        /// バイナリデータから読み込み
+        /// バイナリデータから読込
         /// </summary>
         /// <param name="reader">読み込むファイル ShiftJISエンコードで読み込むこと</param>
         public void Read(BinaryReader reader)
@@ -58,6 +58,23 @@ namespace MikuMikuMethods.PMM
                 PmmModel model = new();
                 model.Read(reader);
                 Models.Add(model);
+            }
+        }
+
+        /// <summary>
+        /// バイナリデータに書込
+        /// </summary>
+        /// <param name="writer">出力対象バイナリファイル</param>
+        public void Write(BinaryWriter writer)
+        {
+            writer.Write(Version, 30, Encoding.ShiftJIS, '\0');
+
+            EditorState.Write(writer);
+
+            writer.Write(Models.Count);
+            foreach (var model in Models)
+            {
+                model.Write(writer);
             }
         }
     }
