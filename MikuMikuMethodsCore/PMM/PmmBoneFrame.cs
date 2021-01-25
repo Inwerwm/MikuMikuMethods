@@ -72,5 +72,22 @@ namespace MikuMikuMethods.PMM
             IsSelected = reader.ReadBoolean();
             EnablePhysic = !reader.ReadBoolean();
         }
+
+        public void Write(BinaryWriter writer)
+        {
+            writer.Write(Frame);
+            writer.Write(PreviousFrameIndex);
+            writer.Write(NextFrameIndex);
+
+            writer.Write(InterpolationCurces[InterpolationItem.XPosition].ToBytes());
+            writer.Write(InterpolationCurces[InterpolationItem.YPosition].ToBytes());
+            writer.Write(InterpolationCurces[InterpolationItem.ZPosition].ToBytes());
+            writer.Write(InterpolationCurces[InterpolationItem.Rotation].ToBytes());
+
+            writer.Write(Offset);
+            writer.Write(Rotate);
+            writer.Write(IsSelected);
+            writer.Write(!EnablePhysic);
+        }
     }
 }
