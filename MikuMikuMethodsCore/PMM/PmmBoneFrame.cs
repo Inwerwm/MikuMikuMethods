@@ -73,6 +73,10 @@ namespace MikuMikuMethods.PMM
             EnablePhysic = !reader.ReadBoolean();
         }
 
+        /// <summary>
+        /// ファイルに書込
+        /// </summary>
+        /// <param name="writer">出力対象バイナリファイル</param>
         public void Write(BinaryWriter writer)
         {
             writer.Write(Frame);

@@ -92,7 +92,7 @@ namespace MikuMikuMethods.PMM
         }
 
         /// <summary>
-        /// ファイルに読込
+        /// ファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>
         public void Write(BinaryWriter writer)
