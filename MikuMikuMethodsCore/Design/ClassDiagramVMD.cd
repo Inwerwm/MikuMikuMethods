@@ -44,6 +44,12 @@
         <Point X="12.312" Y="5.204" />
       </Path>
     </AssociationLine>
+    <AssociationLine Name="Type" Type="MikuMikuMethods.VMD.VMDType" FixedFromPoint="true">
+      <Path>
+        <Point X="1.875" Y="5.75" />
+        <Point X="1.875" Y="3.796" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>DAAAAAIAAAAEAAAAAAAAAAAgABAAIAIAAQAAAQlAAAA=</HashCode>
       <FileName>VMD\VocaloidMotionData.cs</FileName>
@@ -110,6 +116,13 @@
   </Class>
   <Class Name="MikuMikuMethods.VMD.VocaloidCameraTypeFrame">
     <Position X="8" Y="0.5" Width="2" />
+    <InheritanceLine Type="MikuMikuMethods.VMD.VocaloidFrame" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="15.375" Y="5.5" />
+        <Point X="15.375" Y="1.125" />
+        <Point X="10" Y="1.125" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAABAA=</HashCode>
       <FileName>VMD\AbstractClasses.cs</FileName>
@@ -117,11 +130,33 @@
   </Class>
   <Class Name="MikuMikuMethods.VMD.VocaloidModelTypeFrame">
     <Position X="8.25" Y="12.25" Width="1.75" />
+    <InheritanceLine Type="MikuMikuMethods.VMD.VocaloidFrame" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="15.375" Y="8.209" />
+        <Point X="15.375" Y="13" />
+        <Point X="10" Y="13" />
+      </Path>
+    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAABAA=</HashCode>
       <FileName>VMD\AbstractClasses.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="MikuMikuMethods.VMD.VocaloidFrame">
+    <Position X="14" Y="5.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAQgAAAAAACBAAAAAAEABAE=</HashCode>
+      <FileName>VMD\AbstractClasses.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="MikuMikuMethods.VMD.IVocaloidFrame">
+    <Position X="16.5" Y="5.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQgAAAAAACBAAAAAAEABAE=</HashCode>
+      <FileName>VMD\Interfaces.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Enum Name="MikuMikuMethods.VMD.VMDType">
     <Position X="0.5" Y="2.75" Width="2.75" />
     <TypeIdentifier>
