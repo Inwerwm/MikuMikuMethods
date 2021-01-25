@@ -90,5 +90,30 @@ namespace MikuMikuMethods.PMM
 
             SelectedModelIndex = reader.ReadByte();
         }
+
+        /// <summary>
+        /// ファイルに読込
+        /// </summary>
+        /// <param name="writer">出力対象バイナリファイル</param>
+        public void Write(BinaryWriter writer)
+        {
+            writer.Write(OutputWidth);
+            writer.Write(OutputHeight);
+
+            writer.Write(KeyframeEditorWidth);
+
+            writer.Write(CurrentViewAngle);
+
+            writer.Write(IsCameraMode);
+
+            writer.Write(DoesOpenCameraPanel);
+            writer.Write(DoesOpenLightPanel);
+            writer.Write(DoesOpenAccessaryPanel);
+            writer.Write(DoesOpenBonePanel);
+            writer.Write(DoesOpenMorphPanel);
+            writer.Write(DoesOpenSelfShadowPanel);
+
+            writer.Write(SelectedModelIndex);
+        }
     }
 }
