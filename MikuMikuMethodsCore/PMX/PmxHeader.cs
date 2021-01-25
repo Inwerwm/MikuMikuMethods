@@ -67,6 +67,16 @@ namespace MikuMikuMethods.PMX
         public byte[] ModelStructureInfo { get; }
 
         /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        public PmxHeader()
+        {
+            ModelStructureInfo = new byte[ModelSize];
+        }
+
+
+
+        /// <summary>
         /// データをバイナリから読み込む
         /// </summary>
         /// <param name="reader">読み込み対象のリーダー</param>
