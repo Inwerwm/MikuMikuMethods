@@ -79,14 +79,14 @@ namespace MikuMikuMethods.PMM
 
             CurrentViewAngle = reader.ReadSingle();
 
-            IsCameraMode = reader.ReadByte() == 1;
+            IsCameraMode = reader.ReadBoolean();
 
-            DoesOpenCameraPanel = reader.ReadByte() == 1;
-            DoesOpenLightPanel = reader.ReadByte() == 1;
-            DoesOpenAccessaryPanel = reader.ReadByte() == 1;
-            DoesOpenBonePanel = reader.ReadByte() == 1;
-            DoesOpenMorphPanel = reader.ReadByte() == 1;
-            DoesOpenSelfShadowPanel = reader.ReadByte() == 1;
+            DoesOpenCameraPanel = reader.ReadBoolean();
+            DoesOpenLightPanel = reader.ReadBoolean();
+            DoesOpenAccessaryPanel = reader.ReadBoolean();
+            DoesOpenBonePanel = reader.ReadBoolean();
+            DoesOpenMorphPanel = reader.ReadBoolean();
+            DoesOpenSelfShadowPanel = reader.ReadBoolean();
 
             SelectedModelIndex = reader.ReadByte();
         }
