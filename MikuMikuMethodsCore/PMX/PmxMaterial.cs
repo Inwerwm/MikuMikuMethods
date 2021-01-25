@@ -87,21 +87,23 @@ namespace MikuMikuMethods.PMX
         public PrimitiveType Primitive { get; set; }
 
         /// <summary>
-        /// トゥーンパス
+        /// テクスチャ
         /// </summary>
-        public string ToonPath { get; set; }
+        public PmxTexture Texture { get; set; }
+
         /// <summary>
-        /// スフィアマップパス
+        /// スフィアマップ
         /// </summary>
-        public string SpherePath { get; set; }
+        public PmxTexture SphereMap { get; set; }
         /// <summary>
         /// スフィア種別
         /// </summary>
         public SphereMode SphereMode { get; set; }
+
         /// <summary>
-        /// テクスチャパス
+        /// トゥーンマップ
         /// </summary>
-        public string TexturePath { get; set; }
+        public PmxTexture ToonMap { get; set; }
 
         /// <summary>
         /// データをバイナリから読み込む
