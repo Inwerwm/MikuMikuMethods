@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MikuMikuMethods.PMM.PolygonMovieMaker">
+    <Position X="3.75" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAABgAAAAAAAAAAgAAAEAAAA=</HashCode>
+      <FileName>PMM\PolygonMovieMaker.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="EditorState" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Models" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="MikuMikuMethods.PMM.PmmModel">
+    <Position X="6.75" Y="0.5" Width="2" />
+    <AssociationLine Name="BoneFrames" Type="MikuMikuMethods.PMM.PmmBoneFrame" FixedToPoint="true">
+      <Path>
+        <Point X="8.75" Y="3" />
+        <Point X="13" Y="3" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="MorphFrames" Type="MikuMikuMethods.PMM.PmmMorphFrame" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8.656" Y="4.363" />
+        <Point X="8.656" Y="6" />
+        <Point X="13" Y="6" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="InitialBoneFrames" Type="MikuMikuMethods.PMM.PmmBoneFrame" FixedToPoint="true">
+      <Path>
+        <Point X="8.75" Y="2.688" />
+        <Point X="13" Y="2.688" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="InitialMorphFrames" Type="MikuMikuMethods.PMM.PmmMorphFrame" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8.281" Y="4.363" />
+        <Point X="8.281" Y="6.25" />
+        <Point X="13" Y="6.25" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="RenderConfig" Type="MikuMikuMethods.PMM.RenderConfig" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.938" Y="4.363" />
+        <Point X="7.938" Y="7.686" />
+        <Point X="9.75" Y="7.686" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Uncomitted" Type="MikuMikuMethods.PMM.TemporaryEditState" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.562" Y="4.363" />
+        <Point X="7.562" Y="9.97" />
+        <Point X="9.75" Y="9.97" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAIgAAKAAQAAAAYAISEAAAQgIAAMQAAAAIEAAAEQAAA=</HashCode>
+      <FileName>PMM\PmmModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="FrameEditor" />
+      <Property Name="InitialConfigFrame" />
+      <Property Name="RenderConfig" />
+      <Property Name="Uncomitted" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="BoneFrames" />
+      <Property Name="ConfigFrames" />
+      <Property Name="MorphFrames" />
+      <Property Name="InitialBoneFrames" />
+      <Property Name="InitialMorphFrames" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="MikuMikuMethods.PMM.EditorState">
+    <Position X="0.5" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAQAACABAAACCABAAgAABAAAAQAAgAAAEAAgA=</HashCode>
+      <FileName>PMM\EditorState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikuMikuMethods.PMM.PmmBoneFrame">
+    <Position X="13" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgEAAAAAAAAgCAAAEAgAA=</HashCode>
+      <FileName>PMM\PmmBoneFrame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikuMikuMethods.PMM.PmmFrame">
+    <Position X="16" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>KAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAEAAAAAAAE=</HashCode>
+      <FileName>PMM\PmmFrame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikuMikuMethods.PMM.PmmConfigFrame">
+    <Position X="13" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAIAAAAAoEAAAA=</HashCode>
+      <FileName>PMM\PmmConfigFrame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikuMikuMethods.PMM.FrameEditorState">
+    <Position X="9.75" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAABAAAAAAAAAAgAAAAAAAAAgI=</HashCode>
+      <FileName>PMM\PmmModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikuMikuMethods.PMM.PmmMorphFrame">
+    <Position X="13" Y="5.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgACAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>PMM\PmmMorphFrame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikuMikuMethods.PMM.RenderConfig">
+    <Position X="9.75" Y="6.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAACAEAAAAAAAAAABAAAAEAAAAAAAAA=</HashCode>
+      <FileName>PMM\PmmModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikuMikuMethods.PMM.TemporaryEditState">
+    <Position X="9.75" Y="9" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAAAAAAAAAAAQACAAAIAAAAAIAAAAA=</HashCode>
+      <FileName>PMM\PmmModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Bones" />
+      <Property Name="ParentSettings" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="MikuMikuMethods.PMM.TemporaryBoneState">
+    <Position X="13" Y="9" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEIAAAAAAAgAAAAAAgAA=</HashCode>
+      <FileName>PMM\PmmModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MikuMikuMethods.PMM.TemporaryParentSetting">
+    <Position X="13" Y="11" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAgAAAAAAAAAAQAAAAAAAAACAAAAA=</HashCode>
+      <FileName>PMM\PmmModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Yu Gothic UI" Size="9" />
+</ClassDiagram>
