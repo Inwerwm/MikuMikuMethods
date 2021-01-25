@@ -10,7 +10,7 @@ namespace MikuMikuMethods.PMX
     /// <summary>
     /// モーフ
     /// </summary>
-    public class PmxMorph : IPmxData
+    public abstract class PmxMorph : IPmxData
     {
         /// <summary>
         /// データをバイナリから読み込む
