@@ -33,14 +33,14 @@ namespace MikuMikuMethods.MME
         /// <summary>
         /// 設定対象オブジェクトのリスト
         /// </summary>
-        public List<TargetObject> Objects { get; init; }
+        public List<EffectOnObject> Effects { get; init; }
 
-        private List<ObjectInfo> ObjectKeys { get; init; }
+        private List<ObjectInfo> Objects { get; init; }
 
-        private EffectSettings(List<ObjectInfo> keys)
+        private EffectSettings(List<ObjectInfo> objects)
         {
-            Objects = new();
-            ObjectKeys = keys;
+            Effects = new();
+            Objects = objects;
         }
 
         /// <summary>
@@ -95,37 +95,37 @@ namespace MikuMikuMethods.MME
                 var objKeyId = objectKey.Split('[');
                 objectKey = objKeyId[0];
 
-                TargetObject obj;
+                EffectOnObject eo;
 
                 // サブセット添字が存在しなければオブジェクトに対する設定とみなす
                 if (objKeyId.Length == 1)
                 {
-                    obj = Objects.FirstOrDefault(o => o.Key.Name == objectKey)
-                       ?? new(ObjectKeys.First(info => info.Name == objectKey));
+                    eo = Effects.FirstOrDefault(o => o.Object.Name == objectKey)
+                       ?? new(Objects.First(info => info.Name == objectKey));
                     if (isShowSetting)
-                        obj.Effect.Show = bool.Parse(data);
+                        eo.Effect.Show = bool.Parse(data);
                     else
-                        obj.Effect.Path = data;
+                        eo.Effect.Path = data;
 
-                    if (!Objects.Contains(obj))
-                        Objects.Add(obj);
+                    if (!Effects.Contains(eo))
+                        Effects.Add(eo);
                     continue;
                 }
 
                 // サブセットに対する設定
-                obj = Objects.First(o => o.Key.Name == objectKey);
+                eo = Effects.First(o => o.Object.Name == objectKey);
                 var subsetId = int.Parse(objKeyId[1].Replace("]", ""));
                 // 設定サブセット添字よりオブジェクトに設定されたエフェクトの数が少ない場合
                 // 設定サブセット添字の数まで中身を増やす
-                while(obj.Subsets.Count <= subsetId)
+                while(eo.Subsets.Count <= subsetId)
                 {
-                    obj.Subsets.Add(new FxInfo());
+                    eo.Subsets.Add(new FxInfo());
                 }
 
                 if (isShowSetting)
-                    obj.Subsets[subsetId].Show = bool.Parse(data);
+                    eo.Subsets[subsetId].Show = bool.Parse(data);
                 else
-                    obj.Subsets[subsetId].Path = data;
+                    eo.Subsets[subsetId].Path = data;
 
 
             }
@@ -145,19 +145,19 @@ namespace MikuMikuMethods.MME
             };
             writer.WriteLine($"{ownerString} = {Owner}");
 
-            foreach (var obj in Objects)
+            foreach (var obj in Effects)
             {
                 if (!string.IsNullOrEmpty(obj.Effect.Path))
-                    writer.WriteLine($"{obj.Key.Name} = {obj.Effect.Path}");
+                    writer.WriteLine($"{obj.Object.Name} = {obj.Effect.Path}");
                 if (obj.Effect.Show != null)
-                    writer.WriteLine($"{obj.Key.Name}.show = {obj.Effect.Show.Value.ToString().ToLower()}");
+                    writer.WriteLine($"{obj.Object.Name}.show = {obj.Effect.Show.Value.ToString().ToLower()}");
 
                 foreach (var sub in obj.Subsets.Select((effect,i)=> (effect, i)))
                 {
                     if (!string.IsNullOrEmpty(sub.effect.Path))
-                        writer.WriteLine($"{obj.Key.Name}[{sub.i}] = {sub.effect.Path}");
+                        writer.WriteLine($"{obj.Object.Name}[{sub.i}] = {sub.effect.Path}");
                     if (sub.effect.Show != null)
-                        writer.WriteLine($"{obj.Key.Name}[{sub.i}].show = {sub.effect.Show.Value.ToString().ToLower()}");
+                        writer.WriteLine($"{obj.Object.Name}[{sub.i}].show = {sub.effect.Show.Value.ToString().ToLower()}");
                 }
             }
         }

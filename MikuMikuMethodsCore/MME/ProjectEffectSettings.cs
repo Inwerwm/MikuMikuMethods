@@ -25,7 +25,7 @@ namespace MikuMikuMethods.MME
         /// <para>エフェクト設定のリスト</para>
         /// <para>MMEエフェクト割当画面の各タブに相当</para>
         /// </summary>
-        public List<EffectSettings> Effects { get; init; }
+        public List<EffectSettings> Settings { get; init; }
 
         /// <summary>
         /// コンストラクタ
@@ -34,7 +34,7 @@ namespace MikuMikuMethods.MME
         {
             Version = 3;
             Objects = new();
-            Effects = new();
+            Settings = new();
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace MikuMikuMethods.MME
                 // Effect
                 effect = !line.Contains("@") ? new(Objects, EffectCategory.Effect) : new(Objects, line.Split('@')[1].Replace("]", ""));
                 effect.Read(reader);
-                Effects.Add(effect);
+                Settings.Add(effect);
             }
         }
 
@@ -119,7 +119,7 @@ namespace MikuMikuMethods.MME
             writer.WriteLine("");
 
             // Effect
-            foreach (var effect in Effects)
+            foreach (var effect in Settings)
             {
                 string tabName = effect.Category switch
                 {
