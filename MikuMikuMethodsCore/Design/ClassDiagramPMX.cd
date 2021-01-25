@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MikuMikuMethods.PMX.PmxModel">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <AssociationLine Name="Morphs" Type="MikuMikuMethods.PMX.PmxMorph" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2" Y="1.562" />
+        <Point X="2.375" Y="1.562" />
+        <Point X="2.375" Y="11.875" />
+        <Point X="5.438" Y="11.875" />
+        <Point X="5.438" Y="12.25" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>BEAgAIAAAAAAAAAAAAAAAgggAAACAgBAEAAAAAEAAAA=</HashCode>
+      <FileName>PMX\PmxModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Header" />
+      <Property Name="ModelInfo" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Bodies" />
+      <Property Name="Bones" />
+      <Property Name="Faces" />
+      <Property Name="Joints" />
+      <Property Name="Materials" />
+      <Property Name="Morphs" />
+      <Property Name="Nodes" />
+      <Property Name="Vertices" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MikuMikuMethods.PMX.PmxBody">
+    <Position X="6.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>PMX\PmxBody.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MikuMikuMethods.PMX.PmxBone">
+    <Position X="4.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>PMX\PmxBone.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MikuMikuMethods.PMX.PmxFace">
+    <Position X="6.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>PMX\PmxFace.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MikuMikuMethods.PMX.PmxHeader">
+    <Position X="6.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>PMX\PmxHeader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MikuMikuMethods.PMX.PmxJoint">
+    <Position X="8.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>PMX\PmxJoint.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MikuMikuMethods.PMX.PmxMaterial">
+    <Position X="8.75" Y="4" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AEhAAIAAgAAAAAAAAiCCAAQgAAAgBAACAAAQAsFIICA=</HashCode>
+      <FileName>PMX\PmxMaterial.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Primitive" />
+      <Property Name="SphereMode" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Faces" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MikuMikuMethods.PMX.PmxModelInfo">
+    <Position X="4.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>PMX\PmxModelInfo.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MikuMikuMethods.PMX.PmxMorph">
+    <Position X="4.25" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>PMX\PmxMorph.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MikuMikuMethods.PMX.PmxNode">
+    <Position X="8.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>PMX\PmxNode.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="MikuMikuMethods.PMX.PmxVertex">
+    <Position X="4.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>PMX\PmxVertex.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Enum Name="MikuMikuMethods.PMX.PrimitiveType">
+    <Position X="11.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAEAAAAAABAAA=</HashCode>
+      <FileName>PMX\PmxMaterial.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MikuMikuMethods.PMX.SphereMode">
+    <Position X="11.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAMAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAEAAAA=</HashCode>
+      <FileName>PMX\PmxMaterial.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Yu Gothic UI" Size="9" />
+</ClassDiagram>
