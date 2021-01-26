@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace MikuMikuMethods.PMX
     /// <summary>
     /// モーフ内要素のインターフェイス
     /// </summary>
-    public interface IPmxMorphOffset : IPmxData
+    public interface IPmxOffset : IPmxData
     {
     }
 }
