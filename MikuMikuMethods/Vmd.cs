@@ -145,9 +145,16 @@ namespace MikuMikuMethods.Vmd
             try
             {
                 byte[] bChar = reader.ReadBytes(HEADER_LENGTH);
-                header = new string(Encoding.GetChars(bChar)).Trim('\0');
+                header = new string(Encoding.GetChars(bChar));
+                int eosPos = header.IndexOf('\0');
+                if (eosPos >= 0)
+                    header = header.Remove(eosPos);
+
                 bChar = reader.ReadBytes(MODEL_NAME_LENGTH);
-                ModelName = new string(Encoding.GetChars(bChar)).Trim('\0');
+                ModelName = new string(Encoding.GetChars(bChar));
+                eosPos = ModelName.IndexOf('\0');
+                if (eosPos >= 0)
+                    ModelName = ModelName.Remove(eosPos);
 
                 uint len = reader.ReadUInt32();
                 for (int i = 0; i < len; i++)
