@@ -87,12 +87,14 @@ namespace UnitTest
                 VocaloidMotionData vmd = new(reader);
                 vmd.Write(writer);
 
-                var curves = vmd.MotionFrames[0].InterpolationCurves;
+                var curves = vmd.CameraFrames[0].InterpolationCurves;
 
                 var xCurve = curves[InterpolationItem.XPosition];
                 var yCurve = curves[InterpolationItem.YPosition];
                 var zCurve = curves[InterpolationItem.ZPosition];
                 var rCurve = curves[InterpolationItem.Rotation];
+                var dCurve = curves[InterpolationItem.Distance];
+                var aCurve = curves[InterpolationItem.ViewAngle];
 
                 Assert.AreEqual(0x00, xCurve.EarlyControlePoint.X);
                 Assert.AreEqual(0x7F, xCurve.EarlyControlePoint.Y);
@@ -109,22 +111,29 @@ namespace UnitTest
                 Assert.AreEqual(0x7F, zCurve.LateControlePoint.X);
                 Assert.AreEqual(0x00, zCurve.LateControlePoint.Y);
 
-                Assert.AreEqual(0x7F, rCurve.EarlyControlePoint.X);
-                Assert.AreEqual(0x00, rCurve.EarlyControlePoint.Y);
-                Assert.AreEqual(0x7F, rCurve.LateControlePoint.X);
-                Assert.AreEqual(0x7F, rCurve.LateControlePoint.Y);
+                Assert.AreEqual(0x00, dCurve.EarlyControlePoint.X);
+                Assert.AreEqual(0x00, dCurve.EarlyControlePoint.Y);
+                Assert.AreEqual(0x7F, dCurve.LateControlePoint.X);
+                Assert.AreEqual(0x7F, dCurve.LateControlePoint.Y);
+
+                Assert.AreEqual(0x7F, aCurve.EarlyControlePoint.X);
+                Assert.AreEqual(0x7F, aCurve.EarlyControlePoint.Y);
+                Assert.AreEqual(0x00, aCurve.LateControlePoint.X);
+                Assert.AreEqual(0x00, aCurve.LateControlePoint.Y);
             }
 
             using (BinaryReader reader = new(new FileStream(@"TestData\cameraInterpolateTest_Result.vmd", FileMode.Open)))
             {
                 VocaloidMotionData vmd = new(reader);
 
-                var curves = vmd.MotionFrames[0].InterpolationCurves;
+                var curves = vmd.CameraFrames[0].InterpolationCurves;
 
                 var xCurve = curves[InterpolationItem.XPosition];
                 var yCurve = curves[InterpolationItem.YPosition];
                 var zCurve = curves[InterpolationItem.ZPosition];
                 var rCurve = curves[InterpolationItem.Rotation];
+                var dCurve = curves[InterpolationItem.Distance];
+                var aCurve = curves[InterpolationItem.ViewAngle];
 
                 Assert.AreEqual(0x00, xCurve.EarlyControlePoint.X);
                 Assert.AreEqual(0x7F, xCurve.EarlyControlePoint.Y);
@@ -145,6 +154,16 @@ namespace UnitTest
                 Assert.AreEqual(0x00, rCurve.EarlyControlePoint.Y);
                 Assert.AreEqual(0x7F, rCurve.LateControlePoint.X);
                 Assert.AreEqual(0x7F, rCurve.LateControlePoint.Y);
+
+                Assert.AreEqual(0x00, dCurve.EarlyControlePoint.X);
+                Assert.AreEqual(0x00, dCurve.EarlyControlePoint.Y);
+                Assert.AreEqual(0x7F, dCurve.LateControlePoint.X);
+                Assert.AreEqual(0x7F, dCurve.LateControlePoint.Y);
+
+                Assert.AreEqual(0x7F, aCurve.EarlyControlePoint.X);
+                Assert.AreEqual(0x7F, aCurve.EarlyControlePoint.Y);
+                Assert.AreEqual(0x00, aCurve.LateControlePoint.X);
+                Assert.AreEqual(0x00, aCurve.LateControlePoint.Y);
             }
         }
     }
