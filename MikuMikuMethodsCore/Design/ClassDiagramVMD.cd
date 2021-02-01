@@ -2,11 +2,17 @@
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="MikuMikuMethods.VMD.VocaloidMotionData">
     <Position X="0.5" Y="5.75" Width="2.75" />
+    <AssociationLine Name="Type" Type="MikuMikuMethods.VMD.VMDType" FixedFromPoint="true">
+      <Path>
+        <Point X="1.875" Y="5.75" />
+        <Point X="1.875" Y="3.796" />
+      </Path>
+    </AssociationLine>
     <AssociationLine Name="CameraFrames" Type="MikuMikuMethods.VMD.VocaloidCameraFrame" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="3.25" Y="7" />
-        <Point X="5.625" Y="7" />
-        <Point X="5.625" Y="6.358" />
+        <Point X="6.438" Y="7" />
+        <Point X="6.438" Y="6.165" />
       </Path>
     </AssociationLine>
     <AssociationLine Name="LightFrames" Type="MikuMikuMethods.VMD.VocaloidLightFrame" FixedFromPoint="true" FixedToPoint="true">
@@ -14,6 +20,20 @@
         <Point X="3.25" Y="7" />
         <Point X="9.125" Y="7" />
         <Point X="9.125" Y="5.204" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="ShadowFrames" Type="MikuMikuMethods.VMD.VocaloidShadowFrame" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3.25" Y="7" />
+        <Point X="12.312" Y="7" />
+        <Point X="12.312" Y="5.204" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="PropertyFrames" Type="MikuMikuMethods.VMD.VocaloidPropertyFrame" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3.25" Y="7.375" />
+        <Point X="12.312" Y="7.375" />
+        <Point X="12.312" Y="8.5" />
       </Path>
     </AssociationLine>
     <AssociationLine Name="MorphFrames" Type="MikuMikuMethods.VMD.VocaloidMorphFrame" FixedFromPoint="true" FixedToPoint="true">
@@ -30,28 +50,8 @@
         <Point X="9.125" Y="8.5" />
       </Path>
     </AssociationLine>
-    <AssociationLine Name="PropertyFrames" Type="MikuMikuMethods.VMD.VocaloidPropertyFrame" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="3.25" Y="7.375" />
-        <Point X="12.312" Y="7.375" />
-        <Point X="12.312" Y="8.5" />
-      </Path>
-    </AssociationLine>
-    <AssociationLine Name="ShadowFrames" Type="MikuMikuMethods.VMD.VocaloidShadowFrame" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="3.25" Y="7" />
-        <Point X="12.312" Y="7" />
-        <Point X="12.312" Y="5.204" />
-      </Path>
-    </AssociationLine>
-    <AssociationLine Name="Type" Type="MikuMikuMethods.VMD.VMDType" FixedFromPoint="true">
-      <Path>
-        <Point X="1.875" Y="5.75" />
-        <Point X="1.875" Y="3.796" />
-      </Path>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>DAAAAAIAAAAEAAAAAAAAAAAgABAAIAIAAQAAAQlAAAA=</HashCode>
+      <HashCode>DAAAAAIAAAAEAAAAAAAAAAAgABAAIAIAAQAAAQlAAAE=</HashCode>
       <FileName>VMD\VocaloidMotionData.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -60,16 +60,16 @@
     <ShowAsCollectionAssociation>
       <Property Name="CameraFrames" />
       <Property Name="LightFrames" />
+      <Property Name="ShadowFrames" />
+      <Property Name="PropertyFrames" />
       <Property Name="MorphFrames" />
       <Property Name="MotionFrames" />
-      <Property Name="PropertyFrames" />
-      <Property Name="ShadowFrames" />
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="MikuMikuMethods.VMD.VocaloidCameraFrame">
     <Position X="4.25" Y="2.75" Width="3" />
     <TypeIdentifier>
-      <HashCode>AAAAAQAAAAAAAMAgAAAAAACgAAAAAADAAAgAAAEEAAA=</HashCode>
+      <HashCode>AAAAAQAAAAAAAMAgAAAAAACgAAAAAADAAAAAAAEEAAA=</HashCode>
       <FileName>VMD\CameraTypeFrameClasses.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -92,11 +92,11 @@
     <InheritanceLine Type="MikuMikuMethods.VMD.VocaloidModelTypeFrame" FixedToPoint="true">
       <Path>
         <Point X="9.125" Y="12.25" />
-        <Point X="9.125" Y="11.531" />
+        <Point X="9.125" Y="11.338" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAMAgAAAAAAAgAAAAAACAAAgAAAEEAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAMAgAAAAAAAgAAAAAACAAAAAAAEEAAA=</HashCode>
       <FileName>VMD\ModelTypeFrameClasses.cs</FileName>
     </TypeIdentifier>
   </Class>
