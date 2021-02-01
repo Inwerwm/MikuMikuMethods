@@ -49,7 +49,14 @@ namespace MikuMikuMethods.VMD
         /// <para>各種フレームの結合体</para>
         /// </summary>
         public List<IVocaloidFrame> Frames =>
-            CameraFrames.Concat<IVocaloidFrame>(LightFrames).Concat(ShadowFrames).Concat(PropertyFrames).Concat(MorphFrames).Concat(MotionFrames).ToList();
+            CameraFrames.Cast<IVocaloidFrame>()
+            .Concat(LightFrames)
+            .Concat(ShadowFrames)
+            .Concat(PropertyFrames)
+            .Concat(MorphFrames)
+            .Concat(MotionFrames)
+            .ToList();
+
         /// <summary>
         /// カメラフレーム
         /// </summary>
