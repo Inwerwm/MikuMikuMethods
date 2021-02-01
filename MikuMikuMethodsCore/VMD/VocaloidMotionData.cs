@@ -28,7 +28,6 @@ namespace MikuMikuMethods.VMD
     /// </summary>
     public class VocaloidMotionData
     {
-
         /// <summary>
         /// ヘッダー
         /// </summary>
