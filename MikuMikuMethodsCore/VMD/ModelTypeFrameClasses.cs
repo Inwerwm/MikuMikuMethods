@@ -236,11 +236,11 @@ namespace MikuMikuMethods.VMD
             Rotation = reader.ReadQuaternion();
 
             //補間曲線を読み込み
-            var interpolationMatrix = reader.ReadBytes(64).Select((num, i) => (num, i));
-            InterpolationCurves[InterpolationItem.XPosition].FromBytes(interpolationMatrix.Where(elm => elm.i % 4 == 0).Select(elm => elm.num));
-            InterpolationCurves[InterpolationItem.YPosition].FromBytes(interpolationMatrix.Where(elm => elm.i % 4 == 1).Select(elm => elm.num));
-            InterpolationCurves[InterpolationItem.ZPosition].FromBytes(interpolationMatrix.Where(elm => elm.i % 4 == 2).Select(elm => elm.num));
-            InterpolationCurves[InterpolationItem.Rotation].FromBytes(interpolationMatrix.Where(elm => elm.i % 4 == 3).Select(elm => elm.num));
+            var interpolationNum = reader.ReadBytes(64).Select((num, i) => (num, i)).Where(elm => elm.i % 4 == 0);
+            InterpolationCurves[InterpolationItem.XPosition].FromBytes(interpolationNum.Skip(0).Select(elm => elm.num));
+            InterpolationCurves[InterpolationItem.YPosition].FromBytes(interpolationNum.Skip(4).Select(elm => elm.num));
+            InterpolationCurves[InterpolationItem.ZPosition].FromBytes(interpolationNum.Skip(8).Select(elm => elm.num));
+            InterpolationCurves[InterpolationItem.Rotation].FromBytes(interpolationNum.Skip(12).Select(elm => elm.num));
         }
 
         /// <summary>
