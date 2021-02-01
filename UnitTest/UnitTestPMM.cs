@@ -50,7 +50,7 @@ namespace UnitTest
             Assert.AreEqual(16, Rybecia.FrameEditor.RowCount);
 
             Assert.IsNull(Rybecia.InitialBoneFrames[0].Index);
-            Assert.AreEqual(1, Rybecia.InitialBoneFrames[0].Offset.Y);
+            Assert.AreEqual(0, Rybecia.InitialBoneFrames[0].Offset.Y);
         }
     }
 }
