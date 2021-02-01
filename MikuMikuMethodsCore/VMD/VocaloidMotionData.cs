@@ -45,6 +45,12 @@ namespace MikuMikuMethods.VMD
         public VMDType Type => ModelName == Specifications.CameraTypeVMDName ? VMDType.Camera : VMDType.Model;
 
         /// <summary>
+        /// <para>全てのフレーム</para>
+        /// <para>各種フレームの結合体</para>
+        /// </summary>
+        public List<IVocaloidFrame> Frames =>
+            CameraFrames.Concat<IVocaloidFrame>(LightFrames).Concat(ShadowFrames).Concat(PropertyFrames).Concat(MorphFrames).Concat(MotionFrames).ToList();
+        /// <summary>
         /// カメラフレーム
         /// </summary>
         public List<VocaloidCameraFrame> CameraFrames { get; init; }
