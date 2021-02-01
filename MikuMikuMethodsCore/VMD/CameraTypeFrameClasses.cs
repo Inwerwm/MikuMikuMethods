@@ -1,4 +1,5 @@
 ﻿using MikuMikuMethods.Extension;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -44,7 +45,7 @@ namespace MikuMikuMethods.VMD
         /// <summary>
         /// 補間曲線
         /// </summary>
-        public Dictionary<InterpolationItem, InterpolationCurve> InterpolationCurves { get; init; }
+        public Dictionary<InterpolationItem, InterpolationCurve> InterpolationCurves { get; private set; }
 
         /// <summary>
         /// コンストラクタ
@@ -65,7 +66,6 @@ namespace MikuMikuMethods.VMD
         public VocaloidCameraFrame(BinaryReader reader)
         {
             InterpolationCurves = new();
-            InitializeInterpolationCurves();
             Read(reader);
         }
 
@@ -79,31 +79,6 @@ namespace MikuMikuMethods.VMD
             InterpolationCurves.Add(InterpolationItem.ViewAngle, new());
         }
 
-        private byte[] CreateInterpolationMatrix()
-        {
-            // 補間曲線をbyte配列化
-            var xPositionPoints = InterpolationCurves[InterpolationItem.XPosition].ToBytes();
-            var yPositionPoints = InterpolationCurves[InterpolationItem.YPosition].ToBytes();
-            var zPositionPoints = InterpolationCurves[InterpolationItem.ZPosition].ToBytes();
-            var rotationPoints = InterpolationCurves[InterpolationItem.Rotation].ToBytes();
-            var distancePoints = InterpolationCurves[InterpolationItem.Distance].ToBytes();
-            var viewAnglePoints = InterpolationCurves[InterpolationItem.ViewAngle].ToBytes();
-
-            // 形式に合わせて1行に整列
-            var pointsRow = new byte[24];
-            for (int i = 0; i < 6; i++)
-            {
-                pointsRow[i * 6 + 0] = xPositionPoints[i];
-                pointsRow[i * 6 + 1] = yPositionPoints[i];
-                pointsRow[i * 6 + 2] = zPositionPoints[i];
-                pointsRow[i * 6 + 3] = rotationPoints[i];
-                pointsRow[i * 6 + 4] = distancePoints[i];
-                pointsRow[i * 6 + 5] = viewAnglePoints[i];
-            }
-
-            return pointsRow;
-        }
-
         /// <summary>
         /// VMD形式から読み込み
         /// </summary>
@@ -115,13 +90,8 @@ namespace MikuMikuMethods.VMD
             Rotation = reader.ReadVector3();
 
             //補間曲線を読み込み
-            var interpolationMatrix = reader.ReadBytes(24).Select((num, i) => (num, i));
-            InterpolationCurves[InterpolationItem.XPosition].FromBytes(interpolationMatrix.Where(elm => elm.i % 6 == 0).Select(elm => elm.num));
-            InterpolationCurves[InterpolationItem.YPosition].FromBytes(interpolationMatrix.Where(elm => elm.i % 6 == 1).Select(elm => elm.num));
-            InterpolationCurves[InterpolationItem.ZPosition].FromBytes(interpolationMatrix.Where(elm => elm.i % 6 == 2).Select(elm => elm.num));
-            InterpolationCurves[InterpolationItem.Rotation].FromBytes(interpolationMatrix.Where(elm => elm.i % 6 == 3).Select(elm => elm.num));
-            InterpolationCurves[InterpolationItem.Distance].FromBytes(interpolationMatrix.Where(elm => elm.i % 6 == 4).Select(elm => elm.num));
-            InterpolationCurves[InterpolationItem.ViewAngle].FromBytes(interpolationMatrix.Where(elm => elm.i % 6 == 5).Select(elm => elm.num));
+            var interpolationMatrix = reader.ReadBytes(24);
+            InterpolationCurves = InterpolationCurve.CreateByVMDFormat(interpolationMatrix, FrameType);
 
             ViewAngle = reader.ReadUInt32();
             IsPerspectiveOff = reader.ReadBoolean();
@@ -136,7 +106,7 @@ namespace MikuMikuMethods.VMD
             writer.Write(Distance);
             writer.Write(Position);
             writer.Write(Rotation);
-            writer.Write(CreateInterpolationMatrix());
+            writer.Write(InterpolationCurve.CreateVMDFormatBytes(InterpolationCurves, FrameType));
             writer.Write(ViewAngle);
             writer.Write(IsPerspectiveOff);
         }
