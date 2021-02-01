@@ -14,7 +14,7 @@ namespace UnitTest
     public class UnitTestVMD
     {
         [TestMethod]
-        public void Test_VocaloidMotionData()
+        public void Test_MotionInterpolation()
         {
             using (BinaryReader reader = new(new FileStream(@"TestData\interpolateTest.vmd", FileMode.Open)))
             using (BinaryWriter writer = new(new FileStream(@"TestData\interpolateTest_Result.vmd", FileMode.OpenOrCreate)))
