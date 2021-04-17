@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Numerics;
 
@@ -70,7 +69,7 @@ namespace MikuMikuMethods.Extension
         /// <param name="encoding">エンコード形式</param>
         /// <param name="filler">終端文字</param>
         /// <returns>読み込んだ文字列</returns>
-        public static string ReadString(this BinaryReader reader,int length, System.Text.Encoding encoding, char? filler = null)
+        public static string ReadString(this BinaryReader reader, int length, System.Text.Encoding encoding, char? filler = null)
         {
             var readBytes = reader.ReadBytes(length);
             string str = encoding.GetString(readBytes);
@@ -82,6 +81,26 @@ namespace MikuMikuMethods.Extension
                 < 0 => str,
                 int i => str.Remove(i)
             };
+        }
+
+        /// <summary>
+        /// <para>[0, 1]の浮動小数点数で表された色情報をバイナリから読み込む</para>
+        /// <para>{A, R, G, B}の順で読み込む</para>
+        /// </summary>
+        /// <returns>読み込んだ浮動小数点数表現色</returns>
+        public static ColorF ReadSingleARGB(this BinaryReader reader)
+        {
+            return ColorF.FromARGB(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+        }
+
+        /// <summary>
+        /// <para>[0, 1]の浮動小数点数で表された色情報をバイナリから読み込む</para>
+        /// <para>{R, G, B}の順で読み込む</para>
+        /// </summary>
+        /// <returns>読み込んだ浮動小数点数表現色</returns>
+        public static ColorF ReadSingleRGB(this BinaryReader reader)
+        {
+            return ColorF.FromARGB(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
         }
     }
 
