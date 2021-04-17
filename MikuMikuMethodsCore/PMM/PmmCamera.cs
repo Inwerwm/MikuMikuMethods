@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MikuMikuMethods.Extension;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -52,7 +53,16 @@ namespace MikuMikuMethods.PMM
         /// <param name="reader">読み込むファイル</param>
         public void Read(BinaryReader reader)
         {
-            throw new NotImplementedException();
+            InitialFrame = new(reader, null);
+
+            var cameraCount = reader.ReadInt32();
+            for (int i = 0; i < cameraCount; i++)
+                Frames.Add(new(reader, i));
+
+            Uncomitted.EyePosition = reader.ReadVector3();
+            Uncomitted.TargetPosition = reader.ReadVector3();
+            Uncomitted.Rotation = reader.ReadVector3();
+            Uncomitted.EnablePerspective = reader.ReadBoolean();
         }
         /// <summary>
         /// ファイルに書込
