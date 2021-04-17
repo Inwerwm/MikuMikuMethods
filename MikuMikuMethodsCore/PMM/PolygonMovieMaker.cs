@@ -34,6 +34,11 @@ namespace MikuMikuMethods.PMM
         public List<PmmModel> Models { get; init; }
 
         /// <summary>
+        /// カメラ
+        /// </summary>
+        public PmmCamera Camera { get; private set; }
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
         public PolygonMovieMaker()
@@ -55,6 +60,8 @@ namespace MikuMikuMethods.PMM
             var modelCount = reader.ReadByte();
             for (int i = 0; i < modelCount; i++)
                 Models.Add(new PmmModel(reader));
+
+            Camera = new(reader);
         }
 
         /// <summary>
@@ -70,6 +77,8 @@ namespace MikuMikuMethods.PMM
             writer.Write(Models.Count);
             foreach (var model in Models)
                 model.Write(writer);
+
+            Camera.Write(writer);
         }
     }
 }
