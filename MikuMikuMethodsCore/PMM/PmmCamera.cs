@@ -48,7 +48,7 @@ namespace MikuMikuMethods.PMM
         }
 
         /// <summary>
-        /// バイナリデータから読み込み
+        /// バイナリデータから読込
         /// </summary>
         /// <param name="reader">読み込むファイル</param>
         public void Read(BinaryReader reader)
