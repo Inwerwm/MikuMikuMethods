@@ -55,6 +55,17 @@ namespace MikuMikuMethods.PMM
         }
 
         /// <summary>
+        /// バイナリ読込コンストラクタ
+        /// </summary>
+        /// <param name="reader">PMMファイル</param>
+        public PolygonMovieMaker(BinaryReader reader)
+        {
+            EditorState = new();
+            Models = new();
+            Read(reader);
+        }
+
+        /// <summary>
         /// バイナリデータから読込
         /// </summary>
         /// <param name="reader">読み込むファイル ShiftJISエンコードで読み込むこと</param>
