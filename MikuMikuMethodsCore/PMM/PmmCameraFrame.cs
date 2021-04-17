@@ -66,6 +66,16 @@ namespace MikuMikuMethods.PMM
         /// </summary>
         /// <param name="reader">読み込むファイル</param>
         /// <param name="index">フレームID</param>
+        public PmmCameraFrame(BinaryReader reader, int? index) : this()
+        {
+            Read(reader, index);
+        }
+
+        /// <summary>
+        /// バイナリデータから読み込み
+        /// </summary>
+        /// <param name="reader">読み込むファイル</param>
+        /// <param name="index">フレームID</param>
         public void Read(BinaryReader reader, int? index)
         {
             throw new NotImplementedException();
