@@ -340,37 +340,24 @@ namespace MikuMikuMethods.PMM
             writer.Write(FrameEditor.LastFrame);
 
             foreach (var item in InitialBoneFrames)
-            {
                 item.Write(writer);
-            }
 
             writer.Write(BoneFrames.Count);
             foreach (var item in BoneFrames)
-            {
-                writer.Write(item.Index.Value);
                 item.Write(writer);
-            }
 
             foreach (var item in InitialMorphFrames)
-            {
                 item.Write(writer);
-            }
 
             writer.Write(MorphFrames.Count);
             foreach (var item in MorphFrames)
-            {
-                writer.Write(item.Index.Value);
                 item.Write(writer);
-            }
 
             InitialConfigFrame.Write(writer);
 
             writer.Write(ConfigFrames.Count);
             foreach (var item in ConfigFrames)
-            {
-                writer.Write(item.Index.Value);
                 item.Write(writer);
-            }
 
             foreach (var item in Uncomitted.Bones)
             {
@@ -382,14 +369,10 @@ namespace MikuMikuMethods.PMM
             }
 
             foreach (var item in Uncomitted.MorphWeights)
-            {
                 writer.Write(item);
-            }
 
             foreach (var item in Uncomitted.IKEnable)
-            {
                 writer.Write(item);
-            }
 
             foreach (var item in Uncomitted.ParentSettings)
             {

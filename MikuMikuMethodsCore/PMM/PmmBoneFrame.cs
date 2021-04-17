@@ -79,6 +79,9 @@ namespace MikuMikuMethods.PMM
         /// <param name="writer">出力対象バイナリファイル</param>
         public void Write(BinaryWriter writer)
         {
+            if (Index.HasValue)
+                writer.Write(Index.Value);
+
             writer.Write(Frame);
             writer.Write(PreviousFrameIndex);
             writer.Write(NextFrameIndex);
