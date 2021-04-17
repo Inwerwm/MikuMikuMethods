@@ -30,7 +30,7 @@ namespace MikuMikuMethods
         /// </summary>
         public float B { get => b; set => b = value switch { < 0 => 0, > 1 => 1, _ => value }; }
         /// <summary>
-        /// 透明度
+        /// 不透明度
         /// </summary>
         public float A { get => a; set => a = value switch { < 0 => 0, > 1 => 1, _ => value }; }
 
