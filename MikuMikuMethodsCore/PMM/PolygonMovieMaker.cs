@@ -69,9 +69,7 @@ namespace MikuMikuMethods.PMM
 
             writer.Write(Models.Count);
             foreach (var model in Models)
-            {
                 model.Write(writer);
-            }
         }
     }
 }
