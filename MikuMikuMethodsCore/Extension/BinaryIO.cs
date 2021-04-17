@@ -13,37 +13,29 @@ namespace MikuMikuMethods.Extension
         /// Reads a 2 dimension vector including two 4-byte floating point values from the current stream and advances the current position of the stream by 8 bytes.
         /// </summary>
         /// <returns>A 2 dimension vector including two 4-byte floating point values read from the current stream.</returns>
-        public static Vector2 ReadVector2(this BinaryReader reader)
-        {
-            return new Vector2(reader.ReadSingle(), reader.ReadSingle());
-        }
+        public static Vector2 ReadVector2(this BinaryReader reader) =>
+            new Vector2(reader.ReadSingle(), reader.ReadSingle());
 
         /// <summary>
         /// Reads a 3 dimension vector including three 4-byte floating point values from the current stream and advances the current position of the stream by 12 bytes.
         /// </summary>
         /// <returns>A 3 dimension vector including three 4-byte floating point values read from the current stream.</returns>
-        public static Vector3 ReadVector3(this BinaryReader reader)
-        {
-            return new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
-        }
+        public static Vector3 ReadVector3(this BinaryReader reader) =>
+            new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
 
         /// <summary>
         /// Reads a 4 dimension vector including four 4-byte floating point values from the current stream and advances the current position of the stream by 16 bytes.
         /// </summary>
         /// <returns>A 4 dimension vector including four 4-byte floating point values read from the current stream.</returns>
-        public static Vector4 ReadVector4(this BinaryReader reader)
-        {
-            return new Vector4(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
-        }
+        public static Vector4 ReadVector4(this BinaryReader reader) =>
+            new Vector4(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
 
         /// <summary>
         /// Reads a quaternion including four 4-byte floating point values from the current stream and advances the current position of the stream by 16 bytes.
         /// </summary>
         /// <returns>A quaternion including four 4-byte floating point values read from the current stream.</returns>
-        public static Quaternion ReadQuaternion(this BinaryReader reader)
-        {
-            return new Quaternion(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
-        }
+        public static Quaternion ReadQuaternion(this BinaryReader reader) =>
+            new Quaternion(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
 
         /// <summary>
         /// 指定文字数の文字列をバイナリから読み込む
@@ -71,20 +63,16 @@ namespace MikuMikuMethods.Extension
         /// <para>{A, R, G, B}の順で読み込む</para>
         /// </summary>
         /// <returns>読み込んだ浮動小数点数表現色</returns>
-        public static ColorF ReadSingleARGB(this BinaryReader reader)
-        {
-            return ColorF.FromARGB(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
-        }
+        public static ColorF ReadSingleARGB(this BinaryReader reader) =>
+            ColorF.FromARGB(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
 
         /// <summary>
         /// <para>[0, 1]の浮動小数点数で表された色情報をバイナリから読み込む</para>
         /// <para>{R, G, B}の順で読み込む</para>
         /// </summary>
         /// <returns>読み込んだ浮動小数点数表現色</returns>
-        public static ColorF ReadSingleRGB(this BinaryReader reader)
-        {
-            return ColorF.FromARGB(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
-        }
+        public static ColorF ReadSingleRGB(this BinaryReader reader) =>
+            ColorF.FromARGB(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
     }
 
     /// <summary>
