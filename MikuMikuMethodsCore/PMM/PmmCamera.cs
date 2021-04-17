@@ -70,7 +70,16 @@ namespace MikuMikuMethods.PMM
         /// <param name="writer">出力対象バイナリファイル</param>
         public void Write(BinaryWriter writer)
         {
-            throw new NotImplementedException();
+            InitialFrame.Write(writer);
+
+            writer.Write(Frames.Count);
+            foreach (var frame in Frames)
+                frame.Write(writer);
+
+            writer.Write(Uncomitted.EyePosition);
+            writer.Write(Uncomitted.TargetPosition);
+            writer.Write(Uncomitted.Rotation);
+            writer.Write(Uncomitted.EnablePerspective);
         }
     }
 
