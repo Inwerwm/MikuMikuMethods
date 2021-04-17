@@ -130,6 +130,15 @@ namespace MikuMikuMethods.PMM
         }
 
         /// <summary>
+        /// バイナリデータからモデル情報を読み込み
+        /// </summary>
+        /// <param name="reader">読み込むファイル</param>
+        public PmmModel(BinaryReader reader) : this()
+        {
+            Read(reader);
+        }
+
+        /// <summary>
         /// バイナリデータから読み込み
         /// </summary>
         /// <param name="reader">読み込むファイル</param>
