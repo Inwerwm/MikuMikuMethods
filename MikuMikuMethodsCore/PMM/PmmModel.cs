@@ -43,7 +43,7 @@ namespace MikuMikuMethods.PMM
         /// <summary>
         /// 未確定編集状態
         /// </summary>
-        public TemporaryEditState Uncomitted { get; init; }
+        public TemporaryModelEditState Uncomitted { get; init; }
 
         /// <summary>
         /// ボーン名
@@ -465,9 +465,9 @@ namespace MikuMikuMethods.PMM
     }
 
     /// <summary>
-    /// 未確定の編集状態
+    /// 未確定のモデル編集状態
     /// </summary>
-    public class TemporaryEditState
+    public class TemporaryModelEditState
     {
         /// <summary>
         /// 表示
@@ -497,7 +497,7 @@ namespace MikuMikuMethods.PMM
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public TemporaryEditState()
+        public TemporaryModelEditState()
         {
             Bones = new();
             MorphWeights = new();
