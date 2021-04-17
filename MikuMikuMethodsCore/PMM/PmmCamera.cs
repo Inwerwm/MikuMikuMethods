@@ -91,9 +91,6 @@ namespace MikuMikuMethods.PMM
         /// </summary>
         public TemporaryCameraEditState()
         {
-            EyePosition = new();
-            TargetPosition = new();
-            Rotation = new();
             EnablePerspective = true;
         }
     }
