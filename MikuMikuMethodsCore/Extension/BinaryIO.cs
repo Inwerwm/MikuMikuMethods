@@ -142,5 +142,20 @@ namespace MikuMikuMethods.Extension
 
             writer.Write(bytesToWrite);
         }
+
+        /// <summary>
+        /// 浮動小数点色をバイナリに書き込み
+        /// </summary>
+        /// <param name="value">書き込む色</param>
+        /// <param name="isWriteAlpha">アルファ値の情報を書き込むか</param>
+        public static void Write(this BinaryWriter writer, ColorF value, bool isWriteAlpha)
+        {
+            if (isWriteAlpha)
+                writer.Write(value.A);
+
+            writer.Write(value.R);
+            writer.Write(value.G);
+            writer.Write(value.B);
+        }
     }
 }
