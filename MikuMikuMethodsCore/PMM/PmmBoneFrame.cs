@@ -23,7 +23,7 @@ namespace MikuMikuMethods.PMM
         /// <summary>
         /// 回転量
         /// </summary>
-        public Quaternion Rotate { get; set; }
+        public Quaternion Rotation { get; set; }
 
         /// <summary>
         /// 補間曲線
@@ -68,7 +68,7 @@ namespace MikuMikuMethods.PMM
             InterpolationCurces[InterpolationItem.Rotation].FromBytes(reader.ReadBytes(4));
 
             Offset = reader.ReadVector3();
-            Rotate = reader.ReadQuaternion();
+            Rotation = reader.ReadQuaternion();
             IsSelected = reader.ReadBoolean();
             EnablePhysic = !reader.ReadBoolean();
         }
@@ -89,7 +89,7 @@ namespace MikuMikuMethods.PMM
             writer.Write(InterpolationCurces[InterpolationItem.Rotation].ToBytes());
 
             writer.Write(Offset);
-            writer.Write(Rotate);
+            writer.Write(Rotation);
             writer.Write(IsSelected);
             writer.Write(!EnablePhysic);
         }
