@@ -39,12 +39,19 @@ namespace MikuMikuMethods.PMM
         public PmmCamera Camera { get; private set; }
 
         /// <summary>
+        /// 照明
+        /// </summary>
+        public PmmLight Light { get; private set; }
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
         public PolygonMovieMaker()
         {
             EditorState = new();
             Models = new();
+            Camera = new();
+            Light = new();
         }
 
         /// <summary>
@@ -62,6 +69,7 @@ namespace MikuMikuMethods.PMM
                 Models.Add(new(reader));
 
             Camera = new(reader);
+            Light = new(reader);
         }
 
         /// <summary>
@@ -79,6 +87,7 @@ namespace MikuMikuMethods.PMM
                 model.Write(writer);
 
             Camera.Write(writer);
+            Light.Write(writer);
         }
     }
 }
