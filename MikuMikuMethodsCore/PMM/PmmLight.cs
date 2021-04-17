@@ -48,7 +48,13 @@ namespace MikuMikuMethods.PMM
         /// <param name="reader">読み込むファイル</param>
         public void Read(BinaryReader reader)
         {
-            throw new NotImplementedException();
+            InitialFrame = new(reader, null);
+
+            var lightCount = reader.ReadInt32();
+            for (int i = 0; i < lightCount; i++)
+                Frames.Add(new(reader, i));
+
+            Uncomitted = new(reader, null);
         }
 
         /// <summary>
@@ -57,7 +63,12 @@ namespace MikuMikuMethods.PMM
         /// <param name="writer">出力対象バイナリファイル</param>
         public void Write(BinaryWriter writer)
         {
-            throw new NotImplementedException();
+            InitialFrame.Write(writer);
+
+            foreach (var frame in Frames)
+                frame.Write(writer);
+
+            Uncomitted.Write(writer);
         }
     }
 }
