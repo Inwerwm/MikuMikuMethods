@@ -97,6 +97,7 @@ namespace MikuMikuMethods
         public static ColorF FromARGB(float red, float green, float blue)
         {
             ColorF resultColor = new();
+            resultColor.A = 1;
             resultColor.R = red;
             resultColor.G = green;
             resultColor.B = blue;
