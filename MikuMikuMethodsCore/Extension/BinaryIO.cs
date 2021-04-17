@@ -15,10 +15,7 @@ namespace MikuMikuMethods.Extension
         /// <returns>A 2 dimension vector including two 4-byte floating point values read from the current stream.</returns>
         public static Vector2 ReadVector2(this BinaryReader reader)
         {
-            Vector2 vec = new Vector2();
-            vec.X = reader.ReadSingle();
-            vec.Y = reader.ReadSingle();
-            return vec;
+            return new Vector2(reader.ReadSingle(), reader.ReadSingle());
         }
 
         /// <summary>
@@ -27,11 +24,7 @@ namespace MikuMikuMethods.Extension
         /// <returns>A 3 dimension vector including three 4-byte floating point values read from the current stream.</returns>
         public static Vector3 ReadVector3(this BinaryReader reader)
         {
-            Vector3 vec = new Vector3();
-            vec.X = reader.ReadSingle();
-            vec.Y = reader.ReadSingle();
-            vec.Z = reader.ReadSingle();
-            return vec;
+            return new Vector3(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
         }
 
         /// <summary>
@@ -40,12 +33,7 @@ namespace MikuMikuMethods.Extension
         /// <returns>A 4 dimension vector including four 4-byte floating point values read from the current stream.</returns>
         public static Vector4 ReadVector4(this BinaryReader reader)
         {
-            Vector4 vec = new Vector4();
-            vec.X = reader.ReadSingle();
-            vec.Y = reader.ReadSingle();
-            vec.Z = reader.ReadSingle();
-            vec.W = reader.ReadSingle();
-            return vec;
+            return new Vector4(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
         }
 
         /// <summary>
@@ -54,12 +42,7 @@ namespace MikuMikuMethods.Extension
         /// <returns>A quaternion including four 4-byte floating point values read from the current stream.</returns>
         public static Quaternion ReadQuaternion(this BinaryReader reader)
         {
-            Quaternion vec = new Quaternion();
-            vec.X = reader.ReadSingle();
-            vec.Y = reader.ReadSingle();
-            vec.Z = reader.ReadSingle();
-            vec.W = reader.ReadSingle();
-            return vec;
+            return new Quaternion(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
         }
 
         /// <summary>
