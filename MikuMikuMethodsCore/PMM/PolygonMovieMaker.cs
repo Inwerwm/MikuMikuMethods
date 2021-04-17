@@ -54,11 +54,7 @@ namespace MikuMikuMethods.PMM
 
             var modelCount = reader.ReadByte();
             for (int i = 0; i < modelCount; i++)
-            {
-                PmmModel model = new();
-                model.Read(reader);
-                Models.Add(model);
-            }
+                Models.Add(new PmmModel(reader));
         }
 
         /// <summary>
