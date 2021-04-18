@@ -186,33 +186,32 @@ namespace MikuMikuMethods.PMM
             writer.Write((int)SelectedBoneOperation);
         }
 
+        /// <summary>
+        /// MMD上でのボーン操作
+        /// </summary>
+        public enum BoneOperation : int
+        {
+            /// <summary>
+            /// 選択
+            /// </summary>
+            Select,
+            /// <summary>
+            /// 矩形選択
+            /// </summary>
+            RectangleSelect,
+            /// <summary>
+            /// 移動
+            /// </summary>
+            Move,
+            /// <summary>
+            /// 回転
+            /// </summary>
+            Rotate,
+            /// <summary>
+            /// 無選択
+            /// </summary>
+            None
+        }
         #endregion
-    }
-
-    /// <summary>
-    /// MMD上でのボーン操作
-    /// </summary>
-    public enum BoneOperation : int
-    {
-        /// <summary>
-        /// 選択
-        /// </summary>
-        Select,
-        /// <summary>
-        /// 矩形選択
-        /// </summary>
-        RectangleSelect,
-        /// <summary>
-        /// 移動
-        /// </summary>
-        Move,
-        /// <summary>
-        /// 回転
-        /// </summary>
-        Rotate,
-        /// <summary>
-        /// 無選択
-        /// </summary>
-        None
     }
 }
