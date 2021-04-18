@@ -22,7 +22,7 @@ namespace MikuMikuMethods.PMM
         /// <summary>
         /// 編集画面状態情報
         /// </summary>
-        public EditorState EditorState { get; init; }
+        public PmmEditorState EditorState { get; init; }
 
         /// <summary>
         /// モデル

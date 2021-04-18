@@ -5,7 +5,7 @@ namespace MikuMikuMethods.PMM
     /// <summary>
     /// MMD編集画面状態情報
     /// </summary>
-    public class EditorState
+    public class PmmEditorState
     {
         #region ViewState
         /// <summary>
