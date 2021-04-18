@@ -1,10 +1,6 @@
-﻿using System;
+﻿using MikuMikuMethods.Extension;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MikuMikuMethods.Extension;
 
 namespace MikuMikuMethods.PMM
 {
@@ -22,7 +18,7 @@ namespace MikuMikuMethods.PMM
         /// PMMファイルのバージョン情報
         /// </summary>
         public string Version { get; private set; }
-        
+
         /// <summary>
         /// 編集画面状態情報
         /// </summary>
@@ -42,6 +38,15 @@ namespace MikuMikuMethods.PMM
         /// 照明
         /// </summary>
         public PmmLight Light { get; private set; }
+
+        /// <summary>
+        /// エディタ上のアクセサリ情報
+        /// </summary>
+        public (byte SelectedIndex, int VerticalScroll) AccessoryInfo { get; set; }
+        /// <summary>
+        /// アクセサリ
+        /// </summary>
+        public List<PmmAccessory> Accessories { get; init; }
 
         /// <summary>
         /// コンストラクタ
@@ -71,7 +76,7 @@ namespace MikuMikuMethods.PMM
         /// <param name="reader">読み込むファイル ShiftJISエンコードで読み込むこと</param>
         public void Read(BinaryReader reader)
         {
-            Version = reader.ReadString(30, Encoding.ShiftJIS, '\0');
+            Version = reader.ReadString(30, Encoding.ShiftJIS);
 
             EditorState.Read(reader);
 
@@ -81,6 +86,15 @@ namespace MikuMikuMethods.PMM
 
             Camera = new(reader);
             Light = new(reader);
+
+            AccessoryInfo = (reader.ReadByte(), reader.ReadInt32());
+            var accessoryCount = reader.ReadInt32();
+            // アクセサリ名一覧
+            // 名前は各アクセサリ領域にも書いてあり、齟齬が出ることは基本無いらしいので読み飛ばす
+            _ = reader.ReadBytes(accessoryCount * 100);
+            for (int i = 0; i < accessoryCount; i++)
+                Accessories.Add(new(reader));
+
         }
 
         /// <summary>
@@ -89,7 +103,7 @@ namespace MikuMikuMethods.PMM
         /// <param name="writer">出力対象バイナリファイル</param>
         public void Write(BinaryWriter writer)
         {
-            writer.Write(Version, 30, Encoding.ShiftJIS, '\0');
+            writer.Write(Version, 30, Encoding.ShiftJIS);
 
             EditorState.Write(writer);
 
@@ -99,6 +113,15 @@ namespace MikuMikuMethods.PMM
 
             Camera.Write(writer);
             Light.Write(writer);
+
+            writer.Write(AccessoryInfo.SelectedIndex);
+            writer.Write(AccessoryInfo.VerticalScroll);
+            writer.Write(Accessories.Count);
+            foreach (var acs in Accessories)
+                writer.Write(acs.Name, 100, Encoding.ShiftJIS);
+            foreach (var acs in Accessories)
+                acs.Write(writer);
+
         }
     }
 }
