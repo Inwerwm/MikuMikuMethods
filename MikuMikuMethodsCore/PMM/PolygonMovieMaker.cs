@@ -23,6 +23,10 @@ namespace MikuMikuMethods.PMM
         /// 編集画面状態情報
         /// </summary>
         public PmmEditorState EditorState { get; init; }
+        /// <summary>
+        /// 再生設定
+        /// </summary>
+        public PmmPlayConfig PlayConfig { get; init; }
 
         /// <summary>
         /// モデル
@@ -50,6 +54,8 @@ namespace MikuMikuMethods.PMM
         public PolygonMovieMaker()
         {
             EditorState = new();
+            PlayConfig = new();
+
             Models = new();
             Camera = new();
             Light = new();
@@ -92,6 +98,7 @@ namespace MikuMikuMethods.PMM
                 Accessories.Add(new(reader));
 
             EditorState.ReadFrameState(reader);
+            PlayConfig.Read(reader);
         }
 
         /// <summary>
@@ -119,6 +126,7 @@ namespace MikuMikuMethods.PMM
                 acs.Write(writer);
 
             EditorState.WriteFrameState(writer);
+            PlayConfig.Write(writer);
         }
     }
 }
