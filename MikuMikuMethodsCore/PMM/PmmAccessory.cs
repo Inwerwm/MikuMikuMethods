@@ -59,6 +59,15 @@ namespace MikuMikuMethods.PMM
         /// バイナリデータから読み込み
         /// </summary>
         /// <param name="reader">読み込むファイル</param>
+        public PmmAccessory(BinaryReader reader) : this()
+        {
+            Read(reader);
+        }
+
+        /// <summary>
+        /// バイナリデータから読み込み
+        /// </summary>
+        /// <param name="reader">読み込むファイル</param>
         public void Read(BinaryReader reader)
         {
             Index = reader.ReadByte();
