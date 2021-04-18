@@ -27,6 +27,10 @@ namespace MikuMikuMethods.PMM
         /// 再生設定
         /// </summary>
         public PmmPlayConfig PlayConfig { get; init; }
+        /// <summary>
+        /// メディア情報
+        /// </summary>
+        public PmmMediaConfig MediaConfig { get; init; }
 
         /// <summary>
         /// モデル
@@ -55,6 +59,7 @@ namespace MikuMikuMethods.PMM
         {
             EditorState = new();
             PlayConfig = new();
+            MediaConfig = new();
 
             Models = new();
             Camera = new();
@@ -99,6 +104,7 @@ namespace MikuMikuMethods.PMM
 
             EditorState.ReadFrameState(reader);
             PlayConfig.Read(reader);
+            MediaConfig.Read(reader);
         }
 
         /// <summary>
@@ -127,6 +133,7 @@ namespace MikuMikuMethods.PMM
 
             EditorState.WriteFrameState(writer);
             PlayConfig.Write(writer);
+            MediaConfig.Write(writer);
         }
     }
 }
