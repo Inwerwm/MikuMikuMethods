@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace MikuMikuMethods.PMM
 {
@@ -12,6 +7,7 @@ namespace MikuMikuMethods.PMM
     /// </summary>
     public class EditorState
     {
+        #region ViewState
         /// <summary>
         /// 出力解像度幅
         /// </summary>
@@ -67,10 +63,10 @@ namespace MikuMikuMethods.PMM
         public byte SelectedModelIndex { get; set; }
 
         /// <summary>
-        /// ファイルから読み込み
+        /// 描画情報関連をファイルから読み込み
         /// </summary>
         /// <param name="reader">バイナリファイル</param>
-        public void Read(BinaryReader reader)
+        public void ReadViewState(BinaryReader reader)
         {
             OutputWidth = reader.ReadInt32();
             OutputHeight = reader.ReadInt32();
@@ -92,10 +88,10 @@ namespace MikuMikuMethods.PMM
         }
 
         /// <summary>
-        /// ファイルに書込
+        /// 描画情報関連をファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>
-        public void Write(BinaryWriter writer)
+        public void WriteViewState(BinaryWriter writer)
         {
             writer.Write(OutputWidth);
             writer.Write(OutputHeight);
@@ -115,5 +111,37 @@ namespace MikuMikuMethods.PMM
 
             writer.Write(SelectedModelIndex);
         }
+        #endregion
+
+        #region AccessoryState
+        /// <summary>
+        /// 選択中のアクセサリインデックス
+        /// </summary>
+        public byte SelectedAccessoryIndex { get; set; }
+        /// <summary>
+        /// アクセサリの垂直スクロール量
+        /// </summary>
+        public int VerticalScrollOfAccessoryRow { get; set; }
+
+        /// <summary>
+        /// アクセサリ情報関連をファイルから読み込み
+        /// </summary>
+        /// <param name="reader">バイナリファイル</param>
+        public void ReadAccessoryState(BinaryReader reader)
+        {
+            SelectedAccessoryIndex = reader.ReadByte();
+            VerticalScrollOfAccessoryRow = reader.ReadInt32();
+        }
+
+        /// <summary>
+        /// アクセサリ情報関連をファイルに書込
+        /// </summary>
+        /// <param name="writer">出力対象バイナリファイル</param>
+        public void WriteAccessoryState(BinaryWriter writer)
+        {
+            writer.Write(SelectedAccessoryIndex);
+            writer.Write(VerticalScrollOfAccessoryRow);
+        }
+        #endregion
     }
 }

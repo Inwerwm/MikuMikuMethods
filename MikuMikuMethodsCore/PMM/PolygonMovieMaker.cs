@@ -40,10 +40,6 @@ namespace MikuMikuMethods.PMM
         public PmmLight Light { get; private set; }
 
         /// <summary>
-        /// エディタ上のアクセサリ情報
-        /// </summary>
-        public (byte SelectedIndex, int VerticalScroll) AccessoryInfo { get; set; }
-        /// <summary>
         /// アクセサリ
         /// </summary>
         public List<PmmAccessory> Accessories { get; init; }
@@ -78,7 +74,7 @@ namespace MikuMikuMethods.PMM
         {
             Version = reader.ReadString(30, Encoding.ShiftJIS);
 
-            EditorState.Read(reader);
+            EditorState.ReadViewState(reader);
 
             var modelCount = reader.ReadByte();
             for (int i = 0; i < modelCount; i++)
@@ -87,7 +83,7 @@ namespace MikuMikuMethods.PMM
             Camera = new(reader);
             Light = new(reader);
 
-            AccessoryInfo = (reader.ReadByte(), reader.ReadInt32());
+            EditorState.ReadAccessoryState(reader);
             var accessoryCount = reader.ReadInt32();
             // アクセサリ名一覧
             // 名前は各アクセサリ領域にも書いてあり、齟齬が出ることは基本無いらしいので読み飛ばす
@@ -105,7 +101,7 @@ namespace MikuMikuMethods.PMM
         {
             writer.Write(Version, 30, Encoding.ShiftJIS);
 
-            EditorState.Write(writer);
+            EditorState.WriteViewState(writer);
 
             writer.Write(Models.Count);
             foreach (var model in Models)
@@ -114,8 +110,7 @@ namespace MikuMikuMethods.PMM
             Camera.Write(writer);
             Light.Write(writer);
 
-            writer.Write(AccessoryInfo.SelectedIndex);
-            writer.Write(AccessoryInfo.VerticalScroll);
+            EditorState.WriteAccessoryState(writer);
             writer.Write(Accessories.Count);
             foreach (var acs in Accessories)
                 writer.Write(acs.Name, 100, Encoding.ShiftJIS);
