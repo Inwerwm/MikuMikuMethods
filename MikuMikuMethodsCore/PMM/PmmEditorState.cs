@@ -143,5 +143,76 @@ namespace MikuMikuMethods.PMM
             writer.Write(VerticalScrollOfAccessoryRow);
         }
         #endregion
+
+        #region FrameState
+        /// <summary>
+        /// 現在のフレーム位置
+        /// </summary>
+        public int CurrentFrame { get; set; }
+        /// <summary>
+        /// キーフレームエディタの水平スクロール量
+        /// </summary>
+        public int HorizontalScroll { get; set; }
+        /// <summary>
+        /// キーフレームエディタの横スクロール範囲
+        /// </summary>
+        public int HorizontalScrollLength { get; set; }
+        /// <summary>
+        /// 選択中のボーン操作方法
+        /// </summary>
+        public BoneOperation SelectedBoneOperation { get; set; }
+
+        /// <summary>
+        /// アクセサリ情報関連をファイルから読み込み
+        /// </summary>
+        /// <param name="reader">バイナリファイル</param>
+        public void ReadFrameState(BinaryReader reader)
+        {
+            CurrentFrame = reader.ReadInt32();
+            HorizontalScroll = reader.ReadInt32();
+            HorizontalScrollLength = reader.ReadInt32();
+            SelectedBoneOperation = (BoneOperation)reader.ReadInt32();
+        }
+
+        /// <summary>
+        /// アクセサリ情報関連をファイルに書込
+        /// </summary>
+        /// <param name="writer">出力対象バイナリファイル</param>
+        public void WriteFrameState(BinaryWriter writer)
+        {
+            writer.Write(CurrentFrame);
+            writer.Write(HorizontalScroll);
+            writer.Write(HorizontalScrollLength);
+            writer.Write((int)SelectedBoneOperation);
+        }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// MMD上でのボーン操作
+    /// </summary>
+    public enum BoneOperation : int
+    {
+        /// <summary>
+        /// 選択
+        /// </summary>
+        Select,
+        /// <summary>
+        /// 矩形選択
+        /// </summary>
+        RectangleSelect,
+        /// <summary>
+        /// 移動
+        /// </summary>
+        Move,
+        /// <summary>
+        /// 回転
+        /// </summary>
+        Rotate,
+        /// <summary>
+        /// 無選択
+        /// </summary>
+        None
     }
 }
