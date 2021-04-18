@@ -26,7 +26,7 @@ namespace MikuMikuMethods.PMM
         public string NameEn { get; set; }
 
         /// <summary>
-        /// モデルのパス
+        /// ファイルパス
         /// </summary>
         public string Path { get; set; }
 
