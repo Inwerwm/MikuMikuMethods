@@ -286,7 +286,7 @@ namespace MikuMikuMethods.PMM
 
             writer.Write(Name);
             writer.Write(NameEn);
-            writer.Write(Path);
+            writer.Write(Path, 256, Encoding.ShiftJIS, '\0');
 
             // キーフレームエディタの行数
             // 3([root]、表示・IK・外観、表情) + 表示枠の数
