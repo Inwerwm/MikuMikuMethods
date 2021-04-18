@@ -28,9 +28,13 @@ namespace MikuMikuMethods.PMM
         /// </summary>
         public PmmPlayConfig PlayConfig { get; init; }
         /// <summary>
-        /// メディア情報
+        /// メディア設定
         /// </summary>
         public PmmMediaConfig MediaConfig { get; init; }
+        /// <summary>
+        /// 描画設定
+        /// </summary>
+        public PmmDrawConfig DrawConfig { get; init; }
 
         /// <summary>
         /// モデル
@@ -60,6 +64,7 @@ namespace MikuMikuMethods.PMM
             EditorState = new();
             PlayConfig = new();
             MediaConfig = new();
+            DrawConfig = new();
 
             Models = new();
             Camera = new();
@@ -70,10 +75,8 @@ namespace MikuMikuMethods.PMM
         /// バイナリ読込コンストラクタ
         /// </summary>
         /// <param name="reader">PMMファイル</param>
-        public PolygonMovieMaker(BinaryReader reader)
+        public PolygonMovieMaker(BinaryReader reader) : this()
         {
-            EditorState = new();
-            Models = new();
             Read(reader);
         }
 
@@ -105,6 +108,7 @@ namespace MikuMikuMethods.PMM
             EditorState.ReadFrameState(reader);
             PlayConfig.Read(reader);
             MediaConfig.Read(reader);
+            DrawConfig.Read(reader);
         }
 
         /// <summary>
@@ -134,6 +138,7 @@ namespace MikuMikuMethods.PMM
             EditorState.WriteFrameState(writer);
             PlayConfig.Write(writer);
             MediaConfig.Write(writer);
+            DrawConfig.Write(writer);
         }
     }
 }
