@@ -91,6 +91,7 @@ namespace MikuMikuMethods.PMM
             for (int i = 0; i < accessoryCount; i++)
                 Accessories.Add(new(reader));
 
+            EditorState.ReadFrameState(reader);
         }
 
         /// <summary>
@@ -117,6 +118,7 @@ namespace MikuMikuMethods.PMM
             foreach (var acs in Accessories)
                 acs.Write(writer);
 
+            EditorState.WriteFrameState(writer);
         }
     }
 }
