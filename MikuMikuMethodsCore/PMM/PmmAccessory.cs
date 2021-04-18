@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MikuMikuMethods.Extension;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -60,7 +61,22 @@ namespace MikuMikuMethods.PMM
         /// <param name="reader">読み込むファイル</param>
         public void Read(BinaryReader reader)
         {
+            Index = reader.ReadByte();
 
+            Name = reader.ReadString(100, Encoding.ShiftJIS, '\0');
+            Path = reader.ReadString(256, Encoding.ShiftJIS, '\0');
+
+            RenderOrder = reader.ReadByte();
+
+            InitialFrame = new(reader, null);
+
+            var accessoryCount = reader.ReadInt32();
+            for (int i = 0; i < accessoryCount; i++)
+                Frames.Add(new(reader, i));
+
+            Uncomitted = new(reader, null);
+
+            EnableAlphaBlend = reader.ReadBoolean();
         }
 
         /// <summary>
@@ -69,7 +85,21 @@ namespace MikuMikuMethods.PMM
         /// <param name="writer">出力対象バイナリファイル</param>
         public void Write(BinaryWriter writer)
         {
+            writer.Write(Index);
 
+            writer.Write(Name, 100, Encoding.ShiftJIS, '\0');
+            writer.Write(Path, 256, Encoding.ShiftJIS, '\0');
+
+            writer.Write(RenderOrder);
+
+            InitialFrame.Write(writer);
+
+            foreach (var frame in Frames)
+                frame.Write(writer);
+
+            Uncomitted.Write(writer);
+
+            writer.Write(EnableAlphaBlend);
         }
     }
 }
