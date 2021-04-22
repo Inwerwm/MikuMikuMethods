@@ -40,21 +40,23 @@ namespace MikuMikuMethods.PMM
         /// モデル
         /// </summary>
         public List<PmmModel> Models { get; init; }
+        /// <summary>
+        /// アクセサリ
+        /// </summary>
+        public List<PmmAccessory> Accessories { get; init; }
 
         /// <summary>
         /// カメラ
         /// </summary>
         public PmmCamera Camera { get; private set; }
-
         /// <summary>
         /// 照明
         /// </summary>
         public PmmLight Light { get; private set; }
-
         /// <summary>
-        /// アクセサリ
+        /// 重力
         /// </summary>
-        public List<PmmAccessory> Accessories { get; init; }
+        public PmmGravity Gravity { get; private set; }
 
         /// <summary>
         /// コンストラクタ
@@ -67,8 +69,11 @@ namespace MikuMikuMethods.PMM
             DrawConfig = new();
 
             Models = new();
+            Accessories = new();
+
             Camera = new();
             Light = new();
+            Gravity = new();
         }
 
         /// <summary>
@@ -109,6 +114,7 @@ namespace MikuMikuMethods.PMM
             PlayConfig.Read(reader);
             MediaConfig.Read(reader);
             DrawConfig.Read(reader);
+            Gravity.Read(reader);
         }
 
         /// <summary>
@@ -139,6 +145,7 @@ namespace MikuMikuMethods.PMM
             PlayConfig.Write(writer);
             MediaConfig.Write(writer);
             DrawConfig.Write(writer);
+            Gravity.Write(writer);
         }
     }
 }
