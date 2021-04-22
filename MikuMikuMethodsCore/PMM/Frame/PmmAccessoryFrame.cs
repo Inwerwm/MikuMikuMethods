@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MikuMikuMethods.Extension;
 
-namespace MikuMikuMethods.PMM
+namespace MikuMikuMethods.PMM.Frame
 {
     /// <summary>
     /// アクセサリフレーム情報
@@ -55,7 +55,7 @@ namespace MikuMikuMethods.PMM
         /// </summary>
         /// <param name="reader">読み込むファイル</param>
         /// <param name="index">フレームID</param>
-        public PmmAccessoryFrame(BinaryReader reader, int? index):this()
+        public PmmAccessoryFrame(BinaryReader reader, int? index) : this()
         {
             Read(reader, index);
         }
@@ -74,16 +74,16 @@ namespace MikuMikuMethods.PMM
             NextFrameIndex = reader.ReadInt32();
 
             OpacityAndVisible = reader.ReadByte();
-            
+
             ParentModelIndex = reader.ReadInt32();
             ParentBoneIndex = reader.ReadInt32();
-            
+
             Position = reader.ReadVector3();
             Rotation = reader.ReadVector3();
             Scale = reader.ReadSingle();
 
             EnableShadow = reader.ReadBoolean();
-            
+
             IsSelected = reader.ReadBoolean();
         }
 

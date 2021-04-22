@@ -3,7 +3,7 @@ using System.IO;
 using System.Numerics;
 using MikuMikuMethods.Extension;
 
-namespace MikuMikuMethods.PMM
+namespace MikuMikuMethods.PMM.Frame
 {
     /// <summary>
     /// 照明フレーム情報
