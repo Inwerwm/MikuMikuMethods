@@ -104,6 +104,7 @@ namespace MikuMikuMethods.PMM
 
             InitialFrame.Write(writer);
 
+            writer.Write(Frames.Count);
             foreach (var frame in Frames)
                 frame.Write(writer);
 
