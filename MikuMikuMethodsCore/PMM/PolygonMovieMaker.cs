@@ -57,6 +57,10 @@ namespace MikuMikuMethods.PMM
         /// 重力
         /// </summary>
         public PmmGravity Gravity { get; private set; }
+        /// <summary>
+        /// セルフ影
+        /// </summary>
+        public PmmSelfShadow SelfShadow { get; private set; }
 
         /// <summary>
         /// コンストラクタ
@@ -74,6 +78,7 @@ namespace MikuMikuMethods.PMM
             Camera = new();
             Light = new();
             Gravity = new();
+            SelfShadow = new();
         }
 
         /// <summary>
@@ -115,6 +120,7 @@ namespace MikuMikuMethods.PMM
             MediaConfig.Read(reader);
             DrawConfig.Read(reader);
             Gravity.Read(reader);
+            SelfShadow.Read(reader);
         }
 
         /// <summary>
@@ -146,6 +152,7 @@ namespace MikuMikuMethods.PMM
             MediaConfig.Write(writer);
             DrawConfig.Write(writer);
             Gravity.Write(writer);
+            SelfShadow.Write(writer);
         }
     }
 }
