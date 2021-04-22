@@ -82,7 +82,7 @@ namespace MikuMikuMethods.PMM
 
             var accessoryCount = reader.ReadInt32();
             for (int i = 0; i < accessoryCount; i++)
-                Frames.Add(new(reader, i));
+                Frames.Add(new(reader, reader.ReadInt32()));
 
             Uncomitted = new(reader, null);
 

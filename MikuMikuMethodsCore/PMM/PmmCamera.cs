@@ -58,7 +58,7 @@ namespace MikuMikuMethods.PMM
 
             var cameraCount = reader.ReadInt32();
             for (int i = 0; i < cameraCount; i++)
-                Frames.Add(new(reader, i));
+                Frames.Add(new(reader, reader.ReadInt32()));
 
             Uncomitted.EyePosition = reader.ReadVector3();
             Uncomitted.TargetPosition = reader.ReadVector3();
