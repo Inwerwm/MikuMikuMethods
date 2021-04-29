@@ -55,7 +55,7 @@ namespace MikuMikuMethods.PMM
             for (int i = 0; i < lightCount; i++)
                 Frames.Add(new(reader, reader.ReadInt32()));
 
-            Uncomitted = new(reader, null);
+            Uncomitted = new(reader, null);// ここでバグ発生
         }
 
         /// <summary>
