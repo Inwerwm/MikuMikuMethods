@@ -12,45 +12,39 @@ namespace UnitTest
     [TestClass]
     public class UnitTestPMM
     {
-        PolygonMovieMaker pmm = new();
-
-        private void LoadTestData()
-        {
-            using (FileStream stream = new("TestData/testProject.pmm", FileMode.Open))
-            using (BinaryReader reader = new(stream, MikuMikuMethods.Encoding.ShiftJIS))
-            {
-                pmm.Read(reader);
-            }
-        }
+        PolygonMovieMaker testPmm;
 
         public UnitTestPMM()
         {
-            LoadTestData();
+            testPmm = new();
+
         }
 
         [TestMethod]
-        public void Test_PolygonMovieMaker()
+        public void Test_IO()
         {
-            Assert.AreEqual("Polygon Movie maker 0002", pmm.Version);
-            Assert.IsTrue(pmm.EditorState.IsCameraMode);
-            Assert.AreEqual(1, pmm.Models.Count);
-        }
+            using (FileStream stream = new("TestData/testProject.pmm", FileMode.Open))
+            using (BinaryReader reader = new(stream, MikuMikuMethods.Encoding.ShiftJIS))
+            using (FileStream outStream = new("TestData/output.pmm", FileMode.Create))
+            using (BinaryWriter writer = new(stream, MikuMikuMethods.Encoding.ShiftJIS))
+            {
+                testPmm.Read(reader);
+                testPmm.Write(writer);
 
-        [TestMethod]
-        public void Test_PmmModel()
-        {
-            PmmModel Rybecia = pmm.Models[0];
-            Assert.AreEqual("ルベシア・シェリングヴェーヌ", Rybecia.Name);
-            Assert.AreEqual("Rybecia Sherringvaine", Rybecia.NameEn);
-            Assert.AreEqual(@"C:\MMD\_モデル(人物)\_quappa-el\EL-D2M-Rybecia_Shader\ルベシア.pmx", Rybecia.Path);
+                // 比較のため巻き戻し
+                reader.BaseStream.Position = 0;
+                writer.BaseStream.Position = 0;
 
-            Assert.AreEqual(1, Rybecia.RenderConfig.RenderOrder);
-            Assert.AreEqual(1, Rybecia.RenderConfig.CalculateOrder);
+                using(BinaryReader outReader = new(outStream, MikuMikuMethods.Encoding.ShiftJIS))
+                {
+                    Assert.AreEqual(reader.BaseStream.Length, outReader.BaseStream.Length);
 
-            Assert.AreEqual(16, Rybecia.FrameEditor.RowCount);
-
-            Assert.IsNull(Rybecia.InitialBoneFrames[0].Index);
-            Assert.AreEqual(0, Rybecia.InitialBoneFrames[0].Offset.Y);
+                    for (int i = 0; reader.BaseStream.Position < reader.BaseStream.Length; i++)
+                    {
+                        Assert.AreEqual(reader.ReadByte(), outReader.ReadByte());
+                    }
+                }
+            }
         }
     }
 }
