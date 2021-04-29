@@ -47,12 +47,13 @@ namespace UnitTest
                         DataContractJsonSerializer serializer = new(typeof(PolygonMovieMaker));
                         serializer.WriteObject(inJson, testPmm);
                         serializer.WriteObject(outJson, outPmm);
-                    }
 
-                        //Assert.AreEqual(reader.BaseStream.Length, outReader.BaseStream.Length, "入力ファイルと出力ファイルの長さが異なっている。");
-                        for (int i = 0; reader.BaseStream.Position < reader.BaseStream.Length; i++)
-                    {
-                        Assert.AreEqual(reader.ReadByte(), outReader.ReadByte(), $"{i} byte目で齟齬が発生");
+                        Assert.AreEqual(inJson.Length, outJson.Length);
+                        using(StreamReader inJsonReader = new(inJson))
+                        using(StreamReader outJsonReader = new(outJson))
+                        {
+                            Assert.AreEqual(inJsonReader.ReadToEnd(), outJsonReader.ReadToEnd());
+                        }
                     }
                 }
             }
