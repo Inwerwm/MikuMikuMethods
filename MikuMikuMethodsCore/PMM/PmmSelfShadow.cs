@@ -29,7 +29,7 @@ namespace MikuMikuMethods.PMM
         /// <summary>
         /// セルフ影のキーフレーム
         /// </summary>
-        public List<PmmSelfShadowFrame> Frames { get; set; }
+        public List<PmmSelfShadowFrame> Frames { get; init; } = new();
 
         /// <summary>
         /// バイナリデータから読み込み
