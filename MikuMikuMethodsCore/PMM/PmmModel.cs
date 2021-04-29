@@ -14,7 +14,7 @@ namespace MikuMikuMethods.PMM
         /// <summary>
         /// モデル管理番号
         /// </summary>
-        public int Index { get; set; }
+        public byte Index { get; set; }
 
         /// <summary>
         /// モデル名
@@ -291,7 +291,7 @@ namespace MikuMikuMethods.PMM
 
             // キーフレームエディタの行数
             // 3([root]、表示・IK・外観、表情) + 表示枠の数
-            writer.Write(3 + NodeCount);
+            writer.Write((byte)(3 + NodeCount));
 
             // ボーン数
             writer.Write(BoneNames.Count);

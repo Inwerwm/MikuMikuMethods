@@ -179,9 +179,9 @@ namespace MikuMikuMethods.PMM
         /// <param name="writer">出力対象バイナリファイル</param>
         public void WriteColorConfig(BinaryWriter writer)
         {
-            writer.Write(EdgeColor.R);
-            writer.Write(EdgeColor.G);
-            writer.Write(EdgeColor.B);
+            writer.Write((int)EdgeColor.R);
+            writer.Write((int)EdgeColor.G);
+            writer.Write((int)EdgeColor.B);
 
             writer.Write(IsBackgroundBlack);
         }
