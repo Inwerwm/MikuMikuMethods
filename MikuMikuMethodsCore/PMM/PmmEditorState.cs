@@ -164,7 +164,7 @@ namespace MikuMikuMethods.PMM
         public BoneOperation SelectedBoneOperation { get; set; }
 
         /// <summary>
-        /// アクセサリ情報関連をファイルから読み込み
+        /// フレーム編集関連情報をファイルから読み込み
         /// </summary>
         /// <param name="reader">バイナリファイル</param>
         public void ReadFrameState(BinaryReader reader)
@@ -176,7 +176,7 @@ namespace MikuMikuMethods.PMM
         }
 
         /// <summary>
-        /// アクセサリ情報関連をファイルに書込
+        /// フレーム編集関連情報をファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>
         public void WriteFrameState(BinaryWriter writer)
