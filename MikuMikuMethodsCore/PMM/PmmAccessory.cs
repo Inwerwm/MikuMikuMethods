@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -46,7 +47,7 @@ namespace MikuMikuMethods.PMM
         /// <summary>
         /// 未確定編集状態
         /// </summary>
-        public PmmAccessoryFrame Uncomitted { get; set; }
+        public TemporaryAccessoryEditState Uncomitted { get; set; }
 
         /// <summary>
         /// コンストラクタ
@@ -84,7 +85,7 @@ namespace MikuMikuMethods.PMM
             for (int i = 0; i < accessoryCount; i++)
                 Frames.Add(new(reader, reader.ReadInt32()));
 
-            Uncomitted = new(reader, null);
+            Uncomitted = new(reader);
 
             EnableAlphaBlend = reader.ReadBoolean();
         }
@@ -111,6 +112,93 @@ namespace MikuMikuMethods.PMM
             Uncomitted.Write(writer);
 
             writer.Write(EnableAlphaBlend);
+        }
+    }
+
+    /// <summary>
+    /// 未確定のアクセサリ編集状態
+    /// </summary>
+    public class TemporaryAccessoryEditState
+    {
+        /// <summary>
+        /// <para>上位7bit : 半透明度</para>
+        /// <para>最下位1bit : 表示/非表示</para>
+        /// </summary>
+        public byte OpacityAndVisible { get; set; }
+        /// <summary>
+        /// <para>親モデルのインデックス</para>
+        /// <para>-1 なら親なし</para>
+        /// </summary>
+        public int ParentModelIndex { get; set; }
+        /// <summary>
+        /// 親ボーンのインデックス
+        /// </summary>
+        public int ParentBoneIndex { get; set; }
+        /// <summary>
+        /// 位置
+        /// </summary>
+        public Vector3 Position { get; set; }
+        /// <summary>
+        /// 回転
+        /// </summary>
+        public Vector3 Rotation { get; set; }
+        /// <summary>
+        /// 拡縮
+        /// </summary>
+        public float Scale { get; set; }
+        /// <summary>
+        /// 影のOn/Off
+        /// </summary>
+        public bool EnableShadow { get; set; }
+
+        /// <summary>
+        /// 何もしないコンストラクタ
+        /// </summary>
+        public TemporaryAccessoryEditState(){}
+
+        /// <summary>
+        /// バイナリデータから読み込み
+        /// </summary>
+        /// <param name="reader">読み込むファイル</param>
+        public TemporaryAccessoryEditState(BinaryReader reader) : this()
+        {
+            Read(reader);
+        }
+
+        /// <summary>
+        /// バイナリデータから読み込み
+        /// </summary>
+        /// <param name="reader">読み込むファイル</param>
+        public void Read(BinaryReader reader)
+        {
+            OpacityAndVisible = reader.ReadByte();
+
+            ParentModelIndex = reader.ReadInt32();
+            ParentBoneIndex = reader.ReadInt32();
+
+            Position = reader.ReadVector3();
+            Rotation = reader.ReadVector3();
+            Scale = reader.ReadSingle();
+
+            EnableShadow = reader.ReadBoolean();
+        }
+
+        /// <summary>
+        /// ファイルに書込
+        /// </summary>
+        /// <param name="writer">出力対象バイナリファイル</param>
+        public void Write(BinaryWriter writer)
+        {
+            writer.Write(OpacityAndVisible);
+
+            writer.Write(ParentModelIndex);
+            writer.Write(ParentBoneIndex);
+
+            writer.Write(Position);
+            writer.Write(Rotation);
+            writer.Write(Scale);
+
+            writer.Write(EnableShadow);
         }
     }
 }
