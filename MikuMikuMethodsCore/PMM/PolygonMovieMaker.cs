@@ -63,6 +63,11 @@ namespace MikuMikuMethods.PMM
         public PmmSelfShadow SelfShadow { get; private set; }
 
         /// <summary>
+        /// 謎の値
+        /// </summary>
+        public PmmUnknown Unknown { get; set; }
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
         public PolygonMovieMaker()
@@ -123,6 +128,30 @@ namespace MikuMikuMethods.PMM
             SelfShadow.Read(reader);
             DrawConfig.ReadColorConfig(reader);
             Camera.ReadUncomittedFollowingState(reader);
+            //謎の行列は読み飛ばす
+            _ = reader.ReadBytes(64);
+            EditorState.ReadViewFollowing(reader);
+            Unknown = new PmmUnknown { TruthValue = reader.ReadBoolean() };
+            DrawConfig.ReadGroundPhysics(reader);
+            EditorState.ReadFrameLocation(reader);
+
+            // バージョンによってはここで終わりの可能性がある
+            if (reader.BaseStream.Position >= reader.BaseStream.Length)
+                return;
+
+            EditorState.ExistRangeSelectionTargetSection = reader.ReadBoolean();
+            // 普通はないが範囲選択対象セクションが無いとされていれば終了
+            if (!EditorState.ExistRangeSelectionTargetSection)
+                return;
+
+            // モデル設定値が欠落している場合もあるっぽい？ので確認処理を挟む
+            for (byte i = 0; i < Models.Count; i++)
+            {
+                if (reader.BaseStream.Position >= reader.BaseStream.Length)
+                    break;
+
+                EditorState.RangeSelectionTargetIndices.Add((reader.ReadByte(), reader.ReadInt32()));
+            }
         }
 
         /// <summary>
@@ -157,6 +186,22 @@ namespace MikuMikuMethods.PMM
             SelfShadow.Write(writer);
             DrawConfig.WriteColorConfig(writer);
             Camera.WriteUncomittedFollowingState(writer);
+            writer.Write(PmmUnknown.Matrix);
+            EditorState.WriteViewFollowing(writer);
+            writer.Write(Unknown.TruthValue);
+            DrawConfig.WriteGroundPhysics(writer);
+            EditorState.WriteFrameLocation(writer);
+
+            // 範囲選択対象セクションがないバージョンなら終了
+            if (!EditorState.ExistRangeSelectionTargetSection)
+                return;
+
+            writer.Write(EditorState.ExistRangeSelectionTargetSection);
+            foreach (var index in EditorState.RangeSelectionTargetIndices)
+            {
+                writer.Write(index.Model);
+                writer.Write(index.Target);
+            }
         }
     }
 }

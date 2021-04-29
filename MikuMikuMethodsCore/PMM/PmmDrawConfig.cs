@@ -53,17 +53,6 @@ namespace MikuMikuMethods.PMM
         /// </summary>
         public PhysicsMode PhysicsSetting { get; set; }
 
-        #region ColorConfig
-        /// <summary>
-        /// エッジの色
-        /// </summary>
-        public Color EdgeColor { get; set; }
-        /// <summary>
-        /// 背景色は黒か
-        /// </summary>
-        public bool IsBackgroundBlack { get; set; }
-        #endregion
-
         /// <summary>
         /// コンストラクタ
         /// </summary>
@@ -119,29 +108,6 @@ namespace MikuMikuMethods.PMM
         }
 
         /// <summary>
-        /// 色関連設定を読み込む
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        public void ReadColorConfig(BinaryReader reader)
-        {
-            EdgeColor = Color.FromArgb(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32());
-            IsBackgroundBlack = reader.ReadBoolean();
-        }
-
-        /// <summary>
-        /// 色関連設定を書き込む
-        /// </summary>
-        /// <param name="writer">出力対象バイナリファイル</param>
-        public void WriteColorConfig(BinaryWriter writer)
-        {
-            writer.Write(EdgeColor.R);
-            writer.Write(EdgeColor.G);
-            writer.Write(EdgeColor.B);
-
-            writer.Write(IsBackgroundBlack);
-        }
-
-        /// <summary>
         /// スクリーン用キャプチャモード
         /// </summary>
         public enum ScreenCaptureMode : int
@@ -186,5 +152,63 @@ namespace MikuMikuMethods.PMM
             /// </summary>
             Trace
         }
+
+        #region ColorConfig
+        /// <summary>
+        /// エッジの色
+        /// </summary>
+        public Color EdgeColor { get; set; }
+        /// <summary>
+        /// 背景色は黒か
+        /// </summary>
+        public bool IsBackgroundBlack { get; set; }
+
+        /// <summary>
+        /// 色関連設定を読み込む
+        /// </summary>
+        /// <param name="reader">読み込むファイル</param>
+        public void ReadColorConfig(BinaryReader reader)
+        {
+            EdgeColor = Color.FromArgb(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32());
+            IsBackgroundBlack = reader.ReadBoolean();
+        }
+
+        /// <summary>
+        /// 色関連設定を書き込む
+        /// </summary>
+        /// <param name="writer">出力対象バイナリファイル</param>
+        public void WriteColorConfig(BinaryWriter writer)
+        {
+            writer.Write(EdgeColor.R);
+            writer.Write(EdgeColor.G);
+            writer.Write(EdgeColor.B);
+
+            writer.Write(IsBackgroundBlack);
+        }
+        #endregion
+
+        #region GroundPhysics
+        /// <summary>
+        /// 物理床のOn/Off
+        /// </summary>
+        public bool EnableGroundPhysics { get; set; }
+        /// <summary>
+        /// 物理床設定を読み込む
+        /// </summary>
+        /// <param name="reader">読み込むファイル</param>
+        public void ReadGroundPhysics(BinaryReader reader)
+        {
+            EnableGroundPhysics = reader.ReadBoolean();
+        }
+
+        /// <summary>
+        /// 物理床設定を書き込む
+        /// </summary>
+        /// <param name="writer">出力対象バイナリファイル</param>
+        public void WriteGroundPhysics(BinaryWriter writer)
+        {
+            writer.Write(EnableGroundPhysics);
+        }
+        #endregion
     }
 }

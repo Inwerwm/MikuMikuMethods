@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace MikuMikuMethods.PMM
 {
@@ -212,6 +213,67 @@ namespace MikuMikuMethods.PMM
             /// </summary>
             None
         }
+        #endregion
+
+        #region ViewFollowing
+        /// <summary>
+        /// 再生時の視点追従のOn/Off
+        /// </summary>
+        public bool IsViewFollowCamera { get; set; }
+
+        /// <summary>
+        /// 再生時の視点追従をファイルから読み込み
+        /// </summary>
+        /// <param name="reader">バイナリファイル</param>
+        public void ReadViewFollowing(BinaryReader reader)
+        {
+            IsViewFollowCamera = reader.ReadBoolean();
+        }
+
+        /// <summary>
+        /// 再生時の視点追従をファイルに書込
+        /// </summary>
+        /// <param name="writer">出力対象バイナリファイル</param>
+        public void WriteViewFollowing(BinaryWriter writer)
+        {
+            writer.Write(IsViewFollowCamera);
+        }
+        #endregion
+
+        #region FrameLocation
+        /// <summary>
+        /// 3Dビュー上部のフレーム入力欄の値
+        /// </summary>
+        public int FrameLocation { get; set; }
+
+        /// <summary>
+        /// フレーム入力欄の値をファイルから読み込み
+        /// </summary>
+        /// <param name="reader">バイナリファイル</param>
+        public void ReadFrameLocation(BinaryReader reader)
+        {
+            FrameLocation = reader.ReadInt32();
+        }
+
+        /// <summary>
+        /// フレーム入力欄の値をファイルに書込
+        /// </summary>
+        /// <param name="writer">出力対象バイナリファイル</param>
+        public void WriteFrameLocation(BinaryWriter writer)
+        {
+            writer.Write(FrameLocation);
+        }
+        #endregion
+
+        #region RangeSelectionTarget
+        /// <summary>
+        /// 範囲選択対象のセクションが存在しているか
+        /// </summary>
+        public bool ExistRangeSelectionTargetSection { get; set; }
+        /// <summary>
+        /// 範囲選択対象
+        /// </summary>
+        public List<(byte Model, int Target)> RangeSelectionTargetIndices { get; init; } = new();
         #endregion
     }
 }
