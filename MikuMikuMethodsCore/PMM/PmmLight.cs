@@ -1,8 +1,10 @@
-﻿using MikuMikuMethods.PMM.Frame;
+﻿using MikuMikuMethods.Extension;
+using MikuMikuMethods.PMM.Frame;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,7 +26,7 @@ namespace MikuMikuMethods.PMM
         /// <summary>
         /// 未確定編集状態
         /// </summary>
-        public PmmLightFrame Uncomitted { get; set; }
+        public TemporaryLightEditState Uncomitted { get; set; }
 
         /// <summary>
         /// コンストラクタ
@@ -32,6 +34,7 @@ namespace MikuMikuMethods.PMM
         public PmmLight()
         {
             Frames = new();
+            Uncomitted = new();
         }
 
         /// <summary>
@@ -55,7 +58,8 @@ namespace MikuMikuMethods.PMM
             for (int i = 0; i < lightCount; i++)
                 Frames.Add(new(reader, reader.ReadInt32()));
 
-            Uncomitted = new(reader, null);// ここでバグ発生
+            Uncomitted.Color = reader.ReadSingleRGB();
+            Uncomitted.Position = reader.ReadVector3();
         }
 
         /// <summary>
@@ -70,7 +74,23 @@ namespace MikuMikuMethods.PMM
             foreach (var frame in Frames)
                 frame.Write(writer);
 
-            Uncomitted.Write(writer);
+            writer.Write(Uncomitted.Color, false);
+            writer.Write(Uncomitted.Position);
         }
+    }
+
+    /// <summary>
+    /// 未確定のライト編集状態
+    /// </summary>
+    public class TemporaryLightEditState
+    {
+        /// <summary>
+        /// 色(RGBのみ使用)
+        /// </summary>
+        public ColorF Color { get; set; }
+        /// <summary>
+        /// 位置
+        /// </summary>
+        public Vector3 Position { get; set; }
     }
 }
