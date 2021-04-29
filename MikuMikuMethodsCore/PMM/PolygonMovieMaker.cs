@@ -121,6 +121,7 @@ namespace MikuMikuMethods.PMM
             DrawConfig.Read(reader);
             Gravity.Read(reader);
             SelfShadow.Read(reader);
+            DrawConfig.ReadColorConfig(reader);
         }
 
         /// <summary>
@@ -153,6 +154,7 @@ namespace MikuMikuMethods.PMM
             DrawConfig.Write(writer);
             Gravity.Write(writer);
             SelfShadow.Write(writer);
+            DrawConfig.WriteColorConfig(writer);
         }
     }
 }

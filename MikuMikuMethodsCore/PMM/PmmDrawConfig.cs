@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -51,6 +52,17 @@ namespace MikuMikuMethods.PMM
         /// 物理演算モード
         /// </summary>
         public PhysicsMode PhysicsSetting { get; set; }
+
+        #region ColorConfig
+        /// <summary>
+        /// エッジの色
+        /// </summary>
+        public Color EdgeColor { get; set; }
+        /// <summary>
+        /// 背景色は黒か
+        /// </summary>
+        public bool IsBackgroundBlack { get; set; }
+        #endregion
 
         /// <summary>
         /// コンストラクタ
@@ -104,6 +116,29 @@ namespace MikuMikuMethods.PMM
             writer.Write(EnableTransparentGroundShadow);
 
             writer.Write((byte)PhysicsSetting);
+        }
+
+        /// <summary>
+        /// 色関連設定を読み込む
+        /// </summary>
+        /// <param name="reader">読み込むファイル</param>
+        public void ReadColorConfig(BinaryReader reader)
+        {
+            EdgeColor = Color.FromArgb(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32());
+            IsBackgroundBlack = reader.ReadBoolean();
+        }
+
+        /// <summary>
+        /// 色関連設定を書き込む
+        /// </summary>
+        /// <param name="writer">出力対象バイナリファイル</param>
+        public void WriteColorConfig(BinaryWriter writer)
+        {
+            writer.Write(EdgeColor.R);
+            writer.Write(EdgeColor.G);
+            writer.Write(EdgeColor.B);
+
+            writer.Write(IsBackgroundBlack);
         }
 
         /// <summary>
