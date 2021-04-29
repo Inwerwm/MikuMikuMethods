@@ -30,6 +30,11 @@ namespace MikuMikuMethods.PMM
         public TemporaryCameraEditState Uncomitted { get; init; }
 
         /// <summary>
+        /// 未確定カメラ追従状態
+        /// </summary>
+        public TemporaryCameraFollowingState UncomittedFollowing { get; init; }
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
         public PmmCamera()
@@ -37,6 +42,7 @@ namespace MikuMikuMethods.PMM
             InitialFrame = new();
             Frames = new();
             Uncomitted = new();
+            UncomittedFollowing = new();
         }
 
         /// <summary>
@@ -82,6 +88,26 @@ namespace MikuMikuMethods.PMM
             writer.Write(Uncomitted.Rotation);
             writer.Write(Uncomitted.EnablePerspective);
         }
+
+        /// <summary>
+        /// 未確定のカメラ追従状態の読込
+        /// </summary>
+        /// <param name="reader">読み込むファイル</param>
+        public void ReadUncomittedFollowingState(BinaryReader reader)
+        {
+            UncomittedFollowing.ModelIndex = reader.ReadInt32();
+            UncomittedFollowing.BoneIndex = reader.ReadInt32();
+        }
+
+        /// <summary>
+        /// 未確定のカメラ追従状態の書込
+        /// </summary>
+        /// <param name="writer">出力対象バイナリファイル</param>
+        public void WriteUncomittedFollowingState(BinaryWriter writer)
+        {
+            writer.Write(UncomittedFollowing.ModelIndex);
+            writer.Write(UncomittedFollowing.BoneIndex);
+        }
     }
 
     /// <summary>
@@ -113,5 +139,20 @@ namespace MikuMikuMethods.PMM
         {
             EnablePerspective = true;
         }
+    }
+
+    /// <summary>
+    /// 未確定のカメラ追従状態
+    /// </summary>
+    public class TemporaryCameraFollowingState
+    {
+        /// <summary>
+        /// モデルのインデックス
+        /// </summary>
+        public int ModelIndex { get; set; }
+        /// <summary>
+        /// ボーンのインデックス
+        /// </summary>
+        public int BoneIndex { get; set; }
     }
 }

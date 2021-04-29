@@ -122,6 +122,7 @@ namespace MikuMikuMethods.PMM
             Gravity.Read(reader);
             SelfShadow.Read(reader);
             DrawConfig.ReadColorConfig(reader);
+            Camera.ReadUncomittedFollowingState(reader);
         }
 
         /// <summary>
@@ -155,6 +156,7 @@ namespace MikuMikuMethods.PMM
             Gravity.Write(writer);
             SelfShadow.Write(writer);
             DrawConfig.WriteColorConfig(writer);
+            Camera.WriteUncomittedFollowingState(writer);
         }
     }
 }
