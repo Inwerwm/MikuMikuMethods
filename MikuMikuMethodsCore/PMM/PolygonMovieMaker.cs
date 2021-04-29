@@ -113,7 +113,7 @@ namespace MikuMikuMethods.PMM
             Light = new(reader);
 
             EditorState.ReadAccessoryState(reader);
-            var accessoryCount = reader.ReadInt32();
+            var accessoryCount = reader.ReadByte();
             // アクセサリ名一覧
             // 名前は各アクセサリ領域にも書いてあり、齟齬が出ることは基本無いらしいので読み飛ばす
             _ = reader.ReadBytes(accessoryCount * 100);
@@ -164,7 +164,7 @@ namespace MikuMikuMethods.PMM
 
             EditorState.WriteViewState(writer);
 
-            writer.Write(Models.Count);
+            writer.Write((byte)Models.Count);
             foreach (var model in Models)
                 model.Write(writer);
 
@@ -172,7 +172,7 @@ namespace MikuMikuMethods.PMM
             Light.Write(writer);
 
             EditorState.WriteAccessoryState(writer);
-            writer.Write(Accessories.Count);
+            writer.Write((byte)Accessories.Count);
             foreach (var acs in Accessories)
                 writer.Write(acs.Name, 100, Encoding.ShiftJIS);
             foreach (var acs in Accessories)
