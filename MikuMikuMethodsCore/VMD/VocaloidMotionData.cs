@@ -185,8 +185,8 @@ namespace MikuMikuMethods.VMD
         /// </summary>
         public void Write(BinaryWriter writer)
         {
-            writer.Write(Header, Specifications.HeaderLength, Encoding.ShiftJIS, '\0');
-            writer.Write(ModelName, Specifications.ModelNameLength, Encoding.ShiftJIS, '\0');
+            writer.Write(Header, Specifications.HeaderLength, Encoding.ShiftJIS);
+            writer.Write(ModelName, Specifications.ModelNameLength, Encoding.ShiftJIS);
             WriteFrames(writer, MotionFrames);
             WriteFrames(writer, MorphFrames);
             WriteFrames(writer, CameraFrames);
