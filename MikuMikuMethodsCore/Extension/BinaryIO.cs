@@ -139,7 +139,7 @@ namespace MikuMikuMethods.Extension
             var bytesToWrite = encoding.GetBytes(Enumerable.Repeat(filler, length).ToArray());
 
             //書き込み用配列に文字列を転写
-            encoding.GetBytes(value.Append('\0').ToArray()).Take(length).ToArray().CopyTo(bytesToWrite, 0);
+            encoding.GetBytes(value).Take(length - 1).Append((byte)0).ToArray().CopyTo(bytesToWrite, 0);
 
             writer.Write(bytesToWrite);
         }
