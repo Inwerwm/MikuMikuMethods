@@ -42,16 +42,16 @@ namespace MikuMikuMethods.Extension
         /// </summary>
         /// <param name="length">文字数</param>
         /// <param name="encoding">エンコード形式</param>
-        /// <param name="filler">終端文字</param>
+        /// <param name="endChar">終端文字 この文字以降を読み飛ばす</param>
         /// <returns>読み込んだ文字列</returns>
-        public static string ReadString(this BinaryReader reader, int length, System.Text.Encoding encoding, char? filler = '\0')
+        public static string ReadString(this BinaryReader reader, int length, System.Text.Encoding encoding, char? endChar = '\0')
         {
             var readBytes = reader.ReadBytes(length);
             string str = encoding.GetString(readBytes);
-            if (filler is null)
+            if (endChar is null)
                 return str;
 
-            return str.IndexOf(filler.Value) switch
+            return str.IndexOf(endChar.Value) switch
             {
                 < 0 => str,
                 int i => str.Remove(i)
