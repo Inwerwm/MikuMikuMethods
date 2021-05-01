@@ -1,10 +1,7 @@
 ﻿using MikuMikuMethods.Extension;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MikuMikuMethods.VMD
 {
@@ -103,16 +100,8 @@ namespace MikuMikuMethods.VMD
         /// バイナリ読み込みコンストラクタ
         /// </summary>
         /// <param name="reader"></param>
-        public VocaloidMotionData(BinaryReader reader)
+        public VocaloidMotionData(BinaryReader reader) : this()
         {
-            CameraFrames = new();
-            LightFrames = new();
-            ShadowFrames = new();
-
-            PropertyFrames = new();
-            MorphFrames = new();
-            MotionFrames = new();
-
             Read(reader);
         }
 
