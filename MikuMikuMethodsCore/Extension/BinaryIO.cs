@@ -44,7 +44,7 @@ namespace MikuMikuMethods.Extension
         /// <param name="encoding">エンコード形式</param>
         /// <param name="endChar">終端文字 この文字以降を読み飛ばす</param>
         /// <returns>読み込んだ文字列</returns>
-        public static string ReadString(this BinaryReader reader, int length, System.Text.Encoding encoding, char? endChar = '\0')
+        public static string ReadString(this BinaryReader reader, int length, System.Text.Encoding encoding, char? endChar)
         {
             var readBytes = reader.ReadBytes(length);
             string str = encoding.GetString(readBytes);

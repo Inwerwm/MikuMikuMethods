@@ -123,7 +123,7 @@ namespace MikuMikuMethods.PMM
         /// <param name="reader">読み込むファイル ShiftJISエンコードで読み込むこと</param>
         public void Read(BinaryReader reader)
         {
-            Version = reader.ReadString(30, Encoding.ShiftJIS);
+            Version = reader.ReadString(30, Encoding.ShiftJIS, '\0');
 
             EditorState.ReadViewState(reader);
 

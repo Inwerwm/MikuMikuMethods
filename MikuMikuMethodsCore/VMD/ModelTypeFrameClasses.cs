@@ -119,7 +119,7 @@ namespace MikuMikuMethods.VMD
         /// </summary>
         public override void Read(BinaryReader reader)
         {
-            Name = reader.ReadString(Specifications.MorphNameLength, Encoding.ShiftJIS);
+            Name = reader.ReadString(Specifications.MorphNameLength, Encoding.ShiftJIS, '\0');
             Frame = reader.ReadUInt32();
             Weight = reader.ReadSingle();
         }
@@ -129,7 +129,7 @@ namespace MikuMikuMethods.VMD
         /// </summary>
         public override void Write(BinaryWriter writer)
         {
-            writer.Write(Name, Specifications.MorphNameLength, Encoding.ShiftJIS);
+            writer.Write(Name, Specifications.MorphNameLength, Encoding.ShiftJIS, '\0');
             writer.Write(Frame);
             writer.Write(Weight);
         }
@@ -195,7 +195,7 @@ namespace MikuMikuMethods.VMD
         public override void Read(BinaryReader reader)
         {
             //ボーン名を読み込み
-            Name = reader.ReadString(Specifications.BoneNameLength, Encoding.ShiftJIS);
+            Name = reader.ReadString(Specifications.BoneNameLength, Encoding.ShiftJIS, '\0');
 
             //各種パラメータを読み込み
             Frame = reader.ReadUInt32();

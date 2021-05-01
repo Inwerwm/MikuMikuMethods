@@ -78,16 +78,16 @@ namespace MikuMikuMethods.PMM
         public void Read(BinaryReader reader)
         {
             EnableAudio = reader.ReadBoolean();
-            AudioPath = reader.ReadString(256, Encoding.ShiftJIS);
+            AudioPath = reader.ReadString(256, Encoding.ShiftJIS, '\0');
 
             BackgroundVideoOffset = new(reader.ReadInt32(), reader.ReadInt32());
             BackgroundVideoScale = reader.ReadSingle();
-            BackgroundVideoPath = reader.ReadString(256, Encoding.ShiftJIS);
+            BackgroundVideoPath = reader.ReadString(256, Encoding.ShiftJIS, '\0');
             EnableBackgroundVideo = reader.ReadInt32() == 0b01000000;
 
             BackgroundImageOffset = new(reader.ReadInt32(), reader.ReadInt32());
             BackgroundImageScale = reader.ReadSingle();
-            BackgroundImagePath = reader.ReadString(256, Encoding.ShiftJIS);
+            BackgroundImagePath = reader.ReadString(256, Encoding.ShiftJIS, '\0');
             EnableBackgroundImage = reader.ReadBoolean();
         }
 
