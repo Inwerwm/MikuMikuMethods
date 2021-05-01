@@ -1,4 +1,5 @@
 ﻿using MikuMikuMethods.Extension;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -150,43 +151,19 @@ namespace MikuMikuMethods.VMD
             Header = reader.ReadString(Specifications.HeaderLength, Encoding.ShiftJIS, '\0');
             ModelName = reader.ReadString(Specifications.ModelNameLength, Encoding.ShiftJIS, '\0');
 
-            uint elementNum;
+            ReadFrames(reader, r => MotionFrames.Add(new(r)));
+            ReadFrames(reader, r => MorphFrames.Add(new(r)));
+            ReadFrames(reader, r => CameraFrames.Add(new(r)));
+            ReadFrames(reader, r => LightFrames.Add(new(r)));
+            ReadFrames(reader, r => ShadowFrames.Add(new(r)));
+            ReadFrames(reader, r => PropertyFrames.Add(new(r)));
+        }
 
-            elementNum = reader.ReadUInt32();
+        private void ReadFrames(BinaryReader reader, Action<BinaryReader> addToList)
+        {
+            var elementNum = reader.ReadUInt32();
             for (int i = 0; i < elementNum; i++)
-            {
-                MotionFrames.Add(new VocaloidMotionFrame(reader));
-            }
-
-            elementNum = reader.ReadUInt32();
-            for (int i = 0; i < elementNum; i++)
-            {
-                MorphFrames.Add(new VocaloidMorphFrame(reader));
-            }
-
-            elementNum = reader.ReadUInt32();
-            for (int i = 0; i < elementNum; i++)
-            {
-                CameraFrames.Add(new VocaloidCameraFrame(reader));
-            }
-
-            elementNum = reader.ReadUInt32();
-            for (int i = 0; i < elementNum; i++)
-            {
-                LightFrames.Add(new VocaloidLightFrame(reader));
-            }
-
-            elementNum = reader.ReadUInt32();
-            for (int i = 0; i < elementNum; i++)
-            {
-                ShadowFrames.Add(new VocaloidShadowFrame(reader));
-            }
-
-            elementNum = reader.ReadUInt32();
-            for (int i = 0; i < elementNum; i++)
-            {
-                PropertyFrames.Add(new VocaloidPropertyFrame(reader));
-            }
+                addToList(reader);
         }
 
         /// <summary>
@@ -196,6 +173,7 @@ namespace MikuMikuMethods.VMD
         {
             writer.Write(Header, Specifications.HeaderLength, Encoding.ShiftJIS);
             writer.Write(ModelName, Specifications.ModelNameLength, Encoding.ShiftJIS);
+
             WriteFrames(writer, MotionFrames);
             WriteFrames(writer, MorphFrames);
             WriteFrames(writer, CameraFrames);
@@ -209,9 +187,7 @@ namespace MikuMikuMethods.VMD
             writer.Write((uint)frames.Count);
             // 時間で降順に書き込むと読み込みが早くなる(らしい)
             foreach (var f in frames.OrderByDescending(f => f.Frame))
-            {
                 f.Write(writer);
-            }
         }
     }
 }
