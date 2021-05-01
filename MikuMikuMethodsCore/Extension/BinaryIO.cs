@@ -127,6 +127,7 @@ namespace MikuMikuMethods.Extension
 
         /// <summary>
         /// 指定長で文字列をバイナリに書き込み
+        /// <para>文字列の最後には<c>'\0'</c>が付加される</para>
         /// </summary>
         /// <param name="value">書き込む文字列</param>
         /// <param name="length">書き込む長さ</param>
@@ -138,7 +139,7 @@ namespace MikuMikuMethods.Extension
             var bytesToWrite = encoding.GetBytes(Enumerable.Repeat(filler, length).ToArray());
 
             //書き込み用配列に文字列を転写
-            encoding.GetBytes(value).Take(length).ToArray().CopyTo(bytesToWrite, 0);
+            encoding.GetBytes(value.Append('\0').ToArray()).Take(length).ToArray().CopyTo(bytesToWrite, 0);
 
             writer.Write(bytesToWrite);
         }
