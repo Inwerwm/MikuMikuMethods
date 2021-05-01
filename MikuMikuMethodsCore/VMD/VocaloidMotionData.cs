@@ -81,11 +81,9 @@ namespace MikuMikuMethods.VMD
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        /// <param name="modelName">モデル名</param>
-        public VocaloidMotionData(string modelName = "")
+        public VocaloidMotionData()
         {
             Header = Specifications.HeaderString;
-            ModelName = modelName;
 
             CameraFrames = new();
             LightFrames = new();
@@ -94,6 +92,15 @@ namespace MikuMikuMethods.VMD
             PropertyFrames = new();
             MorphFrames = new();
             MotionFrames = new();
+        }
+
+        /// <summary>
+        /// ファイル読み込みコンストラクタ
+        /// </summary>
+        /// <param name="filePath">読み込むファイルのパス</param>
+        public VocaloidMotionData(string filePath) : this()
+        {
+            Read(filePath);
         }
 
         /// <summary>
@@ -119,6 +126,19 @@ namespace MikuMikuMethods.VMD
             PropertyFrames.Clear();
             MorphFrames.Clear();
             MotionFrames.Clear();
+        }
+
+        /// <summary>
+        /// ファイルから読込
+        /// </summary>
+        /// <param name="path">読み込むファイルのパス</param>
+        public void Read(string path)
+        {
+            using (FileStream stream = new(path, FileMode.Open))
+            using (BinaryReader reader = new(stream, MikuMikuMethods.Encoding.ShiftJIS))
+            {
+                Read(reader);
+            }
         }
 
         /// <summary>
