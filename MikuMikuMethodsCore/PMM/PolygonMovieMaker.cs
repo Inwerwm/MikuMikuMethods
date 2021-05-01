@@ -87,12 +87,34 @@ namespace MikuMikuMethods.PMM
         }
 
         /// <summary>
+        /// ファイル読込コンストラクタ
+        /// </summary>
+        /// <param name="filePath">Pmmファイルのパス</param>
+        public PolygonMovieMaker(string filePath) : this()
+        {
+            Read(filePath);
+        }
+
+        /// <summary>
         /// バイナリ読込コンストラクタ
         /// </summary>
         /// <param name="reader">PMMファイル</param>
         public PolygonMovieMaker(BinaryReader reader) : this()
         {
             Read(reader);
+        }
+
+        /// <summary>
+        /// ファイルから読込
+        /// </summary>
+        /// <param name="path">ファイルパス</param>
+        public void Read(string path)
+        {
+            using (FileStream stream = new(path, FileMode.Open))
+            using (BinaryReader reader = new(stream, MikuMikuMethods.Encoding.ShiftJIS))
+            {
+                Read(reader);
+            }
         }
 
         /// <summary>
