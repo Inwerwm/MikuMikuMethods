@@ -129,7 +129,7 @@ namespace MikuMikuMethods.VMD
         /// </summary>
         public override void Write(BinaryWriter writer)
         {
-            writer.Write(Name, Specifications.MorphNameLength, Encoding.ShiftJIS, '\0');
+            writer.Write(Name, Specifications.MorphNameLength, Encoding.ShiftJIS);
             writer.Write(Frame);
             writer.Write(Weight);
         }
