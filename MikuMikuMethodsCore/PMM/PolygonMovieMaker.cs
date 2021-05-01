@@ -160,7 +160,7 @@ namespace MikuMikuMethods.PMM
         /// <param name="writer">出力対象バイナリファイル</param>
         public void Write(BinaryWriter writer)
         {
-            writer.Write(Version, 30, Encoding.ShiftJIS);
+            writer.Write(Version, 30, Encoding.ShiftJIS, 'x');
 
             EditorState.WriteViewState(writer);
 
@@ -174,7 +174,7 @@ namespace MikuMikuMethods.PMM
             EditorState.WriteAccessoryState(writer);
             writer.Write((byte)Accessories.Count);
             foreach (var acs in Accessories)
-                writer.Write(acs.Name, 100, Encoding.ShiftJIS);
+                writer.Write(acs.Name, 100, Encoding.ShiftJIS, 'x');
             foreach (var acs in Accessories)
                 acs.Write(writer);
 

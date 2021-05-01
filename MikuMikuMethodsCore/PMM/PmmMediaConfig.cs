@@ -98,18 +98,18 @@ namespace MikuMikuMethods.PMM
         public void Write(BinaryWriter writer)
         {
             writer.Write(EnableAudio);
-            writer.Write(AudioPath, 256, Encoding.ShiftJIS);
+            writer.Write(AudioPath, 256, Encoding.ShiftJIS, 'x');
 
             writer.Write(BackgroundVideoOffset.X);
             writer.Write(BackgroundVideoOffset.Y);
             writer.Write(BackgroundVideoScale);
-            writer.Write(BackgroundVideoPath, 256, Encoding.ShiftJIS);
+            writer.Write(BackgroundVideoPath, 256, Encoding.ShiftJIS, 'x');
             writer.Write(EnableBackgroundVideo ? 0b01000000 : 0b01000001);
 
             writer.Write(BackgroundImageOffset.X);
             writer.Write(BackgroundImageOffset.Y);
             writer.Write(BackgroundImageScale);
-            writer.Write(BackgroundImagePath, 256, Encoding.ShiftJIS);
+            writer.Write(BackgroundImagePath, 256, Encoding.ShiftJIS, 'x');
             writer.Write(EnableBackgroundImage);
         }
     }

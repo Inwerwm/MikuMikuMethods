@@ -98,8 +98,8 @@ namespace MikuMikuMethods.PMM
         {
             writer.Write(Index);
 
-            writer.Write(Name, 100, Encoding.ShiftJIS, '\0');
-            writer.Write(Path, 256, Encoding.ShiftJIS, '\0');
+            writer.Write(Name, 100, Encoding.ShiftJIS, 'x');
+            writer.Write(Path, 256, Encoding.ShiftJIS, 'x');
 
             writer.Write(RenderOrder);
 
