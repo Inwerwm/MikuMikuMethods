@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Numerics;
 
-namespace MikuMikuMethods.PMM
+namespace MikuMikuMethods.PMM.Frame
 {
     /// <summary>
     /// カメラフレーム情報

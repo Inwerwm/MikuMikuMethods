@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,45 +13,50 @@ namespace UnitTest
     [TestClass]
     public class UnitTestPMM
     {
-        PolygonMovieMaker pmm = new();
-
-        private void LoadTestData()
-        {
-            using (FileStream stream = new("TestData/testProject.pmm", FileMode.Open))
-            using (BinaryReader reader = new(stream, MikuMikuMethods.Encoding.ShiftJIS))
-            {
-                pmm.Read(reader);
-            }
-        }
+        PolygonMovieMaker testPmm;
 
         public UnitTestPMM()
         {
-            LoadTestData();
+            testPmm = new();
         }
 
         [TestMethod]
-        public void Test_PolygonMovieMaker()
+        public void Test_IO()
         {
-            Assert.AreEqual("Polygon Movie maker 0002", pmm.Version);
-            Assert.IsTrue(pmm.EditorState.IsCameraMode);
-            Assert.AreEqual(1, pmm.Models.Count);
-        }
+            using (FileStream stream = new("TestData/testProject.pmm", FileMode.Open))
+            using (BinaryReader reader = new(stream, MikuMikuMethods.Encoding.ShiftJIS))
+            using (FileStream outStream = new("TestData/output.pmm", FileMode.Create))
+            using (BinaryWriter writer = new(outStream, MikuMikuMethods.Encoding.ShiftJIS))
+            {
+                testPmm.Read(reader);
+                testPmm.Write(writer);
 
-        [TestMethod]
-        public void Test_PmmModel()
-        {
-            PmmModel Rybecia = pmm.Models[0];
-            Assert.AreEqual("ルベシア・シェリングヴェーヌ", Rybecia.Name);
-            Assert.AreEqual("Rybecia Sherringvaine", Rybecia.NameEn);
-            Assert.AreEqual(@"C:\MMD\_モデル(人物)\_quappa-el\EL-D2M-Rybecia_Shader\ルベシア.pmx", Rybecia.Path);
+                // 比較のため巻き戻し
+                reader.BaseStream.Position = 0;
+                writer.BaseStream.Position = 0;
 
-            Assert.AreEqual(1, Rybecia.RenderConfig.RenderOrder);
-            Assert.AreEqual(1, Rybecia.RenderConfig.CalculateOrder);
+                using(BinaryReader outReader = new(outStream, MikuMikuMethods.Encoding.ShiftJIS))
+                {
+                    var outPmm = new PolygonMovieMaker(outReader);
 
-            Assert.AreEqual(16, Rybecia.FrameEditor.RowCount);
+                    //もとのPMMと書込読込PMMのインスタンスをシリアライズして
+                    //テキストで差分を見れるようにする
+                    using (FileStream inJson = new("TestData/originPmm.json", FileMode.Create))
+                    using(FileStream outJson = new("TestData/outputPmm.json", FileMode.Create))
+                    {
+                        DataContractJsonSerializer serializer = new(typeof(PolygonMovieMaker));
+                        serializer.WriteObject(inJson, testPmm);
+                        serializer.WriteObject(outJson, outPmm);
 
-            Assert.IsNull(Rybecia.InitialBoneFrames[0].Index);
-            Assert.AreEqual(0, Rybecia.InitialBoneFrames[0].Offset.Y);
+                        Assert.AreEqual(inJson.Length, outJson.Length);
+                        using(StreamReader inJsonReader = new(inJson))
+                        using(StreamReader outJsonReader = new(outJson))
+                        {
+                            Assert.AreEqual(inJsonReader.ReadToEnd(), outJsonReader.ReadToEnd());
+                        }
+                    }
+                }
+            }
         }
     }
 }

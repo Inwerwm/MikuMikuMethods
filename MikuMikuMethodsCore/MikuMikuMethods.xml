@@ -1,0 +1,3823 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MikuMikuMethods</name>
+    </assembly>
+    <members>
+        <member name="T:MikuMikuMethods.BoneNameComparer">
+            <summary>
+            ボーン名の比較クラス
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.BoneNameComparer.Compare(System.String,System.String)">
+            <summary>
+            比較
+            </summary>
+            <returns>
+            <para>0未満 - このインスタンスはotherよりソート順が前である</para>
+            <para>0 - このインスタンスはotherとソート順が同じである</para>
+            <para>0超 - このインスタンスはotherよりソート順が後である</para>
+            </returns>
+        </member>
+        <member name="T:MikuMikuMethods.BoneNameComparer.Ordo">
+            <summary>
+            順序構造体
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.ColorF">
+            <summary>
+            浮動小数点[0.0,1.0]で値を保持する色構造体
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.ColorF.R">
+            <summary>
+            赤
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.ColorF.G">
+            <summary>
+            緑
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.ColorF.B">
+            <summary>
+            青
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.ColorF.A">
+            <summary>
+            不透明度
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.ColorF.ToColor">
+            <summary>
+            バイト整数で値を保持する色構造体に変換
+            </summary>
+            <returns>色</returns>
+        </member>
+        <member name="M:MikuMikuMethods.ColorF.FromColor(System.Drawing.Color)">
+            <summary>
+            バイト整数で値を保持する色構造体から変換
+            </summary>
+            <param name="color">変換元の色</param>
+        </member>
+        <member name="M:MikuMikuMethods.ColorF.FromARGB(System.Single,MikuMikuMethods.ColorF)">
+            <summary>
+            透明度と元色を指定して色構造体を作成
+            </summary>
+            <param name="alpha">透明度</param>
+            <param name="baseColor">元となる色</param>
+            <returns>浮動小数色構造体</returns>
+        </member>
+        <member name="M:MikuMikuMethods.ColorF.FromARGB(System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            数値指定で色構造体を作成
+            </summary>
+            <param name="alpha">透明度</param>
+            <param name="red">赤</param>
+            <param name="green">緑</param>
+            <param name="blue">青</param>
+            <returns>浮動小数色構造体</returns>
+        </member>
+        <member name="M:MikuMikuMethods.ColorF.FromARGB(System.Single,System.Single,System.Single)">
+            <summary>
+            数値指定で色構造体を作成
+            </summary>
+            <param name="red">赤</param>
+            <param name="green">緑</param>
+            <param name="blue">青</param>
+            <returns>浮動小数色構造体</returns>
+        </member>
+        <member name="T:MikuMikuMethods.Encoding">
+            <summary>
+            <para>MMD関係で使用するエンコード方式</para>
+            <para>Shift JIS はそのままだと使えないので</para>
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.Encoding.ProviderIsRegistered">
+            <summary>
+            ShiftJISを使うための初期設定が済んでいるか
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.Encoding.ShiftJIS">
+            <summary>
+            日本語 Shift JIS
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.Encoding.Unicode">
+            <summary>
+            UTF-16
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.Encoding.UTF8">
+            <summary>
+            UTF-8
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.InterpolationItem">
+            <summary>
+            補間項目
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.InterpolationItem.XPosition">
+            <summary>
+            x軸移動
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.InterpolationItem.YPosition">
+            <summary>
+            Y軸移動
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.InterpolationItem.ZPosition">
+            <summary>
+            Z軸移動
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.InterpolationItem.Rotation">
+            <summary>
+            回転
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.InterpolationItem.Distance">
+            <summary>
+            距離
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.InterpolationItem.ViewAngle">
+            <summary>
+            視野角
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.InterpolationCurve">
+            <summary>
+            補間曲線
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.InterpolationCurve.EarlyControlePoint">
+            <summary>
+            始点側制御点
+            [0,127]
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.InterpolationCurve.LateControlePoint">
+            <summary>
+            終点側制御点
+            [0,127]
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.InterpolationCurve.EarlyControlePointFloat">
+            <summary>
+            始点側制御点
+            [0.0,1.0]
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.InterpolationCurve.LateControlePointFloat">
+            <summary>
+            終点側制御点
+            [0.0,1.0]
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.InterpolationCurve.FromBytes(System.Collections.Generic.IEnumerable{System.Byte})">
+            <summary>
+            バイト配列から値を指定する
+            </summary>
+            <param name="bytes">{EarlyControlePoint.X, EarlyControlePoint.Y, LateControlePoint.X, LateControlePoint.Y}</param>
+        </member>
+        <member name="M:MikuMikuMethods.InterpolationCurve.ToBytes">
+            <summary>
+            バイト配列で返す
+            {始点側制御点X, 始点側制御点Y, 終点側制御点X, 終点側制御点Y}
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.InterpolationCurve.CreateByVMDFormat(System.Byte[],MikuMikuMethods.VMD.FrameType)">
+            <summary>
+            VMD形式のバイト列から補間曲線クラスの連想配列を生成する。
+            </summary>
+            <param name="data">バイト列</param>
+            <param name="type">フレームの種類</param>
+            <returns>補間曲線の連想配列</returns>
+        </member>
+        <member name="M:MikuMikuMethods.InterpolationCurve.CreateVMDFormatBytes(System.Collections.Generic.Dictionary{MikuMikuMethods.InterpolationItem,MikuMikuMethods.InterpolationCurve},MikuMikuMethods.VMD.FrameType)">
+            <summary>
+            補間曲線の連想配列からVMD形式のバイト列を生成する。
+            </summary>
+            <param name="curves">補間曲線の連想配列</param>
+            <param name="type">フレームの種類</param>
+            <returns>バイト列</returns>
+        </member>
+        <member name="T:MikuMikuMethods.Utility">
+            <summary>
+            便利メソッド集
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.Utility.OrderByMap``1(System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{``0})">
+            <summary>
+            queryを新しい連番で整列する
+            </summary>
+            <param name="map">もとの連番と新しい連番の変換マップリスト</param>
+            <param name="query">変換対象リスト</param>
+            <returns>変換されたリスト</returns>
+        </member>
+        <member name="M:MikuMikuMethods.Utility.Swap``1(``0@,``0@)">
+            <summary>
+            引数の中身を入れ替える
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.Extension.BinaryRead">
+            <summary>
+            BinaryReader向け拡張メソッド
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.Extension.BinaryRead.ReadVector2(System.IO.BinaryReader)">
+            <summary>
+            Reads a 2 dimension vector including two 4-byte floating point values from the current stream and advances the current position of the stream by 8 bytes.
+            </summary>
+            <returns>A 2 dimension vector including two 4-byte floating point values read from the current stream.</returns>
+        </member>
+        <member name="M:MikuMikuMethods.Extension.BinaryRead.ReadVector3(System.IO.BinaryReader)">
+            <summary>
+            Reads a 3 dimension vector including three 4-byte floating point values from the current stream and advances the current position of the stream by 12 bytes.
+            </summary>
+            <returns>A 3 dimension vector including three 4-byte floating point values read from the current stream.</returns>
+        </member>
+        <member name="M:MikuMikuMethods.Extension.BinaryRead.ReadVector4(System.IO.BinaryReader)">
+            <summary>
+            Reads a 4 dimension vector including four 4-byte floating point values from the current stream and advances the current position of the stream by 16 bytes.
+            </summary>
+            <returns>A 4 dimension vector including four 4-byte floating point values read from the current stream.</returns>
+        </member>
+        <member name="M:MikuMikuMethods.Extension.BinaryRead.ReadQuaternion(System.IO.BinaryReader)">
+            <summary>
+            Reads a quaternion including four 4-byte floating point values from the current stream and advances the current position of the stream by 16 bytes.
+            </summary>
+            <returns>A quaternion including four 4-byte floating point values read from the current stream.</returns>
+        </member>
+        <member name="M:MikuMikuMethods.Extension.BinaryRead.ReadString(System.IO.BinaryReader,System.Int32,System.Text.Encoding,System.Nullable{System.Char})">
+            <summary>
+            指定文字数の文字列をバイナリから読み込む
+            </summary>
+            <param name="length">文字数</param>
+            <param name="encoding">エンコード形式</param>
+            <param name="filler">終端文字</param>
+            <returns>読み込んだ文字列</returns>
+        </member>
+        <member name="M:MikuMikuMethods.Extension.BinaryRead.ReadSingleARGB(System.IO.BinaryReader)">
+            <summary>
+            <para>[0, 1]の浮動小数点数で表された色情報をバイナリから読み込む</para>
+            <para>{A, R, G, B}の順で読み込む</para>
+            </summary>
+            <returns>読み込んだ浮動小数点数表現色</returns>
+        </member>
+        <member name="M:MikuMikuMethods.Extension.BinaryRead.ReadSingleRGB(System.IO.BinaryReader)">
+            <summary>
+            <para>[0, 1]の浮動小数点数で表された色情報をバイナリから読み込む</para>
+            <para>{R, G, B}の順で読み込む</para>
+            </summary>
+            <returns>読み込んだ浮動小数点数表現色</returns>
+        </member>
+        <member name="T:MikuMikuMethods.Extension.BinaryWrite">
+            <summary>
+            BinaryWriter向け拡張メソッド
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.Extension.BinaryWrite.Write(System.IO.BinaryWriter,System.Numerics.Vector2)">
+            <summary>
+            Writes a 2 dimension vector including two four-byte floating-point value to the current stream and advances the stream position by 8 bytes.
+            </summary>
+            <param name="value">The 2 dimension vector including two four-byte floating-point value to write.</param>
+        </member>
+        <member name="M:MikuMikuMethods.Extension.BinaryWrite.Write(System.IO.BinaryWriter,System.Numerics.Vector3)">
+            <summary>
+            Writes a 3 dimension vector including three four-byte floating-point value to the current stream and advances the stream position by 12 bytes.
+            </summary>
+            <param name="value">The 3 dimension vector including three four-byte floating-point value to write.</param>
+        </member>
+        <member name="M:MikuMikuMethods.Extension.BinaryWrite.Write(System.IO.BinaryWriter,System.Numerics.Vector4)">
+            <summary>
+            Writes a 4 dimension vector including four four-byte floating-point value to the current stream and advances the stream position by 16 bytes.
+            </summary>
+            <param name="value">The 4 dimension vector including four four-byte floating-point value to write.</param>
+        </member>
+        <member name="M:MikuMikuMethods.Extension.BinaryWrite.Write(System.IO.BinaryWriter,System.Numerics.Quaternion)">
+            <summary>
+            Writes a quaternion including four four-byte floating-point value to the current stream and advances the stream position by 16 bytes.
+            </summary>
+            <param name="value">The quaternion including four four-byte floating-point value to write.</param>
+        </member>
+        <member name="M:MikuMikuMethods.Extension.BinaryWrite.Write(System.IO.BinaryWriter,System.String,System.Int32,System.Text.Encoding,System.Char)">
+            <summary>
+            指定長で文字列をバイナリに書き込み
+            </summary>
+            <param name="value">書き込む文字列</param>
+            <param name="length">書き込む長さ</param>
+            <param name="encoding">エンコード形式</param>
+            <param name="filler">余った領域に充填する文字</param>
+        </member>
+        <member name="M:MikuMikuMethods.Extension.BinaryWrite.Write(System.IO.BinaryWriter,MikuMikuMethods.ColorF,System.Boolean)">
+            <summary>
+            浮動小数点色をバイナリに書き込み
+            </summary>
+            <param name="value">書き込む色</param>
+            <param name="isWriteAlpha">アルファ値の情報を書き込むか</param>
+        </member>
+        <member name="T:MikuMikuMethods.Extension.ColorExtensions">
+            <summary>
+            色関連拡張メソッド
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.Extension.ColorExtensions.ToColorF(System.Drawing.Color)">
+            <summary>
+            浮動小数色に変換
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.Extension.Range">
+            <summary>
+            範囲内判定系拡張メソッド
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.Extension.Range.IsWithin``1(``0,``0,``0)">
+            <summary>
+            指定された閉区間の範囲内であるかを判断します。
+            </summary>
+            <param name="i"></param>
+            <param name="lower">下限（自身も含む）</param>
+            <param name="upper">上限（自身も含む）</param>
+            <returns></returns>
+        </member>
+        <member name="M:MikuMikuMethods.Extension.Range.IsInside``1(``0,``0,``0)">
+            <summary>
+            指定された開区間の範囲内であるかを判断します。
+            </summary>
+            <param name="i"></param>
+            <param name="lower">下限（自身は含まない）</param>
+            <param name="upper">上限（自身は含まない）</param>
+            <returns></returns>
+        </member>
+        <member name="T:MikuMikuMethods.Extension.Range.Interval">
+            <summary>
+            区間種別
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.Extension.Range.Interval.Open">
+            <summary>
+            開区間
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.Extension.Range.Interval.Close">
+            <summary>
+            閉区間
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.Extension.Range.IsInRangeOf``1(``0,``0,MikuMikuMethods.Extension.Range.Interval,``0,MikuMikuMethods.Extension.Range.Interval)">
+            <summary>
+            指定した区間の範囲内であるかを判断します。
+            閉区間：自身を含む
+            開区間：自身を含まない
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="i"></param>
+            <param name="lower">下限</param>
+            <param name="lowerInterval">左側の開閉</param>
+            <param name="upper">上限</param>
+            <param name="upperInterval">右側の開閉</param>
+            <returns></returns>
+        </member>
+        <member name="T:MikuMikuMethods.MME.AccessoryInfo">
+            <summary>
+            エフェクト対象アクセサリ情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.MME.AccessoryInfo.Name">
+            <summary>
+            オブジェクトのキーを表す文字列
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.MME.AccessoryInfo.#ctor(System.Int32)">
+            <summary>
+            コンストラクタ
+            </summary>
+            <param name="index">オブジェクト番号</param>
+        </member>
+        <member name="T:MikuMikuMethods.MME.EffectCategory">
+            <summary>
+            エフェクト設定の種類
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.MME.EffectCategory.Effect">
+            <summary>
+            <para>デフォルト設定</para>
+            <para>MMEエフェクト割当画面の"Main"タブに相当</para>
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.MME.EffectCategory.Other">
+            <summary>
+            <para>その他のエフェクト設定</para>
+            <para>MMEエフェクト割当画面の"Main"以外のタブに相当</para>
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.MME.EffectOnObject">
+            <summary>
+            オブジェクト単位のエフェクト設定
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.MME.EffectOnObject.Object">
+            <summary>
+            対応するオブジェクト情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.MME.EffectOnObject.Effect">
+            <summary>
+            オブジェクトに適用するエフェクトの情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.MME.EffectOnObject.Subsets">
+            <summary>
+            サブセット展開されたときの各材質に適用するエフェクトの情報
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.MME.EffectOnObject.#ctor(MikuMikuMethods.MME.ObjectInfo)">
+            <summary>
+            オブジェクト情報を指定してインスタンスを生成
+            </summary>
+            <param name="key">オブジェクト情報</param>
+        </member>
+        <member name="T:MikuMikuMethods.MME.EffectSettings">
+            <summary>
+            <para>EMMファイルのエフェクト単位の設定</para>
+            <para>MMEエフェクト割当画面の各タブに相当</para>
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.MME.EffectSettings.Category">
+            <summary>
+            設定種別
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.MME.EffectSettings.Name">
+            <summary>
+            <para>設定名</para>
+            <para>MMEエフェクト割当画面のタブ名に相当</para>
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.MME.EffectSettings.Owner">
+            <summary>
+            <para>エフェクトが依拠するオブジェクト</para>
+            <para>オブジェクト定義で記述された名前が入る</para>
+            <para>CategoryがEffectの場合はEMMファイル内の"Default"に相当する</para>
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.MME.EffectSettings.Effects">
+            <summary>
+            設定対象オブジェクトのリスト
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.MME.EffectSettings.#ctor(System.Collections.Generic.List{MikuMikuMethods.MME.ObjectInfo},MikuMikuMethods.MME.EffectCategory)">
+            <summary>
+            [Object]または[Effect]のとき用
+            </summary>
+            <param name="keys">設定するオブジェクト定義リスト</param>
+            <param name="category">設定種別</param>
+        </member>
+        <member name="M:MikuMikuMethods.MME.EffectSettings.#ctor(System.Collections.Generic.List{MikuMikuMethods.MME.ObjectInfo},System.String)">
+            <summary>
+            [Effect@.*]のとき用
+            </summary>
+            <param name="keys">設定するオブジェクト定義リスト</param>
+            <param name="name">"@"以降の名前</param>
+        </member>
+        <member name="M:MikuMikuMethods.MME.EffectSettings.Read(System.IO.StreamReader)">
+            <summary>
+            読み込み
+            </summary>
+            <param name="reader">[.*]の次行が読み込まれる状態であること</param>
+        </member>
+        <member name="M:MikuMikuMethods.MME.EffectSettings.Write(System.IO.StreamWriter)">
+            <summary>
+            書き込み
+            </summary>
+            <param name="writer">書き込みストリーム</param>
+        </member>
+        <member name="T:MikuMikuMethods.MME.EmdObjectInfo">
+            <summary>
+            エフェクト対象モデルごと設定でのオブジェクト情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.MME.EmdObjectInfo.Name">
+            <summary>
+            オブジェクトのキーを表す文字列
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.MME.EmdObjectInfo.#ctor(System.Int32)">
+            <summary>
+            コンストラクタ
+            </summary>
+            <param name="index">オブジェクト番号</param>
+        </member>
+        <member name="T:MikuMikuMethods.MME.FxInfo">
+            <summary>
+            個々の要素に対するエフェクト情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.MME.FxInfo.Show">
+            <summary>
+            表示切り替え
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.MME.FxInfo.Path">
+            <summary>
+            エフェクトの位置
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.MME.ModelInfo">
+            <summary>
+            エフェクト対象モデル情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.MME.ModelInfo.Name">
+            <summary>
+            オブジェクトのキーを表す文字列
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.MME.ModelInfo.#ctor(System.Int32)">
+            <summary>
+            コンストラクタ
+            </summary>
+            <param name="index">オブジェクト番号</param>
+        </member>
+        <member name="T:MikuMikuMethods.MME.ObjectInfo">
+            <summary>
+            オブジェクト情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.MME.ObjectInfo.Index">
+            <summary>
+            オブジェクトの番号
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.MME.ObjectInfo.Name">
+            <summary>
+            オブジェクトのキーを表す文字列
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.MME.ObjectInfo.Path">
+            <summary>
+            オブジェクトのパス
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.MME.ObjectInfo.#ctor(System.Int32)">
+            <summary>
+            コンストラクタ
+            </summary>
+            <param name="index">オブジェクト番号</param>
+        </member>
+        <member name="T:MikuMikuMethods.MME.ProjectEffectSettings">
+            <summary>
+            MMEプロジェクト単位設定ファイル(EMMファイルの内部表現)
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.MME.ProjectEffectSettings.Version">
+            <summary>
+            EMMのバージョン
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.MME.ProjectEffectSettings.Objects">
+            <summary>
+            内包オブジェクトのリスト
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.MME.ProjectEffectSettings.Settings">
+            <summary>
+            <para>エフェクト設定のリスト</para>
+            <para>MMEエフェクト割当画面の各タブに相当</para>
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.MME.ProjectEffectSettings.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.MME.ProjectEffectSettings.Read(System.IO.StreamReader)">
+            <summary>
+            EMMファイルから読み込み
+            </summary>
+            <param name="reader">エンコードはShiftJISである必要がある</param>
+        </member>
+        <member name="M:MikuMikuMethods.MME.ProjectEffectSettings.Write(System.IO.StreamWriter)">
+            <summary>
+            EMMファイルに書き込み
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.Frame.PmmAccessoryFrame">
+            <summary>
+            アクセサリフレーム情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmAccessoryFrame.OpacityAndVisible">
+            <summary>
+            <para>上位7bit : 半透明度</para>
+            <para>最下位1bit : 表示/非表示</para>
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmAccessoryFrame.ParentModelIndex">
+            <summary>
+            <para>親モデルのインデックス</para>
+            <para>-1 なら親なし</para>
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmAccessoryFrame.ParentBoneIndex">
+            <summary>
+            親ボーンのインデックス
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmAccessoryFrame.Position">
+            <summary>
+            位置
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmAccessoryFrame.Rotation">
+            <summary>
+            回転
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmAccessoryFrame.Scale">
+            <summary>
+            拡縮
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmAccessoryFrame.EnableShadow">
+            <summary>
+            影のOn/Off
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.Frame.PmmAccessoryFrame.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.Frame.PmmAccessoryFrame.#ctor(System.IO.BinaryReader,System.Nullable{System.Int32})">
+            <summary>
+            バイナリデータから読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+            <param name="index">フレームID</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.Frame.PmmAccessoryFrame.Read(System.IO.BinaryReader,System.Nullable{System.Int32})">
+            <summary>
+            バイナリデータから読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+            <param name="index">フレームID</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.Frame.PmmAccessoryFrame.Write(System.IO.BinaryWriter)">
+            <summary>
+            ファイルに書込
+            </summary>
+            <param name="writer">出力対象バイナリファイル</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.Frame.PmmBoneFrame">
+            <summary>
+            ボーンフレーム情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmBoneFrame.Offset">
+            <summary>
+            移動量
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmBoneFrame.Rotation">
+            <summary>
+            回転量
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmBoneFrame.InterpolationCurces">
+            <summary>
+            補間曲線
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmBoneFrame.EnablePhysic">
+            <summary>
+            物理が有効か
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.Frame.PmmBoneFrame.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.Frame.PmmBoneFrame.Read(System.IO.BinaryReader,System.Nullable{System.Int32})">
+            <summary>
+            バイナリデータから読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+            <param name="index">フレームID</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.Frame.PmmBoneFrame.Write(System.IO.BinaryWriter)">
+            <summary>
+            ファイルに書込
+            </summary>
+            <param name="writer">出力対象バイナリファイル</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.Frame.PmmCameraFrame">
+            <summary>
+            カメラフレーム情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmCameraFrame.Distance">
+            <summary>
+            カメラの距離
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmCameraFrame.EyePosition">
+            <summary>
+            カメラの位置
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmCameraFrame.Rotation">
+            <summary>
+            カメラの回転
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmCameraFrame.FollowingModelIndex">
+            <summary>
+            <para>追従モデルのインデックス</para>
+            <para>-1 で非選択</para>
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmCameraFrame.FollowingBoneIndex">
+            <summary>
+            追従ボーンのインデックス
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmCameraFrame.InterpolationCurces">
+            <summary>
+            補間曲線
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmCameraFrame.EnablePerspective">
+            <summary>
+            パースのOn/Off
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmCameraFrame.ViewAngle">
+            <summary>
+            視野角
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.Frame.PmmCameraFrame.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.Frame.PmmCameraFrame.#ctor(System.IO.BinaryReader,System.Nullable{System.Int32})">
+            <summary>
+            バイナリデータから読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+            <param name="index">フレームID</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.Frame.PmmCameraFrame.Read(System.IO.BinaryReader,System.Nullable{System.Int32})">
+            <summary>
+            バイナリデータから読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+            <param name="index">フレームID</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.Frame.PmmCameraFrame.Write(System.IO.BinaryWriter)">
+            <summary>
+            ファイルに書込
+            </summary>
+            <param name="writer">出力対象バイナリファイル</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.Frame.PmmConfigFrame">
+            <summary>
+            表示・IK・外観フレーム情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmConfigFrame.Visible">
+            <summary>
+            表示
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmConfigFrame.EnableIK">
+            <summary>
+            IKが有効か
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmConfigFrame.ParentSettings">
+            <summary>
+            外部親設定
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.Frame.PmmConfigFrame.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.Frame.PmmConfigFrame.Read(System.IO.BinaryReader,System.Nullable{System.Int32},System.Int32,System.Int32)">
+            <summary>
+            バイナリデータから読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+            <param name="index">フレームID</param>
+            <param name="ikCount">IKボーンの数</param>
+            <param name="parentCount">外部親設定可能ボーンの数</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.Frame.PmmConfigFrame.Write(System.IO.BinaryWriter)">
+            <summary>
+            ファイルに書込
+            </summary>
+            <param name="writer">出力対象バイナリファイル</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.Frame.PmmFrame">
+            <summary>
+            フレーム情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmFrame.Index">
+            <summary>
+            <para>フレーム番号</para>
+            <para>初期フレームには振られないのでnullを入れる</para>
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmFrame.Frame">
+            <summary>
+            所在フレーム
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmFrame.PreviousFrameIndex">
+            <summary>
+            <para>直前のキーフレームのID</para>
+            <para>存在しなければ0</para>
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmFrame.NextFrameIndex">
+            <summary>
+            直後のキーフレームのID
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmFrame.IsSelected">
+            <summary>
+            選択されているか
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.Frame.PmmGravityFrame">
+            <summary>
+            重力フレーム情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmGravityFrame.EnableNoize">
+            <summary>
+            ノイズ不可On/Off
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmGravityFrame.NoizeAmount">
+            <summary>
+            ノイズ量
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmGravityFrame.Acceleration">
+            <summary>
+            加速度
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmGravityFrame.Direction">
+            <summary>
+            方向
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.Frame.PmmGravityFrame.#ctor">
+            <summary>
+            デフォルトコンストラクタ
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.Frame.PmmGravityFrame.#ctor(System.IO.BinaryReader,System.Nullable{System.Int32})">
+            <summary>
+            バイナリデータから読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+            <param name="index">フレームID</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.Frame.PmmGravityFrame.Read(System.IO.BinaryReader,System.Nullable{System.Int32})">
+            <summary>
+            バイナリデータから読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+            <param name="index">フレームID</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.Frame.PmmGravityFrame.Write(System.IO.BinaryWriter)">
+            <summary>
+            ファイルに書込
+            </summary>
+            <param name="writer">出力対象バイナリファイル</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.Frame.PmmLightFrame">
+            <summary>
+            照明フレーム情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmLightFrame.Color">
+            <summary>
+            色(RGBのみ使用)
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmLightFrame.Position">
+            <summary>
+            位置
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.Frame.PmmLightFrame.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.Frame.PmmLightFrame.#ctor(System.IO.BinaryReader,System.Nullable{System.Int32})">
+            <summary>
+            バイナリデータから読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+            <param name="index">フレームID</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.Frame.PmmLightFrame.Read(System.IO.BinaryReader,System.Nullable{System.Int32})">
+            <summary>
+            バイナリデータから読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+            <param name="index">フレームID</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.Frame.PmmLightFrame.Write(System.IO.BinaryWriter)">
+            <summary>
+            ファイルに書込
+            </summary>
+            <param name="writer">出力対象バイナリファイル</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.Frame.PmmMorphFrame">
+            <summary>
+            モーフフレーム情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmMorphFrame.Weight">
+            <summary>
+            モーフ適用係数
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.Frame.PmmMorphFrame.Read(System.IO.BinaryReader,System.Nullable{System.Int32})">
+            <summary>
+            バイナリデータから読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+            <param name="index">フレームID</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.Frame.PmmMorphFrame.Write(System.IO.BinaryWriter)">
+            <summary>
+            ファイルに書込
+            </summary>
+            <param name="writer">出力対象バイナリファイル</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.Frame.PmmSelfShadowFrame">
+            <summary>
+            セルフ影フレーム情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmSelfShadowFrame.ShadowMode">
+            <summary>
+            影モード
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.Frame.PmmSelfShadowFrame.ShadowRange">
+            <summary>
+            影範囲
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.Frame.PmmSelfShadowFrame.#ctor(System.IO.BinaryReader,System.Nullable{System.Int32})">
+            <summary>
+            バイナリデータから読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+            <param name="index">フレームID</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.Frame.PmmSelfShadowFrame.Read(System.IO.BinaryReader,System.Nullable{System.Int32})">
+            <summary>
+            バイナリデータから読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+            <param name="index">フレームID</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.Frame.PmmSelfShadowFrame.Write(System.IO.BinaryWriter)">
+            <summary>
+            ファイルに書込
+            </summary>
+            <param name="writer">出力対象バイナリファイル</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.Frame.PmmSelfShadowFrame.Shadow">
+            <summary>
+            影のモード
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMM.Frame.PmmSelfShadowFrame.Shadow.None">
+            <summary>
+            影なし
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMM.Frame.PmmSelfShadowFrame.Shadow.Mode1">
+            <summary>
+            モード1
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMM.Frame.PmmSelfShadowFrame.Shadow.Mode2">
+            <summary>
+            モード2
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.PmmAccessory">
+            <summary>
+            PMMのアクセサリ情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmAccessory.Index">
+            <summary>
+            アクセサリ管理番号
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmAccessory.Name">
+            <summary>
+            名前
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmAccessory.Path">
+            <summary>
+            ファイルパス
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmAccessory.RenderOrder">
+            <summary>
+            描画順
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmAccessory.EnableAlphaBlend">
+            <summary>
+            加算合成のOn/Off
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmAccessory.InitialFrame">
+            <summary>
+            初期位置のアクセサリフレーム
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmAccessory.Frames">
+            <summary>
+            アクセサリのキーフレーム
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmAccessory.Uncomitted">
+            <summary>
+            未確定編集状態
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmAccessory.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmAccessory.#ctor(System.IO.BinaryReader)">
+            <summary>
+            バイナリデータから読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmAccessory.Read(System.IO.BinaryReader)">
+            <summary>
+            バイナリデータから読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmAccessory.Write(System.IO.BinaryWriter)">
+            <summary>
+            ファイルに書込
+            </summary>
+            <param name="writer">出力対象バイナリファイル</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.PmmCamera">
+            <summary>
+            PMM内のカメラ情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmCamera.InitialFrame">
+            <summary>
+            初期位置のカメラフレーム
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmCamera.Frames">
+            <summary>
+            カメラのキーフレーム
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmCamera.Uncomitted">
+            <summary>
+            未確定編集状態
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmCamera.UncomittedFollowing">
+            <summary>
+            未確定カメラ追従状態
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmCamera.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmCamera.#ctor(System.IO.BinaryReader)">
+            <summary>
+            バイナリデータからカメラ情報を読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmCamera.Read(System.IO.BinaryReader)">
+            <summary>
+            バイナリデータから読込
+            </summary>
+            <param name="reader">読み込むファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmCamera.Write(System.IO.BinaryWriter)">
+            <summary>
+            ファイルに書込
+            </summary>
+            <param name="writer">出力対象バイナリファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmCamera.ReadUncomittedFollowingState(System.IO.BinaryReader)">
+            <summary>
+            未確定のカメラ追従状態の読込
+            </summary>
+            <param name="reader">読み込むファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmCamera.WriteUncomittedFollowingState(System.IO.BinaryWriter)">
+            <summary>
+            未確定のカメラ追従状態の書込
+            </summary>
+            <param name="writer">出力対象バイナリファイル</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.TemporaryCameraEditState">
+            <summary>
+            未確定のカメラ編集状態
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryCameraEditState.EyePosition">
+            <summary>
+            カメラ位置
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryCameraEditState.TargetPosition">
+            <summary>
+            カメラ中心の位置
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryCameraEditState.Rotation">
+            <summary>
+            カメラ回転
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryCameraEditState.EnablePerspective">
+            <summary>
+            パースのOn/Off
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.TemporaryCameraEditState.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.TemporaryCameraFollowingState">
+            <summary>
+            未確定のカメラ追従状態
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryCameraFollowingState.ModelIndex">
+            <summary>
+            モデルのインデックス
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryCameraFollowingState.BoneIndex">
+            <summary>
+            ボーンのインデックス
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.PmmDrawConfig">
+            <summary>
+            描画関連設定
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmDrawConfig.IsShowInfomation">
+            <summary>
+            描画情報の表示/非表示
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmDrawConfig.IsShowAxis">
+            <summary>
+            座標軸の表示/非表示
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmDrawConfig.IsShowGrandShadow">
+            <summary>
+            地面影の表示/非表示
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmDrawConfig.FPSLimit">
+            <summary>
+            FPS制限量
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmDrawConfig.ScreenCaptureSetting">
+            <summary>
+            スクリーン用キャプチャモード設定
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmDrawConfig.AccessoryModelThreshold">
+            <summary>
+            モデルより後に描画するアクセサリのインデックス
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmDrawConfig.GroundShadowBrightness">
+            <summary>
+            地面影の明るさ
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmDrawConfig.EnableTransparentGroundShadow">
+            <summary>
+            地面影の透明化
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmDrawConfig.PhysicsSetting">
+            <summary>
+            物理演算モード
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmDrawConfig.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmDrawConfig.#ctor(System.IO.BinaryReader)">
+            <summary>
+            バイナリデータから読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmDrawConfig.Read(System.IO.BinaryReader)">
+            <summary>
+            バイナリデータから読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmDrawConfig.Write(System.IO.BinaryWriter)">
+            <summary>
+            ファイルに書込
+            </summary>
+            <param name="writer">出力対象バイナリファイル</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.PmmDrawConfig.ScreenCaptureMode">
+            <summary>
+            スクリーン用キャプチャモード
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMM.PmmDrawConfig.ScreenCaptureMode.Off">
+            <summary>
+            オフ
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMM.PmmDrawConfig.ScreenCaptureMode.FullScreen">
+            <summary>
+            全画面
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMM.PmmDrawConfig.ScreenCaptureMode.Square">
+            <summary>
+            4:3比率
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMM.PmmDrawConfig.ScreenCaptureMode.BackgroundVideo">
+            <summary>
+            背景AVI
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.PmmDrawConfig.PhysicsMode">
+            <summary>
+            物理演算モード
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMM.PmmDrawConfig.PhysicsMode.Disable">
+            <summary>
+            演算しない
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMM.PmmDrawConfig.PhysicsMode.Always">
+            <summary>
+            常に演算
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMM.PmmDrawConfig.PhysicsMode.Switchable">
+            <summary>
+            オン/オフモード
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMM.PmmDrawConfig.PhysicsMode.Trace">
+            <summary>
+            トレースモード
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmDrawConfig.EdgeColor">
+            <summary>
+            エッジの色
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmDrawConfig.IsBackgroundBlack">
+            <summary>
+            背景色は黒か
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmDrawConfig.ReadColorConfig(System.IO.BinaryReader)">
+            <summary>
+            色関連設定を読み込む
+            </summary>
+            <param name="reader">読み込むファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmDrawConfig.WriteColorConfig(System.IO.BinaryWriter)">
+            <summary>
+            色関連設定を書き込む
+            </summary>
+            <param name="writer">出力対象バイナリファイル</param>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmDrawConfig.EnableGroundPhysics">
+            <summary>
+            物理床のOn/Off
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmDrawConfig.ReadGroundPhysics(System.IO.BinaryReader)">
+            <summary>
+            物理床設定を読み込む
+            </summary>
+            <param name="reader">読み込むファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmDrawConfig.WriteGroundPhysics(System.IO.BinaryWriter)">
+            <summary>
+            物理床設定を書き込む
+            </summary>
+            <param name="writer">出力対象バイナリファイル</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.PmmEditorState">
+            <summary>
+            MMD編集画面状態情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmEditorState.OutputWidth">
+            <summary>
+            出力解像度幅
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmEditorState.OutputHeight">
+            <summary>
+            出力解像度高
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmEditorState.KeyframeEditorWidth">
+            <summary>
+            キーフレームエディタ(画面左)の幅
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmEditorState.CurrentViewAngle">
+            <summary>
+            編集中の視野角
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmEditorState.IsCameraMode">
+            <summary>
+            現在カメラ編集モードか？
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmEditorState.DoesOpenCameraPanel">
+            <summary>
+            カメラ操作パネル開閉状態
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmEditorState.DoesOpenLightPanel">
+            <summary>
+            ライト操作パネル開閉状態
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmEditorState.DoesOpenAccessaryPanel">
+            <summary>
+            アクセサリ操作パネル開閉状態
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmEditorState.DoesOpenBonePanel">
+            <summary>
+            ボーン操作パネル開閉状態
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmEditorState.DoesOpenMorphPanel">
+            <summary>
+            表情操作パネル開閉状態
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmEditorState.DoesOpenSelfShadowPanel">
+            <summary>
+            セルフ影操作パネル開閉状態
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmEditorState.SelectedModelIndex">
+            <summary>
+            選択中のモデルインデックス
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmEditorState.ReadViewState(System.IO.BinaryReader)">
+            <summary>
+            描画情報関連をファイルから読み込み
+            </summary>
+            <param name="reader">バイナリファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmEditorState.WriteViewState(System.IO.BinaryWriter)">
+            <summary>
+            描画情報関連をファイルに書込
+            </summary>
+            <param name="writer">出力対象バイナリファイル</param>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmEditorState.SelectedAccessoryIndex">
+            <summary>
+            選択中のアクセサリインデックス
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmEditorState.VerticalScrollOfAccessoryRow">
+            <summary>
+            アクセサリの垂直スクロール量
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmEditorState.ReadAccessoryState(System.IO.BinaryReader)">
+            <summary>
+            アクセサリ情報関連をファイルから読み込み
+            </summary>
+            <param name="reader">バイナリファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmEditorState.WriteAccessoryState(System.IO.BinaryWriter)">
+            <summary>
+            アクセサリ情報関連をファイルに書込
+            </summary>
+            <param name="writer">出力対象バイナリファイル</param>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmEditorState.CurrentFrame">
+            <summary>
+            現在のフレーム位置
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmEditorState.HorizontalScroll">
+            <summary>
+            キーフレームエディタの水平スクロール量
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmEditorState.HorizontalScrollLength">
+            <summary>
+            キーフレームエディタの横スクロール範囲
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmEditorState.SelectedBoneOperation">
+            <summary>
+            選択中のボーン操作方法
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmEditorState.ReadFrameState(System.IO.BinaryReader)">
+            <summary>
+            アクセサリ情報関連をファイルから読み込み
+            </summary>
+            <param name="reader">バイナリファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmEditorState.WriteFrameState(System.IO.BinaryWriter)">
+            <summary>
+            アクセサリ情報関連をファイルに書込
+            </summary>
+            <param name="writer">出力対象バイナリファイル</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.PmmEditorState.BoneOperation">
+            <summary>
+            MMD上でのボーン操作
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMM.PmmEditorState.BoneOperation.Select">
+            <summary>
+            選択
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMM.PmmEditorState.BoneOperation.RectangleSelect">
+            <summary>
+            矩形選択
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMM.PmmEditorState.BoneOperation.Move">
+            <summary>
+            移動
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMM.PmmEditorState.BoneOperation.Rotate">
+            <summary>
+            回転
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMM.PmmEditorState.BoneOperation.None">
+            <summary>
+            無選択
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmEditorState.IsViewFollowCamera">
+            <summary>
+            再生時の視点追従のOn/Off
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmEditorState.ReadViewFollowing(System.IO.BinaryReader)">
+            <summary>
+            再生時の視点追従をファイルから読み込み
+            </summary>
+            <param name="reader">バイナリファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmEditorState.WriteViewFollowing(System.IO.BinaryWriter)">
+            <summary>
+            再生時の視点追従をファイルに書込
+            </summary>
+            <param name="writer">出力対象バイナリファイル</param>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmEditorState.FrameLocation">
+            <summary>
+            3Dビュー上部のフレーム入力欄の値
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmEditorState.ReadFrameLocation(System.IO.BinaryReader)">
+            <summary>
+            フレーム入力欄の値をファイルから読み込み
+            </summary>
+            <param name="reader">バイナリファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmEditorState.WriteFrameLocation(System.IO.BinaryWriter)">
+            <summary>
+            フレーム入力欄の値をファイルに書込
+            </summary>
+            <param name="writer">出力対象バイナリファイル</param>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmEditorState.ExistRangeSelectionTargetSection">
+            <summary>
+            範囲選択対象のセクションが存在しているか
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmEditorState.RangeSelectionTargetIndices">
+            <summary>
+            範囲選択対象
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.PmmGravity">
+            <summary>
+            PMMの重力情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmGravity.EnableNoize">
+            <summary>
+            現在のノイズ不可On/Off
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmGravity.NoizeAmount">
+            <summary>
+            現在のノイズ量
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmGravity.Acceleration">
+            <summary>
+            現在の加速度
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmGravity.Direction">
+            <summary>
+            現在の方向
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmGravity.InitialFrame">
+            <summary>
+            初期位置の重力フレーム
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmGravity.Frames">
+            <summary>
+            重力のキーフレーム
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmGravity.#ctor">
+            <summary>
+            デフォルトコンストラクタ
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmGravity.#ctor(System.IO.BinaryReader)">
+            <summary>
+            バイナリデータから読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmGravity.Read(System.IO.BinaryReader)">
+            <summary>
+            バイナリデータから読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmGravity.Write(System.IO.BinaryWriter)">
+            <summary>
+            ファイルに書込
+            </summary>
+            <param name="writer">出力対象バイナリファイル</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.PmmLight">
+            <summary>
+            PMMの照明情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmLight.InitialFrame">
+            <summary>
+            初期位置の照明フレーム
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmLight.Frames">
+            <summary>
+            照明のキーフレーム
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmLight.Uncomitted">
+            <summary>
+            未確定編集状態
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmLight.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmLight.#ctor(System.IO.BinaryReader)">
+            <summary>
+            バイナリデータから照明情報を読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmLight.Read(System.IO.BinaryReader)">
+            <summary>
+            バイナリデータから読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmLight.Write(System.IO.BinaryWriter)">
+            <summary>
+            ファイルに書込
+            </summary>
+            <param name="writer">出力対象バイナリファイル</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.PmmMediaConfig">
+            <summary>
+            メディア関連設定
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmMediaConfig.EnableAudio">
+            <summary>
+            音声の有無
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmMediaConfig.AudioPath">
+            <summary>
+            音声のファイルパス
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmMediaConfig.EnableBackgroundVideo">
+            <summary>
+            背景AVIの有無
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmMediaConfig.BackgroundVideoPath">
+            <summary>
+            背景AVIのファイルパス
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmMediaConfig.BackgroundVideoScale">
+            <summary>
+            背景AVIの表示スケール
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmMediaConfig.BackgroundVideoOffset">
+            <summary>
+            背景AVIの表示位置
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmMediaConfig.EnableBackgroundImage">
+            <summary>
+            背景画像の有無
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmMediaConfig.BackgroundImagePath">
+            <summary>
+            背景画像のファイルパス
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmMediaConfig.BackgroundImageScale">
+            <summary>
+            背景画像のスケール
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmMediaConfig.BackgroundImageOffset">
+            <summary>
+            背景画像の表示位置
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmMediaConfig.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmMediaConfig.#ctor(System.IO.BinaryReader)">
+            <summary>
+            バイナリデータから読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmMediaConfig.Read(System.IO.BinaryReader)">
+            <summary>
+            バイナリデータから読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmMediaConfig.Write(System.IO.BinaryWriter)">
+            <summary>
+            ファイルに書込
+            </summary>
+            <param name="writer">出力対象バイナリファイル</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.PmmModel">
+            <summary>
+            PMM内のモデル情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmModel.Index">
+            <summary>
+            モデル管理番号
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmModel.Name">
+            <summary>
+            モデル名
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmModel.NameEn">
+            <summary>
+            モデル名(英語)
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmModel.Path">
+            <summary>
+            ファイルパス
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmModel.RenderConfig">
+            <summary>
+            描画設定
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmModel.FrameEditor">
+            <summary>
+            キーフレーム編集画面の状態
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmModel.Uncomitted">
+            <summary>
+            未確定編集状態
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmModel.BoneNames">
+            <summary>
+            ボーン名
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmModel.MorphNames">
+            <summary>
+            モーフ名
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmModel.IKBoneIndices">
+            <summary>
+            IK設定されたボーンID
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmModel.NodeCount">
+            <summary>
+            表示枠の数(表示、表情含む)
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmModel.ParentableBoneIndices">
+            <summary>
+            外部親にできるボーンのID
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmModel.SelectedBoneIndex">
+            <summary>
+            選択中のボーンID
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmModel.SelectedMorphIndices">
+            <summary>
+            選択中のモーフID
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmModel.InitialBoneFrames">
+            <summary>
+            初期位置のボーンフレーム
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmModel.BoneFrames">
+            <summary>
+            ボーンのキーフレーム
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmModel.InitialMorphFrames">
+            <summary>
+            初期位置のモーフフレーム
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmModel.MorphFrames">
+            <summary>
+            ボーンのキーフレーム
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmModel.InitialConfigFrame">
+            <summary>
+            初期表示・IK・外観フレーム
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmModel.ConfigFrames">
+            <summary>
+            表示・IK・外観のキーフレーム
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmModel.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmModel.#ctor(System.IO.BinaryReader)">
+            <summary>
+            バイナリデータからモデル情報を読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmModel.Read(System.IO.BinaryReader)">
+            <summary>
+            バイナリデータから読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmModel.Write(System.IO.BinaryWriter)">
+            <summary>
+            ファイルに書込
+            </summary>
+            <param name="writer">出力対象バイナリファイル</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.FrameEditorState">
+            <summary>
+            キーフレーム編集画面の状態
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.FrameEditorState.RowCount">
+            <summary>
+            <para>行数</para>
+            <para>root, 表示・IK・外観, 表情 + 表情枠</para>
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.FrameEditorState.VerticalScrollState">
+            <summary>
+            垂直スクロール状態
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.FrameEditorState.DoesOpenNode">
+            <summary>
+            表情枠展開状態
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.FrameEditorState.LastFrame">
+            <summary>
+            最終フレーム
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.FrameEditorState.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.RenderConfig">
+            <summary>
+            描画設定
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.RenderConfig.RenderOrder">
+            <summary>
+            <para>モデル描画順</para>
+            <para>これが狂うとモデルセレクタの選択と実際に動くモデルに齟齬が発生する</para>
+            <para>セレクタ一覧が描画順に基づいて作られるためだと思われる</para>
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.RenderConfig.CalculateOrder">
+            <summary>
+            モデル計算順
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.RenderConfig.EdgeWidth">
+            <summary>
+            エッジ幅
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.RenderConfig.EnableAlphaBlend">
+            <summary>
+            加算合成が有効か
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.RenderConfig.EnableSelfShadow">
+            <summary>
+            セルフ影が有効か
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.TemporaryModelEditState">
+            <summary>
+            未確定のモデル編集状態
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryModelEditState.Visible">
+            <summary>
+            表示
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryModelEditState.Bones">
+            <summary>
+            ボーンのパラメータ
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryModelEditState.MorphWeights">
+            <summary>
+            モーフの係数
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryModelEditState.IKEnable">
+            <summary>
+            IKが有効か
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryModelEditState.ParentSettings">
+            <summary>
+            外部親設定
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.TemporaryModelEditState.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.TemporaryBoneState">
+            <summary>
+            未確定の編集中ボーン情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryBoneState.Offset">
+            <summary>
+            移動量
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryBoneState.Rotate">
+            <summary>
+            回転量
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryBoneState.EnablePhysic">
+            <summary>
+            物理が有効か
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryBoneState.RowIsSelected">
+            <summary>
+            現在選択状態か
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryBoneState.IsThis">
+            <summary>
+            未確定ボーンか
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.TemporaryParentSetting">
+            <summary>
+            未確定の外部親設定
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryParentSetting.StartFrame">
+            <summary>
+            外部親設定がされたフレーム番号
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryParentSetting.EndFrame">
+            <summary>
+            外部親設定が変化するフレーム番号
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryParentSetting.ModelIndex">
+            <summary>
+            外部親のモデルインデックス
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryParentSetting.BoneIndex">
+            <summary>
+            外部親のボーンインデックス
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.PmmPlayConfig">
+            <summary>
+            Pmmの再生設定
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmPlayConfig.CameraTrackingTarget">
+            <summary>
+            視点追従対象
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmPlayConfig.IsRepeat">
+            <summary>
+            繰り返し再生を行うか
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmPlayConfig.IsMoveCurrentFrameToStopFrame">
+            <summary>
+            フレ・ストップ
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmPlayConfig.IsStartFromCurrentFrame">
+            <summary>
+            フレ・スタート
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmPlayConfig.PlayStartFrame">
+            <summary>
+            再生開始フレーム
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmPlayConfig.PlayStopFrame">
+            <summary>
+            再生停止フレーム
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmPlayConfig.Read(System.IO.BinaryReader)">
+            <summary>
+            バイナリデータから読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmPlayConfig.Write(System.IO.BinaryWriter)">
+            <summary>
+            ファイルに書込
+            </summary>
+            <param name="writer">出力対象バイナリファイル</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.PmmPlayConfig.TrackingTarget">
+            <summary>
+            視点追従対象
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMM.PmmPlayConfig.TrackingTarget.None">
+            <summary>
+            なし
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMM.PmmPlayConfig.TrackingTarget.Model">
+            <summary>
+            モデル
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMM.PmmPlayConfig.TrackingTarget.Bone">
+            <summary>
+            ボーン
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.PmmSelfShadow">
+            <summary>
+            セルフ影情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmSelfShadow.EnableSelfShadow">
+            <summary>
+            セルフ影のOn/Off
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmSelfShadow.ShadowLimit">
+            <summary>
+            影範囲
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmSelfShadow.InitialFrame">
+            <summary>
+            初期位置のセルフ影フレーム
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmSelfShadow.Frames">
+            <summary>
+            セルフ影のキーフレーム
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmSelfShadow.Read(System.IO.BinaryReader)">
+            <summary>
+            バイナリデータから読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PmmSelfShadow.Write(System.IO.BinaryWriter)">
+            <summary>
+            ファイルに書込
+            </summary>
+            <param name="writer">出力対象バイナリファイル</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.PmmUnknown">
+            <summary>
+            意図不明な値
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMM.PmmUnknown.Matrix">
+            <summary>
+            64byteの行列らしき値
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PmmUnknown.TruthValue">
+            <summary>
+            真理値らしき値
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.PolygonMovieMaker">
+            <summary>
+            MMDプロジェクトファイル
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PolygonMovieMaker.Version">
+            <summary>
+            PMMファイルのバージョン情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PolygonMovieMaker.EditorState">
+            <summary>
+            編集画面状態情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PolygonMovieMaker.PlayConfig">
+            <summary>
+            再生設定
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PolygonMovieMaker.MediaConfig">
+            <summary>
+            メディア設定
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PolygonMovieMaker.DrawConfig">
+            <summary>
+            描画設定
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PolygonMovieMaker.Models">
+            <summary>
+            モデル
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PolygonMovieMaker.Accessories">
+            <summary>
+            アクセサリ
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PolygonMovieMaker.Camera">
+            <summary>
+            カメラ
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PolygonMovieMaker.Light">
+            <summary>
+            照明
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PolygonMovieMaker.Gravity">
+            <summary>
+            重力
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PolygonMovieMaker.SelfShadow">
+            <summary>
+            セルフ影
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.PolygonMovieMaker.Unknown">
+            <summary>
+            謎の値
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PolygonMovieMaker.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PolygonMovieMaker.#ctor(System.IO.BinaryReader)">
+            <summary>
+            バイナリ読込コンストラクタ
+            </summary>
+            <param name="reader">PMMファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PolygonMovieMaker.Read(System.IO.BinaryReader)">
+            <summary>
+            バイナリデータから読込
+            </summary>
+            <param name="reader">読み込むファイル ShiftJISエンコードで読み込むこと</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PolygonMovieMaker.Write(System.IO.BinaryWriter)">
+            <summary>
+            バイナリデータに書込
+            </summary>
+            <param name="writer">出力対象バイナリファイル</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.IPmxData">
+            <summary>
+            PMX関連のインターフェイス
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.IPmxData.Read(System.IO.BinaryReader)">
+            <summary>
+            データをバイナリから読み込む
+            </summary>
+            <param name="reader">読み込み対象のリーダー</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.IPmxData.Write(System.IO.BinaryWriter)">
+            <summary>
+            データをバイナリで書き込む
+            </summary>
+            <param name="writer">書き込み対象のライター</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.IPmxOffset">
+            <summary>
+            モーフ内要素のインターフェイス
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxOffsetAdditionalUV1">
+            <summary>
+            追加UV1モーフのオフセット
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxOffsetAdditionalUV2">
+            <summary>
+            追加UV2モーフのオフセット
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxOffsetAdditionalUV3">
+            <summary>
+            追加UV3モーフのオフセット
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxOffsetAdditionalUV4">
+            <summary>
+            追加UV4モーフのオフセット
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxOffsetBone">
+            <summary>
+            ボーンモーフのオフセット
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxOffsetBone.Target">
+            <summary>
+            対象ボーン
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxOffsetBone.Offset">
+            <summary>
+            移動量
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxOffsetBone.Rotate">
+            <summary>
+            回転量
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxOffsetGroup">
+            <summary>
+            グループモーフのオフセット
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxOffsetMaterial">
+            <summary>
+            材質モーフのオフセット
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxOffsetUV">
+            <summary>
+            UVモーフのオフセット
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxOffsetVertex">
+            <summary>
+            頂点モーフ
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxOffsetVertex.Target">
+            <summary>
+            対象頂点
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxOffsetVertex.Offset">
+            <summary>
+            移動量
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxBody">
+            <summary>
+            剛体
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxBody.Read(System.IO.BinaryReader)">
+            <summary>
+            データをバイナリから読み込む
+            </summary>
+            <param name="reader">読み込み対象のリーダー</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxBody.Write(System.IO.BinaryWriter)">
+            <summary>
+            データをバイナリで書き込む
+            </summary>
+            <param name="writer">書き込み対象のライター</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxBone">
+            <summary>
+            ボーン
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxBone.Name">
+            <summary>
+            名前
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxBone.NameEn">
+            <summary>
+            名前(英語)
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxBone.Position">
+            <summary>
+            位置
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxBone.Parent">
+            <summary>
+            親ボーン
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxBone.TransformOrder">
+            <summary>
+            変形改装
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxBone.ConnectionTargetType">
+            <summary>
+            接続先指定方法
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxBone.ConnectionTargetOffset">
+            <summary>
+            接続先座標
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxBone.ConnectionTargetBone">
+            <summary>
+            接続先ボーン
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxBone.Rotatable">
+            <summary>
+            回転可能か
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxBone.Movable">
+            <summary>
+            移動可能か
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxBone.Visible">
+            <summary>
+            表示するか
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxBone.Controlable">
+            <summary>
+            操作可能か
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxBone.IsIK">
+            <summary>
+            IKか
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxBone.IKInfo">
+            <summary>
+            IK情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxBone.IsLocalAddition">
+            <summary>
+            ローカル付与か
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxBone.IsRotateAddition">
+            <summary>
+            回転付与するか
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxBone.IsMoveAddtion">
+            <summary>
+            移動付与するか
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxBone.AdditionParent">
+            <summary>
+            付与親
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxBone.AdditonRatio">
+            <summary>
+            付与率
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxBone.IsFixedAxis">
+            <summary>
+            軸固定か
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxBone.FixVector">
+            <summary>
+            軸固定の方向
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxBone.IsLocalAxis">
+            <summary>
+            ローカル軸か
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxBone.LocalAxisX">
+            <summary>
+            ローカル軸X
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxBone.LocalAxisZ">
+            <summary>
+            ローカル軸Z
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxBone.IsAfterPhysic">
+            <summary>
+            物理後変形か
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxBone.UseOuterParent">
+            <summary>
+            外部親を使用するか
+            MMM用らしい
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxBone.OuterParentKey">
+            <summary>
+            外部親番号
+            MMM用らしい
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxBone.Read(System.IO.BinaryReader)">
+            <summary>
+            データをバイナリから読み込む
+            </summary>
+            <param name="reader">読み込み対象のリーダー</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxBone.Write(System.IO.BinaryWriter)">
+            <summary>
+            データをバイナリで書き込む
+            </summary>
+            <param name="writer">書き込み対象のライター</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.ConnectionTargetType">
+            <summary>
+            ボーンの接続先指定の方法
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMX.ConnectionTargetType.Bone">
+            <summary>
+            ボーンで指定
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMX.ConnectionTargetType.Offset">
+            <summary>
+            座標で指定
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxEdge">
+            <summary>
+            辺
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxEdge.Vertices">
+            <summary>
+            構成頂点
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxEdge.Invert">
+            <summary>
+            辺を反転する
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxEdge.#ctor(MikuMikuMethods.PMX.PmxVertex,MikuMikuMethods.PMX.PmxVertex)">
+            <summary>
+            コンストラクタ
+            </summary>
+            <param name="start">起点</param>
+            <param name="end">終点</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxEdge.ToVector">
+            <summary>
+            ベクトルに変換
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxFace">
+            <summary>
+            面
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxFace.Vertices">
+            <summary>
+            構成頂点のリスト
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxFace.Normal">
+            <summary>
+            面法線
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxFace.Invert">
+            <summary>
+            面を反転
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxFace.FetchEdge(System.Int32,System.Int32)">
+            <summary>
+            指定頂点の構成辺を取得
+            </summary>
+            <param name="startIndex">辺の起点頂点の面内頂点番号を指定</param>
+            <param name="endIndex">辺の終点頂点の面内頂点番号を指定</param>
+            <returns>辺</returns>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxFace.ToEdges">
+            <summary>
+            辺の集合に変換
+            </summary>
+            <returns>辺の集合</returns>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxFace.Read(System.IO.BinaryReader)">
+            <summary>
+            データをバイナリから読み込む
+            </summary>
+            <param name="reader">読み込み対象のリーダー</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxFace.Write(System.IO.BinaryWriter)">
+            <summary>
+            データをバイナリで書き込む
+            </summary>
+            <param name="writer">書き込み対象のライター</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxHeader">
+            <summary>
+            ヘッダー
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxHeader.FormatName">
+            <summary>
+            フォーマット名
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxHeader.Version">
+            <summary>
+            PMXのバージョン
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxHeader.ModelSize">
+            <summary>
+            モデルの構成情報の要素数
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxHeader.ModelStructureInfo">
+            <summary>
+            モデルの構成情報
+            <list type="number">
+                <item>
+                    <term>エンコード方式</term>
+                    <description>0 : UTF16, 1 : UTF8</description>
+                </item>
+                <item>
+                    <term>追加UV数</term>
+                    <description>[0-4]</description>
+                </item>
+                <item>
+                    <term>頂点Indexサイズ</term>
+                    <description>1 | 2 | 4</description>
+                </item>
+                <item>
+                    <term>テクスチャIndexサイズ</term>
+                    <description>1 | 2 | 4</description>
+                </item>
+                <item>
+                    <term>材質Indexサイズ</term>
+                    <description>1 | 2 | 4</description>
+                </item>
+                <item>
+                    <term>ボーンIndexサイズ</term>
+                    <description>1 | 2 | 4</description>
+                </item>
+                <item>
+                    <term>モーフIndexサイズ</term>
+                    <description>1 | 2 | 4</description>
+                </item>
+                <item>
+                    <term>剛体Indexサイズ</term>
+                    <description>1 | 2 | 4</description>
+                </item>
+            </list>
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxHeader.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxHeader.Read(System.IO.BinaryReader)">
+            <summary>
+            データをバイナリから読み込む
+            </summary>
+            <param name="reader">読み込み対象のリーダー</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxHeader.Write(System.IO.BinaryWriter)">
+            <summary>
+            データをバイナリで書き込む
+            </summary>
+            <param name="writer">書き込み対象のライター</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxInverseKinematics">
+            <summary>
+            IK情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxInverseKinematics.Target">
+            <summary>
+            IKのターゲットボーン
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxInverseKinematics.LoopNum">
+            <summary>
+            ループ回数
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxInverseKinematics.LimitAngle">
+            <summary>
+            ループ計算時の制限角度 -> ラジアン
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxInverseKinematics.Links">
+            <summary>
+            リンク
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxIKLink">
+            <summary>
+            IKのリンク情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxIKLink.Bone">
+            <summary>
+            対象ボーン
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxIKLink.EnableAngleLimit">
+            <summary>
+            角度制限の有無
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxIKLink.UpperLimit">
+            <summary>
+            角度制限の上限
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxIKLink.LowerLimit">
+            <summary>
+            角度制限の下限
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxJoint">
+            <summary>
+            ジョイント
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxJoint.Read(System.IO.BinaryReader)">
+            <summary>
+            データをバイナリから読み込む
+            </summary>
+            <param name="reader">読み込み対象のリーダー</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxJoint.Write(System.IO.BinaryWriter)">
+            <summary>
+            データをバイナリで書き込む
+            </summary>
+            <param name="writer">書き込み対象のライター</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxMaterial">
+            <summary>
+            材質
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxMaterial.Name">
+            <summary>
+            材質名
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxMaterial.NameEn">
+            <summary>
+            材質名(英語)
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxMaterial.Memo">
+            <summary>
+            メモ
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxMaterial.Diffuse">
+            <summary>
+            拡散色
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxMaterial.Specular">
+            <summary>
+            反射色
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxMaterial.Ambient">
+            <summary>
+            環境色
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxMaterial.ReflectionIntensity">
+            <summary>
+            反射強度
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxMaterial.EnableBothSideDraw">
+            <summary>
+            両面描画
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxMaterial.EnableSelfShadow">
+            <summary>
+            セルフ影描画
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxMaterial.EnableSelfShadowMap">
+            <summary>
+            影マップへの描画
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxMaterial.EnableShadow">
+            <summary>
+            地面影描画
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxMaterial.EnableVertexColor">
+            <summary>
+            頂点色有効性
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxMaterial.EnableEdge">
+            <summary>
+            エッジ有効
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxMaterial.EdgeWidth">
+            <summary>
+            エッジ太さ
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxMaterial.EdgeColor">
+            <summary>
+            エッジ色
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxMaterial.Faces">
+            <summary>
+            面
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxMaterial.Primitive">
+            <summary>
+            描画プリミティブタイプ
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxMaterial.Texture">
+            <summary>
+            テクスチャ
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxMaterial.SphereMap">
+            <summary>
+            スフィアマップ
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxMaterial.SphereMode">
+            <summary>
+            スフィア種別
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxMaterial.ToonMap">
+            <summary>
+            トゥーンマップ
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxMaterial.Read(System.IO.BinaryReader)">
+            <summary>
+            データをバイナリから読み込む
+            </summary>
+            <param name="reader">読み込み対象のリーダー</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxMaterial.Write(System.IO.BinaryWriter)">
+            <summary>
+            データをバイナリで書き込む
+            </summary>
+            <param name="writer">書き込み対象のライター</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PrimitiveType">
+            <summary>
+            描画プリミティブタイプ
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMX.PrimitiveType.Line">
+            <summary>
+            Line List
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMX.PrimitiveType.Point">
+            <summary>
+            Point List
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMX.PrimitiveType.Tri">
+            <summary>
+            Triangle List
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.SphereMode">
+            <summary>
+            スフィア種別
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMX.SphereMode.None">
+            <summary>
+            無効
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMX.SphereMode.Mul">
+            <summary>
+            乗算
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMX.SphereMode.Add">
+            <summary>
+            加算
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMX.SphereMode.SubTex">
+            <summary>
+            サブテクスチャ
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxModel">
+            <summary>
+            PMXモデル
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxModel.Header">
+            <summary>
+            ヘッダ
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxModel.ModelInfo">
+            <summary>
+            モデル情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxModel.Bodies">
+            <summary>
+            剛体
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxModel.Bones">
+            <summary>
+            ボーン
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxModel.Faces">
+            <summary>
+            <para>面</para>
+            <para>全材質内の面リストを結合したもの</para>
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxModel.Joints">
+            <summary>
+            ジョイント
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxModel.Materials">
+            <summary>
+            材質
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxModel.Morphs">
+            <summary>
+            モーフ
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxModel.Nodes">
+            <summary>
+            表情枠
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxModel.Vertices">
+            <summary>
+            頂点
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxModel.Read(System.IO.BinaryReader)">
+            <summary>
+            データをバイナリから読み込む
+            </summary>
+            <param name="reader">読み込み対象のリーダー</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxModel.Write(System.IO.BinaryWriter)">
+            <summary>
+            データをバイナリで書き込む
+            </summary>
+            <param name="writer">書き込み対象のライター</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxModelInfo">
+            <summary>
+            モデル情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxModelInfo.Name">
+            <summary>
+            モデル名
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxModelInfo.NameEn">
+            <summary>
+            モデル名(英語)
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxModelInfo.Comment">
+            <summary>
+            モデルのコメント
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxModelInfo.CommentEn">
+            <summary>
+            モデルのコメント(英語)
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxModelInfo.Read(System.IO.BinaryReader)">
+            <summary>
+            データをバイナリから読み込む
+            </summary>
+            <param name="reader">読み込み対象のリーダー</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxModelInfo.Write(System.IO.BinaryWriter)">
+            <summary>
+            データをバイナリで書き込む
+            </summary>
+            <param name="writer">書き込み対象のライター</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxMorph">
+            <summary>
+            モーフ
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxMorph.Name">
+            <summary>
+            名前
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxMorph.NameEn">
+            <summary>
+            名前(英語)
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxMorph.Panel">
+            <summary>
+            表示パネル
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxMorph.Type">
+            <summary>
+            モーフの種類
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxMorph.Offsets">
+            <summary>
+            モーフのオフセット
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxMorph.#ctor(MikuMikuMethods.PMX.MorphType)">
+            <summary>
+            コンストラクタ
+            </summary>
+            <param name="type">モーフの種類</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxMorph.Read(System.IO.BinaryReader)">
+            <summary>
+            データをバイナリから読み込む
+            </summary>
+            <param name="reader">読み込み対象のリーダー</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxMorph.Write(System.IO.BinaryWriter)">
+            <summary>
+            データをバイナリで書き込む
+            </summary>
+            <param name="writer">書き込み対象のライター</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.MorphPanel">
+            <summary>
+            モーフの表示パネル
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMX.MorphPanel.Brow">
+            <summary>
+            眉(左下)
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMX.MorphPanel.Eye">
+            <summary>
+            目(左上)
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMX.MorphPanel.Lip">
+            <summary>
+            口(右上)
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMX.MorphPanel.Other">
+            <summary>
+            その他(右下)
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.MorphType">
+            <summary>
+            モーフ種類
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMX.MorphType.Group">
+            <summary>
+            グループ
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMX.MorphType.Vertex">
+            <summary>
+            頂点
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMX.MorphType.Bone">
+            <summary>
+            ボーン
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMX.MorphType.UV">
+            <summary>
+            UV
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMX.MorphType.AdditionalUV1">
+            <summary>
+            追加UV1
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMX.MorphType.AdditionalUV2">
+            <summary>
+            追加UV2
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMX.MorphType.AdditionalUV3">
+            <summary>
+            追加UV3
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMX.MorphType.AdditionalUV4">
+            <summary>
+            追加UV4
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.PMX.MorphType.Material">
+            <summary>
+            材質
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxNode">
+            <summary>
+            表示枠
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxNode.Read(System.IO.BinaryReader)">
+            <summary>
+            データをバイナリから読み込む
+            </summary>
+            <param name="reader">読み込み対象のリーダー</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxNode.Write(System.IO.BinaryWriter)">
+            <summary>
+            データをバイナリで書き込む
+            </summary>
+            <param name="writer">書き込み対象のライター</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxSoftBody">
+            <summary>
+            SoftBody (未実装)
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxSoftBody.Read(System.IO.BinaryReader)">
+            <summary>
+            データをバイナリから読み込む
+            </summary>
+            <param name="reader">読み込み対象のリーダー</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxSoftBody.Write(System.IO.BinaryWriter)">
+            <summary>
+            データをバイナリで書き込む
+            </summary>
+            <param name="writer">書き込み対象のライター</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxTexture">
+            <summary>
+            テクスチャ情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxTexture.Path">
+            <summary>
+            テクスチャのパス
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxTexture.#ctor(System.String)">
+            <summary>
+            コンストラクタ
+            </summary>
+            <param name="path">テクスチャのパス</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxTexture.#ctor(System.Int32)">
+            <summary>
+            共有Toonテクスチャのコンストラクタ
+            </summary>
+            <param name="toonIndex">共有Toonテクスチャの番号[1～10]</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxVertex">
+            <summary>
+            頂点
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxVertex.Position">
+            <summary>
+            位置
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxVertex.Normal">
+            <summary>
+            法線
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxVertex.UV">
+            <summary>
+            テクスチャのUV座標
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxVertex.AdditonalUVs">
+            <summary>
+            追加UVの座標
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxVertex.WeightType">
+            <summary>
+            ウェイト変形方式
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxVertex.Weights">
+            <summary>
+            ウェイト値
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxVertex.EdgeScale">
+            <summary>
+            エッジ倍率
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxVertex.Read(System.IO.BinaryReader)">
+            <summary>
+            データをバイナリから読み込む
+            </summary>
+            <param name="reader">読み込み対象のリーダー</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxVertex.Write(System.IO.BinaryWriter)">
+            <summary>
+            データをバイナリで書き込む
+            </summary>
+            <param name="writer">書き込み対象のライター</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxWeightType">
+            <summary>
+            ウェイト変形方式
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxWeight">
+            <summary>
+            ウェイト値
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxWeight.Bone">
+            <summary>
+            関連ボーン
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxWeight.Value">
+            <summary>
+            ウェイト値
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.VMD.VocaloidFrame">
+            <summary>
+            フレームの抽象クラス
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidFrame.FrameType">
+            <summary>
+            フレームの種類
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidFrame.Name">
+            <summary>
+            フレームの名前
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidFrame.Frame">
+            <summary>
+            フレームの時間
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidFrame.IsCameraType">
+            <summary>
+            カメラ系フレームか？
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidFrame.IsModelType">
+            <summary>
+            モデル系フレームか？
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidFrame.CompareTo(MikuMikuMethods.VMD.IVocaloidFrame)">
+            <summary>
+            時間の前後を比較する
+            </summary>
+            <param name="other">比較対象フレーム</param>
+            <returns>
+            <para>0未満 - このフレームはother以前</para>
+            <para>0 - このフレームはotherと同時</para>
+            <para>0超 - このフレームはother以降</para>
+            </returns>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidFrame.Read(System.IO.BinaryReader)">
+            <summary>
+            読み込み
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidFrame.Write(System.IO.BinaryWriter)">
+            <summary>
+            書き込み
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="T:MikuMikuMethods.VMD.VocaloidModelTypeFrame">
+            <summary>
+            モデル系フレームの抽象クラス
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidModelTypeFrame.IsCameraType">
+            <summary>
+            カメラ系フレームか？
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidModelTypeFrame.IsModelType">
+            <summary>
+            モデル系フレームか？
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.VMD.VocaloidCameraTypeFrame">
+            <summary>
+            カメラ系フレームの抽象クラス
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidCameraTypeFrame.IsCameraType">
+            <summary>
+            カメラ系フレームか？
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidCameraTypeFrame.IsModelType">
+            <summary>
+            モデル系フレームか？
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.VMD.VocaloidCameraFrame">
+            <summary>
+            カメラフレーム
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidCameraFrame.FrameType">
+            <summary>
+            フレームの種類
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidCameraFrame.Distance">
+            <summary>
+            距離
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidCameraFrame.Position">
+            <summary>
+            移動量
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidCameraFrame.Rotation">
+            <summary>
+            回転量
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidCameraFrame.ViewAngle">
+            <summary>
+            視野角
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidCameraFrame.IsPerspectiveOff">
+            <summary>
+            パースの切/入 trueで切
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidCameraFrame.InterpolationCurves">
+            <summary>
+            補間曲線
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidCameraFrame.#ctor(System.UInt32)">
+            <summary>
+            コンストラクタ
+            </summary>
+            <param name="frame">フレーム時間</param>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidCameraFrame.#ctor(System.IO.BinaryReader)">
+            <summary>
+            バイナリから読み込むコンストラクタ
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidCameraFrame.Read(System.IO.BinaryReader)">
+            <summary>
+            VMD形式から読み込み
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidCameraFrame.Write(System.IO.BinaryWriter)">
+            <summary>
+            VMD形式に書き込み
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.VMD.VocaloidLightFrame">
+            <summary>
+            照明フレーム
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidLightFrame.FrameType">
+            <summary>
+            フレームの種類
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidLightFrame.Color">
+            <summary>
+            照明色
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidLightFrame.Position">
+            <summary>
+            照明位置
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidLightFrame.#ctor(System.UInt32)">
+            <summary>
+            コンストラクタ
+            </summary>
+            <param name="frame">フレーム</param>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidLightFrame.#ctor(System.IO.BinaryReader)">
+            <summary>
+            バイナリから読み込むコンストラクタ
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidLightFrame.Read(System.IO.BinaryReader)">
+            <summary>
+            VMD形式から読み込み
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidLightFrame.Write(System.IO.BinaryWriter)">
+            <summary>
+            VMD形式に書き込み
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.VMD.VocaloidShadowFrame">
+            <summary>
+            影フレーム
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidShadowFrame.FrameType">
+            <summary>
+            フレームの種類
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidShadowFrame.Mode">
+            <summary>
+            セルフ影モード
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidShadowFrame.Range">
+            <summary>
+            影範囲
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidShadowFrame.#ctor(System.UInt32)">
+            <summary>
+            コンストラクタ
+            </summary>
+            <param name="frame">フレーム</param>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidShadowFrame.#ctor(System.IO.BinaryReader)">
+            <summary>
+            バイナリから読み込むコンストラクタ
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidShadowFrame.Read(System.IO.BinaryReader)">
+            <summary>
+            VMD形式から読み込み
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidShadowFrame.Write(System.IO.BinaryWriter)">
+            <summary>
+            VMD形式に書き込み
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.VMD.FrameType">
+            <summary>
+            フレームの種類
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.VMD.FrameType.Camera">
+            <summary>
+            カメラ
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.VMD.FrameType.Light">
+            <summary>
+            照明
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.VMD.FrameType.Shadow">
+            <summary>
+            影
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.VMD.FrameType.Property">
+            <summary>
+            表示・IK
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.VMD.FrameType.Morph">
+            <summary>
+            モーフ
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.VMD.FrameType.Motion">
+            <summary>
+            モーション
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.VMD.IVocaloidFrame">
+            <summary>
+            フレームのインターフェイス
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.IVocaloidFrame.FrameType">
+            <summary>
+            フレームの種類
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.IVocaloidFrame.Name">
+            <summary>
+            フレームの名前
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.IVocaloidFrame.Frame">
+            <summary>
+            フレームの時間
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.IVocaloidFrame.IsCameraType">
+            <summary>
+            カメラ系フレームか？
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.IVocaloidFrame.IsModelType">
+            <summary>
+            モデル系フレームか？
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.IVocaloidFrame.Read(System.IO.BinaryReader)">
+            <summary>
+            読み込み
+            </summary>
+            <param name="reader"></param>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.IVocaloidFrame.Write(System.IO.BinaryWriter)">
+            <summary>
+            書き込み
+            </summary>
+            <param name="writer"></param>
+        </member>
+        <member name="T:MikuMikuMethods.VMD.VocaloidPropertyFrame">
+            <summary>
+            表示・IKフレーム
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidPropertyFrame.FrameType">
+            <summary>
+            フレームの種類
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidPropertyFrame.IsVisible">
+            <summary>
+            表示/非表示
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidPropertyFrame.IKEnabled">
+            <summary>
+            IK有効/無効
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidPropertyFrame.#ctor(System.UInt32)">
+            <summary>
+            コンストラクタ
+            </summary>
+            <param name="frame">フレーム</param>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidPropertyFrame.#ctor(System.IO.BinaryReader)">
+            <summary>
+            バイナリから読み込むコンストラクタ
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidPropertyFrame.Read(System.IO.BinaryReader)">
+            <summary>
+            VMD形式から読み込み
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidPropertyFrame.Write(System.IO.BinaryWriter)">
+            <summary>
+            VMD形式に書き込み
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.VMD.VocaloidMorphFrame">
+            <summary>
+            モーフフレーム
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidMorphFrame.FrameType">
+            <summary>
+            フレームの種類
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidMorphFrame.Weight">
+            <summary>
+            モーフ適用係数
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidMorphFrame.#ctor(System.String,System.UInt32)">
+            <summary>
+            コンストラクタ
+            </summary>
+            <param name="name">ボーン名</param>
+            <param name="frame">フレーム時間</param>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidMorphFrame.#ctor(System.IO.BinaryReader)">
+            <summary>
+            バイナリから読み込むコンストラクタ
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidMorphFrame.Read(System.IO.BinaryReader)">
+            <summary>
+            VMD形式から読み込み
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidMorphFrame.Write(System.IO.BinaryWriter)">
+            <summary>
+            VMD形式に書き込み
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.VMD.VocaloidMotionFrame">
+            <summary>
+            モーションフレーム
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidMotionFrame.FrameType">
+            <summary>
+            フレームの種類
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidMotionFrame.Position">
+            <summary>
+            移動量
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidMotionFrame.Rotation">
+            <summary>
+            回転量
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidMotionFrame.InterpolationCurves">
+            <summary>
+            補間曲線
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidMotionFrame.#ctor(System.String,System.UInt32)">
+            <summary>
+            コンストラクタ
+            </summary>
+            <param name="name">ボーン名</param>
+            <param name="frame">フレーム時間</param>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidMotionFrame.#ctor(System.IO.BinaryReader)">
+            <summary>
+            バイナリから読み込むコンストラクタ
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidMotionFrame.Read(System.IO.BinaryReader)">
+            <summary>
+            VMD形式から読み込み
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidMotionFrame.Write(System.IO.BinaryWriter)">
+            <summary>
+            VMD形式に書き込み
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.VMD.Specifications">
+            <summary>
+            仕様によって定められた変数
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.VMD.Specifications.CameraTypeVMDName">
+            <summary>
+            カメラVMDファイルのモデル名
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.VMD.Specifications.HeaderString">
+            <summary>
+            VMDファイルのヘッダー文字列
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.VMD.Specifications.HeaderLength">
+            <summary>
+            VMDファイルのヘッダー部の領域長
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.VMD.Specifications.ModelNameLength">
+            <summary>
+            モデル名の領域長
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.VMD.Specifications.BoneNameLength">
+            <summary>
+            ボーン名の領域長
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.VMD.Specifications.MorphNameLength">
+            <summary>
+            モーフ名の領域長
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.VMD.Specifications.IKNameLength">
+            <summary>
+            IK名の領域長
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.VMD.VMDType">
+            <summary>
+            VMDの種類
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.VMD.VMDType.Camera">
+            <summary>
+            カメラ系
+            </summary>
+        </member>
+        <member name="F:MikuMikuMethods.VMD.VMDType.Model">
+            <summary>
+            モデル系
+            </summary>
+        </member>
+        <member name="T:MikuMikuMethods.VMD.VocaloidMotionData">
+            <summary>
+            VMDファイルの内部表現
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidMotionData.Header">
+            <summary>
+            ヘッダー
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidMotionData.ModelName">
+            <summary>
+            モデル名
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidMotionData.Type">
+            <summary>
+            VMDの種類
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidMotionData.Frames">
+            <summary>
+            <para>全てのフレーム</para>
+            <para>各種フレームの結合体</para>
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidMotionData.CameraFrames">
+            <summary>
+            カメラフレーム
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidMotionData.LightFrames">
+            <summary>
+            照明フレーム
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidMotionData.ShadowFrames">
+            <summary>
+            セルフ影フレーム
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidMotionData.PropertyFrames">
+            <summary>
+            プロパティフレーム
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidMotionData.MorphFrames">
+            <summary>
+            モーフフレーム
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.VMD.VocaloidMotionData.MotionFrames">
+            <summary>
+            モーションフレーム
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidMotionData.#ctor(System.String)">
+            <summary>
+            コンストラクタ
+            </summary>
+            <param name="modelName">モデル名</param>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidMotionData.#ctor(System.IO.BinaryReader)">
+            <summary>
+            バイナリ読み込みコンストラクタ
+            </summary>
+            <param name="reader"></param>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidMotionData.Clear">
+            <summary>
+            内容の初期化
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidMotionData.Read(System.IO.BinaryReader)">
+            <summary>
+            読み込み
+            </summary>
+            <param name="reader">VMDファイルのリーダー</param>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidMotionData.Write(System.IO.BinaryWriter)">
+            <summary>
+            VMD形式で書き出し
+            </summary>
+        </member>
+    </members>
+</doc>

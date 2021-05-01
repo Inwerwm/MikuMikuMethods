@@ -74,7 +74,7 @@ namespace MikuMikuMethods.VMD
             writer.Write(IKEnabled.Count);
             foreach (var p in IKEnabled)
             {
-                writer.Write(p.Key, Specifications.IKNameLength, Encoding.ShiftJIS, '\0');
+                writer.Write(p.Key, Specifications.IKNameLength, Encoding.ShiftJIS);
                 writer.Write(p.Value);
             }
         }
@@ -129,7 +129,7 @@ namespace MikuMikuMethods.VMD
         /// </summary>
         public override void Write(BinaryWriter writer)
         {
-            writer.Write(Name, Specifications.MorphNameLength, Encoding.ShiftJIS, '\0');
+            writer.Write(Name, Specifications.MorphNameLength, Encoding.ShiftJIS);
             writer.Write(Frame);
             writer.Write(Weight);
         }
@@ -211,7 +211,7 @@ namespace MikuMikuMethods.VMD
         /// </summary>
         public override void Write(BinaryWriter writer)
         {
-            writer.Write(Name, Specifications.BoneNameLength, Encoding.ShiftJIS, '\0');
+            writer.Write(Name, Specifications.BoneNameLength, Encoding.ShiftJIS);
             writer.Write(Frame);
             writer.Write(Position);
             writer.Write(Rotation);

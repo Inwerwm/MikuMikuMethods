@@ -8,7 +8,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MikuMikuMethods.PMM
+namespace MikuMikuMethods.PMM.Frame
 {
     /// <summary>
     /// ボーンフレーム情報
@@ -28,7 +28,7 @@ namespace MikuMikuMethods.PMM
         /// <summary>
         /// 補間曲線
         /// </summary>
-        public ReadOnlyDictionary<InterpolationItem,InterpolationCurve> InterpolationCurces { get; init; }
+        public ReadOnlyDictionary<InterpolationItem, InterpolationCurve> InterpolationCurces { get; init; }
 
         /// <summary>
         /// 物理が有効か
@@ -61,7 +61,7 @@ namespace MikuMikuMethods.PMM
             Frame = reader.ReadInt32();
             PreviousFrameIndex = reader.ReadInt32();
             NextFrameIndex = reader.ReadInt32();
-            
+
             InterpolationCurces[InterpolationItem.XPosition].FromBytes(reader.ReadBytes(4));
             InterpolationCurces[InterpolationItem.YPosition].FromBytes(reader.ReadBytes(4));
             InterpolationCurces[InterpolationItem.ZPosition].FromBytes(reader.ReadBytes(4));

@@ -1,47 +1,55 @@
 ﻿using MikuMikuMethods.Extension;
 using MikuMikuMethods.PMM.Frame;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MikuMikuMethods.PMM
 {
     /// <summary>
-    /// PMMの照明情報
+    /// PMMの重力情報
     /// </summary>
-    public class PmmLight
+    public class PmmGravity
     {
         /// <summary>
-        /// 初期位置の照明フレーム
+        /// 現在のノイズ不可On/Off
         /// </summary>
-        public PmmLightFrame InitialFrame { get; set; }
+        public bool EnableNoize { get; set; }
         /// <summary>
-        /// 照明のキーフレーム
+        /// 現在のノイズ量
         /// </summary>
-        public List<PmmLightFrame> Frames { get; init; }
+        public int NoizeAmount { get; set; }
         /// <summary>
-        /// 未確定編集状態
+        /// 現在の加速度
         /// </summary>
-        public TemporaryLightEditState Uncomitted { get; set; }
+        public float Acceleration { get; set; }
+        /// <summary>
+        /// 現在の方向
+        /// </summary>
+        public Vector3 Direction { get; set; }
 
         /// <summary>
-        /// コンストラクタ
+        /// 初期位置の重力フレーム
         /// </summary>
-        public PmmLight()
+        public PmmGravityFrame InitialFrame { get; set; }
+        /// <summary>
+        /// 重力のキーフレーム
+        /// </summary>
+        public List<PmmGravityFrame> Frames { get; init; }
+
+        /// <summary>
+        /// デフォルトコンストラクタ
+        /// </summary>
+        public PmmGravity()
         {
             Frames = new();
-            Uncomitted = new();
         }
 
         /// <summary>
-        /// バイナリデータから照明情報を読み込み
+        /// バイナリデータから読み込み
         /// </summary>
         /// <param name="reader">読み込むファイル</param>
-        public PmmLight(BinaryReader reader) : this()
+        public PmmGravity(BinaryReader reader)
         {
             Read(reader);
         }
@@ -52,45 +60,33 @@ namespace MikuMikuMethods.PMM
         /// <param name="reader">読み込むファイル</param>
         public void Read(BinaryReader reader)
         {
+            Acceleration = reader.ReadSingle();
+            NoizeAmount = reader.ReadInt32();
+            Direction = reader.ReadVector3();
+            EnableNoize = reader.ReadBoolean();
+
             InitialFrame = new(reader, null);
 
-            var lightCount = reader.ReadInt32();
-            for (int i = 0; i < lightCount; i++)
+            var frameCount = reader.ReadInt32();
+            for (int i = 0; i < frameCount; i++)
                 Frames.Add(new(reader, reader.ReadInt32()));
-
-            Uncomitted.Color = reader.ReadSingleRGB();
-            Uncomitted.Position = reader.ReadVector3();
         }
-
         /// <summary>
         /// ファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>
         public void Write(BinaryWriter writer)
         {
+            writer.Write(Acceleration);
+            writer.Write(NoizeAmount);
+            writer.Write(Direction);
+            writer.Write(EnableNoize);
+
             InitialFrame.Write(writer);
 
             writer.Write(Frames.Count);
             foreach (var frame in Frames)
                 frame.Write(writer);
-
-            writer.Write(Uncomitted.Color, false);
-            writer.Write(Uncomitted.Position);
         }
-    }
-
-    /// <summary>
-    /// 未確定のライト編集状態
-    /// </summary>
-    public class TemporaryLightEditState
-    {
-        /// <summary>
-        /// 色(RGBのみ使用)
-        /// </summary>
-        public ColorF Color { get; set; }
-        /// <summary>
-        /// 位置
-        /// </summary>
-        public Vector3 Position { get; set; }
     }
 }

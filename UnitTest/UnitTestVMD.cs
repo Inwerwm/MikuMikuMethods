@@ -9,6 +9,12 @@ namespace UnitTest
     public class UnitTestVMD
     {
         [TestMethod]
+        public void Test_IO()
+        {
+
+        }
+
+        [TestMethod]
         public void Test_MotionInterpolation()
         {
             using (BinaryReader reader = new(new FileStream(@"TestData\interpolateTest.vmd", FileMode.Open)))

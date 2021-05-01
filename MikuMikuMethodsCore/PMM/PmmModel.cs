@@ -1,4 +1,5 @@
 ﻿using MikuMikuMethods.Extension;
+using MikuMikuMethods.PMM.Frame;
 using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
@@ -13,7 +14,7 @@ namespace MikuMikuMethods.PMM
         /// <summary>
         /// モデル管理番号
         /// </summary>
-        public int Index { get; set; }
+        public byte Index { get; set; }
 
         /// <summary>
         /// モデル名
@@ -26,7 +27,7 @@ namespace MikuMikuMethods.PMM
         public string NameEn { get; set; }
 
         /// <summary>
-        /// モデルのパス
+        /// ファイルパス
         /// </summary>
         public string Path { get; set; }
 
@@ -286,11 +287,11 @@ namespace MikuMikuMethods.PMM
 
             writer.Write(Name);
             writer.Write(NameEn);
-            writer.Write(Path);
+            writer.Write(Path, 256, Encoding.ShiftJIS);
 
             // キーフレームエディタの行数
             // 3([root]、表示・IK・外観、表情) + 表示枠の数
-            writer.Write(3 + NodeCount);
+            writer.Write(NodeCount);
 
             // ボーン数
             writer.Write(BoneNames.Count);

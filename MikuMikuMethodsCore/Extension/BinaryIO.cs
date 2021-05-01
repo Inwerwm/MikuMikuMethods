@@ -42,16 +42,16 @@ namespace MikuMikuMethods.Extension
         /// </summary>
         /// <param name="length">文字数</param>
         /// <param name="encoding">エンコード形式</param>
-        /// <param name="filler">終端文字</param>
+        /// <param name="endChar">終端文字 この文字以降を読み飛ばす</param>
         /// <returns>読み込んだ文字列</returns>
-        public static string ReadString(this BinaryReader reader, int length, System.Text.Encoding encoding, char? filler = null)
+        public static string ReadString(this BinaryReader reader, int length, System.Text.Encoding encoding, char? endChar)
         {
             var readBytes = reader.ReadBytes(length);
             string str = encoding.GetString(readBytes);
-            if (filler is null)
+            if (endChar is null)
                 return str;
 
-            return str.IndexOf(filler.Value) switch
+            return str.IndexOf(endChar.Value) switch
             {
                 < 0 => str,
                 int i => str.Remove(i)
@@ -127,6 +127,7 @@ namespace MikuMikuMethods.Extension
 
         /// <summary>
         /// 指定長で文字列をバイナリに書き込み
+        /// <para>文字列の最後には<c>'\0'</c>が付加される</para>
         /// </summary>
         /// <param name="value">書き込む文字列</param>
         /// <param name="length">書き込む長さ</param>
@@ -138,7 +139,7 @@ namespace MikuMikuMethods.Extension
             var bytesToWrite = encoding.GetBytes(Enumerable.Repeat(filler, length).ToArray());
 
             //書き込み用配列に文字列を転写
-            encoding.GetBytes(value).Take(length).ToArray().CopyTo(bytesToWrite, 0);
+            encoding.GetBytes(value).Take(length - 1).Append((byte)0).ToArray().CopyTo(bytesToWrite, 0);
 
             writer.Write(bytesToWrite);
         }
