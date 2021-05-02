@@ -23,40 +23,14 @@ namespace UnitTest
         [TestMethod]
         public void Test_IO()
         {
-            using (FileStream stream = new("TestData/testProject.pmm", FileMode.Open))
-            using (BinaryReader reader = new(stream, MikuMikuMethods.Encoding.ShiftJIS))
-            using (FileStream outStream = new("TestData/output.pmm", FileMode.Create))
-            using (BinaryWriter writer = new(outStream, MikuMikuMethods.Encoding.ShiftJIS))
-            {
-                testPmm.Read(reader);
-                testPmm.Write(writer);
+            testPmm.Read("TestData/testProject.pmm");
+            testPmm.Write("TestData/output.pmm");
 
-                // 比較のため巻き戻し
-                reader.BaseStream.Position = 0;
-                writer.BaseStream.Position = 0;
+            var outPmm = new PolygonMovieMaker("TestData/output.pmm");
 
-                using(BinaryReader outReader = new(outStream, MikuMikuMethods.Encoding.ShiftJIS))
-                {
-                    var outPmm = new PolygonMovieMaker(outReader);
-
-                    //もとのPMMと書込読込PMMのインスタンスをシリアライズして
-                    //テキストで差分を見れるようにする
-                    using (FileStream inJson = new("TestData/originPmm.json", FileMode.Create))
-                    using(FileStream outJson = new("TestData/outputPmm.json", FileMode.Create))
-                    {
-                        DataContractJsonSerializer serializer = new(typeof(PolygonMovieMaker));
-                        serializer.WriteObject(inJson, testPmm);
-                        serializer.WriteObject(outJson, outPmm);
-
-                        Assert.AreEqual(inJson.Length, outJson.Length);
-                        using(StreamReader inJsonReader = new(inJson))
-                        using(StreamReader outJsonReader = new(outJson))
-                        {
-                            Assert.AreEqual(inJsonReader.ReadToEnd(), outJsonReader.ReadToEnd());
-                        }
-                    }
-                }
-            }
+            //もとのPMMと書込読込PMMのインスタンスをシリアライズして
+            //テキストで差分を見れるようにする
+            Assert.AreEqual(testPmm.ToJson("TestData/originPmm.json"), outPmm.ToJson("TestData/outputPmm.json"));
         }
     }
 }
