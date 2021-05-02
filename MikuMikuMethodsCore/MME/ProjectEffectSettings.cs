@@ -38,6 +38,19 @@ namespace MikuMikuMethods.MME
         }
 
         /// <summary>
+        /// ファイルから読込
+        /// </summary>
+        /// <param name="path">ファイルパス</param>
+        public void Read(string path)
+        {
+            using (FileStream stream = new(path, FileMode.Open))
+            using (StreamReader reader = new(stream, MikuMikuMethods.Encoding.ShiftJIS))
+            {
+                Read(reader);
+            }
+        }
+
+        /// <summary>
         /// EMMファイルから読み込み
         /// </summary>
         /// <param name="reader">エンコードはShiftJISである必要がある</param>
@@ -93,6 +106,19 @@ namespace MikuMikuMethods.MME
 
                 obj.Path = path;
                 Objects.Add(obj);
+            }
+        }
+
+        /// <summary>
+        /// ファイルに書き出し
+        /// </summary>
+        /// <param name="filePath">書き出すファイルのパス</param>
+        public void Write(string filePath)
+        {
+            using (FileStream file = new(filePath, FileMode.Create))
+            using (StreamWriter writer = new(file, MikuMikuMethods.Encoding.ShiftJIS))
+            {
+                Write(writer);
             }
         }
 

@@ -177,6 +177,19 @@ namespace MikuMikuMethods.PMM
         }
 
         /// <summary>
+        /// ファイルに書き出し
+        /// </summary>
+        /// <param name="filePath">書き出すファイルのパス</param>
+        public void Write(string filePath)
+        {
+            using (FileStream file = new(filePath, FileMode.Create))
+            using (BinaryWriter writer = new(file, MikuMikuMethods.Encoding.ShiftJIS))
+            {
+                Write(writer);
+            }
+        }
+
+        /// <summary>
         /// バイナリデータに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>
