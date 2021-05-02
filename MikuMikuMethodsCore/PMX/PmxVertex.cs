@@ -41,12 +41,21 @@ namespace MikuMikuMethods.PMX
         /// <summary>
         /// ウェイト値
         /// </summary>
-        public List<PmxWeight> Weights { get; }
+        public List<PmxWeight> Weights { get; } = new();
 
         /// <summary>
         /// エッジ倍率
         /// </summary>
         public float EdgeScale { get; set; }
+
+        /// <summary>
+        /// バイナリ読込コンストラクタ
+        /// </summary>
+        /// <param name="reader">読み込み対象のリーダー</param>
+        public PmxVertex(BinaryReader reader)
+        {
+            Read(reader);
+        }
 
         /// <summary>
         /// データをバイナリから読み込む

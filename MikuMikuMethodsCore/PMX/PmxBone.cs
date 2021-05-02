@@ -136,7 +136,14 @@ namespace MikuMikuMethods.PMX
         /// </summary>
         public int OuterParentKey { get; set; }
 
-
+        /// <summary>
+        /// バイナリ読込コンストラクタ
+        /// </summary>
+        /// <param name="reader">読み込み対象のリーダー</param>
+        public PmxBone(BinaryReader reader)
+        {
+            Read(reader);
+        }
 
         /// <summary>
         /// データをバイナリから読み込む

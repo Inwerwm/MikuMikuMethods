@@ -13,6 +13,15 @@ namespace MikuMikuMethods.PMX
     public class PmxSoftBody : IPmxData
     {
         /// <summary>
+        /// バイナリ読込コンストラクタ
+        /// </summary>
+        /// <param name="reader">読み込み対象のリーダー</param>
+        public PmxSoftBody(BinaryReader reader)
+        {
+            Read(reader);
+        }
+
+        /// <summary>
         /// データをバイナリから読み込む
         /// </summary>
         /// <param name="reader">読み込み対象のリーダー</param>
