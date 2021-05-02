@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MikuMikuMethods.PMX
 {
@@ -56,8 +54,44 @@ namespace MikuMikuMethods.PMX
         public List<PmxVertex> Vertices { get; } = new();
 
         /// <summary>
-        /// データをバイナリから読み込む
+        /// コンストラクタ
         /// </summary>
+        public PmxModel() { }
+
+        /// <summary>
+        /// ファイル読込コンストラクタ
+        /// </summary>
+        /// <param name="filePath">Pmmファイルのパス</param>
+        public PmxModel(string filePath) : this()
+        {
+            Read(filePath);
+        }
+
+        /// <summary>
+        /// バイナリ読込コンストラクタ
+        /// </summary>
+        /// <param name="reader">PMMファイル</param>
+        public PmxModel(BinaryReader reader) : this()
+        {
+            Read(reader);
+        }
+
+        /// <summary>
+        /// データをファイルから読み込む
+        /// </summary>
+        /// <param name="filePath">読み込むファイルのパス</param>
+        public void Read(string filePath)
+        {
+            using (FileStream stream = new(filePath, FileMode.Open))
+            using (BinaryReader reader = new(stream, MikuMikuMethods.Encoding.ShiftJIS))
+            {
+                Read(reader);
+            }
+        }
+
+        /// <summary>
+        /// データをバイナリから読み込む
+        /// </summary>  
         /// <param name="reader">読み込み対象のリーダー</param>
         public void Read(BinaryReader reader)
         {
@@ -65,7 +99,20 @@ namespace MikuMikuMethods.PMX
         }
 
         /// <summary>
-        /// データをバイナリで書き込む
+        /// データをファイルに書き込む
+        /// </summary>
+        /// <param name="filePath">書き出すファイルのパス</param>
+        public void Write(string filePath)
+        {
+            using (FileStream file = new(filePath, FileMode.Create))
+            using (BinaryWriter writer = new(file, MikuMikuMethods.Encoding.ShiftJIS))
+            {
+                Write(writer);
+            }
+        }
+
+        /// <summary>
+        /// データをバイナリに書き込む
         /// </summary>
         /// <param name="writer">書き込み対象のライター</param>
         public void Write(BinaryWriter writer)
