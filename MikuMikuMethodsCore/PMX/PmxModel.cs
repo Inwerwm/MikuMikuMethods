@@ -28,10 +28,9 @@ namespace MikuMikuMethods.PMX
         /// </summary>
         public List<PmxBone> Bones { get; } = new();
         /// <summary>
-        /// <para>面</para>
-        /// <para>全材質内の面リストを結合したもの</para>
+        /// 面
         /// </summary>
-        public List<PmxFace> Faces => Materials.SelectMany(m => m.Faces).ToList();
+        public List<PmxFace> Faces { get; } = new();
         /// <summary>
         /// ジョイント
         /// </summary>
@@ -52,6 +51,10 @@ namespace MikuMikuMethods.PMX
         /// 頂点
         /// </summary>
         public List<PmxVertex> Vertices { get; } = new();
+        /// <summary>
+        /// テクスチャ
+        /// </summary>
+        public List<PmxTexture> Textures { get; } = new();
 
         /// <summary>
         /// コンストラクタ
@@ -95,7 +98,24 @@ namespace MikuMikuMethods.PMX
         /// <param name="reader">読み込み対象のリーダー</param>
         public void Read(BinaryReader reader)
         {
-            throw new NotImplementedException();
+            Header.Read(reader);
+            ModelInfo.Read(reader);
+            ReadFrames(reader, r => Vertices.Add(new(r)));
+            ReadFrames(reader, r => Faces.Add(new(r)));
+            ReadFrames(reader, r => Textures.Add(new(reader.ReadString()))); // 仮
+            ReadFrames(reader, r => Materials.Add(new(r)));
+            ReadFrames(reader, r => Bones.Add(new(r)));
+            ReadFrames(reader, r => Morphs.Add(new(r)));
+            ReadFrames(reader, r => Nodes.Add(new(r)));
+            ReadFrames(reader, r => Bodies.Add(new(r)));
+            ReadFrames(reader, r => Joints.Add(new(r)));
+        }
+
+        private void ReadFrames(BinaryReader reader, Action<BinaryReader> addElementToList)
+        {
+            var elementNum = reader.ReadUInt32();
+            for (int i = 0; i < elementNum; i++)
+                addElementToList(reader);
         }
 
         /// <summary>
