@@ -41,7 +41,7 @@ namespace MikuMikuMethods.VMD
     /// <summary>
     /// フレームのインターフェイス
     /// </summary>
-    public interface IVocaloidFrame:IComparable<IVocaloidFrame>
+    public interface IVocaloidFrame:IComparable<IVocaloidFrame>, ICloneable
     {
         /// <summary>
         /// フレームの種類
