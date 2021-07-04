@@ -110,6 +110,17 @@ namespace MikuMikuMethods.VMD
             writer.Write(ViewAngle);
             writer.Write(IsPerspectiveOff);
         }
+
+        public override object Clone() => new VocaloidCameraFrame(Frame)
+        {
+            Distance = Distance,
+            InterpolationCurves = InterpolationCurve.Clone(InterpolationCurves),
+            IsPerspectiveOff = IsPerspectiveOff,
+            Name = Name,
+            Position = Position,
+            Rotation = Rotation,
+            ViewAngle = ViewAngle
+        };
     }
 
     /// <summary>
@@ -172,6 +183,13 @@ namespace MikuMikuMethods.VMD
             writer.Write(Color);
             writer.Write(Position);
         }
+
+        public override object Clone() => new VocaloidLightFrame(Frame)
+        {
+            Color = Color,
+            Name = Name,
+            Position = Position
+        };
     }
 
     /// <summary>
@@ -233,5 +251,12 @@ namespace MikuMikuMethods.VMD
             writer.Write(Mode);
             writer.Write(Range);
         }
+
+        public override object Clone() => new VocaloidShadowFrame(Frame)
+        {
+            Mode = Mode,
+            Name = Name,
+            Range = Range
+        };
     }
 }

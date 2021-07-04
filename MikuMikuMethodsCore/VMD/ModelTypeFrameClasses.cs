@@ -1,7 +1,6 @@
 ﻿using MikuMikuMethods.Extension;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Numerics;
 
 namespace MikuMikuMethods.VMD
@@ -78,6 +77,13 @@ namespace MikuMikuMethods.VMD
                 writer.Write(p.Value);
             }
         }
+
+        public override object Clone() => new VocaloidPropertyFrame(Frame)
+        {
+            IKEnabled = new(IKEnabled),
+            IsVisible = IsVisible,
+            Name = Name
+        };
     }
 
     /// <summary>
@@ -133,6 +139,11 @@ namespace MikuMikuMethods.VMD
             writer.Write(Frame);
             writer.Write(Weight);
         }
+
+        public override object Clone() => new VocaloidMorphFrame(Name, Frame)
+        {
+            Weight = Weight
+        };
     }
 
     /// <summary>
@@ -217,5 +228,12 @@ namespace MikuMikuMethods.VMD
             writer.Write(Rotation);
             writer.Write(InterpolationCurve.CreateVMDFormatBytes(InterpolationCurves, FrameType));
         }
+
+        public override object Clone() => new VocaloidMotionFrame(Name, Frame)
+        {
+            Position = Position,
+            Rotation = Rotation,
+            InterpolationCurves = InterpolationCurve.Clone(InterpolationCurves)
+        };
     }
 }
