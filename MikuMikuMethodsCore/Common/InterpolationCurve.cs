@@ -38,7 +38,7 @@ namespace MikuMikuMethods
     /// <summary>
     /// 補間曲線
     /// </summary>
-    public class InterpolationCurve
+    public class InterpolationCurve : ICloneable
     {
         private (byte X, byte Y) earlyControlePoint;
         private (byte X, byte Y) lateControlePoint;
@@ -244,6 +244,16 @@ namespace MikuMikuMethods
             }
 
             return interpolateMatrix.ToArray();
+        }
+
+        public static Dictionary<InterpolationItem, InterpolationCurve> Clone(Dictionary<InterpolationItem, InterpolationCurve> curves)
+        {
+            return curves.ToDictionary(p => p.Key, p => p.Value.Clone() as InterpolationCurve);
+        }
+
+        public object Clone()
+        {
+            return new InterpolationCurve() { earlyControlePoint = earlyControlePoint, lateControlePoint = lateControlePoint };
         }
     }
 }
