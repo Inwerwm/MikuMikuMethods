@@ -205,7 +205,7 @@ namespace MikuMikuMethods
             byte[] CreateBytes(InterpolationCurve curve) =>
                 new byte[] { curve.EarlyControlePoint.X, curve.LateControlePoint.X, curve.EarlyControlePoint.Y, curve.LateControlePoint.Y };
 
-            return         CreateBytes(curves[InterpolationItem.XPosition])
+            return CreateBytes(curves[InterpolationItem.XPosition])
                    .Concat(CreateBytes(curves[InterpolationItem.YPosition]))
                    .Concat(CreateBytes(curves[InterpolationItem.ZPosition]))
                    .Concat(CreateBytes(curves[InterpolationItem.Rotation]))
@@ -246,14 +246,13 @@ namespace MikuMikuMethods
             return interpolateMatrix.ToArray();
         }
 
-        public static Dictionary<InterpolationItem, InterpolationCurve> Clone(Dictionary<InterpolationItem, InterpolationCurve> curves)
-        {
-            return curves.ToDictionary(p => p.Key, p => p.Value.Clone() as InterpolationCurve);
-        }
+        public static Dictionary<InterpolationItem, InterpolationCurve> Clone(Dictionary<InterpolationItem, InterpolationCurve> curves) =>
+            curves.ToDictionary(p => p.Key, p => p.Value.Clone() as InterpolationCurve);
 
-        public object Clone()
+        public object Clone() => new InterpolationCurve()
         {
-            return new InterpolationCurve() { earlyControlePoint = earlyControlePoint, lateControlePoint = lateControlePoint };
-        }
+            earlyControlePoint = earlyControlePoint,
+            lateControlePoint = lateControlePoint
+        };
     }
 }
