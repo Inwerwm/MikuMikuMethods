@@ -137,7 +137,30 @@ namespace MikuMikuMethods.PMX
         /// <param name="writer">書き込み対象のライター</param>
         public void Write(BinaryWriter writer)
         {
-            throw new NotImplementedException();
+            Header.Write(writer);
+            ModelInfo.Write(writer);
+            WriteFrames(writer, Vertices);
+            WriteFrames(writer, Faces);
+
+            writer.Write(Textures.Count);
+            foreach (var item in Textures)
+            {
+                writer.Write(item.Path);
+            }
+
+            WriteFrames(writer, Materials);
+            WriteFrames(writer, Bones);
+            WriteFrames(writer, Morphs);
+            WriteFrames(writer, Nodes);
+            WriteFrames(writer, Bodies);
+            WriteFrames(writer, Joints);
+        }
+
+        private void WriteFrames<T>(BinaryWriter writer, List<T> list) where T : IPmxData
+        {
+            writer.Write(list.Count);
+            foreach (var item in list)
+                item.Write(writer);
         }
     }
 }
