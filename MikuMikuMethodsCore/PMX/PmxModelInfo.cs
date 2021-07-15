@@ -35,7 +35,10 @@ namespace MikuMikuMethods.PMX
         /// <param name="reader">読み込み対象のリーダー</param>
         public void Read(BinaryReader reader)
         {
-            throw new NotImplementedException();
+            Name = reader.ReadString();
+            NameEn = reader.ReadString();
+            Comment = reader.ReadString();
+            CommentEn = reader.ReadString();
         }
 
         /// <summary>
@@ -44,7 +47,10 @@ namespace MikuMikuMethods.PMX
         /// <param name="writer">書き込み対象のライター</param>
         public void Write(BinaryWriter writer)
         {
-            throw new NotImplementedException();
+            writer.Write(Name);
+            writer.Write(NameEn);
+            writer.Write(Comment);
+            writer.Write(CommentEn);
         }
     }
 }
