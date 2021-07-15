@@ -151,7 +151,19 @@ namespace MikuMikuMethods.PMX
             }
         }
 
-        public PmxModelConfig(byte[] config)
+        public PmxModelConfig(byte encodingFormat, byte numOfAdditionalUV, byte sizeOfVertexIndex, byte sizeOfTextureIndex, byte sizeOfMaterialIndex, byte sizeOfBoneIndex, byte sizeOfMorphIndex, byte sizeOfBodyIndex)
+        {
+            EncodingFormat = encodingFormat;
+            NumOfAdditionalUV = numOfAdditionalUV;
+            SizeOfVertexIndex = sizeOfVertexIndex;
+            SizeOfTextureIndex = sizeOfTextureIndex;
+            SizeOfMaterialIndex = sizeOfMaterialIndex;
+            SizeOfBoneIndex = sizeOfBoneIndex;
+            SizeOfMorphIndex = sizeOfMorphIndex;
+            SizeOfBodyIndex = sizeOfBodyIndex;
+        }
+
+        internal PmxModelConfig(byte[] config)
         {
             EncodingFormat = config[0];
             NumOfAdditionalUV = config[1];
