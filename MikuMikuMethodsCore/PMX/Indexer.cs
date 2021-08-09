@@ -9,7 +9,32 @@ namespace MikuMikuMethods.PMX
 {
     internal class Indexer
     {
-        public static int ReadAsOther(BinaryReader reader, byte indexSize) => indexSize switch
+        public byte IndexSize { get; init; }
+        public bool IsVertex { get; init; }
+
+        public Indexer(byte indexSize, bool isVertex)
+        {
+            if (!new byte[]{ 1, 2, 4 }.Contains(indexSize))
+                throw new ArgumentOutOfRangeException("インデックスの大きさ指定が不正です。");
+
+            IndexSize = indexSize;
+            IsVertex = isVertex;
+        }
+
+        public int Read(BinaryReader reader) => IsVertex ? ReadAsVertex(reader, IndexSize) : ReadAsOther(reader, IndexSize);
+        public void Write(BinaryWriter writer, int index)
+        {
+            if (IsVertex)
+            {
+                WriteAsVertex(writer, index);
+            }
+            else
+            {
+                WriteAsOther(writer, index);
+            }
+        }
+
+        private int ReadAsOther(BinaryReader reader, byte indexSize) => indexSize switch
         {
             1 => reader.ReadSByte(),
             2 => reader.ReadInt16(),
@@ -17,7 +42,7 @@ namespace MikuMikuMethods.PMX
             _ => throw new FormatException("インデックスサイズが不正です。")
         };
 
-        public static int ReadAsVertex(BinaryReader reader, byte indexSize) => indexSize switch
+        private int ReadAsVertex(BinaryReader reader, byte indexSize) => indexSize switch
         {
             1 => reader.ReadByte(),
             2 => reader.ReadUInt16(),
@@ -41,9 +66,9 @@ namespace MikuMikuMethods.PMX
             <= int.MaxValue => 4
         };
 
-        public static void WriteAsOther(BinaryWriter writer, int index)
+        private void WriteAsOther(BinaryWriter writer, int index)
         {
-            switch (GetSizeCodeAsOther(index))
+            switch (IndexSize)
             {
                 case 1:
                     writer.Write((sbyte)index);
@@ -59,9 +84,9 @@ namespace MikuMikuMethods.PMX
             }
         }
 
-        public static void WriteAsVertex(BinaryWriter writer, int index)
+        private void WriteAsVertex(BinaryWriter writer, int index)
         {
-            switch (GetSizeCodeAsVertex(index))
+            switch (IndexSize)
             {
                 case 1:
                     writer.Write((byte)index);
