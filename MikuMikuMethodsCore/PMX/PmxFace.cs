@@ -17,7 +17,7 @@ namespace MikuMikuMethods.PMX
         /// <summary>
         /// 構成頂点のリスト
         /// </summary>
-        public PmxVertex[] Vertices { get; }
+        public PmxVertex[] Vertices { get; } = new PmxVertex[3];
 
         /// <summary>
         /// 面法線
