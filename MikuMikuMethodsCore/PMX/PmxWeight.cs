@@ -14,16 +14,5 @@
     /// <summary>
     /// ウェイト値
     /// </summary>
-    public record PmxWeight
-    {
-        /// <summary>
-        /// 関連ボーン
-        /// </summary>
-        public PmxBone Bone { get; set; }
-
-        /// <summary>
-        /// ウェイト値
-        /// </summary>
-        public float Value { get; set; }
-    }
+    public record PmxWeight(PmxBone Bone, float Value);
 }
