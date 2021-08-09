@@ -143,8 +143,8 @@ namespace MikuMikuMethods.PMX
         {
             Header.Write(writer);
             ModelInfo.Write(writer, Encoder);
-            WriteFrames(writer, Vertices);
-            WriteFrames(writer, Faces);
+            WriteFrames(writer, Vertices, (writer, item) => item.Write(writer));
+            WriteFrames(writer, Faces, (writer, item) => item.Write(writer));
 
             writer.Write(Textures.Count);
             foreach (var item in Textures)
@@ -152,19 +152,19 @@ namespace MikuMikuMethods.PMX
                 writer.Write(item.Path);
             }
 
-            WriteFrames(writer, Materials);
-            WriteFrames(writer, Bones);
-            WriteFrames(writer, Morphs);
-            WriteFrames(writer, Nodes);
-            WriteFrames(writer, Bodies);
-            WriteFrames(writer, Joints);
+            WriteFrames(writer, Materials, (writer, item) => item.Write(writer));
+            WriteFrames(writer, Bones, (writer, item) => item.Write(writer));
+            WriteFrames(writer, Morphs, (writer, item) => item.Write(writer));
+            WriteFrames(writer, Nodes, (writer, item) => item.Write(writer));
+            WriteFrames(writer, Bodies, (writer, item) => item.Write(writer));
+            WriteFrames(writer, Joints, (writer, item) => item.Write(writer));
         }
 
-        private void WriteFrames<T>(BinaryWriter writer, List<T> list) where T : IPmxData
+        private void WriteFrames<T>(BinaryWriter writer, List<T> list, Action<BinaryWriter, T> dataWriting) where T : IPmxData
         {
             writer.Write(list.Count);
             foreach (var item in list)
-                item.Write(writer);
+                dataWriting(writer, item);
         }
     }
 }
