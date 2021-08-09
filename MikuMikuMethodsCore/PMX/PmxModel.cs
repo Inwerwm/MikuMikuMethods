@@ -56,6 +56,8 @@ namespace MikuMikuMethods.PMX
         /// </summary>
         public List<PmxTexture> Textures { get; } = new();
 
+        private StringEncoder Encoder { get; set; }
+
         /// <summary>
         /// コンストラクタ
         /// </summary>
@@ -99,6 +101,8 @@ namespace MikuMikuMethods.PMX
         public void Read(BinaryReader reader)
         {
             Header.Read(reader);
+            Encoder = new(Header.EncodingOfModel);
+
             ModelInfo.Read(reader);
             ReadFrames(reader, r => Vertices.Add(new(r)));
             ReadFrames(reader, r => Faces.Add(new(r)));
