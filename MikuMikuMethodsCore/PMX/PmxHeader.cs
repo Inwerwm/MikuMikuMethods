@@ -185,22 +185,6 @@ namespace MikuMikuMethods.PMX
         public PmxHeader() { }
 
         /// <summary>
-        /// データをバイナリから読み込む
-        /// </summary>
-        /// <param name="reader">読み込み対象のリーダー</param>
-        public void Read(BinaryReader reader)
-        {
-            // "PMX "
-            reader.ReadBytes(4);
-            var version = reader.ReadSingle();
-            if (version < 2.0) throw new FormatException("PMXが非対応バージョンです。バージョン番号が未対応バージョンです。");
-
-            ConfigSize = reader.ReadByte();
-            if (ConfigSize != 8) throw new FormatException("PMXが非対応バージョンです。ヘッダデータが未対応の形式です。");
-            Config = new PmxModelConfig(reader.ReadBytes(ConfigSize));
-        }
-
-        /// <summary>
         /// データをバイナリで書き込む
         /// </summary>
         /// <param name="writer">書き込み対象のライター</param>

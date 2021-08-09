@@ -44,7 +44,23 @@ namespace MikuMikuMethods.PMX
 
         private static void ReadHeader(BinaryReader reader, PmxHeader header)
         {
-            throw new NotImplementedException();
+            // "PMX "
+            reader.ReadBytes(4);
+            var version = reader.ReadSingle();
+            if (version < 2.0) throw new FormatException("PMXが非対応バージョンです。バージョン番号が未対応バージョンです。");
+
+            var configSize = reader.ReadByte();
+            if (configSize != 8) throw new FormatException("PMXが非対応バージョンです。ヘッダデータが未対応の形式です。");
+
+            var config = reader.ReadBytes(header.ConfigSize);
+            header.EncodingFormat = config[0];
+            header.NumOfAdditionalUV = config[1];
+            header.SizeOfVertexIndex = config[2];
+            header.SizeOfTextureIndex = config[3];
+            header.SizeOfMaterialIndex = config[4];
+            header.SizeOfBoneIndex = config[5];
+            header.SizeOfMorphIndex = config[6];
+            header.SizeOfBodyIndex = config[7];
         }
 
         private static void ReadInfo(BinaryReader reader, PmxModelInfo modelInfo, System.Text.Encoding encoding)
