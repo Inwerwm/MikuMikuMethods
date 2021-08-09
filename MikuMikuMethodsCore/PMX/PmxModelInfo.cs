@@ -33,7 +33,7 @@ namespace MikuMikuMethods.PMX
         /// データをバイナリから読み込む
         /// </summary>
         /// <param name="reader">読み込み対象のリーダー</param>
-        public void Read(BinaryReader reader)
+        internal void Read(BinaryReader reader)
         {
             Name = reader.ReadString();
             NameEn = reader.ReadString();
@@ -45,7 +45,7 @@ namespace MikuMikuMethods.PMX
         /// データをバイナリで書き込む
         /// </summary>
         /// <param name="writer">書き込み対象のライター</param>
-        public void Write(BinaryWriter writer)
+        internal void Write(BinaryWriter writer)
         {
             writer.Write(Name);
             writer.Write(NameEn);
