@@ -103,7 +103,7 @@ namespace MikuMikuMethods.PMX
             Header.Read(reader);
             Encoder = new(Header.EncodingOfModel);
 
-            ModelInfo.Read(reader);
+            ModelInfo.Read(reader, Encoder);
             ReadFrames(reader, r => Vertices.Add(new(r)));
             ReadFrames(reader, r => Faces.Add(new(r)));
             ReadFrames(reader, r => Textures.Add(new(reader.ReadString()))); // 仮
@@ -142,7 +142,7 @@ namespace MikuMikuMethods.PMX
         public void Write(BinaryWriter writer)
         {
             Header.Write(writer);
-            ModelInfo.Write(writer);
+            ModelInfo.Write(writer, Encoder);
             WriteFrames(writer, Vertices);
             WriteFrames(writer, Faces);
 

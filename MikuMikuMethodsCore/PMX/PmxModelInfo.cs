@@ -33,24 +33,26 @@ namespace MikuMikuMethods.PMX
         /// データをバイナリから読み込む
         /// </summary>
         /// <param name="reader">読み込み対象のリーダー</param>
-        internal void Read(BinaryReader reader)
+        /// <param name="encoder">エンコード用クラス</param>
+        internal void Read(BinaryReader reader, StringEncoder encoder)
         {
-            Name = reader.ReadString();
-            NameEn = reader.ReadString();
-            Comment = reader.ReadString();
-            CommentEn = reader.ReadString();
+            Name = encoder.Read(reader);
+            NameEn = encoder.Read(reader);
+            Comment = encoder.Read(reader);
+            CommentEn = encoder.Read(reader);
         }
 
         /// <summary>
         /// データをバイナリで書き込む
         /// </summary>
         /// <param name="writer">書き込み対象のライター</param>
-        internal void Write(BinaryWriter writer)
+        /// <param name="encoder">エンコード用クラス</param>
+        internal void Write(BinaryWriter writer, StringEncoder encoder)
         {
-            writer.Write(Name);
-            writer.Write(NameEn);
-            writer.Write(Comment);
-            writer.Write(CommentEn);
+            encoder.Write(writer, Name);
+            encoder.Write(writer, NameEn);
+            encoder.Write(writer, Comment);
+            encoder.Write(writer, CommentEn);
         }
     }
 }
