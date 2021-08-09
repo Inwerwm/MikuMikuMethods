@@ -50,7 +50,7 @@ namespace MikuMikuMethods.PMX
         ///         </item>
         ///     </list>
         /// </summary>
-        internal byte EncodingFormat
+        public byte EncodingFormat
         {
             get => encodingFormat;
             set
@@ -172,28 +172,12 @@ namespace MikuMikuMethods.PMX
         /// <summary>
         /// モデルの使用エンコード方式
         /// </summary>
-        public System.Text.Encoding Encoding
+        public System.Text.Encoding EncodingOfModel => EncodingFormat switch
         {
-            get
-            {
-                return EncodingFormat switch
-                {
-                    0 => System.Text.Encoding.Unicode,
-                    1 => System.Text.Encoding.UTF8,
-                    _ => throw new FormatException("エンコード情報が不正です。")
-                };
-            }
-
-            set
-            {
-                if (value == System.Text.Encoding.Unicode)
-                    EncodingFormat = 0;
-                else if (value == System.Text.Encoding.UTF8)
-                    EncodingFormat = 1;
-                else
-                    throw new FormatException("エンコード情報が不正です。");
-            }
-        }
+            0 => System.Text.Encoding.Unicode,
+            1 => System.Text.Encoding.UTF8,
+            _ => throw new FormatException("エンコード情報が不正です。")
+        };
 
         /// <summary>
         /// コンストラクタ
