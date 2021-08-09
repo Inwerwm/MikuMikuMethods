@@ -55,10 +55,5 @@ namespace MikuMikuMethods.PMX
         /// テクスチャ
         /// </summary>
         public List<PmxTexture> Textures { get; } = new();
-
-        /// <summary>
-        /// コンストラクタ
-        /// </summary>
-        public PmxModel() { }
     }
 }

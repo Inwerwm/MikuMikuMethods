@@ -178,10 +178,5 @@ namespace MikuMikuMethods.PMX
             1 => System.Text.Encoding.UTF8,
             _ => throw new FormatException("エンコード情報が不正です。")
         };
-
-        /// <summary>
-        /// コンストラクタ
-        /// </summary>
-        public PmxHeader() { }
     }
 }
