@@ -61,7 +61,10 @@ namespace MikuMikuMethods.PMX
 
         private static void WriteInfo(BinaryWriter writer, PmxModelInfo modelInfo)
         {
-            throw new NotImplementedException();
+            Encoder.Write(writer, modelInfo.Name);
+            Encoder.Write(writer, modelInfo.NameEn);
+            Encoder.Write(writer, modelInfo.Comment);
+            Encoder.Write(writer, modelInfo.CommentEn);
         }
 
         private static void WriteVertex(BinaryWriter arg1, PmxVertex arg2)

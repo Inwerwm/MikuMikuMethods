@@ -68,7 +68,10 @@ namespace MikuMikuMethods.PMX
 
         private static void ReadInfo(BinaryReader reader, PmxModelInfo modelInfo)
         {
-            throw new NotImplementedException();
+            modelInfo.Name = Encoder.Read(reader);
+            modelInfo.NameEn = Encoder.Read(reader);
+            modelInfo.Comment = Encoder.Read(reader);
+            modelInfo.CommentEn = Encoder.Read(reader);
         }
 
         private static PmxVertex ReadVertex(BinaryReader arg)
