@@ -172,7 +172,7 @@ namespace MikuMikuMethods.PMX
         /// <summary>
         /// モデルの使用エンコード方式
         /// </summary>
-        public System.Text.Encoding EncodingOfModel => EncodingFormat switch
+        public System.Text.Encoding Encoding => EncodingFormat switch
         {
             0 => System.Text.Encoding.Unicode,
             1 => System.Text.Encoding.UTF8,
