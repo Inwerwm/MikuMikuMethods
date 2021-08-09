@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace MikuMikuMethods.PMX
 {
-    public class PmxBinaryWriter
+    public static class PmxBinaryWriter
     {
-        public void WriteModel(string filePath, PmxModel model)
+        public static void WriteModel(string filePath, PmxModel model)
         {
             using (FileStream file = new(filePath, FileMode.Create))
             using (BinaryWriter writer = new(file))
@@ -38,57 +38,57 @@ namespace MikuMikuMethods.PMX
             }
         }
 
-        private void WriteHeader(BinaryWriter writer, PmxHeader header)
+        private static void WriteHeader(BinaryWriter writer, PmxHeader header)
         {
             throw new NotImplementedException();
         }
 
-        private void WriteInfo(BinaryWriter writer, PmxModelInfo modelInfo, System.Text.Encoding encoding)
+        private static void WriteInfo(BinaryWriter writer, PmxModelInfo modelInfo, System.Text.Encoding encoding)
         {
             throw new NotImplementedException();
         }
 
-        private void WriteVertex(BinaryWriter arg1, PmxVertex arg2)
+        private static void WriteVertex(BinaryWriter arg1, PmxVertex arg2)
         {
             throw new NotImplementedException();
         }
 
-        private void WriteFace(BinaryWriter arg1, PmxFace arg2)
+        private static void WriteFace(BinaryWriter arg1, PmxFace arg2)
         {
             throw new NotImplementedException();
         }
 
-        private void WriteTexture(BinaryWriter arg1, PmxTexture arg2)
+        private static void WriteTexture(BinaryWriter arg1, PmxTexture arg2)
         {
             throw new NotImplementedException();
         }
 
-        private void WriteMaterial(BinaryWriter arg1, PmxMaterial arg2)
+        private static void WriteMaterial(BinaryWriter arg1, PmxMaterial arg2)
         {
             throw new NotImplementedException();
         }
 
-        private void WriteBone(BinaryWriter arg1, PmxBone arg2)
+        private static void WriteBone(BinaryWriter arg1, PmxBone arg2)
         {
             throw new NotImplementedException();
         }
 
-        private void WriteMorph(BinaryWriter arg1, PmxMorph arg2)
+        private static void WriteMorph(BinaryWriter arg1, PmxMorph arg2)
         {
             throw new NotImplementedException();
         }
 
-        private void WriteNode(BinaryWriter arg1, PmxNode arg2)
+        private static void WriteNode(BinaryWriter arg1, PmxNode arg2)
         {
             throw new NotImplementedException();
         }
 
-        private void WriteBody(BinaryWriter arg1, PmxBody arg2)
+        private static void WriteBody(BinaryWriter arg1, PmxBody arg2)
         {
             throw new NotImplementedException();
         }
 
-        private void WriteJoint(BinaryWriter arg1, PmxJoint arg2)
+        private static void WriteJoint(BinaryWriter arg1, PmxJoint arg2)
         {
             throw new NotImplementedException();
         }
