@@ -13,38 +13,52 @@ namespace MikuMikuMethods.PMX
         private static PmxModel Model { get; set; }
         private static List<int> TmpWeightBoneIndices { get; set; }
 
+        private static void CleanUpProperties()
+        {
+            Encoder = null;
+            Model = null;
+            TmpWeightBoneIndices = null;
+        }
+
         public static PmxModel ReadModel(string filePath)
         {
-            using (FileStream stream = new(filePath, FileMode.Open))
-            using (BinaryReader reader = new(stream))
+            try
             {
-                Model = new PmxModel();
-
-                ReadHeader(reader, Model.Header);
-                Encoder = new StringEncoder(Model.Header.Encoding);
-
-                ReadInfo(reader, Model.ModelInfo);
-
-                AddDataToList(Model.Vertices, ReadVertex);
-                AddDataToList(Model.Faces, ReadFace);
-                AddDataToList(Model.Textures, ReadTexture);
-                AddDataToList(Model.Materials, ReadMaterial);
-                AddDataToList(Model.Bones, ReadBone);
-                AddDataToList(Model.Morphs, ReadMorph);
-                AddDataToList(Model.Nodes, ReadNode);
-                AddDataToList(Model.Bodies, ReadBody);
-                AddDataToList(Model.Joints, ReadJoint);
-
-                return Model;
-
-                void AddDataToList<T>(IList<T> list, Func<BinaryReader, T> dataReader)
+                using (FileStream stream = new(filePath, FileMode.Open))
+                using (BinaryReader reader = new(stream))
                 {
-                    int count = reader.ReadInt32();
-                    foreach (var item in Enumerable.Range(0, count).Select(_ => dataReader(reader)))
+                    Model = new PmxModel();
+
+                    ReadHeader(reader, Model.Header);
+                    Encoder = new StringEncoder(Model.Header.Encoding);
+
+                    ReadInfo(reader, Model.ModelInfo);
+
+                    AddDataToList(Model.Vertices, ReadVertex);
+                    AddDataToList(Model.Faces, ReadFace);
+                    AddDataToList(Model.Textures, ReadTexture);
+                    AddDataToList(Model.Materials, ReadMaterial);
+                    AddDataToList(Model.Bones, ReadBone);
+                    AddDataToList(Model.Morphs, ReadMorph);
+                    AddDataToList(Model.Nodes, ReadNode);
+                    AddDataToList(Model.Bodies, ReadBody);
+                    AddDataToList(Model.Joints, ReadJoint);
+
+                    return Model;
+
+                    void AddDataToList<T>(IList<T> list, Func<BinaryReader, T> dataReader)
                     {
-                        list.Add(item);
+                        int count = reader.ReadInt32();
+                        foreach (var item in Enumerable.Range(0, count).Select(_ => dataReader(reader)))
+                        {
+                            list.Add(item);
+                        }
                     }
                 }
+            }
+            finally
+            {
+                CleanUpProperties();
             }
         }
 
