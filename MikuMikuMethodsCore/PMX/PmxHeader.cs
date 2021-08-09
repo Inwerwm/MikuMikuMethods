@@ -50,7 +50,7 @@ namespace MikuMikuMethods.PMX
         ///         </item>
         ///     </list>
         /// </summary>
-        private byte EncodingFormat
+        internal byte EncodingFormat
         {
             get => encodingFormat;
             set
@@ -61,6 +61,7 @@ namespace MikuMikuMethods.PMX
                     throw new ArgumentOutOfRangeException();
             }
         }
+
         /// <summary>
         /// <term>追加UV数</term>
         /// <description>0 ～ 4</description>
