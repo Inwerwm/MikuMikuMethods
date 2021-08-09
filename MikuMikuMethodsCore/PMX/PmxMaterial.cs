@@ -149,23 +149,23 @@ namespace MikuMikuMethods.PMX
             /// <summary>
             /// 両面描画
             /// </summary>
-            BothSideDraw = 0b1,
+            BothSideDraw = 0x01,
             /// <summary>
             /// 地面影
             /// </summary>
-            Shadow = 0b10,
+            Shadow = 0x02,
             /// <summary>
             /// セルフ影マップへの描画
             /// </summary>
-            SelfShadowMap = 0b100,
+            SelfShadowMap = 0x04,
             /// <summary>
             /// セルフ影
             /// </summary>
-            SelfShadow = 0b1000,
+            SelfShadow = 0x08,
             /// <summary>
             /// エッジ描画
             /// </summary>
-            Edge = 0b10000,
+            Edge = 0x10,
         }
     }
 }
