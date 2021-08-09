@@ -9,7 +9,7 @@ namespace MikuMikuMethods.PMX
 {
     public class PmxBinaryReader
     {
-        public static PmxModel ReadModel(string filePath)
+        public PmxModel ReadModel(string filePath)
         {
             using (FileStream stream = new(filePath, FileMode.Open))
             using (BinaryReader reader = new(stream))
@@ -42,57 +42,57 @@ namespace MikuMikuMethods.PMX
             }
         }
 
-        private static void ReadHeader(BinaryReader reader, PmxHeader header)
+        private void ReadHeader(BinaryReader reader, PmxHeader header)
         {
             throw new NotImplementedException();
         }
 
-        private static void ReadInfo(BinaryReader reader, PmxModelInfo modelInfo, System.Text.Encoding encoding)
+        private void ReadInfo(BinaryReader reader, PmxModelInfo modelInfo, System.Text.Encoding encoding)
         {
             throw new NotImplementedException();
         }
 
-        private static PmxVertex ReadVertex(BinaryReader arg)
+        private PmxVertex ReadVertex(BinaryReader arg)
         {
             throw new NotImplementedException();
         }
 
-        private static PmxFace ReadFace(BinaryReader arg)
+        private PmxFace ReadFace(BinaryReader arg)
         {
             throw new NotImplementedException();
         }
 
-        private static PmxTexture ReadTexture(BinaryReader arg)
+        private PmxTexture ReadTexture(BinaryReader arg)
         {
             throw new NotImplementedException();
         }
 
-        private static PmxMaterial ReadMaterial(BinaryReader arg)
+        private PmxMaterial ReadMaterial(BinaryReader arg)
         {
             throw new NotImplementedException();
         }
 
-        private static PmxBone ReadBone(BinaryReader arg)
+        private PmxBone ReadBone(BinaryReader arg)
         {
             throw new NotImplementedException();
         }
 
-        private static PmxMorph ReadMorph(BinaryReader arg)
+        private PmxMorph ReadMorph(BinaryReader arg)
         {
             throw new NotImplementedException();
         }
 
-        private static PmxNode ReadNode(BinaryReader arg)
+        private PmxNode ReadNode(BinaryReader arg)
         {
             throw new NotImplementedException();
         }
 
-        private static PmxBody ReadBody(BinaryReader arg)
+        private PmxBody ReadBody(BinaryReader arg)
         {
             throw new NotImplementedException();
         }
 
-        private static PmxJoint ReadJoint(BinaryReader arg)
+        private PmxJoint ReadJoint(BinaryReader arg)
         {
             throw new NotImplementedException();
         }
