@@ -40,7 +40,19 @@ namespace MikuMikuMethods.PMX
 
         private static void WriteHeader(BinaryWriter writer, PmxHeader header)
         {
-            throw new NotImplementedException();
+            writer.Write(header.FormatName.ToCharArray(), 0, 4);
+            writer.Write(header.Version);
+
+            writer.Write(header.ConfigSize);
+
+            writer.Write(header.EncodingFormat);
+            writer.Write(header.NumOfAdditionalUV);
+            writer.Write(header.SizeOfVertexIndex);
+            writer.Write(header.SizeOfTextureIndex);
+            writer.Write(header.SizeOfMaterialIndex);
+            writer.Write(header.SizeOfBoneIndex);
+            writer.Write(header.SizeOfMorphIndex);
+            writer.Write(header.SizeOfBodyIndex);
         }
 
         private static void WriteInfo(BinaryWriter writer, PmxModelInfo modelInfo, System.Text.Encoding encoding)

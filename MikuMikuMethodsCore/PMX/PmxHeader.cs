@@ -183,18 +183,5 @@ namespace MikuMikuMethods.PMX
         /// コンストラクタ
         /// </summary>
         public PmxHeader() { }
-
-        /// <summary>
-        /// データをバイナリで書き込む
-        /// </summary>
-        /// <param name="writer">書き込み対象のライター</param>
-        public void Write(BinaryWriter writer)
-        {
-            writer.Write(FormatName.ToCharArray(), 0, 4);
-            writer.Write(Version);
-
-            writer.Write(ConfigSize);
-            writer.Write(Config.ToArray());
-        }
     }
 }
