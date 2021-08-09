@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MikuMikuMethods.PMX
 {
-    internal class Indexer
+    public class Indexer
     {
         public byte IndexSize { get; init; }
         public bool IsVertex { get; init; }
