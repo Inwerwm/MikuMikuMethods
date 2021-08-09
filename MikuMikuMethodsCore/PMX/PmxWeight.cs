@@ -3,7 +3,7 @@
     /// <summary>
     /// ウェイト変形方式
     /// </summary>
-    public enum PmxWeightType
+    public enum PmxWeightType : byte
     {
         BDEF1,
         BDEF2,
