@@ -22,7 +22,7 @@ namespace MikuMikuMethods.PMX
         /// <summary>
         /// モデルの構成情報の要素数
         /// </summary>
-        private byte ConfigSize { get; set; } = 8;
+        public byte ConfigSize => 8;
 
         private static byte[] ZeroAndOne = { 0, 1 };
         private static byte[] RangeOfAdditionalUV = { 0, 1, 2, 3, 4 };
