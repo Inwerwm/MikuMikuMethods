@@ -9,13 +9,17 @@ namespace MikuMikuMethods.PMX
 {
     public static class PmxBinaryWriter
     {
+        private static StringEncoder Encoder;
+
         public static void WriteModel(string filePath, PmxModel model)
         {
+            Encoder = new StringEncoder(model.Header.Encoding);
+            
             using (FileStream file = new(filePath, FileMode.Create))
             using (BinaryWriter writer = new(file))
             {
                 WriteHeader(writer, model.Header);
-                WriteInfo(writer, model.ModelInfo, model.Header.Encoding);
+                WriteInfo(writer, model.ModelInfo);
 
                 WriteData(model.Vertices, WriteVertex);
                 WriteData(model.Faces, WriteFace);
@@ -55,7 +59,7 @@ namespace MikuMikuMethods.PMX
             writer.Write(header.SizeOfBodyIndex);
         }
 
-        private static void WriteInfo(BinaryWriter writer, PmxModelInfo modelInfo, System.Text.Encoding encoding)
+        private static void WriteInfo(BinaryWriter writer, PmxModelInfo modelInfo)
         {
             throw new NotImplementedException();
         }

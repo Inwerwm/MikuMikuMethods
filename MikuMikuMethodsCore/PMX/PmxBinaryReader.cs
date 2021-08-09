@@ -9,6 +9,7 @@ namespace MikuMikuMethods.PMX
 {
     public static class PmxBinaryReader
     {
+        private static StringEncoder Encoder;
         public static PmxModel ReadModel(string filePath)
         {
             using (FileStream stream = new(filePath, FileMode.Open))
@@ -17,7 +18,9 @@ namespace MikuMikuMethods.PMX
                 var model = new PmxModel();
 
                 ReadHeader(reader, model.Header);
-                ReadInfo(reader, model.ModelInfo, model.Header.Encoding);
+                Encoder = new StringEncoder(model.Header.Encoding);
+
+                ReadInfo(reader, model.ModelInfo);
 
                 AddDataToList(model.Vertices, ReadVertex);
                 AddDataToList(model.Faces, ReadFace);
@@ -63,7 +66,7 @@ namespace MikuMikuMethods.PMX
             header.SizeOfBodyIndex = config[7];
         }
 
-        private static void ReadInfo(BinaryReader reader, PmxModelInfo modelInfo, System.Text.Encoding encoding)
+        private static void ReadInfo(BinaryReader reader, PmxModelInfo modelInfo)
         {
             throw new NotImplementedException();
         }
