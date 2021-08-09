@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace MikuMikuMethods.PMX
 {
@@ -98,53 +92,80 @@ namespace MikuMikuMethods.PMX
         /// <summary>
         /// スフィア種別
         /// </summary>
-        public SphereMode SphereMode { get; set; }
+        public SphereModeType SphereMode { get; set; }
 
         /// <summary>
         /// トゥーンマップ
         /// </summary>
         public PmxTexture ToonMap { get; set; }
-    }
 
-    /// <summary>
-    /// 描画プリミティブタイプ
-    /// </summary>
-    public enum PrimitiveType
-    {
         /// <summary>
-        /// Line List
+        /// 描画プリミティブタイプ
         /// </summary>
-        Line,
-        /// <summary>
-        /// Point List
-        /// </summary>
-        Point,
-        /// <summary>
-        /// Triangle List
-        /// </summary>
-        Tri
-    }
+        public enum PrimitiveType
+        {
+            /// <summary>
+            /// Line List
+            /// </summary>
+            Line,
+            /// <summary>
+            /// Point List
+            /// </summary>
+            Point,
+            /// <summary>
+            /// Triangle List
+            /// </summary>
+            Tri
+        }
 
-    /// <summary>
-    /// スフィア種別
-    /// </summary>
-    public enum SphereMode
-    {
         /// <summary>
-        /// 無効
+        /// スフィア種別
         /// </summary>
-        None,
+        public enum SphereModeType
+        {
+            /// <summary>
+            /// 無効
+            /// </summary>
+            None,
+            /// <summary>
+            /// 乗算
+            /// </summary>
+            Mul,
+            /// <summary>
+            /// 加算
+            /// </summary>
+            Add,
+            /// <summary>
+            /// サブテクスチャ
+            /// </summary>
+            SubTex
+        }
+
         /// <summary>
-        /// 乗算
+        /// 材質の描画フラグデータ
         /// </summary>
-        Mul,
-        /// <summary>
-        /// 加算
-        /// </summary>
-        Add,
-        /// <summary>
-        /// サブテクスチャ
-        /// </summary>
-        SubTex
+        public enum DrawFlag : byte
+        {
+            /// <summary>
+            /// 両面描画
+            /// </summary>
+            BothSideDraw = 0b1,
+            /// <summary>
+            /// 地面影
+            /// </summary>
+            Shadow = 0b10,
+            /// <summary>
+            /// セルフ影マップへの描画
+            /// </summary>
+            SelfShadowMap = 0b100,
+            /// <summary>
+            /// セルフ影
+            /// </summary>
+            SelfShadow = 0b1000,
+            /// <summary>
+            /// エッジ描画
+            /// </summary>
+            Edge = 0b10000,
+        }
     }
 }
