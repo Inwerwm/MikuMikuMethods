@@ -167,9 +167,10 @@ namespace MikuMikuMethods.PMX
             }
         }
 
-        private static PmxFace ReadFace(BinaryReader arg)
+        private static PmxFace ReadFace(BinaryReader reader)
         {
-            throw new NotImplementedException();
+            var vtxIndexer = new Indexer(Model.Header.SizeOfVertexIndex, true);
+            return new(Model.Vertices[vtxIndexer.Read(reader)], Model.Vertices[vtxIndexer.Read(reader)], Model.Vertices[vtxIndexer.Read(reader)]);
         }
 
         private static PmxTexture ReadTexture(BinaryReader arg)

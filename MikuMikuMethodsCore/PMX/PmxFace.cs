@@ -17,7 +17,7 @@ namespace MikuMikuMethods.PMX
         /// <summary>
         /// 構成頂点のリスト
         /// </summary>
-        public PmxVertex[] Vertices { get; } = new PmxVertex[3];
+        public PmxVertex[] Vertices { get; }
 
         /// <summary>
         /// 面法線
@@ -28,6 +28,14 @@ namespace MikuMikuMethods.PMX
         /// 面を反転
         /// </summary>
         public void Invert() => Utility.Swap(ref Vertices[1], ref Vertices[2]);
+
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        public PmxFace(PmxVertex vertex0, PmxVertex vertex1, PmxVertex vertex2)
+        {
+            Vertices = new PmxVertex[] { vertex0, vertex1, vertex2 };
+        }
 
         /// <summary>
         /// 指定頂点の構成辺を取得
