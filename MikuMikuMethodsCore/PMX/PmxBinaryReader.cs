@@ -173,9 +173,9 @@ namespace MikuMikuMethods.PMX
             return new(Model.Vertices[vtxIndexer.Read(reader)], Model.Vertices[vtxIndexer.Read(reader)], Model.Vertices[vtxIndexer.Read(reader)]);
         }
 
-        private static PmxTexture ReadTexture(BinaryReader arg)
+        private static PmxTexture ReadTexture(BinaryReader reader)
         {
-            throw new NotImplementedException();
+            return new(Encoder.Read(reader));
         }
 
         private static PmxMaterial ReadMaterial(BinaryReader arg)
