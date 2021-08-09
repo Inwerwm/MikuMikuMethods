@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,9 +11,15 @@ namespace MikuMikuMethods.PMX
     {
         public static PmxModel ReadModel(string filePath)
         {
-            var model = new PmxModel();
+            using (FileStream stream = new(filePath, FileMode.Open))
+            using (BinaryReader reader = new(stream))
+            {
+                var model = new PmxModel();
 
-            return model;
+
+
+                return model;
+            }
         }
     }
 }
