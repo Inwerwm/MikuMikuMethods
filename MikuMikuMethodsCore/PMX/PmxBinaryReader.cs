@@ -1,38 +1,41 @@
-﻿using System;
+﻿using MikuMikuMethods.Extension;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MikuMikuMethods.PMX
 {
     public static class PmxBinaryReader
     {
         private static StringEncoder Encoder;
+
+        private static PmxModel Model { get; set; }
+        private static List<int> TmpWeightBoneIndices { get; set; }
+
         public static PmxModel ReadModel(string filePath)
         {
             using (FileStream stream = new(filePath, FileMode.Open))
             using (BinaryReader reader = new(stream))
             {
-                var model = new PmxModel();
+                Model = new PmxModel();
 
-                ReadHeader(reader, model.Header);
-                Encoder = new StringEncoder(model.Header.Encoding);
+                ReadHeader(reader, Model.Header);
+                Encoder = new StringEncoder(Model.Header.Encoding);
 
-                ReadInfo(reader, model.ModelInfo);
+                ReadInfo(reader, Model.ModelInfo);
 
-                AddDataToList(model.Vertices, ReadVertex);
-                AddDataToList(model.Faces, ReadFace);
-                AddDataToList(model.Textures, ReadTexture);
-                AddDataToList(model.Materials, ReadMaterial);
-                AddDataToList(model.Bones, ReadBone);
-                AddDataToList(model.Morphs, ReadMorph);
-                AddDataToList(model.Nodes, ReadNode);
-                AddDataToList(model.Bodies, ReadBody);
-                AddDataToList(model.Joints, ReadJoint);
+                AddDataToList(Model.Vertices, ReadVertex);
+                AddDataToList(Model.Faces, ReadFace);
+                AddDataToList(Model.Textures, ReadTexture);
+                AddDataToList(Model.Materials, ReadMaterial);
+                AddDataToList(Model.Bones, ReadBone);
+                AddDataToList(Model.Morphs, ReadMorph);
+                AddDataToList(Model.Nodes, ReadNode);
+                AddDataToList(Model.Bodies, ReadBody);
+                AddDataToList(Model.Joints, ReadJoint);
 
-                return model;
+                return Model;
 
                 void AddDataToList<T>(IList<T> list, Func<BinaryReader, T> dataReader)
                 {
@@ -74,9 +77,80 @@ namespace MikuMikuMethods.PMX
             modelInfo.CommentEn = Encoder.Read(reader);
         }
 
-        private static PmxVertex ReadVertex(BinaryReader arg)
+        private static PmxVertex ReadVertex(BinaryReader reader)
         {
-            throw new NotImplementedException();
+            PmxVertex vtx = new();
+
+            vtx.Position = reader.ReadVector3();
+            vtx.Normal = reader.ReadVector3();
+            vtx.UV = reader.ReadVector2();
+
+            vtx.AdditonalUVs = Model.Header.NumOfAdditionalUV <= 0 ? null : Enumerable.Range(0, Model.Header.NumOfAdditionalUV).Select(_ => reader.ReadVector4()).ToArray();
+            vtx.WeightType = (PmxWeightType)reader.ReadByte();
+
+            var boneIndexer = new Indexer(Model.Header.SizeOfBoneIndex, false);
+            switch (vtx.WeightType)
+            {
+                case PmxWeightType.BDEF1:
+                    ReadBDEF1Weights(reader, boneIndexer);
+                    break;
+                case PmxWeightType.BDEF2:
+                    ReadBDEF2Weights(reader, boneIndexer);
+                    break;
+                case PmxWeightType.BDEF4:
+                    ReadBDEF4Weights(reader, boneIndexer);
+                    break;
+                case PmxWeightType.SDEF:
+                    ReadSDEFWeights(reader, boneIndexer);
+                    break;
+            }
+
+            vtx.EdgeScale = reader.ReadSingle();
+
+            return vtx;
+
+            // ウェイト読込ローカル関数
+
+            void ReadBDEF1Weights(BinaryReader reader, Indexer indexer)
+            {
+                TmpWeightBoneIndices.Add(indexer.Read(reader));
+                vtx.Weights.Add(new(null, 1.0f));
+            }
+
+            void ReadBDEF2Weights(BinaryReader reader, Indexer indexer)
+            {
+                TmpWeightBoneIndices.Add(indexer.Read(reader));
+                TmpWeightBoneIndices.Add(indexer.Read(reader));
+
+                float weight = reader.ReadSingle();
+                vtx.Weights.Add(new(null, weight));
+                vtx.Weights.Add(new(null, 1 - weight));
+            }
+
+            void ReadBDEF4Weights(BinaryReader reader, Indexer indexer)
+            {
+                TmpWeightBoneIndices.Add(indexer.Read(reader));
+                TmpWeightBoneIndices.Add(indexer.Read(reader));
+                TmpWeightBoneIndices.Add(indexer.Read(reader));
+                TmpWeightBoneIndices.Add(indexer.Read(reader));
+
+                vtx.Weights.Add(new(null, reader.ReadSingle()));
+                vtx.Weights.Add(new(null, reader.ReadSingle()));
+                vtx.Weights.Add(new(null, reader.ReadSingle()));
+                vtx.Weights.Add(new(null, reader.ReadSingle()));
+            }
+
+            void ReadSDEFWeights(BinaryReader reader, Indexer indexer)
+            {
+                TmpWeightBoneIndices.Add(indexer.Read(reader));
+                TmpWeightBoneIndices.Add(indexer.Read(reader));
+
+                float weight = reader.ReadSingle();
+                vtx.Weights.Add(new(null, weight));
+                vtx.Weights.Add(new(null, 1 - weight));
+
+                vtx.SDEF = new(reader.ReadVector3(), reader.ReadVector3(), reader.ReadVector3());
+            }
         }
 
         private static PmxFace ReadFace(BinaryReader arg)

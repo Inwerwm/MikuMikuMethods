@@ -59,67 +59,6 @@ namespace MikuMikuMethods.PMX
         public float EdgeScale { get; set; }
 
         /// <summary>
-        /// バイナリ読込コンストラクタ
-        /// </summary>
-        /// <param name="reader">読み込み対象のリーダー</param>
-        public PmxVertex(BinaryReader reader, Indexer indexer, byte numOfAdditionalUV)
-        {
-            Read(reader, indexer, numOfAdditionalUV);
-        }
-
-        /// <summary>
-        /// データをバイナリから読み込む
-        /// </summary>
-        /// <param name="reader">読み込み対象のリーダー</param>
-        public void Read(BinaryReader reader, Indexer boneIndexer, byte numOfAdditionalUV)
-        {
-            Position = reader.ReadVector3();
-            Normal = reader.ReadVector3();
-            UV = reader.ReadVector2();
-
-            AdditonalUVs = numOfAdditionalUV <= 0 ? null : Enumerable.Range(0, numOfAdditionalUV).Select(_ => reader.ReadVector4()).ToArray();
-            WeightType = (PmxWeightType)reader.ReadByte();
-
-            switch (WeightType)
-            {
-                case PmxWeightType.BDEF1:
-                    ReadBDEF1Weights(reader, boneIndexer);
-                    break;
-                case PmxWeightType.BDEF2:
-                    ReadBDEF2Weights(reader, boneIndexer);
-                    break;
-                case PmxWeightType.BDEF4:
-                    ReadBDEF4Weights(reader, boneIndexer);
-                    break;
-                case PmxWeightType.SDEF:
-                    ReadSDEFWeights(reader, boneIndexer);
-                    break;
-            }
-
-            EdgeScale = reader.ReadSingle();
-        }
-
-        private void ReadBDEF1Weights(BinaryReader reader, Indexer indexer)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void ReadBDEF2Weights(BinaryReader reader, Indexer indexer)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void ReadBDEF4Weights(BinaryReader reader, Indexer indexer)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void ReadSDEFWeights(BinaryReader reader, Indexer indexer)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
         /// データをバイナリで書き込む
         /// </summary>
         /// <param name="writer">書き込み対象のライター</param>
