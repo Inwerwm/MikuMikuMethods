@@ -44,6 +44,15 @@ namespace MikuMikuMethods.PMX
         public List<PmxWeight> Weights { get; } = new();
 
         /// <summary>
+        /// SDEFパラメータ
+        /// </summary>
+        public record SDEFParams(Vector3 C, Vector3 R0, Vector3 R1);
+        /// <summary>
+        /// SDEFパラメータ
+        /// </summary>
+        public SDEFParams SDEF { get; set; }
+
+        /// <summary>
         /// エッジ倍率
         /// </summary>
         public float EdgeScale { get; set; }
