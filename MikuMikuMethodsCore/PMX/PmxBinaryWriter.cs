@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MikuMikuMethods.Extension;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,9 +12,13 @@ namespace MikuMikuMethods.PMX
     {
         private static StringEncoder Encoder;
 
+        private static PmxModel Model { get; set; }
+
+
         public static void WriteModel(string filePath, PmxModel model)
         {
             Encoder = new StringEncoder(model.Header.Encoding);
+            Model = model;
             
             using (FileStream file = new(filePath, FileMode.Create))
             using (BinaryWriter writer = new(file))
@@ -67,9 +72,75 @@ namespace MikuMikuMethods.PMX
             Encoder.Write(writer, modelInfo.CommentEn);
         }
 
-        private static void WriteVertex(BinaryWriter arg1, PmxVertex arg2)
+        private static void WriteVertex(BinaryWriter writer, PmxVertex vertex)
         {
-            throw new NotImplementedException();
+            writer.Write(vertex.Position);
+            writer.Write(vertex.Normal);
+            writer.Write(vertex.UV);
+
+            foreach (var item in vertex.AdditonalUVs)
+            {
+                writer.Write(item);
+            }
+
+            writer.Write((byte)vertex.WeightType);
+
+            var boneIdMap = Model.Bones.Select((Bone, Index) => (Bone, Index)).ToDictionary(b => b.Bone, b => b.Index);
+            var boneIndexer = new Indexer(Model.Header.SizeOfBoneIndex, false);
+            switch (vertex.WeightType)
+            {
+                case PmxWeightType.BDEF1:
+                    WriteBDEF1Weights(writer, boneIndexer, boneIdMap);
+                    break;
+                case PmxWeightType.BDEF2:
+                    WriteBDEF2Weights(writer, boneIndexer, boneIdMap);
+                    break;
+                case PmxWeightType.BDEF4:
+                    WriteBDEF4Weights(writer, boneIndexer, boneIdMap);
+                    break;
+                case PmxWeightType.SDEF:
+                    WriteSDEFWeights(writer, boneIndexer, boneIdMap);
+                    break;
+            }
+
+            writer.Write(vertex.EdgeScale);
+
+            // ウェイト書込ローカル関数
+
+            void WriteBDEF1Weights(BinaryWriter writer, Indexer boneIndexer, Dictionary<PmxBone, int> boneIdMap)
+            {
+                boneIndexer.Write(writer, boneIdMap[vertex.Weights[0].Bone]);
+            }
+
+            void WriteBDEF2Weights(BinaryWriter writer, Indexer boneIndexer, Dictionary<PmxBone, int> boneIdMap)
+            {
+                boneIndexer.Write(writer, boneIdMap[vertex.Weights[0].Bone]);
+                boneIndexer.Write(writer, boneIdMap[vertex.Weights[1].Bone]);
+                writer.Write(vertex.Weights[0].Value);
+            }
+
+            void WriteBDEF4Weights(BinaryWriter writer, Indexer boneIndexer, Dictionary<PmxBone, int> boneIdMap)
+            {
+                boneIndexer.Write(writer, boneIdMap[vertex.Weights[0].Bone]);
+                boneIndexer.Write(writer, boneIdMap[vertex.Weights[1].Bone]);
+                boneIndexer.Write(writer, boneIdMap[vertex.Weights[2].Bone]);
+                boneIndexer.Write(writer, boneIdMap[vertex.Weights[3].Bone]);
+                writer.Write(vertex.Weights[0].Value);
+                writer.Write(vertex.Weights[1].Value);
+                writer.Write(vertex.Weights[2].Value);
+                writer.Write(vertex.Weights[3].Value);
+            }
+
+            void WriteSDEFWeights(BinaryWriter writer, Indexer boneIndexer, Dictionary<PmxBone, int> boneIdMap)
+            {
+                boneIndexer.Write(writer, boneIdMap[vertex.Weights[0].Bone]);
+                boneIndexer.Write(writer, boneIdMap[vertex.Weights[1].Bone]);
+                writer.Write(vertex.Weights[0].Value);
+
+                writer.Write(vertex.SDEF.C);
+                writer.Write(vertex.SDEF.R0);
+                writer.Write(vertex.SDEF.R1);
+            }
         }
 
         private static void WriteFace(BinaryWriter arg1, PmxFace arg2)
