@@ -16,25 +16,85 @@ namespace MikuMikuMethods.PMX
             {
                 var model = new PmxModel();
 
-                Header.Read(reader);
-                Encoder = new(Header.EncodingOfModel);
+                ReadHeader(reader, model.Header);
+                ReadInfo(reader, model.ModelInfo, model.Header.Encoding);
 
-                ModelInfo.Read(reader, Encoder);
-                ReadFrames(reader, r => Vertices.Add(new(r)));
-                ReadFrames(reader, r => Faces.Add(new(r)));
-                ReadFrames(reader, r => Textures.Add(new(reader.ReadString()))); // 仮
-                ReadFrames(reader, r => Materials.Add(new(r)));
-                ReadFrames(reader, r => Bones.Add(new(r)));
-                ReadFrames(reader, r => Morphs.Add(new(r)));
-                ReadFrames(reader, r => Nodes.Add(new(r)));
-                ReadFrames(reader, r => Bodies.Add(new(r)));
-                ReadFrames(reader, r => Joints.Add(new(r)));
+                AddDataToList(model.Vertices, ReadVertex);
+                AddDataToList(model.Faces, ReadFace);
+                AddDataToList(model.Textures, ReadTexture);
+                AddDataToList(model.Materials, ReadMaterial);
+                AddDataToList(model.Bones, ReadBone);
+                AddDataToList(model.Morphs, ReadMorph);
+                AddDataToList(model.Nodes, ReadNode);
+                AddDataToList(model.Bodies, ReadBody);
+                AddDataToList(model.Joints, ReadJoint);
 
                 return model;
+
+                void AddDataToList<T>(IList<T> list, Func<BinaryReader, T> dataReader)
+                {
+                    int count = reader.ReadInt32();
+                    foreach (var item in Enumerable.Range(0, count).Select(_ => dataReader(reader)))
+                    {
+                        list.Add(item);
+                    }
+                }
             }
         }
 
-        private IEnumerable<T> ReadFrames<T>(BinaryReader reader, Func<BinaryReader, T> readData) where T : IPmxData =>
-            Enumerable.Range(0, reader.ReadInt32()).Select(_ => readData(reader)).ToArray();
+        private static void ReadHeader(BinaryReader reader, PmxHeader header)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void ReadInfo(BinaryReader reader, PmxModelInfo modelInfo, System.Text.Encoding encoding)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static PmxVertex ReadVertex(BinaryReader arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static PmxFace ReadFace(BinaryReader arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static PmxTexture ReadTexture(BinaryReader arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static PmxMaterial ReadMaterial(BinaryReader arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static PmxBone ReadBone(BinaryReader arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static PmxMorph ReadMorph(BinaryReader arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static PmxNode ReadNode(BinaryReader arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static PmxBody ReadBody(BinaryReader arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static PmxJoint ReadJoint(BinaryReader arg)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
