@@ -14,36 +14,48 @@ namespace MikuMikuMethods.PMX
 
         private static PmxModel Model { get; set; }
 
+        private static void CleanUpProperties()
+        {
+            Encoder = null;
+            Model = null;
+        }
 
         public static void WriteModel(string filePath, PmxModel model)
         {
-            Encoder = new StringEncoder(model.Header.Encoding);
-            Model = model;
-            
-            using (FileStream file = new(filePath, FileMode.Create))
-            using (BinaryWriter writer = new(file))
+            try
             {
-                WriteHeader(writer, model.Header);
-                WriteInfo(writer, model.ModelInfo);
+                Model = model;
+                Encoder = new StringEncoder(model.Header.Encoding);
 
-                WriteData(model.Vertices, WriteVertex);
-                WriteData(model.Faces, WriteFace);
-                WriteData(model.Textures, WriteTexture);
-                WriteData(model.Materials, WriteMaterial);
-                WriteData(model.Bones, WriteBone);
-                WriteData(model.Morphs, WriteMorph);
-                WriteData(model.Nodes, WriteNode);
-                WriteData(model.Bodies, WriteBody);
-                WriteData(model.Joints, WriteJoint);
-
-                void WriteData<T>(IList<T> list, Action<BinaryWriter, T> DataWriter)
+                using (FileStream file = new(filePath, FileMode.Create))
+                using (BinaryWriter writer = new(file))
                 {
-                    writer.Write(list.Count);
-                    foreach (var item in list)
+                    WriteHeader(writer, model.Header);
+                    WriteInfo(writer, model.ModelInfo);
+
+                    WriteData(model.Vertices, WriteVertex);
+                    WriteData(model.Faces, WriteFace);
+                    WriteData(model.Textures, WriteTexture);
+                    WriteData(model.Materials, WriteMaterial);
+                    WriteData(model.Bones, WriteBone);
+                    WriteData(model.Morphs, WriteMorph);
+                    WriteData(model.Nodes, WriteNode);
+                    WriteData(model.Bodies, WriteBody);
+                    WriteData(model.Joints, WriteJoint);
+
+                    void WriteData<T>(IList<T> list, Action<BinaryWriter, T> DataWriter)
                     {
-                        DataWriter(writer, item);
+                        writer.Write(list.Count);
+                        foreach (var item in list)
+                        {
+                            DataWriter(writer, item);
+                        }
                     }
                 }
+            }
+            finally
+            {
+                CleanUpProperties();
             }
         }
 
