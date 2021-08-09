@@ -29,6 +29,16 @@ namespace MikuMikuMethods.PMX
         public PmxModelConfig Config { get; private set; }
 
         /// <summary>
+        /// モデルの使用エンコード方式
+        /// </summary>
+        public System.Text.Encoding EncodingOfModel => Config.EncodingFormat switch
+        {
+            0 => System.Text.Encoding.Unicode,
+            1 => System.Text.Encoding.UTF8,
+            _ => throw new FormatException("エンコード情報が不正です。")
+        };
+
+        /// <summary>
         /// コンストラクタ
         /// </summary>
         public PmxHeader() { }
