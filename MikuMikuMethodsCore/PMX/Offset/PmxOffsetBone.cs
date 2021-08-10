@@ -26,15 +26,5 @@ namespace MikuMikuMethods.PMX
         /// 回転量
         /// </summary>
         public Quaternion Rotate { get; set; }
-
-        public void Read(BinaryReader reader)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Write(BinaryWriter writer)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

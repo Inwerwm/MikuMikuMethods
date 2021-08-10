@@ -22,15 +22,5 @@ namespace MikuMikuMethods.PMX
         /// 移動量
         /// </summary>
         public Vector3 Offset { get; set; }
-
-        public void Read(BinaryReader reader)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Write(BinaryWriter writer)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

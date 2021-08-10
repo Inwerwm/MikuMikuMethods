@@ -12,14 +12,5 @@ namespace MikuMikuMethods.PMX
     /// </summary>
     public class PmxOffsetUV : IPmxOffset
     {
-        public void Read(BinaryReader reader)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Write(BinaryWriter writer)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
