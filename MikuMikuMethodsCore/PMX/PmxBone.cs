@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Numerics;
 
 namespace MikuMikuMethods.PMX
 {
@@ -26,7 +20,7 @@ namespace MikuMikuMethods.PMX
         /// 位置
         /// </summary>
         public Vector3 Position { get; set; }
-        
+
         /// <summary>
         /// 親ボーン
         /// </summary>
@@ -40,7 +34,7 @@ namespace MikuMikuMethods.PMX
         /// <summary>
         /// 接続先指定方法
         /// </summary>
-        public ConnectionTargetType ConnectionTargetType { get; set; }
+        public ConnectionTargetType ConnectionTarget { get; set; }
         /// <summary>
         /// 接続先座標
         /// </summary>
@@ -67,7 +61,7 @@ namespace MikuMikuMethods.PMX
         /// 操作可能か
         /// </summary>
         public bool Controlable { get; set; }
-        
+
         /// <summary>
         /// IKか
         /// </summary>
@@ -76,7 +70,7 @@ namespace MikuMikuMethods.PMX
         /// IK情報
         /// </summary>
         public PmxInverseKinematics IKInfo { get; set; }
-        
+
         /// <summary>
         /// ローカル付与か
         /// </summary>
@@ -135,20 +129,38 @@ namespace MikuMikuMethods.PMX
         /// MMM用らしい
         /// </summary>
         public int OuterParentKey { get; set; }
-    }
 
-    /// <summary>
-    /// ボーンの接続先指定の方法
-    /// </summary>
-    public enum ConnectionTargetType
-    {
         /// <summary>
-        /// ボーンで指定
+        /// ボーンの接続先指定の方法
         /// </summary>
-        Bone,
-        /// <summary>
-        /// 座標で指定
-        /// </summary>
-        Offset
+        public enum ConnectionTargetType
+        {
+            /// <summary>
+            /// ボーンで指定
+            /// </summary>
+            Bone,
+            /// <summary>
+            /// 座標で指定
+            /// </summary>
+            Offset
+        }
+
+        internal enum BoneFlag : ushort
+        {
+            ConnectTargetType = 0x0001,
+            Rotatable = 0x0002,
+            Movable = 0x0004,
+            Visible = 0x0008,
+            Controlable = 0x0010,
+            IsIK = 0x0020,
+
+            AddLocalTarget = 0x0080,
+            AddRotation = 0x0100,
+            AddMoving = 0x0200,
+            FixAxis = 0x0400,
+            LocalAxis = 0x0800,
+            TrAfterPhysic = 0x1000,
+            TrOuterParent = 0x2000
+        }
     }
 }
