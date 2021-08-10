@@ -33,7 +33,7 @@ namespace MikuMikuMethods.PMX
         public PmxBone Parent { get; set; }
 
         /// <summary>
-        /// 変形改装
+        /// 変形階層
         /// </summary>
         public int TransformOrder { get; set; }
 
