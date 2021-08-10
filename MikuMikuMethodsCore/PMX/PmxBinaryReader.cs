@@ -1,4 +1,4 @@
-﻿using MikuMikuMethods.Extension;
+using MikuMikuMethods.Extension;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,6 +11,7 @@ namespace MikuMikuMethods.PMX
         private static StringEncoder Encoder;
 
         private static PmxModel Model { get; set; }
+        private static List<(PmxWeight Instance, int RelationID)> TmpWeightBoneIndices { get; set; }
         private static List<int> TmpWeightBoneIndices { get; set; }
 
         private static void CleanUpProperties()
@@ -127,41 +128,66 @@ namespace MikuMikuMethods.PMX
 
             void ReadBDEF1Weights(BinaryReader reader, Indexer indexer)
             {
-                TmpWeightBoneIndices.Add(indexer.Read(reader));
-                vtx.Weights.Add(new(null, 1.0f));
+                int boneID = indexer.Read(reader);
+                PmxWeight weight = new(null, 1.0f);
+
+                vtx.Weights.Add(weight);
+                TmpWeightBoneIndices.Add((weight, boneID));
             }
 
             void ReadBDEF2Weights(BinaryReader reader, Indexer indexer)
             {
-                TmpWeightBoneIndices.Add(indexer.Read(reader));
-                TmpWeightBoneIndices.Add(indexer.Read(reader));
+                int boneID1 = indexer.Read(reader);
+                int boneID2 = indexer.Read(reader);
 
                 float weight = reader.ReadSingle();
-                vtx.Weights.Add(new(null, weight));
-                vtx.Weights.Add(new(null, 1 - weight));
+                PmxWeight weight1 = new(null, weight);
+                PmxWeight weight2 = new(null, 1 - weight);
+
+                vtx.Weights.Add(weight1);
+                vtx.Weights.Add(weight2);
+
+                TmpWeightBoneIndices.Add((weight1, boneID1));
+                TmpWeightBoneIndices.Add((weight2, boneID2));
             }
 
             void ReadBDEF4Weights(BinaryReader reader, Indexer indexer)
             {
-                TmpWeightBoneIndices.Add(indexer.Read(reader));
-                TmpWeightBoneIndices.Add(indexer.Read(reader));
-                TmpWeightBoneIndices.Add(indexer.Read(reader));
-                TmpWeightBoneIndices.Add(indexer.Read(reader));
+                int boneID1 = indexer.Read(reader);
+                int boneID2 = indexer.Read(reader);
+                int boneID3 = indexer.Read(reader);
+                int boneID4 = indexer.Read(reader);
 
-                vtx.Weights.Add(new(null, reader.ReadSingle()));
-                vtx.Weights.Add(new(null, reader.ReadSingle()));
-                vtx.Weights.Add(new(null, reader.ReadSingle()));
-                vtx.Weights.Add(new(null, reader.ReadSingle()));
+                PmxWeight weight1 = new(null, reader.ReadSingle());
+                PmxWeight weight2 = new(null, reader.ReadSingle());
+                PmxWeight weight3 = new(null, reader.ReadSingle());
+                PmxWeight weight4 = new(null, reader.ReadSingle());
+
+                vtx.Weights.Add(weight1);
+                vtx.Weights.Add(weight2);
+                vtx.Weights.Add(weight3);
+                vtx.Weights.Add(weight4);
+
+                TmpWeightBoneIndices.Add((weight1, boneID1));
+                TmpWeightBoneIndices.Add((weight2, boneID2));
+                TmpWeightBoneIndices.Add((weight3, boneID3));
+                TmpWeightBoneIndices.Add((weight4, boneID4));
             }
 
             void ReadSDEFWeights(BinaryReader reader, Indexer indexer)
             {
-                TmpWeightBoneIndices.Add(indexer.Read(reader));
-                TmpWeightBoneIndices.Add(indexer.Read(reader));
+                int boneID1 = indexer.Read(reader);
+                int boneID2 = indexer.Read(reader);
 
                 float weight = reader.ReadSingle();
-                vtx.Weights.Add(new(null, weight));
-                vtx.Weights.Add(new(null, 1 - weight));
+                PmxWeight weight1 = new(null, weight);
+                PmxWeight weight2 = new(null, 1 - weight);
+
+                vtx.Weights.Add(weight1);
+                vtx.Weights.Add(weight2);
+
+                TmpWeightBoneIndices.Add((weight1, boneID1));
+                TmpWeightBoneIndices.Add((weight2, boneID2));
 
                 vtx.SDEF = new(reader.ReadVector3(), reader.ReadVector3(), reader.ReadVector3());
             }
