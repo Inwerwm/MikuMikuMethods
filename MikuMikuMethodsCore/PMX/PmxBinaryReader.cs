@@ -178,9 +178,41 @@ namespace MikuMikuMethods.PMX
             return new(Encoder.Read(reader));
         }
 
-        private static PmxMaterial ReadMaterial(BinaryReader arg)
+        private static PmxMaterial ReadMaterial(BinaryReader reader)
         {
-            throw new NotImplementedException();
+            var material = new PmxMaterial();
+
+            material.Name = Encoder.Read(reader);
+            material.NameEn = Encoder.Read(reader);
+
+            material.Diffuse = reader.ReadSingleRGBA();
+            material.Specular = reader.ReadSingleRGB();
+            material.ReflectionIntensity = reader.ReadSingle();
+            material.Ambient = reader.ReadSingleRGB();
+
+            var bitFlag = (PmxMaterial.DrawFlag)reader.ReadByte();
+            material.EnableBothSideDraw = bitFlag.HasFlag(PmxMaterial.DrawFlag.BothSideDraw);
+            material.EnableShadow = bitFlag.HasFlag(PmxMaterial.DrawFlag.Shadow);
+            material.EnableSelfShadowMap = bitFlag.HasFlag(PmxMaterial.DrawFlag.SelfShadowMap);
+            material.EnableSelfShadow = bitFlag.HasFlag(PmxMaterial.DrawFlag.SelfShadow);
+            material.EnableEdge = bitFlag.HasFlag(PmxMaterial.DrawFlag.Edge);
+
+            material.EdgeColor = reader.ReadSingleRGBA();
+            material.EdgeWidth = reader.ReadSingle();
+
+            var id = new Indexer(Model.Header.SizeOfTextureIndex, false);
+            material.Texture = Model.Textures[id.Read(reader)];
+            material.SphereMap = Model.Textures[id.Read(reader)];
+            material.SphereMode = (PmxMaterial.SphereModeType)reader.ReadByte();
+            var IsSharedToon = reader.ReadBoolean();
+            material.ToonMap = IsSharedToon ? new PmxTexture(reader.ReadByte()) : Model.Textures[id.Read(reader)];
+
+            material.Memo = Encoder.Read(reader);
+
+            // 材質に対応する面(頂点)数 (必ず3の倍数になる)
+            reader.ReadInt32();
+
+            return material;
         }
 
         private static PmxBone ReadBone(BinaryReader arg)
