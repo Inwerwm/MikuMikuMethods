@@ -121,7 +121,7 @@ namespace MikuMikuMethods.PMX
         /// <summary>
         /// スフィア種別
         /// </summary>
-        public enum SphereModeType
+        public enum SphereModeType : byte
         {
             /// <summary>
             /// 無効
