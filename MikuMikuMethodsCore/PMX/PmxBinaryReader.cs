@@ -209,10 +209,7 @@ namespace MikuMikuMethods.PMX
             return new(Model.Vertices[vtxIndexer.Read(reader)], Model.Vertices[vtxIndexer.Read(reader)], Model.Vertices[vtxIndexer.Read(reader)]);
         }
 
-        private static PmxTexture ReadTexture(BinaryReader reader)
-        {
-            return new(Encoder.Read(reader));
-        }
+        private static PmxTexture ReadTexture(BinaryReader reader) => new(Encoder.Read(reader));
 
         private static PmxMaterial ReadMaterial(BinaryReader reader)
         {
@@ -259,6 +256,7 @@ namespace MikuMikuMethods.PMX
             bone.NameEn = Encoder.Read(reader);
 
             bone.Position = reader.ReadVector3();
+
             var id = new Indexer(Model.Header.SizeOfBoneIndex, false);
             TmpParentBoneIndices.Add((bone, id.Read(reader)));
             bone.TransformOrder = reader.ReadInt32();
@@ -375,47 +373,40 @@ namespace MikuMikuMethods.PMX
                 of.Ratio = reader.ReadSingle();
                 return of;
             }
-            PmxOffsetVertex CreateVertexOffset()
+            PmxOffsetVertex CreateVertexOffset() => new PmxOffsetVertex()
             {
-                var of = new PmxOffsetVertex();
-                of.Target = Model.Vertices[vid.Read(reader)];
-                of.Offset = reader.ReadVector3();
-                return of;
-            }
-            PmxOffsetBone CreateBoneOffset()
+                Target = Model.Vertices[vid.Read(reader)],
+                Offset = reader.ReadVector3()
+            };
+            PmxOffsetBone CreateBoneOffset() => new PmxOffsetBone()
             {
-                var of = new PmxOffsetBone();
-                of.Target = Model.Bones[bid.Read(reader)];
-                of.Offset = reader.ReadVector3();
-                of.Rotate = reader.ReadQuaternion();
-                return of;
-            }
-            PmxOffsetUV CreateUVOffset()
+                Target = Model.Bones[bid.Read(reader)],
+                Offset = reader.ReadVector3(),
+                Rotate = reader.ReadQuaternion()
+            };
+            PmxOffsetUV CreateUVOffset() => new PmxOffsetUV()
             {
-                var of = new PmxOffsetUV();
-                of.Target = Model.Vertices[vid.Read(reader)];
-                of.Offset = reader.ReadVector4();
-                return of;
-            }
+                Target = Model.Vertices[vid.Read(reader)],
+                Offset = reader.ReadVector4()
+            };
             PmxOffsetMaterial CreateMaterialOffset()
             {
                 var targetId = mtid.Read(reader);
-                var of = new PmxOffsetMaterial((PmxOffsetMaterial.OperationType)reader.ReadByte());
-                
-                of.Target = targetId < 0 ? null : Model.Materials[targetId];
-                of.Diffuse = reader.ReadSingleRGBA();
-                of.Specular = reader.ReadSingleRGB();
-                of.ReflectionIntensity = reader.ReadSingle();
-                of.Ambient = reader.ReadSingleRGB();
-                
-                of.EdgeColor = reader.ReadSingleRGBA();
-                of.EdgeWidth = reader.ReadSingle();
+                return new PmxOffsetMaterial((PmxOffsetMaterial.OperationType)reader.ReadByte())
+                {
+                    Target = targetId < 0 ? null : Model.Materials[targetId],
+                    Diffuse = reader.ReadSingleRGBA(),
+                    Specular = reader.ReadSingleRGB(),
+                    ReflectionIntensity = reader.ReadSingle(),
+                    Ambient = reader.ReadSingleRGB(),
 
-                of.TextureRatio = reader.ReadSingleRGBA();
-                of.SphereRatio = reader.ReadSingleRGBA();
-                of.ToonRatio = reader.ReadSingleRGBA();
+                    EdgeColor = reader.ReadSingleRGBA(),
+                    EdgeWidth = reader.ReadSingle(),
 
-                return of;
+                    TextureRatio = reader.ReadSingleRGBA(),
+                    SphereRatio = reader.ReadSingleRGBA(),
+                    ToonRatio = reader.ReadSingleRGBA()
+                };
             }
         }
 
@@ -445,8 +436,7 @@ namespace MikuMikuMethods.PMX
         private static PmxBody ReadBody(BinaryReader reader)
         {
             var bid = new Indexer(Model.Header.SizeOfBoneIndex, false);
-
-            var body = new PmxBody()
+            return new PmxBody()
             {
                 Name = Encoder.Read(reader),
                 NameEn = Encoder.Read(reader),
@@ -470,8 +460,6 @@ namespace MikuMikuMethods.PMX
 
                 PhysicsMode = (PmxBody.PhysicsModeType)reader.ReadByte()
             };
-
-            return body;
         }
 
         private static PmxJoint ReadJoint(BinaryReader arg)
