@@ -1,4 +1,4 @@
-using MikuMikuMethods.Extension;
+﻿using MikuMikuMethods.Extension;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -320,7 +320,7 @@ namespace MikuMikuMethods.PMX
                     TmpIKLinkBoneIndices.Add((link, id.Read(reader)));
                     link.EnableAngleLimit = reader.ReadBoolean();
                     if (link.EnableAngleLimit)
-        {
+                    {
                         link.LowerLimit = reader.ReadVector3();
                         link.UpperLimit = reader.ReadVector3();
                     }
@@ -398,7 +398,7 @@ namespace MikuMikuMethods.PMX
                 return of;
             }
             PmxOffsetMaterial CreateMaterialOffset()
-        {
+            {
                 var targetId = mtid.Read(reader);
                 var of = new PmxOffsetMaterial((PmxOffsetMaterial.OperationType)reader.ReadByte());
                 
@@ -433,7 +433,7 @@ namespace MikuMikuMethods.PMX
 
             int elmNum = reader.ReadInt32();
             node.Elements.AddRange(Enumerable.Range(0, elmNum).Select<int, IPmxNodeElement>(_ => reader.ReadByte() switch
-        {
+                {
                     0 => new PmxNodeElementBone() { Entity = Model.Bones[bid.Read(reader)] },
                     1 => new PmxNodeElementMorph() { Entity = Model.Morphs[mid.Read(reader)] },
                     _ => throw new InvalidOperationException("表情枠要素種別に意図せぬ値が入っていました。"),
@@ -442,9 +442,36 @@ namespace MikuMikuMethods.PMX
             return node;
         }
 
-        private static PmxBody ReadBody(BinaryReader arg)
+        private static PmxBody ReadBody(BinaryReader reader)
         {
-            throw new NotImplementedException();
+            var bid = new Indexer(Model.Header.SizeOfBoneIndex, false);
+
+            var body = new PmxBody()
+            {
+                Name = Encoder.Read(reader),
+                NameEn = Encoder.Read(reader),
+
+                RelationBone = Model.Bones[bid.Read(reader)],
+
+                Group = reader.ReadByte(),
+                NonCollisionFlag = reader.ReadUInt16(),
+
+                Shape = (PmxBody.ShapeType)reader.ReadByte(),
+                Size = reader.ReadVector3(),
+
+                Position = reader.ReadVector3(),
+                Rotation = reader.ReadVector3(),
+
+                Mass = reader.ReadSingle(),
+                MovingDecay = reader.ReadSingle(),
+                RotationDecay = reader.ReadSingle(),
+                Resiliency = reader.ReadSingle(),
+                Friction = reader.ReadSingle(),
+
+                PhysicsMode = (PmxBody.PhysicsModeType)reader.ReadByte()
+            };
+
+            return body;
         }
 
         private static PmxJoint ReadJoint(BinaryReader arg)
