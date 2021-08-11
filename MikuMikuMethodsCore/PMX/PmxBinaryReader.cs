@@ -47,13 +47,10 @@ namespace MikuMikuMethods.PMX
 
                     return Model;
 
-                    void AddDataToList<T>(IList<T> list, Func<BinaryReader, T> dataReader)
+                    void AddDataToList<T>(List<T> list, Func<BinaryReader, T> dataReader)
                     {
                         int count = reader.ReadInt32();
-                        foreach (var item in Enumerable.Range(0, count).Select(_ => dataReader(reader)))
-                        {
-                            list.Add(item);
-                        }
+                        list.AddRange(Enumerable.Range(0, count).Select(_ => dataReader(reader)));
                     }
                 }
             }
