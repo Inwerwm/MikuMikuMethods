@@ -18,7 +18,6 @@ namespace MikuMikuMethods.PMX
         /// モデル情報
         /// </summary>
         public PmxModelInfo ModelInfo { get; } = new();
-
         /// <summary>
         /// 剛体
         /// </summary>
@@ -55,5 +54,9 @@ namespace MikuMikuMethods.PMX
         /// テクスチャ
         /// </summary>
         public List<PmxTexture> Textures { get; } = new();
+        /// <summary>
+        /// ソフトボディ
+        /// </summary>
+        public List<PmxSoftBody> SoftBodies { get; } = new();
     }
 }
