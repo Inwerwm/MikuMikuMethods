@@ -18,7 +18,7 @@ namespace MikuMikuMethods.PMX
         private static List<(PmxBone Instance, int RelationID)> TmpAdditionParentBoneIndices { get; set; }
         private static List<(PmxInverseKinematics Instance, int RelationID)> TmpIKTargetBoneIndices { get; set; }
         private static List<(PmxIKLink Instance, int RelationID)> TmpIKLinkBoneIndices { get; set; }
-        private static List<int> TmpWeightBoneIndices { get; set; }
+        private static List<(PmxOffsetGroup Instance, int RelationID)> TmpGroupedMorphIndices { get; set; }
 
         private static void CleanUpProperties()
         {
@@ -31,6 +31,7 @@ namespace MikuMikuMethods.PMX
             TmpAdditionParentBoneIndices = null;
             TmpIKTargetBoneIndices = null;
             TmpIKLinkBoneIndices = null;
+            TmpGroupedMorphIndices = null;
         }
 
         public static PmxModel ReadModel(string filePath)
@@ -331,9 +332,91 @@ namespace MikuMikuMethods.PMX
             return bone;
         }
 
-        private static PmxMorph ReadMorph(BinaryReader arg)
+        private static PmxMorph ReadMorph(BinaryReader reader)
         {
-            throw new NotImplementedException();
+            var name = Encoder.Read(reader);
+            var naen = Encoder.Read(reader);
+
+            var panel = reader.ReadByte();
+
+            var morph = new PmxMorph((PmxMorph.MorphType)reader.ReadByte())
+            {
+                Name = name,
+                NameEn = naen,
+                Panel = (PmxMorph.MorphPanel)panel,
+            };
+
+            var vid = new Indexer(Model.Header.SizeOfVertexIndex, true);
+            var bid = new Indexer(Model.Header.SizeOfBoneIndex, false);
+            var moid = new Indexer(Model.Header.SizeOfMorphIndex, false);
+            var mtid = new Indexer(Model.Header.SizeOfMaterialIndex, false);
+
+            var numOfOffset = reader.ReadInt32();
+            morph.Offsets.AddRange(Enumerable.Range(0, numOfOffset).Select<int, IPmxOffset>(_ => morph.Type switch
+            {
+                PmxMorph.MorphType.Group => CreateGroupOffset(),
+                PmxMorph.MorphType.Vertex => CreateVertexOffset(),
+                PmxMorph.MorphType.Bone => CreateBoneOffset(),
+                PmxMorph.MorphType.UV => CreateUVOffset(),
+                PmxMorph.MorphType.AdditionalUV1 => CreateUVOffset(),
+                PmxMorph.MorphType.AdditionalUV2 => CreateUVOffset(),
+                PmxMorph.MorphType.AdditionalUV3 => CreateUVOffset(),
+                PmxMorph.MorphType.AdditionalUV4 => CreateUVOffset(),
+                PmxMorph.MorphType.Material => CreateMaterialOffset(),
+                _ => throw new InvalidOperationException("モーフ種別に意図せぬ値が入っていました。"),
+            }));
+
+            return morph;
+
+            PmxOffsetGroup CreateGroupOffset()
+            {
+                var of = new PmxOffsetGroup();
+                TmpGroupedMorphIndices.Add((of, moid.Read(reader)));
+                of.Ratio = reader.ReadSingle();
+                return of;
+            }
+            PmxOffsetVertex CreateVertexOffset()
+            {
+                var of = new PmxOffsetVertex();
+                of.Target = Model.Vertices[vid.Read(reader)];
+                of.Offset = reader.ReadVector3();
+                return of;
+            }
+            PmxOffsetBone CreateBoneOffset()
+            {
+                var of = new PmxOffsetBone();
+                of.Target = Model.Bones[bid.Read(reader)];
+                of.Offset = reader.ReadVector3();
+                of.Rotate = reader.ReadQuaternion();
+                return of;
+            }
+            PmxOffsetUV CreateUVOffset()
+            {
+                var of = new PmxOffsetUV();
+                of.Target = Model.Vertices[vid.Read(reader)];
+                of.Offset = reader.ReadVector4();
+                return of;
+            }
+            PmxOffsetMaterial CreateMaterialOffset()
+        {
+                var targetId = mtid.Read(reader);
+                var of = new PmxOffsetMaterial((PmxOffsetMaterial.OperationType)reader.ReadByte());
+                
+                of.Target = targetId < 0 ? null : Model.Materials[targetId];
+                of.Diffuse = reader.ReadSingleRGBA();
+                of.Specular = reader.ReadSingleRGB();
+                of.ReflectionIntensity = reader.ReadSingle();
+                of.Ambient = reader.ReadSingleRGB();
+                
+                of.EdgeColor = reader.ReadSingleRGBA();
+                of.EdgeWidth = reader.ReadSingle();
+
+                of.TextureRatio = reader.ReadSingleRGBA();
+                of.SphereRatio = reader.ReadSingleRGBA();
+                of.ToonRatio = reader.ReadSingleRGBA();
+
+                return of;
+            }
         }
 
         private static PmxNode ReadNode(BinaryReader arg)
