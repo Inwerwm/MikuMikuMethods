@@ -11,14 +11,26 @@ namespace MikuMikuMethods.PMX
         private static StringEncoder Encoder;
 
         private static PmxModel Model { get; set; }
+
         private static List<(PmxWeight Instance, int RelationID)> TmpWeightBoneIndices { get; set; }
+        private static List<(PmxBone Instance, int RelationID)> TmpParentBoneIndices { get; set; }
+        private static List<(PmxBone Instance, int RelationID)> TmpConnectionTargetBoneIndices { get; set; }
+        private static List<(PmxBone Instance, int RelationID)> TmpAdditionParentBoneIndices { get; set; }
+        private static List<(PmxInverseKinematics Instance, int RelationID)> TmpIKTargetBoneIndices { get; set; }
+        private static List<(PmxIKLink Instance, int RelationID)> TmpIKLinkBoneIndices { get; set; }
         private static List<int> TmpWeightBoneIndices { get; set; }
 
         private static void CleanUpProperties()
         {
             Encoder = null;
             Model = null;
+
             TmpWeightBoneIndices = null;
+            TmpParentBoneIndices = null;
+            TmpConnectionTargetBoneIndices = null;
+            TmpAdditionParentBoneIndices = null;
+            TmpIKTargetBoneIndices = null;
+            TmpIKLinkBoneIndices = null;
         }
 
         public static PmxModel ReadModel(string filePath)
@@ -238,9 +250,85 @@ namespace MikuMikuMethods.PMX
             return material;
         }
 
-        private static PmxBone ReadBone(BinaryReader arg)
+        private static PmxBone ReadBone(BinaryReader reader)
         {
-            throw new NotImplementedException();
+            var bone = new PmxBone();
+
+            bone.Name = Encoder.Read(reader);
+            bone.NameEn = Encoder.Read(reader);
+
+            bone.Position = reader.ReadVector3();
+            var id = new Indexer(Model.Header.SizeOfBoneIndex, false);
+            TmpParentBoneIndices.Add((bone, id.Read(reader)));
+            bone.TransformOrder = reader.ReadInt32();
+            
+            var boneFlag = (PmxBone.BoneFlag)reader.ReadUInt16();
+            
+            if (boneFlag.HasFlag(PmxBone.BoneFlag.ConnectTargetType))
+            {
+                bone.ConnectionTarget = PmxBone.ConnectionTargetType.Bone;
+                TmpConnectionTargetBoneIndices.Add((bone, id.Read(reader)));
+            }
+            else
+            {
+                bone.ConnectionTarget = PmxBone.ConnectionTargetType.Offset;
+                bone.ConnectionTargetOffset = reader.ReadVector3();
+            }
+
+            if(boneFlag.HasFlag(PmxBone.BoneFlag.AddRotation) || boneFlag.HasFlag(PmxBone.BoneFlag.AddMoving))
+            {
+                bone.IsRotateAddition = boneFlag.HasFlag(PmxBone.BoneFlag.AddRotation);
+                bone.IsMoveAddtion = boneFlag.HasFlag(PmxBone.BoneFlag.AddMoving);
+                TmpAdditionParentBoneIndices.Add((bone, id.Read(reader)));
+                bone.AdditonRatio = reader.ReadSingle();
+            }
+
+            if (boneFlag.HasFlag(PmxBone.BoneFlag.FixAxis))
+            {
+                bone.IsFixedAxis = true;
+                bone.FixVector = reader.ReadVector3();
+            }
+
+            if (boneFlag.HasFlag(PmxBone.BoneFlag.LocalAxis))
+            {
+                bone.IsLocalAxis = true;
+                bone.LocalAxisX = reader.ReadVector3();
+                bone.LocalAxisZ = reader.ReadVector3();
+            }
+
+            if (boneFlag.HasFlag(PmxBone.BoneFlag.TrOuterParent))
+            {
+                bone.UseOuterParent = true;
+                bone.OuterParentKey = reader.ReadInt32();
+            }
+
+            if (boneFlag.HasFlag(PmxBone.BoneFlag.IsIK))
+            {
+                bone.IsIK = true;
+
+                var ik = new PmxInverseKinematics();
+                TmpIKTargetBoneIndices.Add((ik, id.Read(reader)));
+                ik.LoopNum = reader.ReadInt32();
+                ik.LimitAngle = reader.ReadSingle();
+
+                var numOfLink = reader.ReadInt32();
+                ik.Links.AddRange(Enumerable.Range(0, numOfLink).Select(_ =>
+                {
+                    var link = new PmxIKLink();
+                    
+                    TmpIKLinkBoneIndices.Add((link, id.Read(reader)));
+                    link.EnableAngleLimit = reader.ReadBoolean();
+                    if (link.EnableAngleLimit)
+        {
+                        link.LowerLimit = reader.ReadVector3();
+                        link.UpperLimit = reader.ReadVector3();
+                    }
+
+                    return link;
+                }));
+            }
+
+            return bone;
         }
 
         private static PmxMorph ReadMorph(BinaryReader arg)
