@@ -462,9 +462,26 @@ namespace MikuMikuMethods.PMX
             };
         }
 
-        private static PmxJoint ReadJoint(BinaryReader arg)
+        private static PmxJoint ReadJoint(BinaryReader reader)
         {
-            throw new NotImplementedException();
+            var bid = new Indexer(Model.Header.SizeOfBodyIndex, false);
+
+            return new PmxJoint()
+            {
+                Name = Encoder.Read(reader),
+                NameEn = Encoder.Read(reader),
+                Type = (PmxJoint.JointType)reader.ReadByte(),
+                RelationBodyA = Model.Bodies[bid.Read(reader)],
+                RelationBodyB = Model.Bodies[bid.Read(reader)],
+                Position = reader.ReadVector3(),
+                Rotation = reader.ReadVector3(),
+                MovingLowerLimit = reader.ReadVector3(),
+                MovingUpperLimit = reader.ReadVector3(),
+                RotationLowerLimit = reader.ReadVector3(),
+                RotationUpperLimit = reader.ReadVector3(),
+                MovingSpringConstants = reader.ReadVector3(),
+                RotationSpringConstants = reader.ReadVector3(),
+            };
         }
     }
 }
