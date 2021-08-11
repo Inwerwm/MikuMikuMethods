@@ -419,9 +419,27 @@ namespace MikuMikuMethods.PMX
             }
         }
 
-        private static PmxNode ReadNode(BinaryReader arg)
+        private static PmxNode ReadNode(BinaryReader reader)
         {
-            throw new NotImplementedException();
+            var node = new PmxNode()
+            {
+                Name = Encoder.Read(reader),
+                NameEn = Encoder.Read(reader),
+                IsSpecific = reader.ReadBoolean()
+            };
+
+            var bid = new Indexer(Model.Header.SizeOfBoneIndex, false);
+            var mid = new Indexer(Model.Header.SizeOfMorphIndex, false);
+
+            int elmNum = reader.ReadInt32();
+            node.Elements.AddRange(Enumerable.Range(0, elmNum).Select<int, IPmxNodeElement>(_ => reader.ReadByte() switch
+        {
+                    0 => new PmxNodeElementBone() { Entity = Model.Bones[bid.Read(reader)] },
+                    1 => new PmxNodeElementMorph() { Entity = Model.Morphs[mid.Read(reader)] },
+                    _ => throw new InvalidOperationException("表情枠要素種別に意図せぬ値が入っていました。"),
+                }));
+
+            return node;
         }
 
         private static PmxBody ReadBody(BinaryReader arg)
