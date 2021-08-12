@@ -171,47 +171,47 @@ namespace MikuMikuMethods.PMX.IO
             }
         }
 
-        private static void WriteFace(BinaryWriter arg1, PmxFace arg2)
+        private static void WriteFace(BinaryWriter writer, PmxFace face)
         {
             throw new NotImplementedException();
         }
 
-        private static void WriteTexture(BinaryWriter arg1, PmxTexture arg2)
+        private static void WriteTexture(BinaryWriter writer, PmxTexture texture)
         {
             throw new NotImplementedException();
         }
 
-        private static void WriteMaterial(BinaryWriter arg1, PmxMaterial arg2)
+        private static void WriteMaterial(BinaryWriter writer, PmxMaterial material)
         {
             throw new NotImplementedException();
         }
 
-        private static void WriteBone(BinaryWriter arg1, PmxBone arg2)
+        private static void WriteBone(BinaryWriter writer, PmxBone bone)
         {
             throw new NotImplementedException();
         }
 
-        private static void WriteMorph(BinaryWriter arg1, PmxMorph arg2)
+        private static void WriteMorph(BinaryWriter writer, PmxMorph morph)
         {
             throw new NotImplementedException();
         }
 
-        private static void WriteNode(BinaryWriter arg1, PmxNode arg2)
+        private static void WriteNode(BinaryWriter writer, PmxNode node)
         {
             throw new NotImplementedException();
         }
 
-        private static void WriteBody(BinaryWriter arg1, PmxBody arg2)
+        private static void WriteBody(BinaryWriter writer, PmxBody body)
         {
             throw new NotImplementedException();
         }
 
-        private static void WriteJoint(BinaryWriter arg1, PmxJoint arg2)
+        private static void WriteJoint(BinaryWriter writer, PmxJoint joint)
         {
             throw new NotImplementedException();
         }
 
-        private static void WriteSoftBody(BinaryWriter arg1, PmxSoftBody arg2)
+        private static void WriteSoftBody(BinaryWriter writer, PmxSoftBody softBody)
         {
             throw new NotImplementedException();
         }
