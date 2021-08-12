@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MikuMikuMethods.PMX
+namespace MikuMikuMethods.PMX.IO
 {
     /// <summary>
     /// PMX用エンコードを気にせず文字列を読み書きできるようにしたクラス

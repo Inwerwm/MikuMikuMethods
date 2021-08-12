@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MikuMikuMethods.PMX
+namespace MikuMikuMethods.PMX.IO
 {
     internal class Indexer
     {
@@ -14,7 +14,7 @@ namespace MikuMikuMethods.PMX
 
         public Indexer(byte indexSize, bool isVertex)
         {
-            if (!new byte[]{ 1, 2, 4 }.Contains(indexSize))
+            if (!new byte[] { 1, 2, 4 }.Contains(indexSize))
                 throw new ArgumentOutOfRangeException("インデックスの大きさ指定が不正です。");
 
             IndexSize = indexSize;

@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace MikuMikuMethods.PMX
+namespace MikuMikuMethods.PMX.IO
 {
-    public static class PmxBinaryReader
+    public static class PmxFileReader
     {
         private static StringEncoder Encoder;
 
@@ -331,9 +331,9 @@ namespace MikuMikuMethods.PMX
             var id = new Indexer(Model.Header.SizeOfBoneIndex, false);
             TmpParentBoneIndices.Add((bone, id.Read(reader)));
             bone.TransformOrder = reader.ReadInt32();
-            
+
             var boneFlag = (PmxBone.BoneFlag)reader.ReadUInt16();
-            
+
             if (boneFlag.HasFlag(PmxBone.BoneFlag.ConnectTargetType))
             {
                 bone.ConnectionTarget = PmxBone.ConnectionTargetType.Bone;
@@ -345,7 +345,7 @@ namespace MikuMikuMethods.PMX
                 bone.ConnectionTargetOffset = reader.ReadVector3();
             }
 
-            if(boneFlag.HasFlag(PmxBone.BoneFlag.AddRotation) || boneFlag.HasFlag(PmxBone.BoneFlag.AddMoving))
+            if (boneFlag.HasFlag(PmxBone.BoneFlag.AddRotation) || boneFlag.HasFlag(PmxBone.BoneFlag.AddMoving))
             {
                 bone.IsRotateAddition = boneFlag.HasFlag(PmxBone.BoneFlag.AddRotation);
                 bone.IsMoveAddtion = boneFlag.HasFlag(PmxBone.BoneFlag.AddMoving);
@@ -385,7 +385,7 @@ namespace MikuMikuMethods.PMX
                 ik.Links.AddRange(Enumerable.Range(0, numOfLink).Select(_ =>
                 {
                     var link = new PmxIKLink();
-                    
+
                     TmpIKLinkBoneIndices.Add((link, id.Read(reader)));
                     link.EnableAngleLimit = reader.ReadBoolean();
                     if (link.EnableAngleLimit)

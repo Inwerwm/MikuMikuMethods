@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MikuMikuMethods.PMX
+namespace MikuMikuMethods.PMX.IO
 {
-    public static class PmxBinaryWriter
+    public static class PmxFileWriter
     {
         private static StringEncoder Encoder;
 
