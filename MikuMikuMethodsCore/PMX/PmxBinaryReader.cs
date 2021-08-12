@@ -1,4 +1,4 @@
-﻿using MikuMikuMethods.Extension;
+using MikuMikuMethods.Extension;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,6 +19,17 @@ namespace MikuMikuMethods.PMX
         private static List<(PmxInverseKinematics Instance, int RelationID)> TmpIKTargetBoneIndices { get; set; }
         private static List<(PmxIKLink Instance, int RelationID)> TmpIKLinkBoneIndices { get; set; }
         private static List<(PmxOffsetGroup Instance, int RelationID)> TmpGroupedMorphIndices { get; set; }
+
+        private static void CreateTmpInstances()
+        {
+            TmpWeightBoneIndices = new();
+            TmpParentBoneIndices = new();
+            TmpConnectionTargetBoneIndices = new();
+            TmpAdditionParentBoneIndices = new();
+            TmpIKTargetBoneIndices = new();
+            TmpIKLinkBoneIndices = new();
+            TmpGroupedMorphIndices = new();
+        }
 
         private static void CleanUpProperties()
         {
@@ -41,6 +52,8 @@ namespace MikuMikuMethods.PMX
                 using (FileStream stream = new(filePath, FileMode.Open))
                 using (BinaryReader reader = new(stream))
                 {
+                    CreateTmpInstances();
+
                     Model = new PmxModel();
 
                     ReadHeader(reader, Model.Header);
