@@ -18,5 +18,18 @@ namespace UnitTest
         {
             var model = PmxFileReader.ReadModel("../../TestData/test.pmx");
         }
+
+        [TestMethod]
+        public void PmxSharedToonTextureTest()
+        {
+            var path = new PmxTexture("toon05.bmp");
+            var num = new PmxTexture(5);
+            var notShared = new PmxTexture("tex/toon05.bmp");
+
+            Assert.AreEqual(5, path.ToonIndex);
+            Assert.AreEqual("toon05.bmp", num.Path);
+            Assert.IsNull(notShared.ToonIndex);
+            Assert.AreEqual(1, new[] { path, num }.Distinct().Count());
+        }
     }
 }
