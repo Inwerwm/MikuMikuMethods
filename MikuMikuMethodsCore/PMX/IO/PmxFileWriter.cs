@@ -25,6 +25,13 @@ namespace MikuMikuMethods.PMX.IO
         private static Indexer MphID { get; set; }
         private static Indexer BodyID { get; set; }
 
+        private static Dictionary<PmxVertex, int> VtxMap { get; set; }
+        private static Dictionary<PmxTexture, int> TexMap { get; set; }
+        private static Dictionary<PmxMaterial, int> MatMap { get; set; }
+        private static Dictionary<PmxBone, int> BoneMap { get; set; }
+        private static Dictionary<PmxMorph, int> MphMap { get; set; }
+        private static Dictionary<PmxBody, int> BodyMap { get; set; }
+        
         private static void CleanUpProperties()
         {
             Encoder = null;
@@ -37,6 +44,13 @@ namespace MikuMikuMethods.PMX.IO
             BoneID = null;
             MphID = null;
             BodyID = null;
+
+            VtxMap = null;
+            TexMap = null;
+            MatMap = null;
+            BoneMap = null;
+            MphMap = null;
+            BodyMap = null;
         }
 
         private static void CreatePropaties()
@@ -50,6 +64,13 @@ namespace MikuMikuMethods.PMX.IO
             BoneID = new(Model.Header.SizeOfBoneIndex, false);
             MphID = new(Model.Header.SizeOfMorphIndex, false);
             BodyID = new(Model.Header.SizeOfBodyIndex, false);
+
+            VtxMap = Model.Vertices.Select((item, id) => (item, id)).ToDictionary(b => b.item, b => b.id);
+            TexMap = Textures.Select((item, id) => (item, id)).ToDictionary(b => b.item, b => b.id);
+            MatMap = Model.Materials.Select((item, id) => (item, id)).ToDictionary(b => b.item, b => b.id);
+            BoneMap = Model.Bones.Select((item, id) => (item, id)).ToDictionary(b => b.item, b => b.id);
+            MphMap = Model.Morphs.Select((item, id) => (item, id)).ToDictionary(b => b.item, b => b.id);
+            BodyMap = Model.Bodies.Select((item, id) => (item, id)).ToDictionary(b => b.item, b => b.id);
         }
 
         /// <summary>
@@ -139,8 +160,6 @@ namespace MikuMikuMethods.PMX.IO
 
             writer.Write((byte)vertex.WeightType);
 
-            var boneIdMap = Model.Bones.Select((Bone, Index) => (Bone, Index)).ToDictionary(b => b.Bone, b => b.Index);
-            var boneIndexer = new Indexer(Model.Header.SizeOfBoneIndex, false);
             switch (vertex.WeightType)
             {
                 case PmxWeightType.BDEF1:
@@ -166,22 +185,22 @@ namespace MikuMikuMethods.PMX.IO
 
             void WriteBDEF1Weights()
             {
-                boneIndexer.Write(writer, boneIdMap[vertex.Weights[0].Bone]);
+                BoneID.Write(writer, BoneMap[vertex.Weights[0].Bone]);
             }
 
             void WriteBDEF2Weights()
             {
-                boneIndexer.Write(writer, boneIdMap[vertex.Weights[0].Bone]);
-                boneIndexer.Write(writer, boneIdMap[vertex.Weights[1].Bone]);
+                BoneID.Write(writer, BoneMap[vertex.Weights[0].Bone]);
+                BoneID.Write(writer, BoneMap[vertex.Weights[1].Bone]);
                 writer.Write(vertex.Weights[0].Value);
             }
 
             void WriteBDEF4Weights()
             {
-                boneIndexer.Write(writer, boneIdMap[vertex.Weights[0].Bone]);
-                boneIndexer.Write(writer, boneIdMap[vertex.Weights[1].Bone]);
-                boneIndexer.Write(writer, boneIdMap[vertex.Weights[2].Bone]);
-                boneIndexer.Write(writer, boneIdMap[vertex.Weights[3].Bone]);
+                BoneID.Write(writer, BoneMap[vertex.Weights[0].Bone]);
+                BoneID.Write(writer, BoneMap[vertex.Weights[1].Bone]);
+                BoneID.Write(writer, BoneMap[vertex.Weights[2].Bone]);
+                BoneID.Write(writer, BoneMap[vertex.Weights[3].Bone]);
                 writer.Write(vertex.Weights[0].Value);
                 writer.Write(vertex.Weights[1].Value);
                 writer.Write(vertex.Weights[2].Value);
@@ -190,8 +209,8 @@ namespace MikuMikuMethods.PMX.IO
 
             void WriteSDEFWeights()
             {
-                boneIndexer.Write(writer, boneIdMap[vertex.Weights[0].Bone]);
-                boneIndexer.Write(writer, boneIdMap[vertex.Weights[1].Bone]);
+                BoneID.Write(writer, BoneMap[vertex.Weights[0].Bone]);
+                BoneID.Write(writer, BoneMap[vertex.Weights[1].Bone]);
                 writer.Write(vertex.Weights[0].Value);
 
                 writer.Write(vertex.SDEF.C);
