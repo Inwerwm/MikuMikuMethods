@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace MikuMikuMethods.PMX.IO
 {
+    /// <summary>
+    /// PMXファイル書込クラス
+    /// </summary>
     public static class PmxFileWriter
     {
         private static StringEncoder Encoder;
@@ -20,6 +23,11 @@ namespace MikuMikuMethods.PMX.IO
             Model = null;
         }
 
+        /// <summary>
+        /// モデル書込
+        /// </summary>
+        /// <param name="filePath">書込むファイルパス</param>
+        /// <param name="model">書き込むモデル</param>
         public static void WriteModel(string filePath, PmxModel model)
         {
             try
@@ -42,13 +50,17 @@ namespace MikuMikuMethods.PMX.IO
                     WriteData(model.Nodes, WriteNode);
                     WriteData(model.Bodies, WriteBody);
                     WriteData(model.Joints, WriteJoint);
+                    WriteData(model.SoftBodies, WriteSoftBody, 2.1f);
 
-                    void WriteData<T>(IList<T> list, Action<BinaryWriter, T> DataWriter)
+                    void WriteData<T>(IList<T> list, Action<BinaryWriter, T> DataWriter, float requireVersion = 2.0f)
                     {
-                        writer.Write(list.Count);
-                        foreach (var item in list)
+                        if (Model.Header.Version >= requireVersion)
                         {
-                            DataWriter(writer, item);
+                            writer.Write(list.Count);
+                            foreach (var item in list)
+                            {
+                                DataWriter(writer, item);
+                            }
                         }
                     }
                 }
@@ -191,6 +203,11 @@ namespace MikuMikuMethods.PMX.IO
         }
 
         private static void WriteJoint(BinaryWriter arg1, PmxJoint arg2)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void WriteSoftBody(BinaryWriter arg1, PmxSoftBody arg2)
         {
             throw new NotImplementedException();
         }
