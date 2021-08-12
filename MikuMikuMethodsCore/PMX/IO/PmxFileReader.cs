@@ -6,6 +6,9 @@ using System.Linq;
 
 namespace MikuMikuMethods.PMX.IO
 {
+    /// <summary>
+    /// PMXファイル読込クラス
+    /// </summary>
     public static class PmxFileReader
     {
         private static StringEncoder Encoder;
@@ -76,6 +79,11 @@ namespace MikuMikuMethods.PMX.IO
             TmpImpulseTargetBodyIndices = null;
         }
 
+        /// <summary>
+        /// モデル読込
+        /// </summary>
+        /// <param name="filePath">読み込むモデルファイルのパス</param>
+        /// <returns>読み込んだモデル</returns>
         public static PmxModel ReadModel(string filePath)
         {
             try
