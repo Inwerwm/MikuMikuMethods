@@ -129,6 +129,9 @@ namespace MikuMikuMethods.PMX
                 case PmxWeightType.SDEF:
                     ReadSDEFWeights(reader, boneIndexer);
                     break;
+                case PmxWeightType.QDEF:
+                    ReadBDEF4Weights(reader, boneIndexer);
+                    break;
             }
 
             vtx.EdgeScale = reader.ReadSingle();

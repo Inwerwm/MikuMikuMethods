@@ -9,6 +9,7 @@
         BDEF2,
         BDEF4,
         SDEF,
+        QDEF
     }
 
     /// <summary>
