@@ -115,16 +115,19 @@ namespace MikuMikuMethods.PMX.IO
             switch (vertex.WeightType)
             {
                 case PmxWeightType.BDEF1:
-                    WriteBDEF1Weights(writer, boneIndexer, boneIdMap);
+                    WriteBDEF1Weights();
                     break;
                 case PmxWeightType.BDEF2:
-                    WriteBDEF2Weights(writer, boneIndexer, boneIdMap);
+                    WriteBDEF2Weights();
                     break;
                 case PmxWeightType.BDEF4:
-                    WriteBDEF4Weights(writer, boneIndexer, boneIdMap);
+                    WriteBDEF4Weights();
                     break;
                 case PmxWeightType.SDEF:
-                    WriteSDEFWeights(writer, boneIndexer, boneIdMap);
+                    WriteSDEFWeights();
+                    break;
+                case PmxWeightType.QDEF:
+                    WriteBDEF4Weights();
                     break;
             }
 
@@ -132,19 +135,19 @@ namespace MikuMikuMethods.PMX.IO
 
             // ウェイト書込ローカル関数
 
-            void WriteBDEF1Weights(BinaryWriter writer, Indexer boneIndexer, Dictionary<PmxBone, int> boneIdMap)
+            void WriteBDEF1Weights()
             {
                 boneIndexer.Write(writer, boneIdMap[vertex.Weights[0].Bone]);
             }
 
-            void WriteBDEF2Weights(BinaryWriter writer, Indexer boneIndexer, Dictionary<PmxBone, int> boneIdMap)
+            void WriteBDEF2Weights()
             {
                 boneIndexer.Write(writer, boneIdMap[vertex.Weights[0].Bone]);
                 boneIndexer.Write(writer, boneIdMap[vertex.Weights[1].Bone]);
                 writer.Write(vertex.Weights[0].Value);
             }
 
-            void WriteBDEF4Weights(BinaryWriter writer, Indexer boneIndexer, Dictionary<PmxBone, int> boneIdMap)
+            void WriteBDEF4Weights()
             {
                 boneIndexer.Write(writer, boneIdMap[vertex.Weights[0].Bone]);
                 boneIndexer.Write(writer, boneIdMap[vertex.Weights[1].Bone]);
@@ -156,7 +159,7 @@ namespace MikuMikuMethods.PMX.IO
                 writer.Write(vertex.Weights[3].Value);
             }
 
-            void WriteSDEFWeights(BinaryWriter writer, Indexer boneIndexer, Dictionary<PmxBone, int> boneIdMap)
+            void WriteSDEFWeights()
             {
                 boneIndexer.Write(writer, boneIdMap[vertex.Weights[0].Bone]);
                 boneIndexer.Write(writer, boneIdMap[vertex.Weights[1].Bone]);
