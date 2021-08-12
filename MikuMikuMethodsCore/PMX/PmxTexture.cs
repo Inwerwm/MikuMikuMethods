@@ -16,6 +16,11 @@ namespace MikuMikuMethods.PMX
         /// テクスチャのパス
         /// </summary>
         public string Path { get; init; }
+        /// <summary>
+        /// <para>共有Toonテクスチャ番号</para>
+        /// <para>共有Toonでない場合はnull</para>
+        /// </summary>
+        public int? ToonIndex { get; private set; }
 
         /// <summary>
         /// コンストラクタ
@@ -24,6 +29,7 @@ namespace MikuMikuMethods.PMX
         public PmxTexture(string path)
         {
             Path = path;
+            ToonIndex = null;
         }
 
         /// <summary>
@@ -35,6 +41,7 @@ namespace MikuMikuMethods.PMX
             Path = toonIndex.IsWithin(1, 10)
                  ? $"toon{toonIndex:00}.bmp"
                  : throw new ArgumentOutOfRangeException("共有Toonテクスチャは[1,10]の区間で指定してください。");
+            ToonIndex = toonIndex;
         }
 
         public override string ToString() => $"{Path}";
