@@ -1,4 +1,4 @@
-using MikuMikuMethods.Extension;
+﻿using MikuMikuMethods.Extension;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -229,7 +229,7 @@ namespace MikuMikuMethods.PMX.IO
 
         private static void WriteTexture(BinaryWriter writer, PmxTexture texture)
         {
-            throw new NotImplementedException();
+            Encoder.Write(writer, texture.Path);
         }
 
         private static void WriteMaterial(BinaryWriter writer, PmxMaterial material)
