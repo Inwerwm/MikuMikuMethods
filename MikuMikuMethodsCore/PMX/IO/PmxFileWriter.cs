@@ -44,7 +44,7 @@ namespace MikuMikuMethods.PMX.IO
 
                     WriteData(model.Vertices, WriteVertex);
                     WriteData(model.Faces, WriteFace);
-                    WriteData(model.Textures, WriteTexture);
+                    WriteData(model.Materials.SelectMany(m => new[] { m.Texture, m.SphereMap, m.ToonMap }.Where(t => t != null)).Distinct().ToList(), WriteTexture);
                     WriteData(model.Materials, WriteMaterial);
                     WriteData(model.Bones, WriteBone);
                     WriteData(model.Morphs, WriteMorph);
