@@ -1,4 +1,4 @@
-﻿using MikuMikuMethods.Extension;
+using MikuMikuMethods.Extension;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -109,7 +109,7 @@ namespace MikuMikuMethods.PMX.IO
                     ReadInfo(reader, Model.ModelInfo);
 
                     AddDataToList(Model.Vertices, ReadVertex);
-                    AddDataToList(Model.Faces, ReadFace);
+                    AddDataToList(Model.Faces, ReadFace, 3);
                     AddDataToList(Model.Textures, ReadTexture);
                     AddDataToList(Model.Materials, ReadMaterial);
                     AddDataToList(Model.Bones, ReadBone);
@@ -124,9 +124,9 @@ namespace MikuMikuMethods.PMX.IO
 
                     return Model;
 
-                    void AddDataToList<T>(List<T> list, Func<BinaryReader, T> dataReader)
+                    void AddDataToList<T>(List<T> list, Func<BinaryReader, T> dataReader, int divisor = 1)
                     {
-                        int count = reader.ReadInt32();
+                        int count = reader.ReadInt32() / divisor;
                         list.AddRange(Enumerable.Range(0, count).Select(_ => dataReader(reader)));
                     }
                 }
