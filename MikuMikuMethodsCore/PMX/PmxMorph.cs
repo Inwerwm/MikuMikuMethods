@@ -113,7 +113,15 @@ namespace MikuMikuMethods.PMX
             /// <summary>
             /// 材質
             /// </summary>
-            Material
+            Material,
+            /// <summary>
+            /// フリップ
+            /// </summary>
+            Flip,
+            /// <summary>
+            /// インパルス
+            /// </summary>
+            Impulse
         }
     }
 }

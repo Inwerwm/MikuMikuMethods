@@ -1,4 +1,4 @@
-using MikuMikuMethods.Extension;
+﻿using MikuMikuMethods.Extension;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,6 +19,7 @@ namespace MikuMikuMethods.PMX
         private static List<(PmxInverseKinematics Instance, int RelationID)> TmpIKTargetBoneIndices { get; set; }
         private static List<(PmxIKLink Instance, int RelationID)> TmpIKLinkBoneIndices { get; set; }
         private static List<(PmxOffsetGroup Instance, int RelationID)> TmpGroupedMorphIndices { get; set; }
+        private static List<(PmxOffsetImpulse Instance, int RelationID)> TmpImpulseTargetBodyIndices { get; set; }
 
         private static void CreateTmpInstances()
         {
@@ -29,6 +30,7 @@ namespace MikuMikuMethods.PMX
             TmpIKTargetBoneIndices = new();
             TmpIKLinkBoneIndices = new();
             TmpGroupedMorphIndices = new();
+            TmpImpulseTargetBodyIndices = new();
         }
 
         private static void CleanUpProperties()
@@ -43,6 +45,7 @@ namespace MikuMikuMethods.PMX
             TmpIKTargetBoneIndices = null;
             TmpIKLinkBoneIndices = null;
             TmpGroupedMorphIndices = null;
+            TmpImpulseTargetBodyIndices = null;
         }
 
         public static PmxModel ReadModel(string filePath)
@@ -366,9 +369,10 @@ namespace MikuMikuMethods.PMX
             };
 
             var vid = new Indexer(Model.Header.SizeOfVertexIndex, true);
-            var bid = new Indexer(Model.Header.SizeOfBoneIndex, false);
+            var bnid = new Indexer(Model.Header.SizeOfBoneIndex, false);
             var moid = new Indexer(Model.Header.SizeOfMorphIndex, false);
             var mtid = new Indexer(Model.Header.SizeOfMaterialIndex, false);
+            var bdid = new Indexer(Model.Header.SizeOfBodyIndex, false);
 
             var numOfOffset = reader.ReadInt32();
             morph.Offsets.AddRange(Enumerable.Range(0, numOfOffset).Select<int, IPmxOffset>(_ => morph.Type switch
@@ -382,7 +386,9 @@ namespace MikuMikuMethods.PMX
                 PmxMorph.MorphType.AdditionalUV3 => CreateUVOffset(),
                 PmxMorph.MorphType.AdditionalUV4 => CreateUVOffset(),
                 PmxMorph.MorphType.Material => CreateMaterialOffset(),
-                _ => throw new InvalidOperationException("モーフ種別に意図せぬ値が入っていました。"),
+                PmxMorph.MorphType.Flip => CreateGroupOffset(),
+                PmxMorph.MorphType.Impulse => CreateImpulseOffset(),
+                _ => throw new InvalidOperationException("モーフ種別に意図せぬ値が入っていました。")
             }));
 
             return morph;
@@ -401,7 +407,7 @@ namespace MikuMikuMethods.PMX
             };
             PmxOffsetBone CreateBoneOffset() => new PmxOffsetBone()
             {
-                Target = Model.Bones[bid.Read(reader)],
+                Target = Model.Bones[bnid.Read(reader)],
                 Offset = reader.ReadVector3(),
                 Rotate = reader.ReadQuaternion()
             };
@@ -428,6 +434,15 @@ namespace MikuMikuMethods.PMX
                     SphereRatio = reader.ReadSingleRGBA(),
                     ToonRatio = reader.ReadSingleRGBA()
                 };
+            }
+            PmxOffsetImpulse CreateImpulseOffset()
+            {
+                var of = new PmxOffsetImpulse();
+                TmpImpulseTargetBodyIndices.Add((of, bdid.Read(reader)));
+                of.IsLocal = reader.ReadBoolean();
+                of.MovingSpead = reader.ReadVector3();
+                of.RotationTorque = reader.ReadVector3();
+                return of;
             }
         }
 
