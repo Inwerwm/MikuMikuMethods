@@ -10,6 +10,7 @@ namespace MikuMikuMethods.PMX
     {
         private static StringEncoder Encoder;
 
+        private static float ModelVersion { get; set; }
         private static PmxModel Model { get; set; }
 
         private static List<(PmxWeight Instance, int RelationID)> TmpWeightBoneIndices { get; set; }
@@ -116,7 +117,8 @@ namespace MikuMikuMethods.PMX
                     AddDataToList(Model.Nodes, ReadNode);
                     AddDataToList(Model.Bodies, ReadBody);
                     AddDataToList(Model.Joints, ReadJoint);
-                    AddDataToList(Model.SoftBodies, ReadSoftBody);
+                    if (ModelVersion >= 2.1)
+                        AddDataToList(Model.SoftBodies, ReadSoftBody);
 
                     SolveRelations();
 
@@ -139,8 +141,8 @@ namespace MikuMikuMethods.PMX
         {
             // "PMX "
             reader.ReadBytes(4);
-            var version = reader.ReadSingle();
-            if (version < 2.0) throw new FormatException("PMXが非対応バージョンです。バージョン番号が未対応バージョンです。");
+            ModelVersion = reader.ReadSingle();
+            if (ModelVersion < 2.0) throw new FormatException("PMXが非対応バージョンです。バージョン番号が未対応バージョンです。");
 
             var configSize = reader.ReadByte();
             if (configSize != 8) throw new FormatException("PMXが非対応バージョンです。ヘッダデータが未対応の形式です。");
@@ -295,7 +297,7 @@ namespace MikuMikuMethods.PMX
             material.EnableSelfShadow = bitFlag.HasFlag(PmxMaterial.DrawFlag.SelfShadow);
             material.EnableEdge = bitFlag.HasFlag(PmxMaterial.DrawFlag.Edge);
             material.EnableVertexColor = bitFlag.HasFlag(PmxMaterial.DrawFlag.VertexColor);
-            material.Primitive = Model.Header.Version < 2.1 ? PmxMaterial.PrimitiveType.Tri
+            material.Primitive = ModelVersion < 2.1 ? PmxMaterial.PrimitiveType.Tri
                                : bitFlag.HasFlag(PmxMaterial.DrawFlag.Point) ? PmxMaterial.PrimitiveType.Point
                                : bitFlag.HasFlag(PmxMaterial.DrawFlag.Line) ? PmxMaterial.PrimitiveType.Line
                                : PmxMaterial.PrimitiveType.Tri;
