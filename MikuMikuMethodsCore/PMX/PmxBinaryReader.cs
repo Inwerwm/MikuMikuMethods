@@ -233,7 +233,11 @@ namespace MikuMikuMethods.PMX
             material.EnableSelfShadowMap = bitFlag.HasFlag(PmxMaterial.DrawFlag.SelfShadowMap);
             material.EnableSelfShadow = bitFlag.HasFlag(PmxMaterial.DrawFlag.SelfShadow);
             material.EnableEdge = bitFlag.HasFlag(PmxMaterial.DrawFlag.Edge);
-
+            material.EnableVertexColor = bitFlag.HasFlag(PmxMaterial.DrawFlag.VertexColor);
+            material.Primitive = Model.Header.Version < 2.1 ? PmxMaterial.PrimitiveType.Tri
+                               : bitFlag.HasFlag(PmxMaterial.DrawFlag.Point) ? PmxMaterial.PrimitiveType.Point
+                               : bitFlag.HasFlag(PmxMaterial.DrawFlag.Line) ? PmxMaterial.PrimitiveType.Line
+                               : PmxMaterial.PrimitiveType.Tri;
             material.EdgeColor = reader.ReadSingleRGBA();
             material.EdgeWidth = reader.ReadSingle();
 

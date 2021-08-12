@@ -144,7 +144,7 @@ namespace MikuMikuMethods.PMX
         /// <summary>
         /// 材質の描画フラグデータ
         /// </summary>
-        public enum DrawFlag : byte
+        internal enum DrawFlag : byte
         {
             /// <summary>
             /// 両面描画
@@ -166,6 +166,18 @@ namespace MikuMikuMethods.PMX
             /// エッジ描画
             /// </summary>
             Edge = 0x10,
+            /// <summary>
+            /// 頂点色
+            /// </summary>
+            VertexColor = 0x20,
+            /// <summary>
+            /// Point描画
+            /// </summary>
+            Point = 0x40,
+            /// <summary>
+            /// Line描画
+            /// </summary>
+            Line = 0x80
         }
     }
 }
