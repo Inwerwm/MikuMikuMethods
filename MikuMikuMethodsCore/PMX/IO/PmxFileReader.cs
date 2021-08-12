@@ -1,4 +1,4 @@
-using MikuMikuMethods.Extension;
+﻿using MikuMikuMethods.Extension;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -36,45 +36,22 @@ namespace MikuMikuMethods.PMX.IO
 
         private static void SolveRelations()
         {
-            foreach (var item in TmpWeightBoneIndices)
+            void Solve<T>(List<(T Instance, int RelationID)> Tmp, Action<T, int> setter)
             {
-                item.Instance.Bone = Model.Bones[item.RelationID];
+                foreach (var item in Tmp.Where(item => item.RelationID >= 0))
+                {
+                    setter(item.Instance, item.RelationID);
+                }
             }
 
-            foreach (var item in TmpParentBoneIndices)
-            {
-                item.Instance.Parent = Model.Bones[item.RelationID];
-            }
-
-            foreach (var item in TmpConnectionTargetBoneIndices)
-            {
-                item.Instance.ConnectionTargetBone = Model.Bones[item.RelationID];
-            }
-
-            foreach (var item in TmpAdditionParentBoneIndices)
-            {
-                item.Instance.AdditionParent = Model.Bones[item.RelationID];
-            }
-
-            foreach (var item in TmpIKTargetBoneIndices)
-            {
-                item.Instance.Target = Model.Bones[item.RelationID];
-            }
-
-            foreach (var item in TmpIKLinkBoneIndices)
-            {
-                item.Instance.Bone = Model.Bones[item.RelationID];
-            }
-
-            foreach (var item in TmpGroupedMorphIndices)
-            {
-                item.Instance.Target = Model.Morphs[item.RelationID];
-            }
-
-            foreach (var item in TmpImpulseTargetBodyIndices)
-            {
-                item.Instance.Target = Model.Bodies[item.RelationID];
-            }
+            Solve(TmpWeightBoneIndices, (instance, id) => instance.Bone = Model.Bones[id]);
+            Solve(TmpParentBoneIndices, (instance, id) => instance.Parent = Model.Bones[id]);
+            Solve(TmpConnectionTargetBoneIndices, (instance, id) => instance.ConnectionTargetBone = Model.Bones[id]);
+            Solve(TmpAdditionParentBoneIndices, (instance, id) => instance.AdditionParent = Model.Bones[id]);
+            Solve(TmpIKTargetBoneIndices, (instance, id) => instance.Target = Model.Bones[id]);
+            Solve(TmpIKLinkBoneIndices, (instance, id) => instance.Bone = Model.Bones[id]);
+            Solve(TmpGroupedMorphIndices, (instance, id) => instance.Target = Model.Morphs[id]);
+            Solve(TmpImpulseTargetBodyIndices, (instance, id) => instance.Target = Model.Bodies[id]);
         }
 
         private static void CleanUpProperties()
@@ -305,11 +282,16 @@ namespace MikuMikuMethods.PMX.IO
             material.EdgeWidth = reader.ReadSingle();
 
             var id = new Indexer(Model.Header.SizeOfTextureIndex, false);
-            material.Texture = Model.Textures[id.Read(reader)];
-            material.SphereMap = Model.Textures[id.Read(reader)];
+            int textureID = id.Read(reader);
+            material.Texture = textureID < 0 ? null : Model.Textures[textureID];
+            int sphereID = id.Read(reader);
+            material.SphereMap = sphereID < 0 ? null : Model.Textures[sphereID];
             material.SphereMode = (PmxMaterial.SphereModeType)reader.ReadByte();
             var IsSharedToon = reader.ReadBoolean();
-            material.ToonMap = IsSharedToon ? new PmxTexture(reader.ReadByte()) : Model.Textures[id.Read(reader)];
+            int toonID = id.Read(reader);
+            material.ToonMap = IsSharedToon ? new PmxTexture(reader.ReadByte()) 
+                             : toonID < 0 ? null 
+                             : Model.Textures[toonID];
 
             material.Memo = Encoder.Read(reader);
 
