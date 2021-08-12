@@ -13,6 +13,9 @@ namespace MikuMikuMethods.PMX.IO
         private static float ModelVersion { get; set; }
         private static PmxModel Model { get; set; }
 
+        private static List<PmxFace> Faces { get; set; }
+        private static int LoadedFaceCount { get; set; }
+
         private static List<(PmxWeight Instance, int RelationID)> TmpWeightBoneIndices { get; set; }
         private static List<(PmxBone Instance, int RelationID)> TmpParentBoneIndices { get; set; }
         private static List<(PmxBone Instance, int RelationID)> TmpConnectionTargetBoneIndices { get; set; }
@@ -24,6 +27,9 @@ namespace MikuMikuMethods.PMX.IO
 
         private static void CreateTmpInstances()
         {
+            Faces = new();
+            LoadedFaceCount = 0;
+
             TmpWeightBoneIndices = new();
             TmpParentBoneIndices = new();
             TmpConnectionTargetBoneIndices = new();
@@ -58,6 +64,7 @@ namespace MikuMikuMethods.PMX.IO
         {
             Encoder = null;
             Model = null;
+            Faces = null;
 
             TmpWeightBoneIndices = null;
             TmpParentBoneIndices = null;
@@ -86,7 +93,7 @@ namespace MikuMikuMethods.PMX.IO
                     ReadInfo(reader, Model.ModelInfo);
 
                     AddDataToList(Model.Vertices, ReadVertex);
-                    AddDataToList(Model.Faces, ReadFace, 3);
+                    AddDataToList(Faces, ReadFace, 3);
                     AddDataToList(Model.Textures, ReadTexture);
                     AddDataToList(Model.Materials, ReadMaterial);
                     AddDataToList(Model.Bones, ReadBone);
@@ -296,7 +303,9 @@ namespace MikuMikuMethods.PMX.IO
             material.Memo = Encoder.Read(reader);
 
             // 材質に対応する面(頂点)数 (必ず3の倍数になる)
-            reader.ReadInt32();
+            var faceCount = reader.ReadInt32() / 3;
+            material.Faces.AddRange(Faces.GetRange(LoadedFaceCount, faceCount));
+            LoadedFaceCount += faceCount;
 
             return material;
         }

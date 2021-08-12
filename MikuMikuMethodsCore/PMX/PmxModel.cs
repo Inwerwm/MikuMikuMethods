@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 
@@ -27,9 +28,10 @@ namespace MikuMikuMethods.PMX
         /// </summary>
         public List<PmxBone> Bones { get; } = new();
         /// <summary>
-        /// 面
+        /// <para>面の一覧</para>
+        /// <para>面の追加は材質の面プロパティから行う</para>
         /// </summary>
-        public List<PmxFace> Faces { get; } = new();
+        public ReadOnlyCollection<PmxFace> Faces => Materials.SelectMany(m => m.Faces).ToList().AsReadOnly();
         /// <summary>
         /// ジョイント
         /// </summary>
