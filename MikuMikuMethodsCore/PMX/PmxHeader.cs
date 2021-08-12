@@ -17,7 +17,16 @@ namespace MikuMikuMethods.PMX
         /// <summary>
         /// PMXのバージョン
         /// </summary>
-        public float Version => 2.1f;
+        public float Version
+        {
+            get => version;
+            set
+            {
+                if (value < 2.0 || 2.1 < value)
+                    throw new ArgumentOutOfRangeException("対応バージョンは2.0～2.1までです。");
+                version = value;
+            }
+        }
 
         /// <summary>
         /// モデルの構成情報の要素数
@@ -36,6 +45,7 @@ namespace MikuMikuMethods.PMX
         private byte sizeOfBoneIndex;
         private byte sizeOfMorphIndex;
         private byte sizeOfBodyIndex;
+        private float version;
 
         /// <summary>
         /// エンコード方式
@@ -179,6 +189,11 @@ namespace MikuMikuMethods.PMX
             _ => throw new FormatException("エンコード情報が不正です。")
         };
 
-        public override string ToString() => $"{FormatName}{Version}";
+        public PmxHeader(float version = 2.1f)
+        {
+            Version = version;
+        }
+
+        public override string ToString() => $"{FormatName}{Version:0.0}";
     }
 }
