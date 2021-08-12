@@ -57,6 +57,7 @@ namespace MikuMikuMethods.PMX
                     AddDataToList(Model.Nodes, ReadNode);
                     AddDataToList(Model.Bodies, ReadBody);
                     AddDataToList(Model.Joints, ReadJoint);
+                    AddDataToList(Model.SoftBodies, ReadSoftBody);
 
                     return Model;
 
@@ -482,6 +483,80 @@ namespace MikuMikuMethods.PMX
                 MovingSpringConstants = reader.ReadVector3(),
                 RotationSpringConstants = reader.ReadVector3(),
             };
+        }
+
+        private static PmxSoftBody ReadSoftBody(BinaryReader reader)
+        {
+            var mid = new Indexer(Model.Header.SizeOfMaterialIndex, false);
+            var bid = new Indexer(Model.Header.SizeOfBodyIndex, false);
+            var vid = new Indexer(Model.Header.SizeOfVertexIndex, true);
+
+            var sb = new PmxSoftBody()
+            {
+                Name = Encoder.Read(reader),
+                NameEn = Encoder.Read(reader),
+
+                Shape = (PmxSoftBody.ShapeType)reader.ReadByte(),
+                RelationMaterial = Model.Materials[mid.Read(reader)],
+
+                Group = reader.ReadByte(),
+                NonCollisionFlag = reader.ReadUInt16(),
+            };
+
+            var bitFlag = (PmxSoftBody.BitFlag)reader.ReadByte();
+            sb.IsCreateBLink = bitFlag.HasFlag(PmxSoftBody.BitFlag.CreateBLink);
+            sb.IsCreateCluster = bitFlag.HasFlag(PmxSoftBody.BitFlag.CreateCluster);
+            sb.IsLinkCrossing = bitFlag.HasFlag(PmxSoftBody.BitFlag.LinkCrossing);
+
+            sb.BLinkCreationDistance = reader.ReadInt32();
+            sb.NumOfCluster = reader.ReadInt32();
+
+            sb.SumOfMass = reader.ReadSingle();
+            sb.MarginOfCollision = reader.ReadSingle();
+
+            sb.AeroModel = (PmxSoftBody.AeroModelType)reader.ReadInt32();
+
+            sb.Config.VCF = reader.ReadSingle();
+            sb.Config.DP = reader.ReadSingle();
+            sb.Config.DG = reader.ReadSingle();
+            sb.Config.LF = reader.ReadSingle();
+            sb.Config.PR = reader.ReadSingle();
+            sb.Config.VC = reader.ReadSingle();
+            sb.Config.DF = reader.ReadSingle();
+            sb.Config.MT = reader.ReadSingle();
+            sb.Config.CHR = reader.ReadSingle();
+            sb.Config.KHR = reader.ReadSingle();
+            sb.Config.SHR = reader.ReadSingle();
+            sb.Config.AHR = reader.ReadSingle();
+
+            sb.ClusterParameter.SRHR_CL = reader.ReadSingle();
+            sb.ClusterParameter.SKHR_CL = reader.ReadSingle();
+            sb.ClusterParameter.SSHR_CL = reader.ReadSingle();
+            sb.ClusterParameter.SR_SPLT_CL = reader.ReadSingle();
+            sb.ClusterParameter.SK_SPLT_CL = reader.ReadSingle();
+            sb.ClusterParameter.SS_SPLT_CL = reader.ReadSingle();
+
+            sb.IterationParameter.V_IT = reader.ReadInt32();
+            sb.IterationParameter.P_IT = reader.ReadInt32();
+            sb.IterationParameter.D_IT = reader.ReadInt32();
+            sb.IterationParameter.C_IT = reader.ReadInt32();
+
+            sb.MaterialParameter.LST = reader.ReadSingle();
+            sb.MaterialParameter.AST = reader.ReadSingle();
+            sb.MaterialParameter.VST = reader.ReadSingle();
+
+            var anchorNum = reader.ReadInt32();
+            sb.Anchors.AddRange(Enumerable.Range(0, anchorNum).Select(_ => new PmxSoftBody.Anchor()
+            {
+                RelationBody = Model.Bodies[bid.Read(reader)],
+                RelationVertex = Model.Vertices[vid.Read(reader)],
+                IsNearMode = reader.ReadBoolean()
+            }));
+
+            var pinNum = reader.ReadInt32();
+            sb.Pins.AddRange(Enumerable.Range(0, pinNum).Select(_ => Model.Vertices[vid.Read(reader)]));
+
+            return sb;
         }
     }
 }
