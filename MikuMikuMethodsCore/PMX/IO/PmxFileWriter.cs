@@ -33,6 +33,7 @@ namespace MikuMikuMethods.PMX.IO
             try
             {
                 Model = model;
+                Model.ValidateVersion();
                 Encoder = new StringEncoder(model.Header.Encoding);
 
                 using (FileStream file = new(filePath, FileMode.Create))
