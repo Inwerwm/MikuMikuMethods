@@ -33,6 +33,49 @@ namespace MikuMikuMethods.PMX
             TmpImpulseTargetBodyIndices = new();
         }
 
+        private static void SolveRelations()
+        {
+            foreach (var item in TmpWeightBoneIndices)
+            {
+                item.Instance.Bone = Model.Bones[item.RelationID];
+            }
+
+            foreach (var item in TmpParentBoneIndices)
+            {
+                item.Instance.Parent = Model.Bones[item.RelationID];
+            }
+
+            foreach (var item in TmpConnectionTargetBoneIndices)
+            {
+                item.Instance.ConnectionTargetBone = Model.Bones[item.RelationID];
+            }
+
+            foreach (var item in TmpAdditionParentBoneIndices)
+            {
+                item.Instance.AdditionParent = Model.Bones[item.RelationID];
+            }
+
+            foreach (var item in TmpIKTargetBoneIndices)
+            {
+                item.Instance.Target = Model.Bones[item.RelationID];
+            }
+
+            foreach (var item in TmpIKLinkBoneIndices)
+            {
+                item.Instance.Bone = Model.Bones[item.RelationID];
+            }
+
+            foreach (var item in TmpGroupedMorphIndices)
+            {
+                item.Instance.Target = Model.Morphs[item.RelationID];
+            }
+
+            foreach (var item in TmpImpulseTargetBodyIndices)
+            {
+                item.Instance.Target = Model.Bodies[item.RelationID];
+            }
+        }
+
         private static void CleanUpProperties()
         {
             Encoder = null;
@@ -74,6 +117,8 @@ namespace MikuMikuMethods.PMX
                     AddDataToList(Model.Bodies, ReadBody);
                     AddDataToList(Model.Joints, ReadJoint);
                     AddDataToList(Model.SoftBodies, ReadSoftBody);
+
+                    SolveRelations();
 
                     return Model;
 
