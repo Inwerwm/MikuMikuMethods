@@ -15,5 +15,21 @@
     /// <summary>
     /// ウェイト値
     /// </summary>
-    public record PmxWeight(PmxBone Bone, float Value);
+    public class PmxWeight : IPmxData
+    {
+        /// <summary>
+        /// ボーン
+        /// </summary>
+        public PmxBone Bone { get; set; }
+        /// <summary>
+        /// ウェイト値
+        /// </summary>
+        public float Value { get; set; }
+
+        public PmxWeight(PmxBone bone, float value)
+        {
+            Bone = bone;
+            Value = value;
+        }
+    }
 }
