@@ -53,10 +53,6 @@ namespace MikuMikuMethods.PMX
         /// </summary>
         public List<PmxVertex> Vertices { get; } = new();
         /// <summary>
-        /// テクスチャ
-        /// </summary>
-        public List<PmxTexture> Textures { get; } = new();
-        /// <summary>
         /// ソフトボディ
         /// </summary>
         public List<PmxSoftBody> SoftBodies { get; } = new();
