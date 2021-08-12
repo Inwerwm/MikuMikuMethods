@@ -21,5 +21,7 @@ namespace MikuMikuMethods.PMX
         /// 移動量
         /// </summary>
         public Vector4 Offset { get; set; }
+
+        public override string ToString() => $"{Target.UV} : {Offset}";
     }
 }

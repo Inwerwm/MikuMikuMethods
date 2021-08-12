@@ -58,5 +58,7 @@ namespace MikuMikuMethods.PMX
             FetchEdge(1, 2),
             FetchEdge(2, 0)
         };
+
+        public override string ToString() => "{ " + Vertices.Select(v => v.ToString()).Aggregate((acm, elm) => $"{acm}, {elm}") + " }";
     }
 }

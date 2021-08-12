@@ -181,5 +181,7 @@ namespace MikuMikuMethods.PMX
             public float AST { get; set; }
             public float VST { get; set; }
         }
+
+        public override string ToString() => $"{Name} - {Shape}";
     }
 }

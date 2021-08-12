@@ -123,5 +123,7 @@ namespace MikuMikuMethods.PMX
             /// </summary>
             Impulse
         }
+
+        public override string ToString() => $"{Name} - {Type} Morph";
     }
 }

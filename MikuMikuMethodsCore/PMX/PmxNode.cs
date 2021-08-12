@@ -30,5 +30,7 @@ namespace MikuMikuMethods.PMX
         /// 表情枠内の要素
         /// </summary>
         public List<IPmxNodeElement> Elements { get; } = new();
+
+        public override string ToString() => $"{Name}";
     }
 }

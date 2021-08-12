@@ -17,5 +17,7 @@ namespace MikuMikuMethods.PMX
         IPmxData IPmxNodeElement.Entity { get => Entity; set => Entity = (PmxBone)value; }
 
         public int FindIndex(PmxModel model) => model.Bones.IndexOf(Entity);
+
+        public override string ToString() => $"Bone : {Entity.Name}";
     }
 }

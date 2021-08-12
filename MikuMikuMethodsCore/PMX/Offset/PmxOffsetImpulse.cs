@@ -28,5 +28,7 @@ namespace MikuMikuMethods.PMX
         /// 回転トルク
         /// </summary>
         public Vector3 RotationTorque { get; set; }
+
+        public override string ToString() => $"{Target.Name} : {{{MovingSpead} - {RotationTorque}}}";
     }
 }

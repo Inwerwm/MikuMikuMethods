@@ -58,5 +58,7 @@ namespace MikuMikuMethods.PMX
         /// ソフトボディ
         /// </summary>
         public List<PmxSoftBody> SoftBodies { get; } = new();
+
+        public override string ToString() => $"{Header} : {ModelInfo}";
     }
 }

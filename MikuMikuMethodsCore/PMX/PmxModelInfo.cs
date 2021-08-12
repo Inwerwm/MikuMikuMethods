@@ -28,5 +28,7 @@ namespace MikuMikuMethods.PMX
         /// モデルのコメント(英語)
         /// </summary>
         public string CommentEn { get; set; }
+
+        public override string ToString() => $"{Name}";
     }
 }

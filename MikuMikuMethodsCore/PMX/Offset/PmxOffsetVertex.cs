@@ -22,5 +22,7 @@ namespace MikuMikuMethods.PMX
         /// 移動量
         /// </summary>
         public Vector3 Offset { get; set; }
+
+        public override string ToString() => $"{Target.Position} : {Offset}";
     }
 }

@@ -26,5 +26,7 @@ namespace MikuMikuMethods.PMX
         /// 回転量
         /// </summary>
         public Quaternion Rotate { get; set; }
+
+        public override string ToString() => $"{Target.Name} : {{{Offset} - {Rotate}}}";
     }
 }

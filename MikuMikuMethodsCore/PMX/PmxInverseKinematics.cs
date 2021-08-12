@@ -29,6 +29,8 @@ namespace MikuMikuMethods.PMX
         /// リンク
         /// </summary>
         public List<PmxIKLink> Links { get; } = new();
+
+        public override string ToString() => $"{Target.Name} - {LoopNum} : {LimitAngle:###.00}";
     }
 
     /// <summary>
@@ -53,5 +55,7 @@ namespace MikuMikuMethods.PMX
         /// 角度制限の下限
         /// </summary>
         public Vector3 LowerLimit { get; set; }
+
+        public override string ToString() => $"Link: {Bone.Name}{(EnableAngleLimit ? "(Limited)" : "")}";
     }
 }

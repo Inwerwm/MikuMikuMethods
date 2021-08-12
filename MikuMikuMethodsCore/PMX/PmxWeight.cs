@@ -31,5 +31,7 @@
             Bone = bone;
             Value = value;
         }
+
+        public override string ToString() => $"{Bone.Name} : {Value}";
     }
 }

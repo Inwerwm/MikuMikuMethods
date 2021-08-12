@@ -179,5 +179,7 @@ namespace MikuMikuMethods.PMX
             /// </summary>
             Line = 0x80
         }
+
+        public override string ToString() => $"{Name}";
     }
 }

@@ -162,5 +162,7 @@ namespace MikuMikuMethods.PMX
             TrAfterPhysic = 0x1000,
             TrOuterParent = 0x2000
         }
+
+        public override string ToString() => $"{Name} - {Position}";
     }
 }

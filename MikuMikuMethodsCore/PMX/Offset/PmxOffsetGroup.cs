@@ -20,5 +20,7 @@ namespace MikuMikuMethods.PMX
         /// 適用率
         /// </summary>
         public float Ratio { get; set; }
+
+        public override string ToString() => $"{Target.Name} - {Ratio:###.00}";
     }
 }

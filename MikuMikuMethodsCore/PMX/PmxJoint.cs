@@ -95,5 +95,7 @@ namespace MikuMikuMethods.PMX
             /// </summary>
             Hinge
         }
+
+        public override string ToString() => $"{Name} - {Position}";
     }
 }

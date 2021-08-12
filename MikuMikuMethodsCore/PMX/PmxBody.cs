@@ -111,5 +111,7 @@ namespace MikuMikuMethods.PMX
             /// </summary>
             Register
         }
+
+        public override string ToString() => $"{Name} - {Position}";
     }
 }

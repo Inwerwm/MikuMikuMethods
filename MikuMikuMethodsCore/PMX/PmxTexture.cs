@@ -36,5 +36,7 @@ namespace MikuMikuMethods.PMX
                  ? $"toon{toonIndex:00}.bmp"
                  : throw new ArgumentOutOfRangeException("共有Toonテクスチャは[1,10]の区間で指定してください。");
         }
+
+        public override string ToString() => $"{Path}";
     }
 }

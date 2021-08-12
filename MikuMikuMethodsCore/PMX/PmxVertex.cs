@@ -57,5 +57,7 @@ namespace MikuMikuMethods.PMX
         /// エッジ倍率
         /// </summary>
         public float EdgeScale { get; set; }
+
+        public override string ToString() => $"{Position}";
     }
 }

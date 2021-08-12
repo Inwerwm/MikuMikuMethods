@@ -101,5 +101,7 @@ namespace MikuMikuMethods.PMX
             /// </summary>
             Addition,
         }
+
+        public override string ToString() => $"{Target.Name} : {Operation}";
     }
 }

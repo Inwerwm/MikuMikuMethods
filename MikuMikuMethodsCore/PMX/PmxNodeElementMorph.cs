@@ -14,5 +14,7 @@ namespace MikuMikuMethods.PMX
         IPmxData IPmxNodeElement.Entity { get => Entity; set => Entity = (PmxMorph)value; }
 
         public int FindIndex(PmxModel model) => model.Morphs.IndexOf(Entity);
+
+        public override string ToString() => $"Morph : {Entity.Name}";
     }
 }
