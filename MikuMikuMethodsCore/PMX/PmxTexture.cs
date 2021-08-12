@@ -1,9 +1,6 @@
 ﻿using MikuMikuMethods.Extension;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace MikuMikuMethods.PMX
 {
@@ -29,7 +26,7 @@ namespace MikuMikuMethods.PMX
         public PmxTexture(string path)
         {
             Path = path;
-            ToonIndex = null;
+            ToonIndex = Regex.IsMatch(path, @"^toon(0\d|10).bmp") ? int.Parse(Regex.Replace(path, @"[^\d]", "")) : null;
         }
 
         /// <summary>
