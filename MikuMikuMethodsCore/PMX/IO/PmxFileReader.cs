@@ -18,6 +18,8 @@ namespace MikuMikuMethods.PMX.IO
         private static List<PmxFace> Faces { get; set; }
         private static int LoadedFaceCount { get; set; }
 
+        private static List<PmxTexture> Textures { get; set; }
+
         private static List<(PmxWeight Instance, int RelationID)> TmpWeightBoneIndices { get; set; }
         private static List<(PmxBone Instance, int RelationID)> TmpParentBoneIndices { get; set; }
         private static List<(PmxBone Instance, int RelationID)> TmpConnectionTargetBoneIndices { get; set; }
@@ -31,6 +33,8 @@ namespace MikuMikuMethods.PMX.IO
         {
             Faces = new();
             LoadedFaceCount = 0;
+
+            Textures = new();
 
             TmpWeightBoneIndices = new();
             TmpParentBoneIndices = new();
@@ -67,6 +71,7 @@ namespace MikuMikuMethods.PMX.IO
             Encoder = null;
             Model = null;
             Faces = null;
+            Textures = null;
 
             TmpWeightBoneIndices = null;
             TmpParentBoneIndices = null;
@@ -101,7 +106,7 @@ namespace MikuMikuMethods.PMX.IO
 
                     AddDataToList(Model.Vertices, ReadVertex);
                     AddDataToList(Faces, ReadFace, 3);
-                    AddDataToList(Model.Textures, ReadTexture);
+                    AddDataToList(Textures, ReadTexture);
                     AddDataToList(Model.Materials, ReadMaterial);
                     AddDataToList(Model.Bones, ReadBone);
                     AddDataToList(Model.Morphs, ReadMorph);
@@ -297,15 +302,15 @@ namespace MikuMikuMethods.PMX.IO
 
             var id = new Indexer(Model.Header.SizeOfTextureIndex, false);
             int textureID = id.Read(reader);
-            material.Texture = textureID < 0 ? null : Model.Textures[textureID];
+            material.Texture = textureID < 0 ? null : Textures[textureID];
             int sphereID = id.Read(reader);
-            material.SphereMap = sphereID < 0 ? null : Model.Textures[sphereID];
+            material.SphereMap = sphereID < 0 ? null : Textures[sphereID];
             material.SphereMode = (PmxMaterial.SphereModeType)reader.ReadByte();
             var IsSharedToon = reader.ReadBoolean();
             int toonID = id.Read(reader);
             material.ToonMap = IsSharedToon ? new PmxTexture(reader.ReadByte()) 
                              : toonID < 0 ? null 
-                             : Model.Textures[toonID];
+                             : Textures[toonID];
 
             material.Memo = Encoder.Read(reader);
 
