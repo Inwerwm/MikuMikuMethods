@@ -221,7 +221,10 @@ namespace MikuMikuMethods.PMX.IO
 
         private static void WriteFace(BinaryWriter writer, PmxFace face)
         {
-            
+            foreach (var vtx in face.Vertices)
+            {
+                VtxID.Write(writer, VtxMap[vtx]);
+            }
         }
 
         private static void WriteTexture(BinaryWriter writer, PmxTexture texture)
