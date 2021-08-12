@@ -1,4 +1,4 @@
-﻿using MikuMikuMethods.Extension;
+using MikuMikuMethods.Extension;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,6 +16,7 @@ namespace MikuMikuMethods.PMX.IO
         private static StringEncoder Encoder;
 
         private static PmxModel Model { get; set; }
+        private static List<PmxTexture> Textures { get; set; }
 
         private static Indexer VtxID { get; set; }
         private static Indexer TexID { get; set; }
@@ -28,6 +29,7 @@ namespace MikuMikuMethods.PMX.IO
         {
             Encoder = null;
             Model = null;
+            Textures = null;
 
             VtxID = null;
             TexID = null;
@@ -40,6 +42,7 @@ namespace MikuMikuMethods.PMX.IO
         private static void CreatePropaties()
         {
             Encoder = new(Model.Header.Encoding);
+            Textures = Model.Materials.SelectMany(m => new[] { m.Texture, m.SphereMap, m.ToonMap }.Where(t => t != null)).Distinct().ToList();
 
             VtxID = new(Model.Header.SizeOfVertexIndex, true);
             TexID = new(Model.Header.SizeOfTextureIndex, false);
@@ -70,7 +73,7 @@ namespace MikuMikuMethods.PMX.IO
 
                     WriteData(Model.Vertices, WriteVertex);
                     WriteData(Model.Faces, WriteFace);
-                    WriteData(Model.Materials.SelectMany(m => new[] { m.Texture, m.SphereMap, m.ToonMap }.Where(t => t != null)).Distinct().ToList(), WriteTexture);
+                    WriteData(Textures, WriteTexture);
                     WriteData(Model.Materials, WriteMaterial);
                     WriteData(Model.Bones, WriteBone);
                     WriteData(Model.Morphs, WriteMorph);
