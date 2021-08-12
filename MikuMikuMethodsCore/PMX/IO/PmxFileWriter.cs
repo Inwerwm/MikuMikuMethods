@@ -17,10 +17,36 @@ namespace MikuMikuMethods.PMX.IO
 
         private static PmxModel Model { get; set; }
 
+        private static Indexer VtxID { get; set; }
+        private static Indexer TexID { get; set; }
+        private static Indexer MatID { get; set; }
+        private static Indexer BoneID { get; set; }
+        private static Indexer MphID { get; set; }
+        private static Indexer BodyID { get; set; }
+
         private static void CleanUpProperties()
         {
             Encoder = null;
             Model = null;
+
+            VtxID = null;
+            TexID = null;
+            MatID = null;
+            BoneID = null;
+            MphID = null;
+            BodyID = null;
+        }
+
+        private static void CreatePropaties()
+        {
+            Encoder = new(Model.Header.Encoding);
+
+            VtxID = new(Model.Header.SizeOfVertexIndex, true);
+            TexID = new(Model.Header.SizeOfTextureIndex, false);
+            MatID = new(Model.Header.SizeOfMaterialIndex, false);
+            BoneID = new(Model.Header.SizeOfBoneIndex, false);
+            MphID = new(Model.Header.SizeOfMorphIndex, false);
+            BodyID = new(Model.Header.SizeOfBodyIndex, false);
         }
 
         /// <summary>
@@ -34,24 +60,24 @@ namespace MikuMikuMethods.PMX.IO
             {
                 Model = model;
                 Model.ValidateVersion();
-                Encoder = new StringEncoder(model.Header.Encoding);
+                CreatePropaties();
 
                 using (FileStream file = new(filePath, FileMode.Create))
                 using (BinaryWriter writer = new(file))
                 {
-                    WriteHeader(writer, model.Header);
-                    WriteInfo(writer, model.ModelInfo);
+                    WriteHeader(writer, Model.Header);
+                    WriteInfo(writer, Model.ModelInfo);
 
-                    WriteData(model.Vertices, WriteVertex);
-                    WriteData(model.Faces, WriteFace);
-                    WriteData(model.Materials.SelectMany(m => new[] { m.Texture, m.SphereMap, m.ToonMap }.Where(t => t != null)).Distinct().ToList(), WriteTexture);
-                    WriteData(model.Materials, WriteMaterial);
-                    WriteData(model.Bones, WriteBone);
-                    WriteData(model.Morphs, WriteMorph);
-                    WriteData(model.Nodes, WriteNode);
-                    WriteData(model.Bodies, WriteBody);
-                    WriteData(model.Joints, WriteJoint);
-                    WriteData(model.SoftBodies, WriteSoftBody, 2.1f);
+                    WriteData(Model.Vertices, WriteVertex);
+                    WriteData(Model.Faces, WriteFace);
+                    WriteData(Model.Materials.SelectMany(m => new[] { m.Texture, m.SphereMap, m.ToonMap }.Where(t => t != null)).Distinct().ToList(), WriteTexture);
+                    WriteData(Model.Materials, WriteMaterial);
+                    WriteData(Model.Bones, WriteBone);
+                    WriteData(Model.Morphs, WriteMorph);
+                    WriteData(Model.Nodes, WriteNode);
+                    WriteData(Model.Bodies, WriteBody);
+                    WriteData(Model.Joints, WriteJoint);
+                    WriteData(Model.SoftBodies, WriteSoftBody, 2.1f);
 
                     void WriteData<T>(IList<T> list, Action<BinaryWriter, T> DataWriter, float requireVersion = 2.0f)
                     {
@@ -173,7 +199,7 @@ namespace MikuMikuMethods.PMX.IO
 
         private static void WriteFace(BinaryWriter writer, PmxFace face)
         {
-            throw new NotImplementedException();
+            
         }
 
         private static void WriteTexture(BinaryWriter writer, PmxTexture texture)
