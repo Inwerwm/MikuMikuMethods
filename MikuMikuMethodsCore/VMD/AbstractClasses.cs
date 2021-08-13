@@ -33,6 +33,8 @@ namespace MikuMikuMethods.VMD
         /// </summary>
         public abstract bool IsModelType { get; }
 
+        public abstract object Clone();
+
         /// <summary>
         /// 時間の前後を比較する
         /// </summary>

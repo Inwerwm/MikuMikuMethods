@@ -13,21 +13,24 @@ namespace MikuMikuMethods.PMX
     public class PmxNode : IPmxData
     {
         /// <summary>
-        /// データをバイナリから読み込む
+        /// 名前
         /// </summary>
-        /// <param name="reader">読み込み対象のリーダー</param>
-        public void Read(BinaryReader reader)
-        {
-            throw new NotImplementedException();
-        }
+        public string Name { get; set; }
+        /// <summary>
+        /// 英名
+        /// </summary>
+        public string NameEn { get; set; }
 
         /// <summary>
-        /// データをバイナリで書き込む
+        /// 特殊枠か
         /// </summary>
-        /// <param name="writer">書き込み対象のライター</param>
-        public void Write(BinaryWriter writer)
-        {
-            throw new NotImplementedException();
-        }
+        public bool IsSpecific { get; set; }
+
+        /// <summary>
+        /// 表情枠内の要素
+        /// </summary>
+        public List<IPmxNodeElement> Elements { get; } = new();
+
+        public override string ToString() => $"{Name}";
     }
 }

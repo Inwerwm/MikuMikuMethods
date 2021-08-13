@@ -60,11 +60,18 @@ namespace MikuMikuMethods.Extension
 
         /// <summary>
         /// <para>[0, 1]の浮動小数点数で表された色情報をバイナリから読み込む</para>
-        /// <para>{A, R, G, B}の順で読み込む</para>
+        /// <para>{R, G, B, A}の順で読み込む</para>
         /// </summary>
         /// <returns>読み込んだ浮動小数点数表現色</returns>
-        public static ColorF ReadSingleARGB(this BinaryReader reader) =>
-            ColorF.FromARGB(reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle(), reader.ReadSingle());
+        public static ColorF ReadSingleRGBA(this BinaryReader reader)
+        {
+            float red = reader.ReadSingle();
+            float green = reader.ReadSingle();
+            float blue = reader.ReadSingle();
+            float alpha = reader.ReadSingle();
+
+            return ColorF.FromARGB(alpha, red, green, blue);
+        }
 
         /// <summary>
         /// <para>[0, 1]の浮動小数点数で表された色情報をバイナリから読み込む</para>
@@ -151,12 +158,11 @@ namespace MikuMikuMethods.Extension
         /// <param name="isWriteAlpha">アルファ値の情報を書き込むか</param>
         public static void Write(this BinaryWriter writer, ColorF value, bool isWriteAlpha)
         {
-            if (isWriteAlpha)
-                writer.Write(value.A);
-
             writer.Write(value.R);
             writer.Write(value.G);
             writer.Write(value.B);
+            if (isWriteAlpha)
+                writer.Write(value.A);
         }
     }
 }

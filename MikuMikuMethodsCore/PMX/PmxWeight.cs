@@ -3,27 +3,35 @@
     /// <summary>
     /// ウェイト変形方式
     /// </summary>
-    public enum PmxWeightType
+    public enum PmxWeightType : byte
     {
         BDEF1,
         BDEF2,
         BDEF4,
         SDEF,
+        QDEF
     }
 
     /// <summary>
     /// ウェイト値
     /// </summary>
-    public record PmxWeight
+    public class PmxWeight : IPmxData
     {
         /// <summary>
-        /// 関連ボーン
+        /// ボーン
         /// </summary>
         public PmxBone Bone { get; set; }
-
         /// <summary>
         /// ウェイト値
         /// </summary>
         public float Value { get; set; }
+
+        public PmxWeight(PmxBone bone, float value)
+        {
+            Bone = bone;
+            Value = value;
+        }
+
+        public override string ToString() => $"{Bone.Name} : {Value}";
     }
 }

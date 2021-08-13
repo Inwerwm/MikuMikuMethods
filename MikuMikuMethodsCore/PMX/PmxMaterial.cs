@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace MikuMikuMethods.PMX
 {
@@ -98,7 +92,7 @@ namespace MikuMikuMethods.PMX
         /// <summary>
         /// スフィア種別
         /// </summary>
-        public SphereMode SphereMode { get; set; }
+        public SphereModeType SphereMode { get; set; }
 
         /// <summary>
         /// トゥーンマップ
@@ -106,63 +100,86 @@ namespace MikuMikuMethods.PMX
         public PmxTexture ToonMap { get; set; }
 
         /// <summary>
-        /// データをバイナリから読み込む
+        /// 描画プリミティブタイプ
         /// </summary>
-        /// <param name="reader">読み込み対象のリーダー</param>
-        public void Read(BinaryReader reader)
+        public enum PrimitiveType
         {
-            throw new NotImplementedException();
+            /// <summary>
+            /// Line List
+            /// </summary>
+            Line,
+            /// <summary>
+            /// Point List
+            /// </summary>
+            Point,
+            /// <summary>
+            /// Triangle List
+            /// </summary>
+            Tri
         }
 
         /// <summary>
-        /// データをバイナリで書き込む
+        /// スフィア種別
         /// </summary>
-        /// <param name="writer">書き込み対象のライター</param>
-        public void Write(BinaryWriter writer)
+        public enum SphereModeType : byte
         {
-            throw new NotImplementedException();
+            /// <summary>
+            /// 無効
+            /// </summary>
+            None,
+            /// <summary>
+            /// 乗算
+            /// </summary>
+            Mul,
+            /// <summary>
+            /// 加算
+            /// </summary>
+            Add,
+            /// <summary>
+            /// サブテクスチャ
+            /// </summary>
+            SubTex
         }
-    }
 
-    /// <summary>
-    /// 描画プリミティブタイプ
-    /// </summary>
-    public enum PrimitiveType
-    {
         /// <summary>
-        /// Line List
+        /// 材質の描画フラグデータ
         /// </summary>
-        Line,
-        /// <summary>
-        /// Point List
-        /// </summary>
-        Point,
-        /// <summary>
-        /// Triangle List
-        /// </summary>
-        Tri
-    }
+        internal enum DrawFlag : byte
+        {
+            /// <summary>
+            /// 両面描画
+            /// </summary>
+            BothSideDraw = 0x01,
+            /// <summary>
+            /// 地面影
+            /// </summary>
+            Shadow = 0x02,
+            /// <summary>
+            /// セルフ影マップへの描画
+            /// </summary>
+            SelfShadowMap = 0x04,
+            /// <summary>
+            /// セルフ影
+            /// </summary>
+            SelfShadow = 0x08,
+            /// <summary>
+            /// エッジ描画
+            /// </summary>
+            Edge = 0x10,
+            /// <summary>
+            /// 頂点色
+            /// </summary>
+            VertexColor = 0x20,
+            /// <summary>
+            /// Point描画
+            /// </summary>
+            Point = 0x40,
+            /// <summary>
+            /// Line描画
+            /// </summary>
+            Line = 0x80
+        }
 
-    /// <summary>
-    /// スフィア種別
-    /// </summary>
-    public enum SphereMode
-    {
-        /// <summary>
-        /// 無効
-        /// </summary>
-        None,
-        /// <summary>
-        /// 乗算
-        /// </summary>
-        Mul,
-        /// <summary>
-        /// 加算
-        /// </summary>
-        Add,
-        /// <summary>
-        /// サブテクスチャ
-        /// </summary>
-        SubTex
+        public override string ToString() => $"{Name}";
     }
 }

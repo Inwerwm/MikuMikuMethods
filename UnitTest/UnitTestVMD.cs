@@ -11,7 +11,12 @@ namespace UnitTest
         [TestMethod]
         public void Test_IO()
         {
+            var inPath = @"TestData\testMotion";
+            var outPath = @"TestData\motionOutput";
 
+            VocaloidMotionData origin = new(inPath + ".vmd");
+            origin.Write(outPath + ".vmd");
+            VocaloidMotionData writed = new(outPath + ".vmd");
         }
 
         [TestMethod]

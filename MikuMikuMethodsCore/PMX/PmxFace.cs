@@ -30,6 +30,14 @@ namespace MikuMikuMethods.PMX
         public void Invert() => Utility.Swap(ref Vertices[1], ref Vertices[2]);
 
         /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        public PmxFace(PmxVertex vertex0, PmxVertex vertex1, PmxVertex vertex2)
+        {
+            Vertices = new PmxVertex[] { vertex0, vertex1, vertex2 };
+        }
+
+        /// <summary>
         /// 指定頂点の構成辺を取得
         /// </summary>
         /// <param name="startIndex">辺の起点頂点の面内頂点番号を指定</param>
@@ -51,22 +59,6 @@ namespace MikuMikuMethods.PMX
             FetchEdge(2, 0)
         };
 
-        /// <summary>
-        /// データをバイナリから読み込む
-        /// </summary>
-        /// <param name="reader">読み込み対象のリーダー</param>
-        public void Read(BinaryReader reader)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// データをバイナリで書き込む
-        /// </summary>
-        /// <param name="writer">書き込み対象のライター</param>
-        public void Write(BinaryWriter writer)
-        {
-            throw new NotImplementedException();
-        }
+        public override string ToString() => "{ " + Vertices.Select(v => v.ToString()).Aggregate((acm, elm) => $"{acm}, {elm}") + " }";
     }
 }

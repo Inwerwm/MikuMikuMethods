@@ -23,14 +23,6 @@ namespace MikuMikuMethods.PMX
         /// </summary>
         public Vector3 Offset { get; set; }
 
-        public void Read(BinaryReader reader)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Write(BinaryWriter writer)
-        {
-            throw new NotImplementedException();
-        }
+        public override string ToString() => $"{Target.Position} : {Offset}";
     }
 }

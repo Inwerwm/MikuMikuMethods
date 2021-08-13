@@ -12,14 +12,15 @@ namespace MikuMikuMethods.PMX
     /// </summary>
     public class PmxOffsetGroup : IPmxOffset
     {
-        public void Read(BinaryReader reader)
-        {
-            throw new NotImplementedException();
-        }
+        /// <summary>
+        /// 対象モーフ
+        /// </summary>
+        public PmxMorph Target { get; set; }
+        /// <summary>
+        /// 適用率
+        /// </summary>
+        public float Ratio { get; set; }
 
-        public void Write(BinaryWriter writer)
-        {
-            throw new NotImplementedException();
-        }
+        public override string ToString() => $"{Target.Name} - {Ratio:###.00}";
     }
 }

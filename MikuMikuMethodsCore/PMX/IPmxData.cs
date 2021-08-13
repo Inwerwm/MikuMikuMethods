@@ -12,16 +12,5 @@ namespace MikuMikuMethods.PMX
     /// </summary>
     public interface IPmxData
     {
-        /// <summary>
-        /// データをバイナリから読み込む
-        /// </summary>
-        /// <param name="reader">読み込み対象のリーダー</param>
-        public void Read(BinaryReader reader);
-
-        /// <summary>
-        /// データをバイナリで書き込む
-        /// </summary>
-        /// <param name="writer">書き込み対象のライター</param>
-        public void Write(BinaryWriter writer);
     }
 }

@@ -259,7 +259,7 @@
             </summary>
             <param name="length">文字数</param>
             <param name="encoding">エンコード形式</param>
-            <param name="filler">終端文字</param>
+            <param name="endChar">終端文字 この文字以降を読み飛ばす</param>
             <returns>読み込んだ文字列</returns>
         </member>
         <member name="M:MikuMikuMethods.Extension.BinaryRead.ReadSingleARGB(System.IO.BinaryReader)">
@@ -308,6 +308,7 @@
         <member name="M:MikuMikuMethods.Extension.BinaryWrite.Write(System.IO.BinaryWriter,System.String,System.Int32,System.Text.Encoding,System.Char)">
             <summary>
             指定長で文字列をバイナリに書き込み
+            <para>文字列の最後には<c>'\0'</c>が付加される</para>
             </summary>
             <param name="value">書き込む文字列</param>
             <param name="length">書き込む長さ</param>
@@ -596,11 +597,23 @@
             コンストラクタ
             </summary>
         </member>
+        <member name="M:MikuMikuMethods.MME.ProjectEffectSettings.Read(System.String)">
+            <summary>
+            ファイルから読込
+            </summary>
+            <param name="path">ファイルパス</param>
+        </member>
         <member name="M:MikuMikuMethods.MME.ProjectEffectSettings.Read(System.IO.StreamReader)">
             <summary>
             EMMファイルから読み込み
             </summary>
             <param name="reader">エンコードはShiftJISである必要がある</param>
+        </member>
+        <member name="M:MikuMikuMethods.MME.ProjectEffectSettings.Write(System.String)">
+            <summary>
+            ファイルに書き出し
+            </summary>
+            <param name="filePath">書き出すファイルのパス</param>
         </member>
         <member name="M:MikuMikuMethods.MME.ProjectEffectSettings.Write(System.IO.StreamWriter)">
             <summary>
@@ -1097,6 +1110,71 @@
             </summary>
             <param name="writer">出力対象バイナリファイル</param>
         </member>
+        <member name="T:MikuMikuMethods.PMM.TemporaryAccessoryEditState">
+            <summary>
+            未確定のアクセサリ編集状態
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryAccessoryEditState.OpacityAndVisible">
+            <summary>
+            <para>上位7bit : 半透明度</para>
+            <para>最下位1bit : 表示/非表示</para>
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryAccessoryEditState.ParentModelIndex">
+            <summary>
+            <para>親モデルのインデックス</para>
+            <para>-1 なら親なし</para>
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryAccessoryEditState.ParentBoneIndex">
+            <summary>
+            親ボーンのインデックス
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryAccessoryEditState.Position">
+            <summary>
+            位置
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryAccessoryEditState.Rotation">
+            <summary>
+            回転
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryAccessoryEditState.Scale">
+            <summary>
+            拡縮
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryAccessoryEditState.EnableShadow">
+            <summary>
+            影のOn/Off
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.TemporaryAccessoryEditState.#ctor">
+            <summary>
+            何もしないコンストラクタ
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.TemporaryAccessoryEditState.#ctor(System.IO.BinaryReader)">
+            <summary>
+            バイナリデータから読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.TemporaryAccessoryEditState.Read(System.IO.BinaryReader)">
+            <summary>
+            バイナリデータから読み込み
+            </summary>
+            <param name="reader">読み込むファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.TemporaryAccessoryEditState.Write(System.IO.BinaryWriter)">
+            <summary>
+            ファイルに書込
+            </summary>
+            <param name="writer">出力対象バイナリファイル</param>
+        </member>
         <member name="T:MikuMikuMethods.PMM.PmmCamera">
             <summary>
             PMM内のカメラ情報
@@ -1485,13 +1563,13 @@
         </member>
         <member name="M:MikuMikuMethods.PMM.PmmEditorState.ReadFrameState(System.IO.BinaryReader)">
             <summary>
-            アクセサリ情報関連をファイルから読み込み
+            フレーム編集関連情報をファイルから読み込み
             </summary>
             <param name="reader">バイナリファイル</param>
         </member>
         <member name="M:MikuMikuMethods.PMM.PmmEditorState.WriteFrameState(System.IO.BinaryWriter)">
             <summary>
-            アクセサリ情報関連をファイルに書込
+            フレーム編集関連情報をファイルに書込
             </summary>
             <param name="writer">出力対象バイナリファイル</param>
         </member>
@@ -1669,6 +1747,21 @@
             ファイルに書込
             </summary>
             <param name="writer">出力対象バイナリファイル</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMM.TemporaryLightEditState">
+            <summary>
+            未確定のライト編集状態
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryLightEditState.Color">
+            <summary>
+            色(RGBのみ使用)
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMM.TemporaryLightEditState.Position">
+            <summary>
+            位置
+            </summary>
         </member>
         <member name="T:MikuMikuMethods.PMM.PmmMediaConfig">
             <summary>
@@ -2218,17 +2311,35 @@
             コンストラクタ
             </summary>
         </member>
+        <member name="M:MikuMikuMethods.PMM.PolygonMovieMaker.#ctor(System.String)">
+            <summary>
+            ファイル読込コンストラクタ
+            </summary>
+            <param name="filePath">Pmmファイルのパス</param>
+        </member>
         <member name="M:MikuMikuMethods.PMM.PolygonMovieMaker.#ctor(System.IO.BinaryReader)">
             <summary>
             バイナリ読込コンストラクタ
             </summary>
             <param name="reader">PMMファイル</param>
         </member>
+        <member name="M:MikuMikuMethods.PMM.PolygonMovieMaker.Read(System.String)">
+            <summary>
+            ファイルから読込
+            </summary>
+            <param name="path">ファイルパス</param>
+        </member>
         <member name="M:MikuMikuMethods.PMM.PolygonMovieMaker.Read(System.IO.BinaryReader)">
             <summary>
             バイナリデータから読込
             </summary>
             <param name="reader">読み込むファイル ShiftJISエンコードで読み込むこと</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMM.PolygonMovieMaker.Write(System.String)">
+            <summary>
+            ファイルに書き出し
+            </summary>
+            <param name="filePath">書き出すファイルのパス</param>
         </member>
         <member name="M:MikuMikuMethods.PMM.PolygonMovieMaker.Write(System.IO.BinaryWriter)">
             <summary>
@@ -2332,6 +2443,12 @@
             <summary>
             剛体
             </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxBody.#ctor(System.IO.BinaryReader)">
+            <summary>
+            バイナリ読込コンストラクタ
+            </summary>
+            <param name="reader">読み込み対象のリーダー</param>
         </member>
         <member name="M:MikuMikuMethods.PMX.PmxBody.Read(System.IO.BinaryReader)">
             <summary>
@@ -2487,6 +2604,12 @@
             MMM用らしい
             </summary>
         </member>
+        <member name="M:MikuMikuMethods.PMX.PmxBone.#ctor(System.IO.BinaryReader)">
+            <summary>
+            バイナリ読込コンストラクタ
+            </summary>
+            <param name="reader">読み込み対象のリーダー</param>
+        </member>
         <member name="M:MikuMikuMethods.PMX.PmxBone.Read(System.IO.BinaryReader)">
             <summary>
             データをバイナリから読み込む
@@ -2575,6 +2698,12 @@
             </summary>
             <returns>辺の集合</returns>
         </member>
+        <member name="M:MikuMikuMethods.PMX.PmxFace.#ctor(System.IO.BinaryReader)">
+            <summary>
+            バイナリ読込コンストラクタ
+            </summary>
+            <param name="reader">読み込み対象のリーダー</param>
+        </member>
         <member name="M:MikuMikuMethods.PMX.PmxFace.Read(System.IO.BinaryReader)">
             <summary>
             データをバイナリから読み込む
@@ -2602,48 +2731,14 @@
             PMXのバージョン
             </summary>
         </member>
-        <member name="P:MikuMikuMethods.PMX.PmxHeader.ModelSize">
+        <member name="P:MikuMikuMethods.PMX.PmxHeader.ConfigSize">
             <summary>
             モデルの構成情報の要素数
             </summary>
         </member>
-        <member name="P:MikuMikuMethods.PMX.PmxHeader.ModelStructureInfo">
+        <member name="P:MikuMikuMethods.PMX.PmxHeader.Config">
             <summary>
             モデルの構成情報
-            <list type="number">
-                <item>
-                    <term>エンコード方式</term>
-                    <description>0 : UTF16, 1 : UTF8</description>
-                </item>
-                <item>
-                    <term>追加UV数</term>
-                    <description>[0-4]</description>
-                </item>
-                <item>
-                    <term>頂点Indexサイズ</term>
-                    <description>1 | 2 | 4</description>
-                </item>
-                <item>
-                    <term>テクスチャIndexサイズ</term>
-                    <description>1 | 2 | 4</description>
-                </item>
-                <item>
-                    <term>材質Indexサイズ</term>
-                    <description>1 | 2 | 4</description>
-                </item>
-                <item>
-                    <term>ボーンIndexサイズ</term>
-                    <description>1 | 2 | 4</description>
-                </item>
-                <item>
-                    <term>モーフIndexサイズ</term>
-                    <description>1 | 2 | 4</description>
-                </item>
-                <item>
-                    <term>剛体Indexサイズ</term>
-                    <description>1 | 2 | 4</description>
-                </item>
-            </list>
             </summary>
         </member>
         <member name="M:MikuMikuMethods.PMX.PmxHeader.#ctor">
@@ -2662,6 +2757,68 @@
             データをバイナリで書き込む
             </summary>
             <param name="writer">書き込み対象のライター</param>
+        </member>
+        <member name="T:MikuMikuMethods.PMX.PmxHeader.ModelConfig">
+            <summary>
+            モデルの各種情報
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxHeader.ModelConfig.EncodingFormat">
+            <summary>
+            エンコード方式
+                <list type="table">
+                    <item>
+                        <term>0</term>
+                        <description>UTF16</description>
+                    </item>
+                    <item>
+                        <term>1</term>
+                        <description>UTF8</description>
+                    </item>
+                </list>
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxHeader.ModelConfig.NumOfAdditionalUV">
+            <summary>
+            <term>追加UV数</term>
+            <description>0 ～ 4</description>
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxHeader.ModelConfig.SizeOfVertexIndex">
+            <summary>
+            <term>頂点Indexサイズ</term>
+            <description>1 | 2 | 4</description>
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxHeader.ModelConfig.SizeOfTextureIndex">
+            <summary>
+            <term>テクスチャIndexサイズ</term>
+            <description>1 | 2 | 4</description>
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxHeader.ModelConfig.SizeOfMaterialIndex">
+            <summary>
+            <term>材質Indexサイズ</term>
+            <description>1 | 2 | 4</description>
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxHeader.ModelConfig.SizeOfBoneIndex">
+            <summary>
+            <term>ボーンIndexサイズ</term>
+            <description>1 | 2 | 4</description>
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxHeader.ModelConfig.SizeOfMorphIndex">
+            <summary>
+            <term>モーフIndexサイズ</term>
+            <description>1 | 2 | 4</description>
+            </summary>
+        </member>
+        <member name="P:MikuMikuMethods.PMX.PmxHeader.ModelConfig.SizeOfBodyIndex">
+            <summary>
+            <term>剛体Indexサイズ</term>
+            <description>1 | 2 | 4</description>
+            </summary>
         </member>
         <member name="T:MikuMikuMethods.PMX.PmxInverseKinematics">
             <summary>
@@ -2717,6 +2874,12 @@
             <summary>
             ジョイント
             </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxJoint.#ctor(System.IO.BinaryReader)">
+            <summary>
+            バイナリ読込コンストラクタ
+            </summary>
+            <param name="reader">読み込み対象のリーダー</param>
         </member>
         <member name="M:MikuMikuMethods.PMX.PmxJoint.Read(System.IO.BinaryReader)">
             <summary>
@@ -2840,6 +3003,12 @@
             トゥーンマップ
             </summary>
         </member>
+        <member name="M:MikuMikuMethods.PMX.PmxMaterial.#ctor(System.IO.BinaryReader)">
+            <summary>
+            バイナリ読込コンストラクタ
+            </summary>
+            <param name="reader">読み込み対象のリーダー</param>
+        </member>
         <member name="M:MikuMikuMethods.PMX.PmxMaterial.Read(System.IO.BinaryReader)">
             <summary>
             データをバイナリから読み込む
@@ -2924,8 +3093,7 @@
         </member>
         <member name="P:MikuMikuMethods.PMX.PmxModel.Faces">
             <summary>
-            <para>面</para>
-            <para>全材質内の面リストを結合したもの</para>
+            面
             </summary>
         </member>
         <member name="P:MikuMikuMethods.PMX.PmxModel.Joints">
@@ -2953,15 +3121,49 @@
             頂点
             </summary>
         </member>
+        <member name="P:MikuMikuMethods.PMX.PmxModel.Textures">
+            <summary>
+            テクスチャ
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxModel.#ctor">
+            <summary>
+            コンストラクタ
+            </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxModel.#ctor(System.String)">
+            <summary>
+            ファイル読込コンストラクタ
+            </summary>
+            <param name="filePath">Pmmファイルのパス</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxModel.#ctor(System.IO.BinaryReader)">
+            <summary>
+            バイナリ読込コンストラクタ
+            </summary>
+            <param name="reader">PMMファイル</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxModel.Read(System.String)">
+            <summary>
+            データをファイルから読み込む
+            </summary>
+            <param name="filePath">読み込むファイルのパス</param>
+        </member>
         <member name="M:MikuMikuMethods.PMX.PmxModel.Read(System.IO.BinaryReader)">
             <summary>
             データをバイナリから読み込む
-            </summary>
+            </summary>  
             <param name="reader">読み込み対象のリーダー</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxModel.Write(System.String)">
+            <summary>
+            データをファイルに書き込む
+            </summary>
+            <param name="filePath">書き出すファイルのパス</param>
         </member>
         <member name="M:MikuMikuMethods.PMX.PmxModel.Write(System.IO.BinaryWriter)">
             <summary>
-            データをバイナリで書き込む
+            データをバイナリに書き込む
             </summary>
             <param name="writer">書き込み対象のライター</param>
         </member>
@@ -3037,6 +3239,12 @@
             コンストラクタ
             </summary>
             <param name="type">モーフの種類</param>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxMorph.#ctor(System.IO.BinaryReader)">
+            <summary>
+            バイナリ読込コンストラクタ
+            </summary>
+            <param name="reader">読み込み対象のリーダー</param>
         </member>
         <member name="M:MikuMikuMethods.PMX.PmxMorph.Read(System.IO.BinaryReader)">
             <summary>
@@ -3130,6 +3338,12 @@
             表示枠
             </summary>
         </member>
+        <member name="M:MikuMikuMethods.PMX.PmxNode.#ctor(System.IO.BinaryReader)">
+            <summary>
+            バイナリ読込コンストラクタ
+            </summary>
+            <param name="reader">読み込み対象のリーダー</param>
+        </member>
         <member name="M:MikuMikuMethods.PMX.PmxNode.Read(System.IO.BinaryReader)">
             <summary>
             データをバイナリから読み込む
@@ -3146,6 +3360,12 @@
             <summary>
             SoftBody (未実装)
             </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxSoftBody.#ctor(System.IO.BinaryReader)">
+            <summary>
+            バイナリ読込コンストラクタ
+            </summary>
+            <param name="reader">読み込み対象のリーダー</param>
         </member>
         <member name="M:MikuMikuMethods.PMX.PmxSoftBody.Read(System.IO.BinaryReader)">
             <summary>
@@ -3220,6 +3440,12 @@
             <summary>
             エッジ倍率
             </summary>
+        </member>
+        <member name="M:MikuMikuMethods.PMX.PmxVertex.#ctor(System.IO.BinaryReader)">
+            <summary>
+            バイナリ読込コンストラクタ
+            </summary>
+            <param name="reader">読み込み対象のリーダー</param>
         </member>
         <member name="M:MikuMikuMethods.PMX.PmxVertex.Read(System.IO.BinaryReader)">
             <summary>
@@ -3791,11 +4017,16 @@
             モーションフレーム
             </summary>
         </member>
-        <member name="M:MikuMikuMethods.VMD.VocaloidMotionData.#ctor(System.String)">
+        <member name="M:MikuMikuMethods.VMD.VocaloidMotionData.#ctor">
             <summary>
             コンストラクタ
             </summary>
-            <param name="modelName">モデル名</param>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidMotionData.#ctor(System.String)">
+            <summary>
+            ファイル読み込みコンストラクタ
+            </summary>
+            <param name="filePath">読み込むファイルのパス</param>
         </member>
         <member name="M:MikuMikuMethods.VMD.VocaloidMotionData.#ctor(System.IO.BinaryReader)">
             <summary>
@@ -3808,11 +4039,23 @@
             内容の初期化
             </summary>
         </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidMotionData.Read(System.String)">
+            <summary>
+            ファイルから読込
+            </summary>
+            <param name="path">読み込むファイルのパス</param>
+        </member>
         <member name="M:MikuMikuMethods.VMD.VocaloidMotionData.Read(System.IO.BinaryReader)">
             <summary>
             読み込み
             </summary>
             <param name="reader">VMDファイルのリーダー</param>
+        </member>
+        <member name="M:MikuMikuMethods.VMD.VocaloidMotionData.Write(System.String)">
+            <summary>
+            ファイルに書き出し
+            </summary>
+            <param name="filePath">書き出すファイルのパス</param>
         </member>
         <member name="M:MikuMikuMethods.VMD.VocaloidMotionData.Write(System.IO.BinaryWriter)">
             <summary>

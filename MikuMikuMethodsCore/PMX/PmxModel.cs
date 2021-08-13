@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MikuMikuMethods.PMX
 {
@@ -15,62 +12,111 @@ namespace MikuMikuMethods.PMX
         /// <summary>
         /// ヘッダ
         /// </summary>
-        public PmxHeader Header { get; } = new();
+        public PmxHeader Header { get; }
         /// <summary>
         /// モデル情報
         /// </summary>
-        public PmxModelInfo ModelInfo { get; } = new();
-
+        public PmxModelInfo ModelInfo { get; }
         /// <summary>
         /// 剛体
         /// </summary>
-        public List<PmxBody> Bodies { get; } = new();
+        public List<PmxBody> Bodies { get; }
         /// <summary>
         /// ボーン
         /// </summary>
-        public List<PmxBone> Bones { get; } = new();
+        public List<PmxBone> Bones { get; }
         /// <summary>
-        /// <para>面</para>
-        /// <para>全材質内の面リストを結合したもの</para>
+        /// <para>面の一覧</para>
+        /// <para>面の追加は材質の面プロパティから行う</para>
         /// </summary>
-        public List<PmxFace> Faces => Materials.SelectMany(m => m.Faces).ToList();
+        public ReadOnlyCollection<PmxFace> Faces => Materials.SelectMany(m => m.Faces).ToList().AsReadOnly();
         /// <summary>
         /// ジョイント
         /// </summary>
-        public List<PmxJoint> Joints { get; } = new();
+        public List<PmxJoint> Joints { get; }
         /// <summary>
         /// 材質
         /// </summary>
-        public List<PmxMaterial> Materials { get; } = new();
+        public List<PmxMaterial> Materials { get; }
         /// <summary>
         /// モーフ
         /// </summary>
-        public List<PmxMorph> Morphs { get; } = new();
+        public List<PmxMorph> Morphs { get; }
         /// <summary>
         /// 表情枠
         /// </summary>
-        public List<PmxNode> Nodes { get; } = new();
+        public List<PmxNode> Nodes { get; }
         /// <summary>
         /// 頂点
         /// </summary>
-        public List<PmxVertex> Vertices { get; } = new();
+        public List<PmxVertex> Vertices { get; }
+        /// <summary>
+        /// ソフトボディ
+        /// </summary>
+        public List<PmxSoftBody> SoftBodies { get; }
 
         /// <summary>
-        /// データをバイナリから読み込む
+        /// 空のモデルを生成するコンストラクタ
         /// </summary>
-        /// <param name="reader">読み込み対象のリーダー</param>
-        public void Read(BinaryReader reader)
+        public PmxModel()
         {
-            throw new NotImplementedException();
+            Header = new();
+            ModelInfo = new();
+            Bodies = new();
+            Bones = new();
+            Joints = new();
+            Materials = new();
+            Morphs = new();
+            Nodes = new();
+            Vertices = new();
+            SoftBodies = new();
         }
 
         /// <summary>
-        /// データをバイナリで書き込む
+        /// ファイルからモデルを読み込む
         /// </summary>
-        /// <param name="writer">書き込み対象のライター</param>
-        public void Write(BinaryWriter writer)
+        /// <param name="filePath">読み込むファイルパス</param>
+        public PmxModel(string filePath)
         {
-            throw new NotImplementedException();
+            var model = Read(filePath);
+
+            Header = model.Header;
+            ModelInfo = model.ModelInfo;
+            Bodies = model.Bodies;
+            Bones = model.Bones;
+            Joints = model.Joints;
+            Materials = model.Materials;
+            Morphs = model.Morphs;
+            Nodes = model.Nodes;
+            Vertices = model.Vertices;
+            SoftBodies = model.SoftBodies;
         }
+
+        /// <summary>
+        /// ファイルからモデルを読み込む
+        /// </summary>
+        /// <param name="filePath">読み込むファイルパス</param>
+        public static PmxModel Read(string filePath) => IO.PmxFileReader.ReadModel(filePath);
+
+        /// <summary>
+        /// ファイルにモデルを書き込む
+        /// </summary>
+        /// <param name="filePath">書き込むファイルパス</param>
+        public void Write(string filePath) => IO.PmxFileWriter.WriteModel(filePath, this);
+
+        /// <summary>
+        /// このモデルのバージョン番号を最小化する
+        /// </summary>
+        public void ValidateVersion()
+        {
+            Header.Version = SoftBodies.Any() ||
+                             Materials.Any(m => m.EnableVertexColor || (m.Primitive == PmxMaterial.PrimitiveType.Point) || (m.Primitive == PmxMaterial.PrimitiveType.Line)) ||
+                             Joints.Any(j => j.Type != PmxJoint.JointType.SixDofWithSpring) ||
+                             Morphs.Any(m => (m.Type == PmxMorph.MorphType.Flip) || (m.Type == PmxMorph.MorphType.Impulse)) ||
+                             Vertices.Any(v => v.WeightType == PmxWeightType.QDEF)
+                           ? 2.1f : 2.0f;
+        }
+
+        public override string ToString() => $"{Header} : {ModelInfo}";
     }
 }

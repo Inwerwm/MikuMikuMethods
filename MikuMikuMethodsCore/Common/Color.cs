@@ -8,31 +8,26 @@ using System.Threading.Tasks;
 namespace MikuMikuMethods
 {
     /// <summary>
-    /// 浮動小数点[0.0,1.0]で値を保持する色構造体
+    /// 浮動小数点で値を保持する色構造体
     /// </summary>
     public struct ColorF
     {
-        private float r;
-        private float g;
-        private float b;
-        private float a;
-
         /// <summary>
         /// 赤
         /// </summary>
-        public float R { get => r; set => r = value switch { < 0 => 0, > 1 => 1, _ => value }; }
+        public float R { get; set; }
         /// <summary>
         /// 緑
         /// </summary>
-        public float G { get => g; set => g = value switch { < 0 => 0, > 1 => 1, _ => value }; }
+        public float G { get; set; }
         /// <summary>
         /// 青
         /// </summary>
-        public float B { get => b; set => b = value switch { < 0 => 0, > 1 => 1, _ => value }; }
+        public float B { get; set; }
         /// <summary>
         /// 不透明度
         /// </summary>
-        public float A { get => a; set => a = value switch { < 0 => 0, > 1 => 1, _ => value }; }
+        public float A { get; set; }
 
         /// <summary>
         /// バイト整数で値を保持する色構造体に変換

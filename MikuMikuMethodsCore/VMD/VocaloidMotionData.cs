@@ -167,6 +167,19 @@ namespace MikuMikuMethods.VMD
         }
 
         /// <summary>
+        /// ファイルに書き出し
+        /// </summary>
+        /// <param name="filePath">書き出すファイルのパス</param>
+        public void Write(string filePath)
+        {
+            using (FileStream file = new(filePath, FileMode.Create))
+            using (BinaryWriter writer = new(file, MikuMikuMethods.Encoding.ShiftJIS))
+            {
+                Write(writer);
+            }
+        }
+
+        /// <summary>
         /// VMD形式で書き出し
         /// </summary>
         public void Write(BinaryWriter writer)

@@ -47,87 +47,83 @@ namespace MikuMikuMethods.PMX
         }
 
         /// <summary>
-        /// データをバイナリから読み込む
+        /// モーフの表示パネル
         /// </summary>
-        /// <param name="reader">読み込み対象のリーダー</param>
-        public void Read(BinaryReader reader)
+        public enum MorphPanel : byte
         {
-            throw new NotImplementedException();
+            /// <summary>
+            /// システム予約
+            /// </summary>
+            System,
+            /// <summary>
+            /// 眉(左下)
+            /// </summary>
+            Brow,
+            /// <summary>
+            /// 目(左上)
+            /// </summary>
+            Eye,
+            /// <summary>
+            /// 口(右上)
+            /// </summary>
+            Lip,
+            /// <summary>
+            /// その他(右下)
+            /// </summary>
+            Other
         }
 
         /// <summary>
-        /// データをバイナリで書き込む
+        /// モーフ種類
         /// </summary>
-        /// <param name="writer">書き込み対象のライター</param>
-        public void Write(BinaryWriter writer)
+        public enum MorphType : byte
         {
-            throw new NotImplementedException();
+            /// <summary>
+            /// グループ
+            /// </summary>
+            Group,
+            /// <summary>
+            /// 頂点
+            /// </summary>
+            Vertex,
+            /// <summary>
+            /// ボーン
+            /// </summary>
+            Bone,
+            /// <summary>
+            /// UV
+            /// </summary>
+            UV,
+            /// <summary>
+            /// 追加UV1
+            /// </summary>
+            AdditionalUV1,
+            /// <summary>
+            /// 追加UV2
+            /// </summary>
+            AdditionalUV2,
+            /// <summary>
+            /// 追加UV3
+            /// </summary>
+            AdditionalUV3,
+            /// <summary>
+            /// 追加UV4
+            /// </summary>
+            AdditionalUV4,
+            /// <summary>
+            /// 材質
+            /// </summary>
+            Material,
+            /// <summary>
+            /// フリップ
+            /// </summary>
+            Flip,
+            /// <summary>
+            /// インパルス
+            /// </summary>
+            Impulse
         }
-    }
 
-    /// <summary>
-    /// モーフの表示パネル
-    /// </summary>
-    public enum MorphPanel
-    {
-        /// <summary>
-        /// 眉(左下)
-        /// </summary>
-        Brow,
-        /// <summary>
-        /// 目(左上)
-        /// </summary>
-        Eye,
-        /// <summary>
-        /// 口(右上)
-        /// </summary>
-        Lip,
-        /// <summary>
-        /// その他(右下)
-        /// </summary>
-        Other
-    }
-
-    /// <summary>
-    /// モーフ種類
-    /// </summary>
-    public enum MorphType
-    {
-        /// <summary>
-        /// グループ
-        /// </summary>
-        Group,
-        /// <summary>
-        /// 頂点
-        /// </summary>
-        Vertex,
-        /// <summary>
-        /// ボーン
-        /// </summary>
-        Bone,
-        /// <summary>
-        /// UV
-        /// </summary>
-        UV,
-        /// <summary>
-        /// 追加UV1
-        /// </summary>
-        AdditionalUV1,
-        /// <summary>
-        /// 追加UV2
-        /// </summary>
-        AdditionalUV2,
-        /// <summary>
-        /// 追加UV3
-        /// </summary>
-        AdditionalUV3,
-        /// <summary>
-        /// 追加UV4
-        /// </summary>
-        AdditionalUV4,
-        /// <summary>
-        /// 材質
-        /// </summary>
-        Material
+        public override string ToString() => $"{Name} - {Type} Morph";
     }
 }
