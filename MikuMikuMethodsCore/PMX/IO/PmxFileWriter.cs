@@ -56,7 +56,7 @@ namespace MikuMikuMethods.PMX.IO
         private static void CreatePropaties()
         {
             Encoder = new(Model.Header.Encoding);
-            Textures = Model.Materials.SelectMany(m => new[] { m.Texture, m.SphereMap, m.ToonMap }.Where(t => t != null)).Distinct().ToList();
+            Textures = Model.Materials.SelectMany(m => new[] { m.Texture, m.SphereMap, m.ToonMap }.Where(t => t != null).Where(t => t.ToonIndex == null)).Distinct().ToList();
 
             VtxID = new(Model.Header.SizeOfVertexIndex, true);
             TexID = new(Model.Header.SizeOfTextureIndex, false);
