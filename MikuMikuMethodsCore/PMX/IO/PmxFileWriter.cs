@@ -1,4 +1,4 @@
-﻿using MikuMikuMethods.Extension;
+using MikuMikuMethods.Extension;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -234,7 +234,44 @@ namespace MikuMikuMethods.PMX.IO
 
         private static void WriteMaterial(BinaryWriter writer, PmxMaterial material)
         {
-            throw new NotImplementedException();
+            Encoder.Write(writer, material.Name);
+            Encoder.Write(writer, material.NameEn);
+
+            writer.Write(material.Diffuse, true);
+            writer.Write(material.Specular, false);
+            writer.Write(material.ReflectionIntensity);
+            writer.Write(material.Ambient, false);
+
+            (bool Value, PmxMaterial.DrawFlag Enum)[] flags =
+            {
+                (material.EnableBothSideDraw, PmxMaterial.DrawFlag.BothSideDraw),
+                (material.EnableShadow, PmxMaterial.DrawFlag.Shadow),
+                (material.EnableSelfShadowMap, PmxMaterial.DrawFlag.SelfShadowMap),
+                (material.EnableSelfShadow, PmxMaterial.DrawFlag.SelfShadow),
+                (material.EnableEdge, PmxMaterial.DrawFlag.Edge),
+                (material.EnableVertexColor, PmxMaterial.DrawFlag.VertexColor),
+                (material.Primitive == PmxMaterial.PrimitiveType.Point, PmxMaterial.DrawFlag.Point),
+                (material.Primitive == PmxMaterial.PrimitiveType.Line, PmxMaterial.DrawFlag.Line)
+            };
+            var acmFlag = flags.Aggregate((byte)0, (acm, elm) => (byte)(elm.Value ? acm + (byte)elm.Enum : acm));
+            writer.Write(acmFlag);
+
+            writer.Write(material.EdgeColor, true);
+            writer.Write(material.EdgeWidth);
+
+            TexID.Write(writer, material.Texture == null ? -1 : TexMap[material.Texture]);
+            TexID.Write(writer, material.SphereMap == null ? -1 : TexMap[material.SphereMap]);
+            writer.Write((byte)material.SphereMode);
+            bool isSharedToon = material.ToonMap != null && material.ToonMap.ToonIndex != null;
+            writer.Write(isSharedToon);
+            if (isSharedToon)
+                writer.Write(material.ToonMap.ToonIndex.Value);
+            else
+                TexID.Write(writer, material.ToonMap == null ? -1 : TexMap[material.ToonMap]);
+
+            Encoder.Write(writer, material.Memo);
+
+            writer.Write(material.Faces.Count * 3);
         }
 
         private static void WriteBone(BinaryWriter writer, PmxBone bone)
