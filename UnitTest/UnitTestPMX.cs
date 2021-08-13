@@ -22,6 +22,7 @@ namespace UnitTest
             IOCompare("test.pmx", "write.pmx");
             IOCompare("tex.pmx", "texW.pmx");
             IOCompare("ツインテ少女.pmx", "ツインテ少女_w.pmx");
+            IOCompare("ブレマートン.pmx", "ブレマートン_w.pmx");
 
             void IOCompare(string inFilename, string outFilename)
             {
