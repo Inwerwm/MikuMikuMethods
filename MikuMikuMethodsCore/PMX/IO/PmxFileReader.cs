@@ -337,6 +337,13 @@ namespace MikuMikuMethods.PMX.IO
 
             var boneFlag = (PmxBone.BoneFlag)reader.ReadUInt16();
 
+            bone.Rotatable = boneFlag.HasFlag(PmxBone.BoneFlag.Rotatable);
+            bone.Movable = boneFlag.HasFlag(PmxBone.BoneFlag.Movable);
+            bone.Visible = boneFlag.HasFlag(PmxBone.BoneFlag.Visible);
+            bone.Controlable = boneFlag.HasFlag(PmxBone.BoneFlag.Controlable);
+            bone.IsLocalAddition = boneFlag.HasFlag(PmxBone.BoneFlag.AddLocalTarget);
+            bone.IsAfterPhysic = boneFlag.HasFlag(PmxBone.BoneFlag.TrAfterPhysic);
+
             if (boneFlag.HasFlag(PmxBone.BoneFlag.ConnectTargetType))
             {
                 bone.ConnectionTarget = PmxBone.ConnectionTargetType.Bone;
@@ -399,6 +406,8 @@ namespace MikuMikuMethods.PMX.IO
 
                     return link;
                 }));
+
+                bone.IKInfo = ik;
             }
 
             return bone;
