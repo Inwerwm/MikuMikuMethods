@@ -153,9 +153,9 @@ namespace MikuMikuMethods.PMX.IO
             writer.Write(vertex.Normal);
             writer.Write(vertex.UV);
 
-            foreach (var item in vertex.AdditonalUVs)
+            for (int i = 0; i < Model.Header.NumOfAdditionalUV; i++)
             {
-                writer.Write(item);
+                writer.Write(vertex.AdditonalUVs[i]);
             }
 
             writer.Write((byte)vertex.WeightType);

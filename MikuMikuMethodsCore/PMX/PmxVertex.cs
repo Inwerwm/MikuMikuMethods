@@ -32,7 +32,7 @@ namespace MikuMikuMethods.PMX
         /// <summary>
         /// 追加UVの座標
         /// </summary>
-        public Vector4[] AdditonalUVs { get; set; }
+        public Vector4[] AdditonalUVs { get; } = new Vector4[4];
 
         /// <summary>
         /// ウェイト変形方式

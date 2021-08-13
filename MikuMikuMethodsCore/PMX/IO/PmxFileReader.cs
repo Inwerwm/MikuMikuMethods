@@ -170,7 +170,10 @@ namespace MikuMikuMethods.PMX.IO
             vtx.Normal = reader.ReadVector3();
             vtx.UV = reader.ReadVector2();
 
-            vtx.AdditonalUVs = Model.Header.NumOfAdditionalUV <= 0 ? null : Enumerable.Range(0, Model.Header.NumOfAdditionalUV).Select(_ => reader.ReadVector4()).ToArray();
+            for (int i = 0; i < Model.Header.NumOfAdditionalUV; i++)
+            {
+                vtx.AdditonalUVs[i] = reader.ReadVector4();
+            }
             vtx.WeightType = (PmxWeightType)reader.ReadByte();
 
             var boneIndexer = new Indexer(Model.Header.SizeOfBoneIndex, false);
