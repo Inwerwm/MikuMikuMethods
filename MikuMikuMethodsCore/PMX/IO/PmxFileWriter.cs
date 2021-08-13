@@ -93,7 +93,7 @@ namespace MikuMikuMethods.PMX.IO
                     WriteInfo(writer, Model.ModelInfo);
 
                     WriteData(Model.Vertices, WriteVertex);
-                    WriteData(Model.Faces, WriteFace);
+                    WriteData(Model.Faces, WriteFace, 2, 3);
                     WriteData(Textures, WriteTexture);
                     WriteData(Model.Materials, WriteMaterial);
                     WriteData(Model.Bones, WriteBone);
@@ -103,11 +103,11 @@ namespace MikuMikuMethods.PMX.IO
                     WriteData(Model.Joints, WriteJoint);
                     WriteData(Model.SoftBodies, WriteSoftBody, 2.1f);
 
-                    void WriteData<T>(IList<T> list, Action<BinaryWriter, T> DataWriter, float requireVersion = 2.0f)
+                    void WriteData<T>(IList<T> list, Action<BinaryWriter, T> DataWriter, float requireVersion = 2.0f, int countScale = 1)
                     {
                         if (Model.Header.Version >= requireVersion)
                         {
-                            writer.Write(list.Count);
+                            writer.Write(list.Count * countScale);
                             foreach (var item in list)
                             {
                                 DataWriter(writer, item);
