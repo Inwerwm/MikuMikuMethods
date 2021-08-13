@@ -11,7 +11,7 @@ namespace MikuMikuMethods.PMX.IO
     /// <summary>
     /// PMXファイル書込クラス
     /// </summary>
-    public static class PmxFileWriter
+    internal static class PmxFileWriter
     {
         private static StringEncoder Encoder;
 

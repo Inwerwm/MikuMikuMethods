@@ -16,9 +16,9 @@ namespace UnitTest
         [TestMethod]
         public void PmxIOTest()
         {
-            var model = PmxFileReader.ReadModel("../../TestData/test.pmx");
-            PmxFileWriter.WriteModel("../../TestData/write.pmx", model);
-            var writed = PmxFileReader.ReadModel("../../TestData/write.pmx");
+            PmxModel model = new("../../TestData/test.pmx");
+            model.Write("../../TestData/write.pmx");
+            PmxModel writed = new("../../TestData/write.pmx");
         }
 
         [TestMethod]
