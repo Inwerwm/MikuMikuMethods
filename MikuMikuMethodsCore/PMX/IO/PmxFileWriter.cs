@@ -1,4 +1,4 @@
-using MikuMikuMethods.Extension;
+﻿using MikuMikuMethods.Extension;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -276,7 +276,73 @@ namespace MikuMikuMethods.PMX.IO
 
         private static void WriteBone(BinaryWriter writer, PmxBone bone)
         {
-            throw new NotImplementedException();
+            Encoder.Write(writer, bone.Name);
+            Encoder.Write(writer, bone.NameEn);
+
+            writer.Write(bone.Position);
+            BoneID.Write(writer, bone.Parent != null ? BoneMap[bone.Parent] : -1);
+            writer.Write(bone.TransformOrder);
+
+            (bool Value, PmxBone.BoneFlag Enum)[] flags =
+            {
+                (bone.ConnectionTarget == PmxBone.ConnectionTargetType.Bone, PmxBone.BoneFlag.ConnectTargetType),
+                (bone.Rotatable, PmxBone.BoneFlag.Rotatable),
+                (bone.Movable, PmxBone.BoneFlag.Movable),
+                (bone.Visible, PmxBone.BoneFlag.Visible),
+                (bone.Controlable, PmxBone.BoneFlag.Controlable),
+                (bone.IsIK, PmxBone.BoneFlag.IsIK),
+                (bone.IsLocalAddition, PmxBone.BoneFlag.AddLocalTarget),
+                (bone.IsRotateAddition, PmxBone.BoneFlag.AddRotation),
+                (bone.IsMoveAddtion, PmxBone.BoneFlag.AddMoving),
+                (bone.IsFixedAxis, PmxBone.BoneFlag.FixAxis),
+                (bone.IsLocalAxis, PmxBone.BoneFlag.LocalAxis),
+                (bone.IsAfterPhysic, PmxBone.BoneFlag.TrAfterPhysic),
+                (bone.UseOuterParent, PmxBone.BoneFlag.TrOuterParent)
+            };
+            var acmFlag = flags.Aggregate((ushort)0, (acm, elm) => (ushort)(elm.Value ? acm + (ushort)elm.Enum : acm));
+            writer.Write(acmFlag);
+
+            if (bone.ConnectionTarget == PmxBone.ConnectionTargetType.Offset)
+                writer.Write(bone.ConnectionTargetOffset);
+            else
+                BoneID.Write(writer, bone.ConnectionTargetBone == null ? -1 : BoneMap[bone.ConnectionTargetBone]);
+
+            if(bone.IsRotateAddition || bone.IsMoveAddtion)
+            {
+                BoneID.Write(writer, bone.AdditionParent == null ? -1 : BoneMap[bone.AdditionParent]);
+                writer.Write(bone.AdditonRatio);
+            }
+
+            if (bone.IsFixedAxis)
+                writer.Write(bone.FixVector);
+
+            if (bone.IsLocalAxis)
+            {
+                writer.Write(bone.LocalAxisX);
+                writer.Write(bone.LocalAxisZ);
+            }
+
+            if (bone.UseOuterParent)
+                writer.Write(bone.OuterParentKey);
+
+            if (bone.IsIK)
+            {
+                BoneID.Write(writer, bone.IKInfo.Target == null ? -1 : BoneMap[bone.IKInfo.Target]);
+                writer.Write(bone.IKInfo.LoopNum);
+                writer.Write(bone.IKInfo.LimitAngle);
+
+                writer.Write(bone.IKInfo.Links.Count);
+                foreach (var link in bone.IKInfo.Links)
+                {
+                    BoneID.Write(writer, link.Bone == null ? -1 : BoneMap[link.Bone]);
+                    writer.Write(link.EnableAngleLimit);
+                    if (link.EnableAngleLimit)
+                    {
+                        writer.Write(link.LowerLimit);
+                        writer.Write(link.UpperLimit);
+                    }
+                }
+            }
         }
 
         private static void WriteMorph(BinaryWriter writer, PmxMorph morph)
