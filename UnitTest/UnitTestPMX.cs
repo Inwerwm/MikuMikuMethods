@@ -22,6 +22,7 @@ namespace UnitTest
 
             PmxModel txModel = new("../../TestData/tex.pmx");
             txModel.Write("../../TestData/texW.pmx");
+            PmxModel texW = new("../../TestData/texW.pmx");
         }
 
         [TestMethod]
