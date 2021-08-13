@@ -431,7 +431,21 @@ namespace MikuMikuMethods.PMX.IO
 
         private static void WriteBody(BinaryWriter writer, PmxBody body)
         {
-            throw new NotImplementedException();
+            Encoder.Write(writer, body.Name);
+            Encoder.Write(writer, body.NameEn);
+            BoneID.Write(writer, body.RelationBone == null ? -1 : BoneMap[body.RelationBone]);
+            writer.Write(body.Group);
+            writer.Write(body.NonCollisionFlag);
+            writer.Write((byte)body.Shape);
+            writer.Write(body.Size);
+            writer.Write(body.Position);
+            writer.Write(body.Rotation);
+            writer.Write(body.Mass);
+            writer.Write(body.MovingDecay);
+            writer.Write(body.RotationDecay);
+            writer.Write(body.Resiliency);
+            writer.Write(body.Friction);
+            writer.Write((byte)body.PhysicsMode);
         }
 
         private static void WriteJoint(BinaryWriter writer, PmxJoint joint)
