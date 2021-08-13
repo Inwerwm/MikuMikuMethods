@@ -347,7 +347,81 @@ namespace MikuMikuMethods.PMX.IO
 
         private static void WriteMorph(BinaryWriter writer, PmxMorph morph)
         {
-            throw new NotImplementedException();
+            Encoder.Write(writer, morph.Name);
+            Encoder.Write(writer, morph.NameEn);
+
+            writer.Write((byte)morph.Panel);
+            writer.Write((byte)morph.Type);
+            writer.Write(morph.Offsets.Count);
+
+            Action<IPmxOffset> offsetWriter = morph.Type switch
+            {
+                PmxMorph.MorphType.Group => WriteGroupOffset,
+                PmxMorph.MorphType.Vertex => WriteVertexOffset,
+                PmxMorph.MorphType.Bone => WriteBoneOffset,
+                PmxMorph.MorphType.UV => WriteUVOffset,
+                PmxMorph.MorphType.AdditionalUV1 => WriteUVOffset,
+                PmxMorph.MorphType.AdditionalUV2 => WriteUVOffset,
+                PmxMorph.MorphType.AdditionalUV3 => WriteUVOffset,
+                PmxMorph.MorphType.AdditionalUV4 => WriteUVOffset,
+                PmxMorph.MorphType.Material => WriteMaterialOffset,
+                PmxMorph.MorphType.Flip => WriteGroupOffset,
+                PmxMorph.MorphType.Impulse => WriteImpulseOffset,
+                _ => throw new InvalidOperationException("モーフ種別に意図せぬ値が入っていました。"),
+            };
+            foreach (var offset in morph.Offsets)
+            {
+                offsetWriter(offset);
+            }
+
+            void WriteGroupOffset(IPmxOffset offset)
+            {
+                var of = offset as PmxOffsetGroup;
+                MphID.Write(writer, of.Target == null ? -1 : MphMap[of.Target]);
+                writer.Write(of.Ratio);
+            }
+            void WriteVertexOffset(IPmxOffset offset)
+            {
+                var of = offset as PmxOffsetVertex;
+                VtxID.Write(writer, of.Target == null ? -1 : VtxMap[of.Target]);
+                writer.Write(of.Offset);
+            }
+            void WriteBoneOffset(IPmxOffset offset)
+            {
+                var of = offset as PmxOffsetBone;
+                BoneID.Write(writer, of.Target == null ? -1 : BoneMap[of.Target]);
+                writer.Write(of.Offset);
+                writer.Write(of.Rotate);
+            }
+            void WriteUVOffset(IPmxOffset offset)
+            {
+                var of = offset as PmxOffsetUV;
+                VtxID.Write(writer, of.Target == null ? -1 : VtxMap[of.Target]);
+                writer.Write(of.Offset);
+            }
+            void WriteMaterialOffset(IPmxOffset offset)
+            {
+                var of = offset as PmxOffsetMaterial;
+                MatID.Write(writer, of.Target == null ? -1 : MatMap[of.Target]);
+                writer.Write((byte)of.Operation);
+                writer.Write(of.Diffuse, true);
+                writer.Write(of.Specular, false);
+                writer.Write(of.ReflectionIntensity);
+                writer.Write(of.Ambient, false);
+                writer.Write(of.EdgeColor, true);
+                writer.Write(of.EdgeWidth);
+                writer.Write(of.TextureRatio, true);
+                writer.Write(of.SphereRatio, true);
+                writer.Write(of.ToonRatio, true);
+            }
+            void WriteImpulseOffset(IPmxOffset offset)
+            {
+                var of = offset as PmxOffsetImpulse;
+                BodyID.Write(writer, of.Target == null ? -1 : BodyMap[of.Target]);
+                writer.Write(of.IsLocal);
+                writer.Write(of.MovingSpead);
+                writer.Write(of.RotationTorque);
+            }
         }
 
         private static void WriteNode(BinaryWriter writer, PmxNode node)
