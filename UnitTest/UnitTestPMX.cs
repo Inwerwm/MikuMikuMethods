@@ -17,17 +17,16 @@ namespace UnitTest
         [TestMethod]
         public void PmxIOTest()
         {
-            const string simpleI = "../../TestData/test.pmx";
-            const string simpleO = "../../TestData/write.pmx";
-            PmxModel model = new(simpleI);
-            model.Write(simpleO);
-            CompareBinary(simpleI, simpleO);
+            IOCompare("../../TestData/test.pmx", "../../TestData/write.pmx");
+            IOCompare("../../TestData/tex.pmx", "../../TestData/texW.pmx");
+            IOCompare("../../TestData/ツインテ少女.pmx", "../../TestData/ツインテ少女_w.pmx");
 
-            const string texI = "../../TestData/tex.pmx";
-            const string texO = "../../TestData/texW.pmx";
-            PmxModel txModel = new(texI);
-            txModel.Write(texO);
-            CompareBinary(texI, texO);
+            void IOCompare(string inPath, string outPath)
+            {
+                PmxModel m = new(inPath);
+                m.Write(outPath);
+                CompareBinary(inPath, outPath);
+            }
         }
 
         private void CompareBinary(string filePath1, string filePath2)
