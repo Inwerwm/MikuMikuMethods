@@ -18,6 +18,7 @@ namespace UnitTest
         {
             var model = PmxFileReader.ReadModel("../../TestData/test.pmx");
             PmxFileWriter.WriteModel("../../TestData/write.pmx", model);
+            var writed = PmxFileReader.ReadModel("../../TestData/write.pmx");
         }
 
         [TestMethod]
