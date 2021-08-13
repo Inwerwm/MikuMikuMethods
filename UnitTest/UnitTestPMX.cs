@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MikuMikuMethods.PMX;
 using MikuMikuMethods.PMX.IO;
 using System;
@@ -26,7 +26,7 @@ namespace UnitTest
             var num = new PmxTexture(5);
             var notShared = new PmxTexture("tex/toon05.bmp");
 
-            Assert.AreEqual(5, path.ToonIndex);
+            Assert.AreEqual((byte)5, path.ToonIndex);
             Assert.AreEqual("toon05.bmp", num.Path);
             Assert.IsNull(notShared.ToonIndex);
             Assert.AreEqual(1, new[] { path, num }.Distinct().Count());
