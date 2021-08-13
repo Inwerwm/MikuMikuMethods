@@ -39,7 +39,7 @@ namespace UnitTest
 
             foreach (var b in b1.Zip(b2).Select((Value, Index) => (Value, Index)))
             {
-                Assert.AreEqual(b.Value.First, b.Value.Second, $"{b.Index}番目で異なる値が発見されました。");
+                Assert.AreEqual(b.Value.First, b.Value.Second, $"{b.Index:x}番目で異なる値が発見されました。");
             }
         }
 
