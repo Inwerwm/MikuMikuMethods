@@ -17,7 +17,7 @@ namespace MikuMikuMethods.PMX
         /// <para>共有Toonテクスチャ番号</para>
         /// <para>共有Toonでない場合はnull</para>
         /// </summary>
-        public int? ToonIndex { get; private set; }
+        public byte? ToonIndex { get; private set; }
 
         /// <summary>
         /// コンストラクタ
@@ -26,7 +26,7 @@ namespace MikuMikuMethods.PMX
         public PmxTexture(string path)
         {
             Path = path;
-            ToonIndex = Regex.IsMatch(path, @"^toon(0\d|10).bmp") ? int.Parse(Regex.Replace(path, @"[^\d]", "")) : null;
+            ToonIndex = Regex.IsMatch(path, @"^toon(0\d|10).bmp") ? byte.Parse(Regex.Replace(path, @"[^\d]", "")) : null;
         }
 
         /// <summary>
