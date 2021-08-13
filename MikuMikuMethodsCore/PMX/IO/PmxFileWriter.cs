@@ -488,7 +488,74 @@ namespace MikuMikuMethods.PMX.IO
 
         private static void WriteSoftBody(BinaryWriter writer, PmxSoftBody softBody)
         {
-            throw new NotImplementedException();
+            Encoder.Write(writer, softBody.Name);
+            Encoder.Write(writer, softBody.NameEn);
+
+            writer.Write((byte)softBody.Shape);
+            MatID.Write(writer, softBody.RelationMaterial == null ? -1 : MatMap[softBody.RelationMaterial]);
+
+            writer.Write(softBody.Group);
+            writer.Write(softBody.NonCollisionFlag);
+
+            (bool Value, PmxSoftBody.BitFlag Enum)[] flags =
+{
+                (softBody.IsCreateBLink, PmxSoftBody.BitFlag.CreateBLink),
+                (softBody.IsCreateCluster, PmxSoftBody.BitFlag.CreateCluster),
+                (softBody.IsLinkCrossing, PmxSoftBody.BitFlag.LinkCrossing),
+            };
+            var acmFlag = flags.Aggregate((byte)0, (acm, elm) => (byte)(elm.Value ? acm + (byte)elm.Enum : acm));
+            writer.Write(acmFlag);
+
+            writer.Write(softBody.BLinkCreationDistance);
+            writer.Write(softBody.NumOfCluster);
+
+            writer.Write(softBody.SumOfMass);
+            writer.Write(softBody.MarginOfCollision);
+
+            writer.Write((int)softBody.AeroModel);
+
+            writer.Write(softBody.Config.VCF);
+            writer.Write(softBody.Config.DP);
+            writer.Write(softBody.Config.DG);
+            writer.Write(softBody.Config.LF);
+            writer.Write(softBody.Config.PR);
+            writer.Write(softBody.Config.VC);
+            writer.Write(softBody.Config.DF);
+            writer.Write(softBody.Config.MT);
+            writer.Write(softBody.Config.CHR);
+            writer.Write(softBody.Config.KHR);
+            writer.Write(softBody.Config.SHR);
+            writer.Write(softBody.Config.AHR);
+
+            writer.Write(softBody.ClusterParameter.SRHR_CL);
+            writer.Write(softBody.ClusterParameter.SKHR_CL);
+            writer.Write(softBody.ClusterParameter.SSHR_CL);
+            writer.Write(softBody.ClusterParameter.SR_SPLT_CL);
+            writer.Write(softBody.ClusterParameter.SK_SPLT_CL);
+            writer.Write(softBody.ClusterParameter.SS_SPLT_CL);
+
+            writer.Write(softBody.IterationParameter.V_IT);
+            writer.Write(softBody.IterationParameter.P_IT);
+            writer.Write(softBody.IterationParameter.D_IT);
+            writer.Write(softBody.IterationParameter.C_IT);
+
+            writer.Write(softBody.MaterialParameter.LST);
+            writer.Write(softBody.MaterialParameter.AST);
+            writer.Write(softBody.MaterialParameter.VST);
+
+            writer.Write(softBody.Anchors.Count);
+            foreach (var anchor in softBody.Anchors)
+            {
+                BodyID.Write(writer, anchor.RelationBody == null ? -1 : BodyMap[anchor.RelationBody]);
+                VtxID.Write(writer, anchor.RelationVertex == null ? -1 : VtxMap[anchor.RelationVertex]);
+                writer.Write(anchor.IsNearMode);
+            }
+
+            writer.Write(softBody.Pins.Count);
+            foreach (var pin in softBody.Pins)
+            {
+                VtxID.Write(writer, pin == null ? -1 : VtxMap[pin]);
+            }
         }
     }
 }
