@@ -38,9 +38,9 @@ namespace UnitTest
             if (b1.Length != b2.Length)
                 Assert.Fail("バイナリデータの長さが違います。");
 
-            foreach (var b in b1.Zip(b2))
+            foreach (var b in b1.Zip(b2).Select((Value, Index) => (Value, Index)))
             {
-                Assert.AreEqual(b.First, b.Second);
+                Assert.AreEqual(b.Value.First, b.Value.Second, $"{b.Index}番目で異なる値が発見されました。");
             }
         }
 
