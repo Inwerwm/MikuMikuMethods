@@ -426,7 +426,26 @@ namespace MikuMikuMethods.PMX.IO
 
         private static void WriteNode(BinaryWriter writer, PmxNode node)
         {
-            throw new NotImplementedException();
+            Encoder.Write(writer, node.Name);
+            Encoder.Write(writer, node.NameEn);
+            writer.Write(node.IsSpecific);
+
+            writer.Write(node.Elements.Count);
+            foreach (var elm in node.Elements)
+            {
+                writer.Write(elm.TypeNumber);
+                switch (elm.TypeNumber)
+                {
+                    case 0:
+                        BoneID.Write(writer, elm.Entity == null ? -1 : BoneMap[(PmxBone)elm.Entity]);
+                        break;
+                    case 1:
+                        MphID.Write(writer, elm.Entity == null ? -1 : MphMap[(PmxMorph)elm.Entity]);
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
         private static void WriteBody(BinaryWriter writer, PmxBody body)
