@@ -310,9 +310,9 @@ namespace MikuMikuMethods.PMX.IO
             material.SphereMap = sphereID < 0 ? null : Textures[sphereID];
             material.SphereMode = (PmxMaterial.SphereModeType)reader.ReadByte();
             var IsSharedToon = reader.ReadBoolean();
-            int toonID = id.Read(reader);
-            material.ToonMap = IsSharedToon ? new PmxTexture(reader.ReadByte()) 
-                             : toonID < 0 ? null 
+            int toonID = IsSharedToon ? -1 : id.Read(reader);
+            material.ToonMap = IsSharedToon ? new PmxTexture((byte)(reader.ReadByte() + 1))
+                             : toonID < 0 ? null
                              : Textures[toonID];
 
             material.Memo = Encoder.Read(reader);

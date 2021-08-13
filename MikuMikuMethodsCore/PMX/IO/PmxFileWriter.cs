@@ -265,7 +265,7 @@ namespace MikuMikuMethods.PMX.IO
             bool isSharedToon = material.ToonMap != null && material.ToonMap.ToonIndex != null;
             writer.Write(isSharedToon);
             if (isSharedToon)
-                writer.Write(material.ToonMap.ToonIndex.Value);
+                writer.Write((byte)(material.ToonMap.ToonIndex.Value - 1));
             else
                 TexID.Write(writer, material.ToonMap == null ? -1 : TexMap[material.ToonMap]);
 
