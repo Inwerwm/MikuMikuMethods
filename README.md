@@ -19,7 +19,7 @@ Framework版は開発終了
 
 |Format|Core|Framework|
 |:----:|:--:|:-------:|
-|PMM|-|-|
+|PMM|I/O|-|
 |PMX|I/O|I/O|
 |VMD|I/O|I/O|
 |EMM|I/O|I/O|
