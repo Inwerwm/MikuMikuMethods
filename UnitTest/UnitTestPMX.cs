@@ -1,4 +1,4 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MikuMikuMethods.PMX;
 using MikuMikuMethods.PMX.IO;
 using System;
@@ -17,6 +17,7 @@ namespace UnitTest
         public void PmxIOTest()
         {
             var model = PmxFileReader.ReadModel("../../TestData/test.pmx");
+            PmxFileWriter.WriteModel("../../TestData/write.pmx", model);
         }
 
         [TestMethod]
