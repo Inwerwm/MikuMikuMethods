@@ -33,9 +33,9 @@ namespace MikuMikuMethods.PMX
         /// 共有Toonテクスチャのコンストラクタ
         /// </summary>
         /// <param name="toonIndex">共有Toonテクスチャの番号[1～10]</param>
-        public PmxTexture(int toonIndex)
+        public PmxTexture(byte toonIndex)
         {
-            Path = toonIndex.IsWithin(1, 10)
+            Path = toonIndex.IsWithin<byte>(1, 10)
                  ? $"toon{toonIndex:00}.bmp"
                  : throw new ArgumentOutOfRangeException("共有Toonテクスチャは[1,10]の区間で指定してください。");
             ToonIndex = toonIndex;
