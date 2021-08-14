@@ -33,7 +33,7 @@ namespace MikuMikuMethods.MME
         /// <summary>
         /// 設定対象オブジェクトのリスト
         /// </summary>
-        public List<EffectOnObject> Effects { get; init; }
+        public List<ObjectSetting> Effects { get; init; }
 
         private EffectSettings()
         {
@@ -92,12 +92,12 @@ namespace MikuMikuMethods.MME
                 var objKeyId = objectKey.Split('[');
                 objectKey = objKeyId[0];
 
-                EffectOnObject eo;
+                ObjectSetting eo;
 
                 // サブセット添字が存在しなければオブジェクトに対する設定とみなす
                 if (objKeyId.Length == 1)
                 {
-                    eo = Effects.FirstOrDefault(o => o.Object.Name == objectKey)
+                    eo = Effects.FirstOrDefault(o => o.Entity.Name == objectKey)
                        ?? new(objects.First(info => info.Name == objectKey));
                     if (isShowSetting)
                         eo.Effect.Show = bool.Parse(data);
@@ -110,7 +110,7 @@ namespace MikuMikuMethods.MME
                 }
 
                 // サブセットに対する設定
-                eo = Effects.First(o => o.Object.Name == objectKey);
+                eo = Effects.First(o => o.Entity.Name == objectKey);
                 var subsetId = int.Parse(objKeyId[1].Replace("]", ""));
                 // 設定サブセット添字よりオブジェクトに設定されたエフェクトの数が少ない場合
                 // 設定サブセット添字の数まで中身を増やす
@@ -145,16 +145,16 @@ namespace MikuMikuMethods.MME
             foreach (var obj in Effects)
             {
                 if (!string.IsNullOrEmpty(obj.Effect.Path))
-                    writer.WriteLine($"{obj.Object.Name} = {obj.Effect.Path}");
+                    writer.WriteLine($"{obj.Entity.Name} = {obj.Effect.Path}");
                 if (obj.Effect.Show != null)
-                    writer.WriteLine($"{obj.Object.Name}.show = {obj.Effect.Show.Value.ToString().ToLower()}");
+                    writer.WriteLine($"{obj.Entity.Name}.show = {obj.Effect.Show.Value.ToString().ToLower()}");
 
                 foreach (var sub in obj.Subsets.Select((effect,i)=> (effect, i)))
                 {
                     if (!string.IsNullOrEmpty(sub.effect.Path))
-                        writer.WriteLine($"{obj.Object.Name}[{sub.i}] = {sub.effect.Path}");
+                        writer.WriteLine($"{obj.Entity.Name}[{sub.i}] = {sub.effect.Path}");
                     if (sub.effect.Show != null)
-                        writer.WriteLine($"{obj.Object.Name}[{sub.i}].show = {sub.effect.Show.Value.ToString().ToLower()}");
+                        writer.WriteLine($"{obj.Entity.Name}[{sub.i}].show = {sub.effect.Show.Value.ToString().ToLower()}");
                 }
             }
         }

@@ -9,12 +9,12 @@ namespace MikuMikuMethods.MME
     /// <summary>
     /// オブジェクト単位のエフェクト設定
     /// </summary>
-    public class EffectOnObject
+    public class ObjectSetting
     {
         /// <summary>
         /// 対応するオブジェクト情報
         /// </summary>
-        public ObjectInfo Object { get; init; }
+        public ObjectInfo Entity { get; init; }
 
         /// <summary>
         /// オブジェクトに適用するエフェクトの情報
@@ -29,12 +29,12 @@ namespace MikuMikuMethods.MME
         /// <summary>
         /// オブジェクト情報を指定してインスタンスを生成
         /// </summary>
-        /// <param name="key">オブジェクト情報</param>
-        public EffectOnObject(ObjectInfo key)
+        /// <param name="entity">オブジェクト情報</param>
+        public ObjectSetting(ObjectInfo entity)
         {
             Effect = new();
             Subsets = new();
-            Object = key;
+            Entity = entity;
         }
     }
 }
