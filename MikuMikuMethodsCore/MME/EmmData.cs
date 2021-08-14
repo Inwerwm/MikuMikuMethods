@@ -38,13 +38,18 @@ namespace MikuMikuMethods.MME
             EffectSettings = new();
         }
 
+        public EmmData(string filePath)
+        {
+            Read(filePath);
+        }
+
         /// <summary>
         /// ファイルから読込
         /// </summary>
-        /// <param name="path">ファイルパス</param>
-        public void Read(string path)
+        /// <param name="filePath">ファイルパス</param>
+        public void Read(string filePath)
         {
-            using (FileStream stream = new(path, FileMode.Open))
+            using (FileStream stream = new(filePath, FileMode.Open))
             using (StreamReader reader = new(stream, MikuMikuMethods.Encoding.ShiftJIS))
             {
                 Read(reader);
