@@ -69,7 +69,7 @@ namespace MikuMikuMethods.MME
         /// 読み込み
         /// </summary>
         /// <param name="reader">[.*]の次行が読み込まれる状態であること</param>
-        public void Read(StreamReader reader)
+        internal void Read(StreamReader reader)
         {
             string line;
             while(!string.IsNullOrEmpty(line = reader.ReadLine()))
@@ -135,7 +135,7 @@ namespace MikuMikuMethods.MME
         /// 書き込み
         /// </summary>
         /// <param name="writer">書き込みストリーム</param>
-        public void Write(StreamWriter writer)
+        internal void Write(StreamWriter writer)
         {
             var ownerString = Category switch
             {
