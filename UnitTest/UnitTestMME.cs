@@ -115,13 +115,25 @@ namespace UnitTest
         [TestMethod]
         public void Test_EMD()
         {
-            using (StreamReader reader = new("../../TestData/test.emd", Encoding.ShiftJIS))
+            const string sourcePath = "../../TestData/test.emd";
+            const string resultPath = "../../TestData/test_w.emd";
+            EmmData emm = new();
+            Assert.ThrowsException<FormatException>(() => emm.Read(sourcePath));
+
+            EmdData emd = new(sourcePath);
+            emd.Write(resultPath);
+
+
+            string allSource;
+            string allResult;
+            using (StreamReader readerS = new(sourcePath, Encoding.ShiftJIS))
+            using (StreamReader readerR = new(resultPath, Encoding.ShiftJIS))
             {
-                EmmData emm = new();
-                Assert.ThrowsException<FormatException>(() => emm.Read(reader));
+                allSource = readerS.ReadToEnd();
+                allResult = readerR.ReadToEnd();
             }
 
-            EmdData emd = new("../../TestData/test.emd");
+            Assert.AreEqual(allSource, allResult);
         }
     }
 }
