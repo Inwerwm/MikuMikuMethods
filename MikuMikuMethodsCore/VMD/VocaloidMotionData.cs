@@ -7,21 +7,6 @@ using System.Linq;
 namespace MikuMikuMethods.VMD
 {
     /// <summary>
-    /// VMDの種類
-    /// </summary>
-    public enum VMDType
-    {
-        /// <summary>
-        /// カメラ系
-        /// </summary>
-        Camera,
-        /// <summary>
-        /// モデル系
-        /// </summary>
-        Model
-    }
-
-    /// <summary>
     /// VMDファイルの内部表現
     /// </summary>
     public class VocaloidMotionData
@@ -39,14 +24,14 @@ namespace MikuMikuMethods.VMD
         /// <summary>
         /// VMDの種類
         /// </summary>
-        public VMDType Type => ModelName == Specifications.CameraTypeVMDName ? VMDType.Camera : VMDType.Model;
+        public VMDType Type => ModelName == VmdConstants.CameraTypeVMDName ? VMDType.Camera : VMDType.Model;
 
         /// <summary>
         /// <para>全てのフレーム</para>
         /// <para>各種フレームの結合体</para>
         /// </summary>
-        public IEnumerable<IVocaloidFrame> Frames =>
-            CameraFrames.Cast<IVocaloidFrame>()
+        public IEnumerable<IVmdFrame> Frames =>
+            CameraFrames.Cast<IVmdFrame>()
             .Concat(LightFrames)
             .Concat(ShadowFrames)
             .Concat(PropertyFrames)
@@ -56,35 +41,35 @@ namespace MikuMikuMethods.VMD
         /// <summary>
         /// カメラフレーム
         /// </summary>
-        public List<VocaloidCameraFrame> CameraFrames { get; init; }
+        public List<VmdCameraFrame> CameraFrames { get; init; }
         /// <summary>
         /// 照明フレーム
         /// </summary>
-        public List<VocaloidLightFrame> LightFrames { get; init; }
+        public List<VmdLightFrame> LightFrames { get; init; }
         /// <summary>
         /// セルフ影フレーム
         /// </summary>
-        public List<VocaloidShadowFrame> ShadowFrames { get; init; }
+        public List<VmdShadowFrame> ShadowFrames { get; init; }
 
         /// <summary>
         /// プロパティフレーム
         /// </summary>
-        public List<VocaloidPropertyFrame> PropertyFrames { get; init; }
+        public List<VmdPropertyFrame> PropertyFrames { get; init; }
         /// <summary>
         /// モーフフレーム
         /// </summary>
-        public List<VocaloidMorphFrame> MorphFrames { get; init; }
+        public List<VmdMorphFrame> MorphFrames { get; init; }
         /// <summary>
         /// モーションフレーム
         /// </summary>
-        public List<VocaloidMotionFrame> MotionFrames { get; init; }
+        public List<VmdMotionFrame> MotionFrames { get; init; }
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
         public VocaloidMotionData()
         {
-            Header = Specifications.HeaderString;
+            Header = VmdConstants.HeaderString;
 
             CameraFrames = new();
             LightFrames = new();
@@ -148,8 +133,8 @@ namespace MikuMikuMethods.VMD
         /// <param name="reader">VMDファイルのリーダー</param>
         public void Read(BinaryReader reader)
         {
-            Header = reader.ReadString(Specifications.HeaderLength, Encoding.ShiftJIS, '\0');
-            ModelName = reader.ReadString(Specifications.ModelNameLength, Encoding.ShiftJIS, '\0');
+            Header = reader.ReadString(VmdConstants.HeaderLength, Encoding.ShiftJIS, '\0');
+            ModelName = reader.ReadString(VmdConstants.ModelNameLength, Encoding.ShiftJIS, '\0');
 
             ReadFrames(reader, r => MotionFrames.Add(new(r)));
             ReadFrames(reader, r => MorphFrames.Add(new(r)));
@@ -184,8 +169,8 @@ namespace MikuMikuMethods.VMD
         /// </summary>
         public void Write(BinaryWriter writer)
         {
-            writer.Write(Header, Specifications.HeaderLength, Encoding.ShiftJIS);
-            writer.Write(ModelName, Specifications.ModelNameLength, Encoding.ShiftJIS);
+            writer.Write(Header, VmdConstants.HeaderLength, Encoding.ShiftJIS);
+            writer.Write(ModelName, VmdConstants.ModelNameLength, Encoding.ShiftJIS);
 
             WriteFrames(writer, MotionFrames);
             WriteFrames(writer, MorphFrames);
@@ -195,7 +180,7 @@ namespace MikuMikuMethods.VMD
             WriteFrames(writer, PropertyFrames);
         }
 
-        private void WriteFrames<T>(BinaryWriter writer, List<T> frames) where T : IVocaloidFrame
+        private void WriteFrames<T>(BinaryWriter writer, List<T> frames) where T : IVmdFrame
         {
             writer.Write((uint)frames.Count);
             // 時間で降順に書き込むと読み込みが早くなる(らしい)

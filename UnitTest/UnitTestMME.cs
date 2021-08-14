@@ -1,6 +1,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MikuMikuMethods;
 using MikuMikuMethods.MME;
+using MikuMikuMethods.MME.Element;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -32,21 +34,21 @@ namespace UnitTest
                 writer.WriteLine(@"Pmd5[6].show = true");
             }
 
-            List<ObjectInfo> keys = new();
-            keys.Add(new ModelInfo(1) { Path = "モデル1" });
-            keys.Add(new ModelInfo(2) { Path = "モデル2" });
-            keys.Add(new ModelInfo(3) { Path = "モデル3" });
-            keys.Add(new ModelInfo(4) { Path = "モデル4" });
-            keys.Add(new ModelInfo(5) { Path = "モデル5" });
+            List<EmmObject> keys = new();
+            keys.Add(new EmmModel(1) { Path = "モデル1" });
+            keys.Add(new EmmModel(2) { Path = "モデル2" });
+            keys.Add(new EmmModel(3) { Path = "モデル3" });
+            keys.Add(new EmmModel(4) { Path = "モデル4" });
+            keys.Add(new EmmModel(5) { Path = "モデル5" });
 
             // テストのためのインスタンスを生成
-            EffectSettings target = new(keys, EffectCategory.Effect);
+            EmmEffectSettings target = new(EmmEffectCategory.Effect);
 
             /// テスト実行
 
             // テストデータを読み込み
             using (StreamReader reader = new("TestData/EffectSettings.txt", Encoding.ShiftJIS))
-                target.Read(reader);
+                target.Read(reader, keys);
             // テスト書き込み
             using (StreamWriter writer = new("TestData/EffectSettings_Result.txt", false, Encoding.ShiftJIS))
                 target.Write(writer);
@@ -88,7 +90,7 @@ namespace UnitTest
 
             /// テスト
 
-            ProjectEffectSettings emm = new();
+            EmmData emm = new();
             using (StreamReader reader = new(sourcePath, Encoding.ShiftJIS))
             {
                 emm.Read(reader);
@@ -105,6 +107,30 @@ namespace UnitTest
             using (StreamReader reader = new(resultPath, Encoding.ShiftJIS))
             {
                 allResult = reader.ReadToEnd();
+            }
+
+            Assert.AreEqual(allSource, allResult);
+        }
+
+        [TestMethod]
+        public void Test_EMD()
+        {
+            const string sourcePath = "../../TestData/test.emd";
+            const string resultPath = "../../TestData/test_w.emd";
+            EmmData emm = new();
+            Assert.ThrowsException<FormatException>(() => emm.Read(sourcePath));
+
+            EmdData emd = new(sourcePath);
+            emd.Write(resultPath);
+
+
+            string allSource;
+            string allResult;
+            using (StreamReader readerS = new(sourcePath, Encoding.ShiftJIS))
+            using (StreamReader readerR = new(resultPath, Encoding.ShiftJIS))
+            {
+                allSource = readerS.ReadToEnd();
+                allResult = readerR.ReadToEnd();
             }
 
             Assert.AreEqual(allSource, allResult);

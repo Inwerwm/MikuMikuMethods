@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace MikuMikuMethods.VMD
 {
     /// <summary>
     /// フレームの抽象クラス
     /// </summary>
-    public abstract class VocaloidFrame : IVocaloidFrame
+    public abstract class VmdFrame : IVmdFrame
     {
         /// <summary>
         /// フレームの種類
         /// </summary>
-        public abstract FrameType FrameType { get; }
+        public abstract VmdFrameType FrameType { get; }
         /// <summary>
         /// フレームの名前
         /// </summary>
@@ -44,7 +39,7 @@ namespace MikuMikuMethods.VMD
         /// <para>0 - このフレームはotherと同時</para>
         /// <para>0超 - このフレームはother以降</para>
         /// </returns>
-        public int CompareTo(IVocaloidFrame other) => Frame.CompareTo(other.Frame);
+        public int CompareTo(IVmdFrame other) => Frame.CompareTo(other.Frame);
         /// <summary>
         /// 読み込み
         /// </summary>
@@ -54,37 +49,5 @@ namespace MikuMikuMethods.VMD
         /// </summary>
         /// <param name="writer"></param>
         public abstract void Write(BinaryWriter writer);
-    }
-
-    /// <summary>
-    /// モデル系フレームの抽象クラス
-    /// </summary>
-    public abstract class VocaloidModelTypeFrame : VocaloidFrame
-    {
-        /// <summary>
-        /// カメラ系フレームか？
-        /// </summary>
-        public override bool IsCameraType => false;
-
-        /// <summary>
-        /// モデル系フレームか？
-        /// </summary>
-        public override bool IsModelType => true;
-    }
-
-    /// <summary>
-    /// カメラ系フレームの抽象クラス
-    /// </summary>
-    public abstract class VocaloidCameraTypeFrame : VocaloidFrame
-    {
-        /// <summary>
-        /// カメラ系フレームか？
-        /// </summary>
-        public override bool IsCameraType => true;
-
-        /// <summary>
-        /// モデル系フレームか？
-        /// </summary>
-        public override bool IsModelType => false;
     }
 }

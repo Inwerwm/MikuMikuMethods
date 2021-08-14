@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MikuMikuMethods.MME
+﻿namespace MikuMikuMethods.MME.Element
 {
     /// <summary>
     /// 個々の要素に対するエフェクト情報
     /// </summary>
-    public class FxInfo
+    public class EmmMaterial
     {
         /// <summary>
         /// 表示切り替え

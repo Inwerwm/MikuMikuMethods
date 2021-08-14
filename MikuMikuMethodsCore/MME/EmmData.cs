@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MikuMikuMethods.MME.Element;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace MikuMikuMethods.MME
     /// <summary>
     /// MMEプロジェクト単位設定ファイル(EMMファイルの内部表現)
     /// </summary>
-    public class ProjectEffectSettings
+    public class EmmData
     {
         /// <summary>
         /// EMMのバージョン
@@ -19,31 +20,36 @@ namespace MikuMikuMethods.MME
         /// <summary>
         /// 内包オブジェクトのリスト
         /// </summary>
-        public List<ObjectInfo> Objects { get; init; }
+        public List<EmmObject> Objects { get; init; }
 
         /// <summary>
         /// <para>エフェクト設定のリスト</para>
         /// <para>MMEエフェクト割当画面の各タブに相当</para>
         /// </summary>
-        public List<EffectSettings> Settings { get; init; }
+        public List<EmmEffectSettings> EffectSettings { get; init; }
 
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public ProjectEffectSettings()
+        public EmmData()
         {
             Version = 3;
             Objects = new();
-            Settings = new();
+            EffectSettings = new();
+        }
+
+        public EmmData(string filePath)
+        {
+            Read(filePath);
         }
 
         /// <summary>
         /// ファイルから読込
         /// </summary>
-        /// <param name="path">ファイルパス</param>
-        public void Read(string path)
+        /// <param name="filePath">ファイルパス</param>
+        public void Read(string filePath)
         {
-            using (FileStream stream = new(path, FileMode.Open))
+            using (FileStream stream = new(filePath, FileMode.Open))
             using (StreamReader reader = new(stream, MikuMikuMethods.Encoding.ShiftJIS))
             {
                 Read(reader);
@@ -60,7 +66,7 @@ namespace MikuMikuMethods.MME
                 throw new FormatException($"EMMファイル読み込みエンコードエラー{Environment.NewLine}エンコーダがShiftJISと違います。");
 
             string line;
-            EffectSettings effect;
+            EmmEffectSettings effect;
 
             // [Info]
             line = reader.ReadLine();
@@ -70,19 +76,22 @@ namespace MikuMikuMethods.MME
             // Version
             line = reader.ReadLine();
             Version = int.Parse(Regex.Replace(line, @"[^0-9]", ""));
+            if (Version < 3) throw new FormatException("EMMファイルのバージョンが未対応の値です");
             // 改行
             reader.ReadLine();
 
             // [Object]
-            reader.ReadLine();
+            line = reader.ReadLine();
+            if (line != "[Object]")
+                throw new FormatException($"読み込まれたファイル形式がEMMファイルと違います{(line == "[Effect]" ? Environment.NewLine + "EMDファイルを読み込んだ可能性があります" : "")}");
             ReadObjects(reader);
 
             while (!string.IsNullOrEmpty(line = reader.ReadLine()))
             {
                 // Effect
-                effect = !line.Contains("@") ? new(Objects, EffectCategory.Effect) : new(Objects, line.Split('@')[1].Replace("]", ""));
-                effect.Read(reader);
-                Settings.Add(effect);
+                effect = !line.Contains("@") ? new(EmmEffectCategory.Effect) : new(line.Split('@')[1].Replace("]", ""));
+                effect.Read(reader, Objects);
+                EffectSettings.Add(effect);
             }
         }
 
@@ -96,11 +105,10 @@ namespace MikuMikuMethods.MME
                 var path = lineData.ElementAt(1);
 
                 int objectIndex = int.Parse(Regex.Replace(objectKey, @"[^0-9]", ""));
-                ObjectInfo obj = Regex.Replace(objectKey, @"[0-9]", "") switch
+                EmmObject obj = Regex.Replace(objectKey, @"[0-9]", "") switch
                 {
-                    "Pmd" => new ModelInfo(objectIndex),
-                    "Acs" => new AccessoryInfo(objectIndex),
-                    "Obj" => new EmdObjectInfo(objectIndex),
+                    "Pmd" => new EmmModel(objectIndex),
+                    "Acs" => new EmmAccessory(objectIndex),
                     _ => throw new InvalidOperationException("EMMオブジェクト読み込みで不正なオブジェクト読み込みがなされました。")
                 };
 
@@ -145,12 +153,12 @@ namespace MikuMikuMethods.MME
             writer.WriteLine("");
 
             // Effect
-            foreach (var effect in Settings)
+            foreach (var effect in EffectSettings)
             {
                 string tabName = effect.Category switch
                 {
-                    EffectCategory.Effect => "[Effect]",
-                    EffectCategory.Other => $"[Effect@{effect.Name}]",
+                    EmmEffectCategory.Effect => "[Effect]",
+                    EmmEffectCategory.Other => $"[Effect@{effect.Name}]",
                     _ => throw new NotImplementedException(),
                 };
                 writer.WriteLine(tabName);
