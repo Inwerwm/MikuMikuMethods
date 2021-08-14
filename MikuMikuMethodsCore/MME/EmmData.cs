@@ -71,6 +71,7 @@ namespace MikuMikuMethods.MME
             // Version
             line = reader.ReadLine();
             Version = int.Parse(Regex.Replace(line, @"[^0-9]", ""));
+            if (Version < 3) throw new FormatException("EMMファイルのバージョンが未対応の値です");
             // 改行
             reader.ReadLine();
 
