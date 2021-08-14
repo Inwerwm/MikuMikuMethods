@@ -120,6 +120,8 @@ namespace UnitTest
                 EmmData emm = new();
                 Assert.ThrowsException<FormatException>(() => emm.Read(reader));
             }
+
+            EmdData emd = new("../../TestData/test.emd");
         }
     }
 }
