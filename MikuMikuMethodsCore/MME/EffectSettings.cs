@@ -35,12 +35,9 @@ namespace MikuMikuMethods.MME
         /// </summary>
         public List<EffectOnObject> Effects { get; init; }
 
-        private List<ObjectInfo> Objects { get; init; }
-
-        private EffectSettings(List<ObjectInfo> objects)
+        private EffectSettings()
         {
             Effects = new();
-            Objects = objects;
         }
 
         /// <summary>
@@ -48,7 +45,7 @@ namespace MikuMikuMethods.MME
         /// </summary>
         /// <param name="keys">設定するオブジェクト定義リスト</param>
         /// <param name="category">設定種別</param>
-        public EffectSettings(List<ObjectInfo> keys, EffectCategory category) : this(keys)
+        public EffectSettings(EffectCategory category)
         {
             Category = category;
             Name = Category.ToString();
@@ -59,7 +56,7 @@ namespace MikuMikuMethods.MME
         /// </summary>
         /// <param name="keys">設定するオブジェクト定義リスト</param>
         /// <param name="name">"@"以降の名前</param>
-        public EffectSettings(List<ObjectInfo> keys, string name) : this(keys)
+        public EffectSettings(string name)
         {
             Category = EffectCategory.Other;
             Name = name;
@@ -69,7 +66,7 @@ namespace MikuMikuMethods.MME
         /// 読み込み
         /// </summary>
         /// <param name="reader">[.*]の次行が読み込まれる状態であること</param>
-        internal void Read(StreamReader reader)
+        internal void Read(StreamReader reader, List<ObjectInfo> objects)
         {
             string line;
             while(!string.IsNullOrEmpty(line = reader.ReadLine()))
@@ -101,7 +98,7 @@ namespace MikuMikuMethods.MME
                 if (objKeyId.Length == 1)
                 {
                     eo = Effects.FirstOrDefault(o => o.Object.Name == objectKey)
-                       ?? new(Objects.First(info => info.Name == objectKey));
+                       ?? new(objects.First(info => info.Name == objectKey));
                     if (isShowSetting)
                         eo.Effect.Show = bool.Parse(data);
                     else

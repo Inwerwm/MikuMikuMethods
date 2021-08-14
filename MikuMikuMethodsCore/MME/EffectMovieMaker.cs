@@ -80,8 +80,8 @@ namespace MikuMikuMethods.MME
             while (!string.IsNullOrEmpty(line = reader.ReadLine()))
             {
                 // Effect
-                effect = !line.Contains("@") ? new(Objects, EffectCategory.Effect) : new(Objects, line.Split('@')[1].Replace("]", ""));
-                effect.Read(reader);
+                effect = !line.Contains("@") ? new(EffectCategory.Effect) : new(line.Split('@')[1].Replace("]", ""));
+                effect.Read(reader, Objects);
                 Settings.Add(effect);
             }
         }
