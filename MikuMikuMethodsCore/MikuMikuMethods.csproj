@@ -11,13 +11,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>C:\MMD\_Programs\MikuMikuMethods\MikuMikuMethodsCore\MikuMikuMethods.xml</DocumentationFile>
     <DebugType>none</DebugType>
     <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\MMD\_Programs\MikuMikuMethods\MikuMikuMethodsCore\MikuMikuMethods.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
