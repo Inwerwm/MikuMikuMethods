@@ -152,7 +152,7 @@ namespace MikuMikuMethods.MME
             // [Info]
             writer.WriteLine("[Info]");
             writer.WriteLine($"Version = {Version}");
-            writer.WriteLine("");
+            writer.WriteLine();
 
             // [Object]
             writer.WriteLine("[Effect]");
@@ -169,6 +169,7 @@ namespace MikuMikuMethods.MME
                 if (sub.effect.Show != null)
                     writer.WriteLine($"Obj[{sub.i}].show = {sub.effect.Show.Value.ToString().ToLower()}");
             }
+            writer.WriteLine();
         }
     }
 }
