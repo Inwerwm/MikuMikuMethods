@@ -41,13 +41,13 @@ namespace UnitTest
             keys.Add(new EmmModel(5) { Path = "モデル5" });
 
             // テストのためのインスタンスを生成
-            EmmEffectSettings target = new(keys, EmmEffectCategory.Effect);
+            EmmEffectSettings target = new(EmmEffectCategory.Effect);
 
             /// テスト実行
 
             // テストデータを読み込み
             using (StreamReader reader = new("TestData/EffectSettings.txt", Encoding.ShiftJIS))
-                target.Read(reader);
+                target.Read(reader, keys);
             // テスト書き込み
             using (StreamWriter writer = new("TestData/EffectSettings_Result.txt", false, Encoding.ShiftJIS))
                 target.Write(writer);
