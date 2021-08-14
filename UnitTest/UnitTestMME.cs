@@ -88,7 +88,7 @@ namespace UnitTest
 
             /// ƒeƒXƒg
 
-            ProjectEffectSettings emm = new();
+            EffectMovieMaker emm = new();
             using (StreamReader reader = new(sourcePath, Encoding.ShiftJIS))
             {
                 emm.Read(reader);
