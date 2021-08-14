@@ -44,7 +44,7 @@ namespace MikuMikuMethods.MME
         /// </summary>
         /// <param name="keys">設定するオブジェクト定義リスト</param>
         /// <param name="category">設定種別</param>
-        public EmmEffectSettings(EmmEffectCategory category)
+        public EmmEffectSettings(EmmEffectCategory category) : this()
         {
             Category = category;
             Name = Category.ToString();
@@ -55,7 +55,7 @@ namespace MikuMikuMethods.MME
         /// </summary>
         /// <param name="keys">設定するオブジェクト定義リスト</param>
         /// <param name="name">"@"以降の名前</param>
-        public EmmEffectSettings(string name)
+        public EmmEffectSettings(string name) : this()
         {
             Category = EmmEffectCategory.Other;
             Name = name;
