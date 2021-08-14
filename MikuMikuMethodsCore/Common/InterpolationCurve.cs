@@ -133,10 +133,10 @@ namespace MikuMikuMethods
         /// <param name="data">バイト列</param>
         /// <param name="type">フレームの種類</param>
         /// <returns>補間曲線の連想配列</returns>
-        public static Dictionary<InterpolationItem, InterpolationCurve> CreateByVMDFormat(byte[] data, VMD.FrameType type) => type switch
+        public static Dictionary<InterpolationItem, InterpolationCurve> CreateByVMDFormat(byte[] data, VMD.VmdFrameType type) => type switch
         {
-            VMD.FrameType.Camera => CreateCameraCurves(data),
-            VMD.FrameType.Motion => CreateMotionCurves(data),
+            VMD.VmdFrameType.Camera => CreateCameraCurves(data),
+            VMD.VmdFrameType.Motion => CreateMotionCurves(data),
             _ => throw new InvalidOperationException(),
         };
 
@@ -190,12 +190,12 @@ namespace MikuMikuMethods
         /// <param name="curves">補間曲線の連想配列</param>
         /// <param name="type">フレームの種類</param>
         /// <returns>バイト列</returns>
-        public static byte[] CreateVMDFormatBytes(Dictionary<InterpolationItem, InterpolationCurve> curves, VMD.FrameType type)
+        public static byte[] CreateVMDFormatBytes(Dictionary<InterpolationItem, InterpolationCurve> curves, VMD.VmdFrameType type)
         {
             return type switch
             {
-                VMD.FrameType.Camera => CreateCameraBytes(curves),
-                VMD.FrameType.Motion => CreateMotionBytes(curves),
+                VMD.VmdFrameType.Camera => CreateCameraBytes(curves),
+                VMD.VmdFrameType.Motion => CreateMotionBytes(curves),
                 _ => throw new InvalidOperationException(),
             };
         }

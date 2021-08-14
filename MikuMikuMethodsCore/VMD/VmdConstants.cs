@@ -9,7 +9,7 @@ namespace MikuMikuMethods.VMD
     /// <summary>
     /// 仕様によって定められた変数
     /// </summary>
-    public static class Specifications
+    public static class VmdConstants
     {
         /// <summary>
         /// カメラVMDファイルのモデル名
