@@ -29,11 +29,23 @@ namespace MikuMikuMethods.MME
         /// </summary>
         public List<EmmMaterial> Subsets { get; init; }
 
+        public EmdData()
+        {
+            Version = 3;
+            Material = new();
+            Subsets = new();
+        }
+
         public EmdData(EmmMaterial material)
         {
             Version = 3;
             Material = material;
             Subsets = new();
+        }
+
+        public EmdData(string filePath):this()
+        {
+            Read(filePath);
         }
 
         public void Read(string filePath)
