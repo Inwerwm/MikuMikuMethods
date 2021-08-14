@@ -126,5 +126,49 @@ namespace MikuMikuMethods.MME
                 }
             }
         }
+
+        /// <summary>
+        /// ファイルに書き出し
+        /// </summary>
+        /// <param name="filePath">書き出すファイルのパス</param>
+        public void Write(string filePath)
+        {
+            using (FileStream file = new(filePath, FileMode.Create))
+            using (StreamWriter writer = new(file, Encoding.ShiftJIS))
+            {
+                Write(writer);
+            }
+        }
+
+        /// <summary>
+        /// EMDファイルに書き込み
+        /// </summary>
+        /// <param name="writer">エンコードはShiftJISである必要がある</param>
+        public void Write(StreamWriter writer)
+        {
+            if (writer.Encoding != Encoding.ShiftJIS)
+                throw new FormatException($"EMMファイル書き込みエンコードエラー{Environment.NewLine}エンコーダがShiftJISと違います。");
+
+            // [Info]
+            writer.WriteLine("[Info]");
+            writer.WriteLine($"Version = {Version}");
+            writer.WriteLine("");
+
+            // [Object]
+            writer.WriteLine("[Effect]");
+
+            if (!string.IsNullOrEmpty(Material.Path))
+                writer.WriteLine($"Obj = {Material.Path}");
+            if (Material.Show != null)
+                writer.WriteLine($"Obj.show = {Material.Show.Value.ToString().ToLower()}");
+
+            foreach (var sub in Subsets.Select((effect, i) => (effect, i)))
+            {
+                if (!string.IsNullOrEmpty(sub.effect.Path))
+                    writer.WriteLine($"Obj[{sub.i}] = {sub.effect.Path}");
+                if (sub.effect.Show != null)
+                    writer.WriteLine($"Obj[{sub.i}].show = {sub.effect.Show.Value.ToString().ToLower()}");
+            }
+        }
     }
 }
