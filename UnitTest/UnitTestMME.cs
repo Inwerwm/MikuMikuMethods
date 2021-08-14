@@ -2,6 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MikuMikuMethods;
 using MikuMikuMethods.MME;
 using MikuMikuMethods.MME.Element;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -109,6 +110,16 @@ namespace UnitTest
             }
 
             Assert.AreEqual(allSource, allResult);
+        }
+
+        [TestMethod]
+        public void Test_EMD()
+        {
+            using (StreamReader reader = new("../../TestData/test.emd", Encoding.ShiftJIS))
+            {
+                EffectMovieMaker emm = new();
+                Assert.ThrowsException<FormatException>(() => emm.Read(reader));
+            }
         }
     }
 }

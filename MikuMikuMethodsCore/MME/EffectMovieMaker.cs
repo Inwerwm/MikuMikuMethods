@@ -75,7 +75,9 @@ namespace MikuMikuMethods.MME
             reader.ReadLine();
 
             // [Object]
-            reader.ReadLine();
+            line = reader.ReadLine();
+            if (line != "[Object]")
+                throw new FormatException($"読み込まれたファイル形式がEMMファイルと違います{(line == "[Effect]" ? Environment.NewLine + "EMDファイルを読み込んだ可能性があります" : "")}");
             ReadObjects(reader);
 
             while (!string.IsNullOrEmpty(line = reader.ReadLine()))
@@ -101,7 +103,6 @@ namespace MikuMikuMethods.MME
                 {
                     "Pmd" => new EmmModel(objectIndex),
                     "Acs" => new EmmAccessory(objectIndex),
-                    "Obj" => new EmdObject(objectIndex),
                     _ => throw new InvalidOperationException("EMMオブジェクト読み込みで不正なオブジェクト読み込みがなされました。")
                 };
 
