@@ -10,7 +10,7 @@ namespace MikuMikuMethods.MME
     /// <summary>
     /// MMEプロジェクト単位設定ファイル(EMMファイルの内部表現)
     /// </summary>
-    public class EffectMovieMaker
+    public class EmmData
     {
         /// <summary>
         /// EMMのバージョン
@@ -31,7 +31,7 @@ namespace MikuMikuMethods.MME
         /// <summary>
         /// コンストラクタ
         /// </summary>
-        public EffectMovieMaker()
+        public EmmData()
         {
             Version = 3;
             Objects = new();

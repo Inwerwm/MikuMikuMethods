@@ -90,7 +90,7 @@ namespace UnitTest
 
             /// ƒeƒXƒg
 
-            EffectMovieMaker emm = new();
+            EmmData emm = new();
             using (StreamReader reader = new(sourcePath, Encoding.ShiftJIS))
             {
                 emm.Read(reader);
@@ -117,7 +117,7 @@ namespace UnitTest
         {
             using (StreamReader reader = new("../../TestData/test.emd", Encoding.ShiftJIS))
             {
-                EffectMovieMaker emm = new();
+                EmmData emm = new();
                 Assert.ThrowsException<FormatException>(() => emm.Read(reader));
             }
         }
