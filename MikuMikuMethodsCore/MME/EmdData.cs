@@ -98,7 +98,6 @@ namespace MikuMikuMethods.MME
 
                 // サブセット添字を分離
                 var objKeyId = objectKey.Split('[');
-                objectKey = objKeyId[0];
 
                 if (objKeyId.Length == 1)
                 {
