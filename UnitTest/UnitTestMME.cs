@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MikuMikuMethods;
 using MikuMikuMethods.MME;
+using MikuMikuMethods.MME.Element;
 using System.Collections.Generic;
 using System.IO;
 
@@ -32,15 +33,15 @@ namespace UnitTest
                 writer.WriteLine(@"Pmd5[6].show = true");
             }
 
-            List<ObjectInfo> keys = new();
-            keys.Add(new ModelInfo(1) { Path = "モデル1" });
-            keys.Add(new ModelInfo(2) { Path = "モデル2" });
-            keys.Add(new ModelInfo(3) { Path = "モデル3" });
-            keys.Add(new ModelInfo(4) { Path = "モデル4" });
-            keys.Add(new ModelInfo(5) { Path = "モデル5" });
+            List<EmmObject> keys = new();
+            keys.Add(new EmmModel(1) { Path = "モデル1" });
+            keys.Add(new EmmModel(2) { Path = "モデル2" });
+            keys.Add(new EmmModel(3) { Path = "モデル3" });
+            keys.Add(new EmmModel(4) { Path = "モデル4" });
+            keys.Add(new EmmModel(5) { Path = "モデル5" });
 
             // テストのためのインスタンスを生成
-            EffectSettings target = new(keys, EffectCategory.Effect);
+            EmmEffectSettings target = new(keys, EmmEffectCategory.Effect);
 
             /// テスト実行
 

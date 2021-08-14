@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MikuMikuMethods.MME.Element;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,13 +20,13 @@ namespace MikuMikuMethods.MME
         /// <summary>
         /// 内包オブジェクトのリスト
         /// </summary>
-        public List<ObjectInfo> Objects { get; init; }
+        public List<EmmObject> Objects { get; init; }
 
         /// <summary>
         /// <para>エフェクト設定のリスト</para>
         /// <para>MMEエフェクト割当画面の各タブに相当</para>
         /// </summary>
-        public List<EffectSettings> Settings { get; init; }
+        public List<EmmEffectSettings> EffectSettings { get; init; }
 
         /// <summary>
         /// コンストラクタ
@@ -34,7 +35,7 @@ namespace MikuMikuMethods.MME
         {
             Version = 3;
             Objects = new();
-            Settings = new();
+            EffectSettings = new();
         }
 
         /// <summary>
@@ -60,7 +61,7 @@ namespace MikuMikuMethods.MME
                 throw new FormatException($"EMMファイル読み込みエンコードエラー{Environment.NewLine}エンコーダがShiftJISと違います。");
 
             string line;
-            EffectSettings effect;
+            EmmEffectSettings effect;
 
             // [Info]
             line = reader.ReadLine();
@@ -80,9 +81,9 @@ namespace MikuMikuMethods.MME
             while (!string.IsNullOrEmpty(line = reader.ReadLine()))
             {
                 // Effect
-                effect = !line.Contains("@") ? new(EffectCategory.Effect) : new(line.Split('@')[1].Replace("]", ""));
+                effect = !line.Contains("@") ? new(EmmEffectCategory.Effect) : new(line.Split('@')[1].Replace("]", ""));
                 effect.Read(reader, Objects);
-                Settings.Add(effect);
+                EffectSettings.Add(effect);
             }
         }
 
@@ -96,11 +97,11 @@ namespace MikuMikuMethods.MME
                 var path = lineData.ElementAt(1);
 
                 int objectIndex = int.Parse(Regex.Replace(objectKey, @"[^0-9]", ""));
-                ObjectInfo obj = Regex.Replace(objectKey, @"[0-9]", "") switch
+                EmmObject obj = Regex.Replace(objectKey, @"[0-9]", "") switch
                 {
-                    "Pmd" => new ModelInfo(objectIndex),
-                    "Acs" => new AccessoryInfo(objectIndex),
-                    "Obj" => new EmdObjectInfo(objectIndex),
+                    "Pmd" => new EmmModel(objectIndex),
+                    "Acs" => new EmmAccessory(objectIndex),
+                    "Obj" => new EmdObject(objectIndex),
                     _ => throw new InvalidOperationException("EMMオブジェクト読み込みで不正なオブジェクト読み込みがなされました。")
                 };
 
@@ -145,12 +146,12 @@ namespace MikuMikuMethods.MME
             writer.WriteLine("");
 
             // Effect
-            foreach (var effect in Settings)
+            foreach (var effect in EffectSettings)
             {
                 string tabName = effect.Category switch
                 {
-                    EffectCategory.Effect => "[Effect]",
-                    EffectCategory.Other => $"[Effect@{effect.Name}]",
+                    EmmEffectCategory.Effect => "[Effect]",
+                    EmmEffectCategory.Other => $"[Effect@{effect.Name}]",
                     _ => throw new NotImplementedException(),
                 };
                 writer.WriteLine(tabName);

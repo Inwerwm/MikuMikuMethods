@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MikuMikuMethods.MME
+﻿namespace MikuMikuMethods.MME.Element
 {
     /// <summary>
     /// エフェクト対象モデル情報
     /// </summary>
-    public class ModelInfo : ObjectInfo
+    public class EmmModel : EmmObject
     {
         /// <summary>
         /// オブジェクトのキーを表す文字列
@@ -20,6 +14,6 @@ namespace MikuMikuMethods.MME
         /// コンストラクタ
         /// </summary>
         /// <param name="index">オブジェクト番号</param>
-        public ModelInfo(int index) : base(index) { }
+        public EmmModel(int index) : base(index) { }
     }
 }

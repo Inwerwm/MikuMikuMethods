@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MikuMikuMethods.MME
+﻿namespace MikuMikuMethods.MME.Element
 {
     /// <summary>
     /// オブジェクト情報
     /// </summary>
-    public abstract class ObjectInfo
+    public abstract class EmmObject
     {
         /// <summary>
         /// オブジェクトの番号
@@ -30,7 +24,7 @@ namespace MikuMikuMethods.MME
         /// コンストラクタ
         /// </summary>
         /// <param name="index">オブジェクト番号</param>
-        protected ObjectInfo(int index)
+        protected EmmObject(int index)
         {
             Index = index;
         }

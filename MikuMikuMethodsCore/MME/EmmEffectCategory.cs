@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MikuMikuMethods.MME
+﻿namespace MikuMikuMethods.MME
 {
     /// <summary>
     /// エフェクト設定の種類
     /// </summary>
-    public enum EffectCategory
+    public enum EmmEffectCategory
     {
         /// <summary>
         /// <para>デフォルト設定</para>
