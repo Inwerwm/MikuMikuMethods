@@ -76,27 +76,13 @@ namespace MikuMikuMethods.PMX
         /// ファイルからモデルを読み込む
         /// </summary>
         /// <param name="filePath">読み込むファイルパス</param>
-        public PmxModel(string filePath)
-        {
-            var model = Read(filePath);
-
-            Header = model.Header;
-            ModelInfo = model.ModelInfo;
-            Bodies = model.Bodies;
-            Bones = model.Bones;
-            Joints = model.Joints;
-            Materials = model.Materials;
-            Morphs = model.Morphs;
-            Nodes = model.Nodes;
-            Vertices = model.Vertices;
-            SoftBodies = model.SoftBodies;
-        }
+        public PmxModel(string filePath) : this() => Read(filePath);
 
         /// <summary>
         /// ファイルからモデルを読み込む
         /// </summary>
         /// <param name="filePath">読み込むファイルパス</param>
-        public static PmxModel Read(string filePath) => IO.PmxFileReader.ReadModel(filePath);
+        public void Read(string filePath) => IO.PmxFileReader.ReadModel(filePath, this);
 
         /// <summary>
         /// ファイルにモデルを書き込む

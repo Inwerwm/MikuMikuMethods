@@ -88,7 +88,7 @@ namespace MikuMikuMethods.PMX.IO
         /// </summary>
         /// <param name="filePath">読み込むモデルファイルのパス</param>
         /// <returns>読み込んだモデル</returns>
-        public static PmxModel ReadModel(string filePath)
+        public static void ReadModel(string filePath, PmxModel model)
         {
             try
             {
@@ -97,7 +97,7 @@ namespace MikuMikuMethods.PMX.IO
                 {
                     CreateTmpInstances();
 
-                    Model = new PmxModel();
+                    Model = model;
 
                     ReadHeader(reader, Model.Header);
                     Encoder = new StringEncoder(Model.Header.Encoding);
@@ -117,8 +117,6 @@ namespace MikuMikuMethods.PMX.IO
                         AddDataToList(Model.SoftBodies, ReadSoftBody);
 
                     SolveRelations();
-
-                    return Model;
 
                     void AddDataToList<T>(List<T> list, Func<BinaryReader, T> dataReader, int divisor = 1)
                     {
