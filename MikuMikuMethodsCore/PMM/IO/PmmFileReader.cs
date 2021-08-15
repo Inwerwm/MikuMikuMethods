@@ -1,5 +1,7 @@
-﻿using System;
+﻿using MikuMikuMethods.Extension;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,11 +10,144 @@ namespace MikuMikuMethods.PMM.IO
 {
     internal static class PmmFileReader
     {
-        public static PolygonMovieMaker Read(string filePath)
+        public static void Read(string filePath, PolygonMovieMaker pmm)
         {
-            PolygonMovieMaker pmm = new();
+            using (FileStream stream = new(filePath, FileMode.Open))
+            using (BinaryReader reader = new(stream, Encoding.ShiftJIS))
+            {
+                pmm.Version = reader.ReadString(30, Encoding.ShiftJIS, '\0');
 
-            return pmm;
+                pmm.EditorState.ReadViewState(reader);
+
+                var modelCount = reader.ReadByte();
+                for (int i = 0; i < modelCount; i++)
+                    pmm.Models.Add(new(reader));
+
+                ReadCamera(reader, pmm.Camera);
+                ReadLight(reader, pmm.Light);
+
+                ReadAccessoryState(reader, pmm.EditorState);
+                var accessoryCount = reader.ReadByte();
+                // アクセサリ名一覧
+                // 名前は各アクセサリ領域にも書いてあり、齟齬が出ることは基本無いらしいので読み飛ばす
+                _ = reader.ReadBytes(accessoryCount * 100);
+                for (int i = 0; i < accessoryCount; i++)
+                    pmm.Accessories.Add(ReadAccessories(reader));
+
+                ReadFrameState(reader, pmm.EditorState);
+                ReadPlayConfig(reader, pmm.PlayConfig);
+                ReadMediaConfig(reader, pmm.MediaConfig);
+                ReadDrawConfig(reader, pmm.DrawConfig);
+                ReadGravity(reader, pmm.Gravity);
+                ReadSelfShadow(reader, pmm.SelfShadow);
+                ReadColorConfig(reader, pmm.DrawConfig);
+                ReadUncomittedFollowingStateCamera(reader, pmm.Camera);
+                //謎の行列は読み飛ばす
+                _ = reader.ReadBytes(64);
+                ReadViewFollowing(reader, pmm.EditorState);
+                pmm.Unknown = new PmmUnknown { TruthValue = reader.ReadBoolean() };
+                ReadGroundPhysics(reader, pmm.DrawConfig);
+                ReadFrameLocation(reader, pmm.EditorState);
+
+                // バージョンによってはここで終わりの可能性がある
+                if (reader.BaseStream.Position >= reader.BaseStream.Length)
+                    return;
+
+                pmm.EditorState.ExistRangeSelectionTargetSection = reader.ReadBoolean();
+                // 普通はないが範囲選択対象セクションが無いとされていれば終了
+                if (!pmm.EditorState.ExistRangeSelectionTargetSection)
+                    return;
+
+                // モデル設定値が欠落している場合もあるっぽい？ので確認処理を挟む
+                for (byte i = 0; i < pmm.Models.Count; i++)
+                {
+                    if (reader.BaseStream.Position >= reader.BaseStream.Length)
+                        break;
+
+                    pmm.EditorState.RangeSelectionTargetIndices.Add(ReadRangeSelectionTargetIndex(reader));
+                    //pmm.EditorState.RangeSelectionTargetIndices.Add((reader.ReadByte(), reader.ReadInt32()));
+                }
+            }
+        }
+
+        private static void ReadCamera(BinaryReader reader, PmmCamera camera)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void ReadLight(BinaryReader reader, PmmLight light)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void ReadAccessoryState(BinaryReader reader, PmmEditorState editorState)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static PmmAccessory ReadAccessories(BinaryReader reader)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void ReadFrameState(BinaryReader reader, PmmEditorState editorState)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void ReadPlayConfig(BinaryReader reader, PmmPlayConfig playConfig)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void ReadMediaConfig(BinaryReader reader, PmmMediaConfig mediaConfig)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void ReadDrawConfig(BinaryReader reader, PmmDrawConfig drawConfig)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void ReadGravity(BinaryReader reader, PmmGravity gravity)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void ReadSelfShadow(BinaryReader reader, PmmSelfShadow selfShadow)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void ReadColorConfig(BinaryReader reader, PmmDrawConfig drawConfig)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void ReadUncomittedFollowingStateCamera(BinaryReader reader, PmmCamera camera)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void ReadViewFollowing(BinaryReader reader, PmmEditorState editorState)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void ReadGroundPhysics(BinaryReader reader, PmmDrawConfig drawConfig)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void ReadFrameLocation(BinaryReader reader, PmmEditorState editorState)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static (byte Model, int Target) ReadRangeSelectionTargetIndex(BinaryReader reader)
+        {
+            throw new NotImplementedException();
         }
     }
 }
