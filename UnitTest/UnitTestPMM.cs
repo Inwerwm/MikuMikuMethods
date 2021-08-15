@@ -23,14 +23,14 @@ namespace UnitTest
         [TestMethod]
         public void Test_IO()
         {
-            testPmm.Read("TestData/testProject.pmm");
-            testPmm.Write("TestData/output.pmm");
+            testPmm.Read("../../TestData/testProject.pmm");
+            testPmm.Write("../../TestData/output.pmm");
 
-            var outPmm = new PolygonMovieMaker("TestData/output.pmm");
+            var outPmm = new PolygonMovieMaker("../../TestData/output.pmm");
 
             //もとのPMMと書込読込PMMのインスタンスをシリアライズして
             //テキストで差分を見れるようにする
-            Assert.AreEqual(testPmm.ToJson("TestData/originPmm.json"), outPmm.ToJson("TestData/outputPmm.json"));
+            Assert.AreEqual(testPmm.ToJson("../../TestData/originPmm.json"), outPmm.ToJson("../../TestData/outputPmm.json"));
         }
     }
 }

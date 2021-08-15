@@ -15,49 +15,37 @@ namespace MikuMikuMethods.MME
         /// <summary>
         /// 設定種別
         /// </summary>
-        public EmmEffectCategory Category { get; init; }
+        public bool IsMain { get; init; }
 
         /// <summary>
         /// <para>設定名</para>
         /// <para>MMEエフェクト割当画面のタブ名に相当</para>
         /// </summary>
         public string Name { get; init; }
+
+        /// <summary>
+        /// Mainタブの(default)に設定されたエフェクト
+        /// </summary>
+        public EmmMaterial Default { get; set; }
         /// <summary>
         /// <para>エフェクトが依拠するオブジェクト</para>
         /// <para>オブジェクト定義で記述された名前が入る</para>
-        /// <para>CategoryがEffectの場合はEMMファイル内の"Default"に相当する</para>
         /// </summary>
-        public string Owner { get; set; }
+        public EmmObject Owner { get; set; }
 
         /// <summary>
         /// 設定対象オブジェクトのリスト
         /// </summary>
         public List<EmmObjectSetting> ObjectSettings { get; init; }
 
-        private EmmEffectSettings()
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="name">エフェクト設定のタブ名 "Main"でメインタブ扱いになる</param>
+        public EmmEffectSettings(string name)
         {
             ObjectSettings = new();
-        }
-
-        /// <summary>
-        /// [Object]または[Effect]のとき用
-        /// </summary>
-        /// <param name="keys">設定するオブジェクト定義リスト</param>
-        /// <param name="category">設定種別</param>
-        public EmmEffectSettings(EmmEffectCategory category) : this()
-        {
-            Category = category;
-            Name = Category.ToString();
-        }
-
-        /// <summary>
-        /// [Effect@.*]のとき用
-        /// </summary>
-        /// <param name="keys">設定するオブジェクト定義リスト</param>
-        /// <param name="name">"@"以降の名前</param>
-        public EmmEffectSettings(string name) : this()
-        {
-            Category = EmmEffectCategory.Other;
+            IsMain = name == "Main";
             Name = name;
         }
 
@@ -74,9 +62,14 @@ namespace MikuMikuMethods.MME
                 var objectKey = lineData[0];
                 var data = lineData[1];
 
-                if (objectKey is "Default" or "Owner")
+                if (objectKey == "Owner")
                 {
-                    Owner = data;
+                    Owner = objects.FirstOrDefault(o => o.Name == data);
+                    continue;
+                }
+                if(objectKey == "Default")
+                {
+                    Default = new() { Path = data };
                     continue;
                 }
 
@@ -91,39 +84,38 @@ namespace MikuMikuMethods.MME
                 var objKeyId = objectKey.Split('[');
                 objectKey = objKeyId[0];
 
-                EmmObjectSetting eo;
-
                 // サブセット添字が存在しなければオブジェクトに対する設定とみなす
                 if (objKeyId.Length == 1)
                 {
-                    eo = ObjectSettings.FirstOrDefault(o => o.Entity.Name == objectKey)
+                    var eo = ObjectSettings.FirstOrDefault(o => o.Object.Name == objectKey)
                        ?? new(objects.First(info => info.Name == objectKey));
+
                     if (isShowSetting)
-                        eo.Effect.Show = bool.Parse(data);
+                        eo.Material.Show = bool.Parse(data);
                     else
-                        eo.Effect.Path = data;
+                        eo.Material.Path = data;
 
                     if (!ObjectSettings.Contains(eo))
                         ObjectSettings.Add(eo);
-                    continue;
                 }
-
-                // サブセットに対する設定
-                eo = ObjectSettings.First(o => o.Entity.Name == objectKey);
-                var subsetId = int.Parse(objKeyId[1].Replace("]", ""));
-                // 設定サブセット添字よりオブジェクトに設定されたエフェクトの数が少ない場合
-                // 設定サブセット添字の数まで中身を増やす
-                while (eo.Subsets.Count <= subsetId)
-                {
-                    eo.Subsets.Add(new EmmMaterial());
-                }
-
-                if (isShowSetting)
-                    eo.Subsets[subsetId].Show = bool.Parse(data);
                 else
-                    eo.Subsets[subsetId].Path = data;
+                {
+                    // サブセットに対する設定
+                    var eo = ObjectSettings.First(o => o.Object.Name == objectKey);
+                    var subsetId = int.Parse(objKeyId[1].Replace("]", ""));
 
+                    // 設定サブセット添字よりオブジェクトに設定されたエフェクトの数が少ない場合
+                    // 設定サブセット添字の数まで中身を増やす
+                    while (eo.Subsets.Count <= subsetId)
+                    {
+                        eo.Subsets.Add(new EmmMaterial());
+                    }
 
+                    if (isShowSetting)
+                        eo.Subsets[subsetId].Show = bool.Parse(data);
+                    else
+                        eo.Subsets[subsetId].Path = data;
+                }
             }
         }
 
@@ -133,27 +125,22 @@ namespace MikuMikuMethods.MME
         /// <param name="writer">書き込みストリーム</param>
         internal void Write(StreamWriter writer)
         {
-            var ownerString = Category switch
-            {
-                EmmEffectCategory.Effect => "Default",
-                EmmEffectCategory.Other => "Owner",
-                _ => throw new NotImplementedException(),
-            };
-            writer.WriteLine($"{ownerString} = {Owner}");
+            writer.WriteLine(IsMain ? $"Default = {Default.Path}" : $"Owner = {Owner.Name}");
 
             foreach (var obj in ObjectSettings)
             {
-                if (!string.IsNullOrEmpty(obj.Effect.Path))
-                    writer.WriteLine($"{obj.Entity.Name} = {obj.Effect.Path}");
-                if (obj.Effect.Show != null)
-                    writer.WriteLine($"{obj.Entity.Name}.show = {obj.Effect.Show.Value.ToString().ToLower()}");
+                if (!string.IsNullOrEmpty(obj.Material.Path))
+                    writer.WriteLine($"{obj.Object.Name} = {obj.Material.Path}");
+
+                if (obj.Material.Show != null)
+                    writer.WriteLine($"{obj.Object.Name}.show = {obj.Material.Show.Value.ToString().ToLower()}");
 
                 foreach (var sub in obj.Subsets.Select((effect, i) => (effect, i)))
                 {
                     if (!string.IsNullOrEmpty(sub.effect.Path))
-                        writer.WriteLine($"{obj.Entity.Name}[{sub.i}] = {sub.effect.Path}");
+                        writer.WriteLine($"{obj.Object.Name}[{sub.i}] = {sub.effect.Path}");
                     if (sub.effect.Show != null)
-                        writer.WriteLine($"{obj.Entity.Name}[{sub.i}].show = {sub.effect.Show.Value.ToString().ToLower()}");
+                        writer.WriteLine($"{obj.Object.Name}[{sub.i}].show = {sub.effect.Show.Value.ToString().ToLower()}");
                 }
             }
         }

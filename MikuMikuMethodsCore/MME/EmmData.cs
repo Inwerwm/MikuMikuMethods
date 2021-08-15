@@ -89,7 +89,7 @@ namespace MikuMikuMethods.MME
             while (!string.IsNullOrEmpty(line = reader.ReadLine()))
             {
                 // Effect
-                effect = !line.Contains("@") ? new(EmmEffectCategory.Effect) : new(line.Split('@')[1].Replace("]", ""));
+                effect = !line.Contains("@") ? new("Main") : new(line.Split('@')[1].Replace("]", ""));
                 effect.Read(reader, Objects);
                 EffectSettings.Add(effect);
             }
@@ -155,13 +155,7 @@ namespace MikuMikuMethods.MME
             // Effect
             foreach (var effect in EffectSettings)
             {
-                string tabName = effect.Category switch
-                {
-                    EmmEffectCategory.Effect => "[Effect]",
-                    EmmEffectCategory.Other => $"[Effect@{effect.Name}]",
-                    _ => throw new NotImplementedException(),
-                };
-                writer.WriteLine(tabName);
+                writer.WriteLine(effect.IsMain ? "[Effect]" : $"[Effect@{effect.Name}]");
                 effect.Write(writer);
                 writer.WriteLine("");
             }
