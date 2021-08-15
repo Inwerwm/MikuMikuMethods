@@ -17,34 +17,6 @@ namespace MikuMikuMethods.PMM.Frame
         public float ShadowRange { get; set; }
 
         /// <summary>
-        /// バイナリデータから読み込み
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        /// <param name="index">フレームID</param>
-        internal PmmSelfShadowFrame(BinaryReader reader, int? index)
-        {
-            Read(reader, index);
-        }
-
-        /// <summary>
-        /// バイナリデータから読み込み
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        /// <param name="index">フレームID</param>
-        internal void Read(BinaryReader reader, int? index)
-        {
-            Index = index;
-
-            Frame = reader.ReadInt32();
-            PreviousFrameIndex = reader.ReadInt32();
-            NextFrameIndex = reader.ReadInt32();
-
-            ShadowMode = (Shadow)reader.ReadByte();
-            ShadowRange = reader.ReadSingle();
-
-            IsSelected = reader.ReadBoolean();
-        }
-        /// <summary>
         /// ファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>

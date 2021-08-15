@@ -37,35 +37,6 @@ namespace MikuMikuMethods.PMM.Frame
         }
 
         /// <summary>
-        /// バイナリデータから読み込み
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        /// <param name="index">フレームID</param>
-        /// <param name="ikCount">IKボーンの数</param>
-        /// <param name="parentCount">外部親設定可能ボーンの数</param>
-        internal void Read(BinaryReader reader, int? index, int ikCount, int parentCount)
-        {
-            Index = index;
-
-            Frame = reader.ReadInt32();
-            PreviousFrameIndex = reader.ReadInt32();
-            NextFrameIndex = reader.ReadInt32();
-            Visible = reader.ReadBoolean();
-
-            for (int i = 0; i < ikCount; i++)
-            {
-                EnableIK.Add(reader.ReadBoolean());
-            }
-
-            for (int i = 0; i < parentCount; i++)
-            {
-                ParentSettings.Add((reader.ReadInt32(), reader.ReadInt32()));
-            }
-
-            IsSelected = reader.ReadBoolean();
-        }
-
-        /// <summary>
         /// ファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>

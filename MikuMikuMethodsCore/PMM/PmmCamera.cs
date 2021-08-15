@@ -46,32 +46,6 @@ namespace MikuMikuMethods.PMM
         }
 
         /// <summary>
-        /// バイナリデータからカメラ情報を読み込み
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        internal PmmCamera(BinaryReader reader) : this()
-        {
-            Read(reader);
-        }
-
-        /// <summary>
-        /// バイナリデータから読込
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        internal void Read(BinaryReader reader)
-        {
-            InitialFrame = new(reader, null);
-
-            var cameraCount = reader.ReadInt32();
-            for (int i = 0; i < cameraCount; i++)
-                Frames.Add(new(reader, reader.ReadInt32()));
-
-            Uncomitted.EyePosition = reader.ReadVector3();
-            Uncomitted.TargetPosition = reader.ReadVector3();
-            Uncomitted.Rotation = reader.ReadVector3();
-            Uncomitted.EnablePerspective = reader.ReadBoolean();
-        }
-        /// <summary>
         /// ファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>
@@ -87,16 +61,6 @@ namespace MikuMikuMethods.PMM
             writer.Write(Uncomitted.TargetPosition);
             writer.Write(Uncomitted.Rotation);
             writer.Write(Uncomitted.EnablePerspective);
-        }
-
-        /// <summary>
-        /// 未確定のカメラ追従状態の読込
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        internal void ReadUncomittedFollowingState(BinaryReader reader)
-        {
-            UncomittedFollowing.ModelIndex = reader.ReadInt32();
-            UncomittedFollowing.BoneIndex = reader.ReadInt32();
         }
 
         /// <summary>

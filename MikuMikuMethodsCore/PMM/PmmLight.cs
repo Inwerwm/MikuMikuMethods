@@ -38,31 +38,6 @@ namespace MikuMikuMethods.PMM
         }
 
         /// <summary>
-        /// バイナリデータから照明情報を読み込み
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        internal PmmLight(BinaryReader reader) : this()
-        {
-            Read(reader);
-        }
-
-        /// <summary>
-        /// バイナリデータから読み込み
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        internal void Read(BinaryReader reader)
-        {
-            InitialFrame = new(reader, null);
-
-            var lightCount = reader.ReadInt32();
-            for (int i = 0; i < lightCount; i++)
-                Frames.Add(new(reader, reader.ReadInt32()));
-
-            Uncomitted.Color = reader.ReadSingleRGB();
-            Uncomitted.Position = reader.ReadVector3();
-        }
-
-        /// <summary>
         /// ファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>

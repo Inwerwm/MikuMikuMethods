@@ -54,40 +54,6 @@ namespace MikuMikuMethods.PMM
         public PhysicsMode PhysicsSetting { get; set; }
 
         /// <summary>
-        /// コンストラクタ
-        /// </summary>
-        public PmmDrawConfig() { }
-
-        /// <summary>
-        /// バイナリデータから読み込み
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        internal PmmDrawConfig(BinaryReader reader)
-        {
-            Read(reader);
-        }
-
-        /// <summary>
-        /// バイナリデータから読み込み
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        internal void Read(BinaryReader reader)
-        {
-            IsShowInfomation = reader.ReadBoolean();
-            IsShowAxis = reader.ReadBoolean();
-            IsShowGrandShadow = reader.ReadBoolean();
-
-            FPSLimit = reader.ReadSingle();
-            ScreenCaptureSetting = (ScreenCaptureMode)reader.ReadInt32();
-            AccessoryModelThreshold = reader.ReadInt32();
-
-            GroundShadowBrightness = reader.ReadSingle();
-            EnableTransparentGroundShadow = reader.ReadBoolean();
-
-            PhysicsSetting = (PhysicsMode)reader.ReadByte();
-        }
-
-        /// <summary>
         /// ファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>
@@ -164,16 +130,6 @@ namespace MikuMikuMethods.PMM
         public bool IsBackgroundBlack { get; set; }
 
         /// <summary>
-        /// 色関連設定を読み込む
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        internal void ReadColorConfig(BinaryReader reader)
-        {
-            EdgeColor = Color.FromArgb(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32());
-            IsBackgroundBlack = reader.ReadBoolean();
-        }
-
-        /// <summary>
         /// 色関連設定を書き込む
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>
@@ -192,14 +148,6 @@ namespace MikuMikuMethods.PMM
         /// 物理床のOn/Off
         /// </summary>
         public bool EnableGroundPhysics { get; set; }
-        /// <summary>
-        /// 物理床設定を読み込む
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        internal void ReadGroundPhysics(BinaryReader reader)
-        {
-            EnableGroundPhysics = reader.ReadBoolean();
-        }
 
         /// <summary>
         /// 物理床設定を書き込む

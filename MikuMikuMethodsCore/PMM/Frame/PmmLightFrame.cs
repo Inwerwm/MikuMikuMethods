@@ -28,34 +28,6 @@ namespace MikuMikuMethods.PMM.Frame
         }
 
         /// <summary>
-        /// バイナリデータから読み込み
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        /// <param name="index">フレームID</param>
-        internal PmmLightFrame(BinaryReader reader, int? index) : this()
-        {
-            Read(reader, index);
-        }
-
-        /// <summary>
-        /// バイナリデータから読み込み
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        /// <param name="index">フレームID</param>
-        internal void Read(BinaryReader reader, int? index)
-        {
-            Index = index;
-
-            Frame = reader.ReadInt32();
-            PreviousFrameIndex = reader.ReadInt32();
-            NextFrameIndex = reader.ReadInt32();
-
-            Color = reader.ReadSingleRGB();
-            Position = reader.ReadVector3();
-
-            IsSelected = reader.ReadBoolean();
-        }
-        /// <summary>
         /// ファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>

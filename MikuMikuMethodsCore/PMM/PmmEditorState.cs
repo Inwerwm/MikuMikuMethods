@@ -64,31 +64,6 @@ namespace MikuMikuMethods.PMM
         public byte SelectedModelIndex { get; set; }
 
         /// <summary>
-        /// 描画情報関連をファイルから読み込み
-        /// </summary>
-        /// <param name="reader">バイナリファイル</param>
-        internal void ReadViewState(BinaryReader reader)
-        {
-            OutputWidth = reader.ReadInt32();
-            OutputHeight = reader.ReadInt32();
-
-            KeyframeEditorWidth = reader.ReadInt32();
-
-            CurrentViewAngle = reader.ReadSingle();
-
-            IsCameraMode = reader.ReadBoolean();
-
-            DoesOpenCameraPanel = reader.ReadBoolean();
-            DoesOpenLightPanel = reader.ReadBoolean();
-            DoesOpenAccessaryPanel = reader.ReadBoolean();
-            DoesOpenBonePanel = reader.ReadBoolean();
-            DoesOpenMorphPanel = reader.ReadBoolean();
-            DoesOpenSelfShadowPanel = reader.ReadBoolean();
-
-            SelectedModelIndex = reader.ReadByte();
-        }
-
-        /// <summary>
         /// 描画情報関連をファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>
@@ -125,16 +100,6 @@ namespace MikuMikuMethods.PMM
         public int VerticalScrollOfAccessoryRow { get; set; }
 
         /// <summary>
-        /// アクセサリ情報関連をファイルから読み込み
-        /// </summary>
-        /// <param name="reader">バイナリファイル</param>
-        internal void ReadAccessoryState(BinaryReader reader)
-        {
-            SelectedAccessoryIndex = reader.ReadByte();
-            VerticalScrollOfAccessoryRow = reader.ReadInt32();
-        }
-
-        /// <summary>
         /// アクセサリ情報関連をファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>
@@ -162,18 +127,6 @@ namespace MikuMikuMethods.PMM
         /// 選択中のボーン操作方法
         /// </summary>
         public BoneOperation SelectedBoneOperation { get; set; }
-
-        /// <summary>
-        /// フレーム編集関連情報をファイルから読み込み
-        /// </summary>
-        /// <param name="reader">バイナリファイル</param>
-        internal void ReadFrameState(BinaryReader reader)
-        {
-            CurrentFrame = reader.ReadInt32();
-            HorizontalScroll = reader.ReadInt32();
-            HorizontalScrollLength = reader.ReadInt32();
-            SelectedBoneOperation = (BoneOperation)reader.ReadInt32();
-        }
 
         /// <summary>
         /// フレーム編集関連情報をファイルに書込
@@ -222,15 +175,6 @@ namespace MikuMikuMethods.PMM
         public bool IsViewFollowCamera { get; set; }
 
         /// <summary>
-        /// 再生時の視点追従をファイルから読み込み
-        /// </summary>
-        /// <param name="reader">バイナリファイル</param>
-        internal void ReadViewFollowing(BinaryReader reader)
-        {
-            IsViewFollowCamera = reader.ReadBoolean();
-        }
-
-        /// <summary>
         /// 再生時の視点追従をファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>
@@ -245,15 +189,6 @@ namespace MikuMikuMethods.PMM
         /// 3Dビュー上部のフレーム入力欄の値
         /// </summary>
         public int FrameLocation { get; set; }
-
-        /// <summary>
-        /// フレーム入力欄の値をファイルから読み込み
-        /// </summary>
-        /// <param name="reader">バイナリファイル</param>
-        internal void ReadFrameLocation(BinaryReader reader)
-        {
-            FrameLocation = reader.ReadInt32();
-        }
 
         /// <summary>
         /// フレーム入力欄の値をファイルに書込

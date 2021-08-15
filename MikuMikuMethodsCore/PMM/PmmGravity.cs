@@ -46,32 +46,6 @@ namespace MikuMikuMethods.PMM
         }
 
         /// <summary>
-        /// バイナリデータから読み込み
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        internal PmmGravity(BinaryReader reader)
-        {
-            Read(reader);
-        }
-
-        /// <summary>
-        /// バイナリデータから読み込み
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        internal void Read(BinaryReader reader)
-        {
-            Acceleration = reader.ReadSingle();
-            NoizeAmount = reader.ReadInt32();
-            Direction = reader.ReadVector3();
-            EnableNoize = reader.ReadBoolean();
-
-            InitialFrame = new(reader, null);
-
-            var frameCount = reader.ReadInt32();
-            for (int i = 0; i < frameCount; i++)
-                Frames.Add(new(reader, reader.ReadInt32()));
-        }
-        /// <summary>
         /// ファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>

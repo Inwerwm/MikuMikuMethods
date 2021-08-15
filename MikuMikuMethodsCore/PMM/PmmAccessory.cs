@@ -58,39 +58,6 @@ namespace MikuMikuMethods.PMM
         }
 
         /// <summary>
-        /// バイナリデータから読み込み
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        internal PmmAccessory(BinaryReader reader) : this()
-        {
-            Read(reader);
-        }
-
-        /// <summary>
-        /// バイナリデータから読み込み
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        internal void Read(BinaryReader reader)
-        {
-            Index = reader.ReadByte();
-
-            Name = reader.ReadString(100, Encoding.ShiftJIS, '\0');
-            Path = reader.ReadString(256, Encoding.ShiftJIS, '\0');
-
-            RenderOrder = reader.ReadByte();
-
-            InitialFrame = new(reader, null);
-
-            var accessoryCount = reader.ReadInt32();
-            for (int i = 0; i < accessoryCount; i++)
-                Frames.Add(new(reader, reader.ReadInt32()));
-
-            Uncomitted = new(reader);
-
-            EnableAlphaBlend = reader.ReadBoolean();
-        }
-
-        /// <summary>
         /// ファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>
@@ -150,38 +117,6 @@ namespace MikuMikuMethods.PMM
         /// 影のOn/Off
         /// </summary>
         public bool EnableShadow { get; set; }
-
-        /// <summary>
-        /// 何もしないコンストラクタ
-        /// </summary>
-        public TemporaryAccessoryEditState(){}
-
-        /// <summary>
-        /// バイナリデータから読み込み
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        internal TemporaryAccessoryEditState(BinaryReader reader) : this()
-        {
-            Read(reader);
-        }
-
-        /// <summary>
-        /// バイナリデータから読み込み
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        internal void Read(BinaryReader reader)
-        {
-            OpacityAndVisible = reader.ReadByte();
-
-            ParentModelIndex = reader.ReadInt32();
-            ParentBoneIndex = reader.ReadInt32();
-
-            Position = reader.ReadVector3();
-            Rotation = reader.ReadVector3();
-            Scale = reader.ReadSingle();
-
-            EnableShadow = reader.ReadBoolean();
-        }
 
         /// <summary>
         /// ファイルに書込

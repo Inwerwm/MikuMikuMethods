@@ -58,40 +58,6 @@ namespace MikuMikuMethods.PMM
         public Point BackgroundImageOffset { get; set; }
 
         /// <summary>
-        /// コンストラクタ
-        /// </summary>
-        public PmmMediaConfig() { }
-
-        /// <summary>
-        /// バイナリデータから読み込み
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        internal PmmMediaConfig(BinaryReader reader)
-        {
-            Read(reader);
-        }
-
-        /// <summary>
-        /// バイナリデータから読み込み
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        internal void Read(BinaryReader reader)
-        {
-            EnableAudio = reader.ReadBoolean();
-            AudioPath = reader.ReadString(256, Encoding.ShiftJIS, '\0');
-
-            BackgroundVideoOffset = new(reader.ReadInt32(), reader.ReadInt32());
-            BackgroundVideoScale = reader.ReadSingle();
-            BackgroundVideoPath = reader.ReadString(256, Encoding.ShiftJIS, '\0');
-            EnableBackgroundVideo = reader.ReadInt32() == 0b01000000;
-
-            BackgroundImageOffset = new(reader.ReadInt32(), reader.ReadInt32());
-            BackgroundImageScale = reader.ReadSingle();
-            BackgroundImagePath = reader.ReadString(256, Encoding.ShiftJIS, '\0');
-            EnableBackgroundImage = reader.ReadBoolean();
-        }
-
-        /// <summary>
         /// ファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>

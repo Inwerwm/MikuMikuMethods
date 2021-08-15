@@ -96,84 +96,12 @@ namespace MikuMikuMethods.PMM
         }
 
         /// <summary>
-        /// バイナリ読込コンストラクタ
-        /// </summary>
-        /// <param name="reader">PMMファイル</param>
-        public PolygonMovieMaker(BinaryReader reader) : this()
-        {
-            Read(reader);
-        }
-
-        /// <summary>
         /// ファイルから読込
         /// </summary>
-        /// <param name="path">ファイルパス</param>
-        public void Read(string path)
+        /// <param name="filePath">ファイルパス</param>
+        public void Read(string filePath)
         {
-            using (FileStream stream = new(path, FileMode.Open))
-            using (BinaryReader reader = new(stream, MikuMikuMethods.Encoding.ShiftJIS))
-            {
-                Read(reader);
-            }
-        }
-
-        /// <summary>
-        /// バイナリデータから読込
-        /// </summary>
-        /// <param name="reader">読み込むファイル ShiftJISエンコードで読み込むこと</param>
-        public void Read(BinaryReader reader)
-        {
-            Version = reader.ReadString(30, Encoding.ShiftJIS, '\0');
-
-            EditorState.ReadViewState(reader);
-
-            var modelCount = reader.ReadByte();
-            for (int i = 0; i < modelCount; i++)
-                Models.Add(new(reader));
-
-            Camera = new(reader);
-            Light = new(reader);
-
-            EditorState.ReadAccessoryState(reader);
-            var accessoryCount = reader.ReadByte();
-            // アクセサリ名一覧
-            // 名前は各アクセサリ領域にも書いてあり、齟齬が出ることは基本無いらしいので読み飛ばす
-            _ = reader.ReadBytes(accessoryCount * 100);
-            for (int i = 0; i < accessoryCount; i++)
-                Accessories.Add(new(reader));
-
-            EditorState.ReadFrameState(reader);
-            PlayConfig.Read(reader);
-            MediaConfig.Read(reader);
-            DrawConfig.Read(reader);
-            Gravity.Read(reader);
-            SelfShadow.Read(reader);
-            DrawConfig.ReadColorConfig(reader);
-            Camera.ReadUncomittedFollowingState(reader);
-            //謎の行列は読み飛ばす
-            _ = reader.ReadBytes(64);
-            EditorState.ReadViewFollowing(reader);
-            Unknown = new PmmUnknown { TruthValue = reader.ReadBoolean() };
-            DrawConfig.ReadGroundPhysics(reader);
-            EditorState.ReadFrameLocation(reader);
-
-            // バージョンによってはここで終わりの可能性がある
-            if (reader.BaseStream.Position >= reader.BaseStream.Length)
-                return;
-
-            EditorState.ExistRangeSelectionTargetSection = reader.ReadBoolean();
-            // 普通はないが範囲選択対象セクションが無いとされていれば終了
-            if (!EditorState.ExistRangeSelectionTargetSection)
-                return;
-
-            // モデル設定値が欠落している場合もあるっぽい？ので確認処理を挟む
-            for (byte i = 0; i < Models.Count; i++)
-            {
-                if (reader.BaseStream.Position >= reader.BaseStream.Length)
-                    break;
-
-                EditorState.RangeSelectionTargetIndices.Add((reader.ReadByte(), reader.ReadInt32()));
-            }
+            IO.PmmFileReader.Read(filePath, this);
         }
 
         /// <summary>

@@ -35,22 +35,6 @@ namespace MikuMikuMethods.PMM
         public int PlayStopFrame { get; set; }
 
         /// <summary>
-        /// バイナリデータから読み込み
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        internal void Read(BinaryReader reader)
-        {
-            CameraTrackingTarget = (TrackingTarget)reader.ReadByte();
-
-            IsRepeat = reader.ReadBoolean();
-            IsMoveCurrentFrameToStopFrame = reader.ReadBoolean();
-            IsStartFromCurrentFrame = reader.ReadBoolean();
-
-            PlayStartFrame = reader.ReadInt32();
-            PlayStopFrame = reader.ReadInt32();
-        }
-
-        /// <summary>
         /// ファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>

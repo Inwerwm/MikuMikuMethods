@@ -46,48 +46,6 @@ namespace MikuMikuMethods.PMM.Frame
         public bool EnableShadow { get; set; }
 
         /// <summary>
-        /// コンストラクタ
-        /// </summary>
-        public PmmAccessoryFrame() { }
-
-        /// <summary>
-        /// バイナリデータから読み込み
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        /// <param name="index">フレームID</param>
-        internal PmmAccessoryFrame(BinaryReader reader, int? index) : this()
-        {
-            Read(reader, index);
-        }
-
-        /// <summary>
-        /// バイナリデータから読み込み
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        /// <param name="index">フレームID</param>
-        internal void Read(BinaryReader reader, int? index)
-        {
-            Index = index;
-
-            Frame = reader.ReadInt32();
-            PreviousFrameIndex = reader.ReadInt32();
-            NextFrameIndex = reader.ReadInt32();
-
-            OpacityAndVisible = reader.ReadByte();
-
-            ParentModelIndex = reader.ReadInt32();
-            ParentBoneIndex = reader.ReadInt32();
-
-            Position = reader.ReadVector3();
-            Rotation = reader.ReadVector3();
-            Scale = reader.ReadSingle();
-
-            EnableShadow = reader.ReadBoolean();
-
-            IsSelected = reader.ReadBoolean();
-        }
-
-        /// <summary>
         /// ファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>

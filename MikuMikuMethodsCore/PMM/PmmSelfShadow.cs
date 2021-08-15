@@ -31,21 +31,6 @@ namespace MikuMikuMethods.PMM
         /// </summary>
         public List<PmmSelfShadowFrame> Frames { get; init; } = new();
 
-        /// <summary>
-        /// バイナリデータから読み込み
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        internal void Read(BinaryReader reader)
-        {
-            EnableSelfShadow = reader.ReadBoolean();
-            ShadowLimit = reader.ReadSingle();
-
-            InitialFrame = new(reader, null);
-
-            var selfShadowCount = reader.ReadInt32();
-            for (int i = 0; i < selfShadowCount; i++)
-                Frames.Add(new(reader, reader.ReadInt32()));
-        }
 
         /// <summary>
         /// ファイルに書込

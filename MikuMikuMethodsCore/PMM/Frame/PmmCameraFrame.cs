@@ -63,48 +63,6 @@ namespace MikuMikuMethods.PMM.Frame
         }
 
         /// <summary>
-        /// バイナリデータから読み込み
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        /// <param name="index">フレームID</param>
-        internal PmmCameraFrame(BinaryReader reader, int? index) : this()
-        {
-            Read(reader, index);
-        }
-
-        /// <summary>
-        /// バイナリデータから読み込み
-        /// </summary>
-        /// <param name="reader">読み込むファイル</param>
-        /// <param name="index">フレームID</param>
-        internal void Read(BinaryReader reader, int? index)
-        {
-            Index = index;
-
-            Frame = reader.ReadInt32();
-            PreviousFrameIndex = reader.ReadInt32();
-            NextFrameIndex = reader.ReadInt32();
-
-            Distance = reader.ReadSingle();
-            EyePosition = reader.ReadVector3();
-            Rotation = reader.ReadVector3();
-
-            FollowingModelIndex = reader.ReadInt32();
-            FollowingBoneIndex = reader.ReadInt32();
-
-            InterpolationCurces[InterpolationItem.XPosition].FromBytes(reader.ReadBytes(4));
-            InterpolationCurces[InterpolationItem.YPosition].FromBytes(reader.ReadBytes(4));
-            InterpolationCurces[InterpolationItem.ZPosition].FromBytes(reader.ReadBytes(4));
-            InterpolationCurces[InterpolationItem.Rotation].FromBytes(reader.ReadBytes(4));
-            InterpolationCurces[InterpolationItem.Distance].FromBytes(reader.ReadBytes(4));
-            InterpolationCurces[InterpolationItem.ViewAngle].FromBytes(reader.ReadBytes(4));
-
-            EnablePerspective = reader.ReadBoolean();
-            ViewAngle = reader.ReadInt32();
-
-            IsSelected = reader.ReadBoolean();
-        }
-        /// <summary>
         /// ファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>
