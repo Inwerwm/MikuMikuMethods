@@ -1,4 +1,5 @@
 ﻿using MikuMikuMethods.Extension;
+using MikuMikuMethods.PMM.Frame;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -72,7 +73,48 @@ namespace MikuMikuMethods.PMM.IO
 
         private static void ReadCamera(BinaryReader reader, PmmCamera camera)
         {
-            throw new NotImplementedException();
+            camera.InitialFrame = ReadCameraFrame(reader, null);
+
+            var cameraCount = reader.ReadInt32();
+            for (int i = 0; i < cameraCount; i++)
+                camera.Frames.Add(ReadCameraFrame(reader, reader.ReadInt32()));
+
+            camera.Uncomitted.EyePosition = reader.ReadVector3();
+            camera.Uncomitted.TargetPosition = reader.ReadVector3();
+            camera.Uncomitted.Rotation = reader.ReadVector3();
+            camera.Uncomitted.EnablePerspective = reader.ReadBoolean();
+
+            PmmCameraFrame ReadCameraFrame(BinaryReader reader, int? index)
+            {
+                var frame = new PmmCameraFrame();
+
+                frame.Index = index;
+
+                frame.Frame = reader.ReadInt32();
+                frame.PreviousFrameIndex = reader.ReadInt32();
+                frame.NextFrameIndex = reader.ReadInt32();
+
+                frame.Distance = reader.ReadSingle();
+                frame.EyePosition = reader.ReadVector3();
+                frame.Rotation = reader.ReadVector3();
+
+                frame.FollowingModelIndex = reader.ReadInt32();
+                frame.FollowingBoneIndex = reader.ReadInt32();
+
+                frame.InterpolationCurces[InterpolationItem.XPosition].FromBytes(reader.ReadBytes(4));
+                frame.InterpolationCurces[InterpolationItem.YPosition].FromBytes(reader.ReadBytes(4));
+                frame.InterpolationCurces[InterpolationItem.ZPosition].FromBytes(reader.ReadBytes(4));
+                frame.InterpolationCurces[InterpolationItem.Rotation].FromBytes(reader.ReadBytes(4));
+                frame.InterpolationCurces[InterpolationItem.Distance].FromBytes(reader.ReadBytes(4));
+                frame.InterpolationCurces[InterpolationItem.ViewAngle].FromBytes(reader.ReadBytes(4));
+
+                frame.EnablePerspective = reader.ReadBoolean();
+                frame.ViewAngle = reader.ReadInt32();
+
+                frame.IsSelected = reader.ReadBoolean();
+
+                return frame;
+            }
         }
 
         private static void ReadLight(BinaryReader reader, PmmLight light)
