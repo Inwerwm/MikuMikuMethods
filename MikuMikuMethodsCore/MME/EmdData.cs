@@ -64,7 +64,6 @@ namespace MikuMikuMethods.MME
                 throw new FormatException($"EMMファイル読み込みエンコードエラー{Environment.NewLine}エンコーダがShiftJISと違います。");
 
             string line;
-            EmmEffectSettings effect;
 
             // [Info]
             line = reader.ReadLine();
