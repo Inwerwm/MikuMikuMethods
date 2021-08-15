@@ -15,49 +15,37 @@ namespace MikuMikuMethods.MME
         /// <summary>
         /// 設定種別
         /// </summary>
-        public EmmEffectCategory Category { get; init; }
+        public bool IsMain { get; init; }
 
         /// <summary>
         /// <para>設定名</para>
         /// <para>MMEエフェクト割当画面のタブ名に相当</para>
         /// </summary>
         public string Name { get; init; }
+
+        /// <summary>
+        /// Mainタブの(default)に設定されたエフェクト
+        /// </summary>
+        public EmmMaterial Default { get; set; }
         /// <summary>
         /// <para>エフェクトが依拠するオブジェクト</para>
         /// <para>オブジェクト定義で記述された名前が入る</para>
-        /// <para>CategoryがEffectの場合はEMMファイル内の"Default"に相当する</para>
         /// </summary>
-        public string Owner { get; set; }
+        public EmmObject Owner { get; set; }
 
         /// <summary>
         /// 設定対象オブジェクトのリスト
         /// </summary>
         public List<EmmObjectSetting> ObjectSettings { get; init; }
 
-        private EmmEffectSettings()
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="name">エフェクト設定のタブ名 "Main"でメインタブ扱いになる</param>
+        public EmmEffectSettings(string name)
         {
             ObjectSettings = new();
-        }
-
-        /// <summary>
-        /// [Object]または[Effect]のとき用
-        /// </summary>
-        /// <param name="keys">設定するオブジェクト定義リスト</param>
-        /// <param name="category">設定種別</param>
-        public EmmEffectSettings(EmmEffectCategory category) : this()
-        {
-            Category = category;
-            Name = Category.ToString();
-        }
-
-        /// <summary>
-        /// [Effect@.*]のとき用
-        /// </summary>
-        /// <param name="keys">設定するオブジェクト定義リスト</param>
-        /// <param name="name">"@"以降の名前</param>
-        public EmmEffectSettings(string name) : this()
-        {
-            Category = EmmEffectCategory.Other;
+            IsMain = name == "Main";
             Name = name;
         }
 
@@ -74,9 +62,14 @@ namespace MikuMikuMethods.MME
                 var objectKey = lineData[0];
                 var data = lineData[1];
 
-                if (objectKey is "Default" or "Owner")
+                if (objectKey == "Owner")
                 {
-                    Owner = data;
+                    Owner = objects.FirstOrDefault(o => o.Name == data);
+                    continue;
+                }
+                if(objectKey == "Default")
+                {
+                    Default = new() { Path = data };
                     continue;
                 }
 
@@ -133,18 +126,13 @@ namespace MikuMikuMethods.MME
         /// <param name="writer">書き込みストリーム</param>
         internal void Write(StreamWriter writer)
         {
-            var ownerString = Category switch
-            {
-                EmmEffectCategory.Effect => "Default",
-                EmmEffectCategory.Other => "Owner",
-                _ => throw new NotImplementedException(),
-            };
-            writer.WriteLine($"{ownerString} = {Owner}");
+            writer.WriteLine(IsMain ? $"Default = {Default.Path}" : $"Owner = {Owner.Name}");
 
             foreach (var obj in ObjectSettings)
             {
                 if (!string.IsNullOrEmpty(obj.Material.Path))
                     writer.WriteLine($"{obj.Object.Name} = {obj.Material.Path}");
+
                 if (obj.Material.Show != null)
                     writer.WriteLine($"{obj.Object.Name}.show = {obj.Material.Show.Value.ToString().ToLower()}");
 
