@@ -17,7 +17,7 @@ namespace UnitTest
             /// 準備
 
             // テストデータの作成
-            using (StreamWriter writer = new("TestData/EffectSettings.txt", false, Encoding.ShiftJIS))
+            using (StreamWriter writer = new("../../TestData/EffectSettings.txt", false, Encoding.ShiftJIS))
             {
                 writer.WriteLine(@"Default = none");
                 writer.WriteLine(@"Pmd1 = モデル1.fx");
@@ -42,21 +42,21 @@ namespace UnitTest
             keys.Add(new EmmModel(5) { Path = "モデル5" });
 
             // テストのためのインスタンスを生成
-            EmmEffectSettings target = new(EmmEffectCategory.Effect);
+            EmmEffectSettings target = new("Main");
 
             /// テスト実行
 
             // テストデータを読み込み
-            using (StreamReader reader = new("TestData/EffectSettings.txt", Encoding.ShiftJIS))
+            using (StreamReader reader = new("../../TestData/EffectSettings.txt", Encoding.ShiftJIS))
                 target.Read(reader, keys);
             // テスト書き込み
-            using (StreamWriter writer = new("TestData/EffectSettings_Result.txt", false, Encoding.ShiftJIS))
+            using (StreamWriter writer = new("../../TestData/EffectSettings_Result.txt", false, Encoding.ShiftJIS))
                 target.Write(writer);
 
             /// 結果
 
             // 書き込み結果を読み込み
-            using (StreamReader reader = new("TestData/EffectSettings_Result.txt", Encoding.ShiftJIS))
+            using (StreamReader reader = new("../../TestData/EffectSettings_Result.txt", Encoding.ShiftJIS))
             {
                 Assert.AreEqual(@"Default = none", reader.ReadLine());
                 Assert.AreEqual(@"Pmd1 = モデル1.fx", reader.ReadLine());
@@ -79,8 +79,8 @@ namespace UnitTest
         {
             /// 準備
 
-            const string sourcePath = "TestData/ルベシア_NumberNine.emm";
-            const string resultPath = "TestData/Result.emm";
+            const string sourcePath = "../../TestData/ルベシア_NumberNine.emm";
+            const string resultPath = "../../TestData/Result.emm";
 
             string allSource;
             using (StreamReader reader = new(sourcePath, Encoding.ShiftJIS))

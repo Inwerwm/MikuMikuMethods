@@ -11,8 +11,8 @@ namespace UnitTest
         [TestMethod]
         public void Test_IO()
         {
-            var inPath = @"TestData\testMotion";
-            var outPath = @"TestData\motionOutput";
+            var inPath = @"../../TestData/\testMotion";
+            var outPath = @"../../TestData/\motionOutput";
 
             VocaloidMotionData origin = new(inPath + ".vmd");
             origin.Write(outPath + ".vmd");
@@ -22,8 +22,8 @@ namespace UnitTest
         [TestMethod]
         public void Test_MotionInterpolation()
         {
-            using (BinaryReader reader = new(new FileStream(@"TestData\interpolateTest.vmd", FileMode.Open)))
-            using (BinaryWriter writer = new(new FileStream(@"TestData\interpolateTest_Result.vmd", FileMode.OpenOrCreate)))
+            using (BinaryReader reader = new(new FileStream(@"../../TestData/\interpolateTest.vmd", FileMode.Open)))
+            using (BinaryWriter writer = new(new FileStream(@"../../TestData/\interpolateTest_Result.vmd", FileMode.OpenOrCreate)))
             {
                 VocaloidMotionData vmd = new(reader);
                 vmd.Write(writer);
@@ -56,7 +56,7 @@ namespace UnitTest
                 Assert.AreEqual(0x7F, rCurve.LateControlePoint.Y);
             }
 
-            using (BinaryReader reader = new(new FileStream(@"TestData\interpolateTest_Result.vmd", FileMode.Open)))
+            using (BinaryReader reader = new(new FileStream(@"../../TestData/\interpolateTest_Result.vmd", FileMode.Open)))
             {
                 VocaloidMotionData vmd = new(reader);
 
@@ -92,8 +92,8 @@ namespace UnitTest
         [TestMethod]
         public void Test_CameraInterpolation()
         {
-            using (BinaryReader reader = new(new FileStream(@"TestData\cameraInterpolateTest.vmd", FileMode.Open)))
-            using (BinaryWriter writer = new(new FileStream(@"TestData\cameraInterpolateTest_Result.vmd", FileMode.OpenOrCreate)))
+            using (BinaryReader reader = new(new FileStream(@"../../TestData/\cameraInterpolateTest.vmd", FileMode.Open)))
+            using (BinaryWriter writer = new(new FileStream(@"../../TestData/\cameraInterpolateTest_Result.vmd", FileMode.OpenOrCreate)))
             {
                 VocaloidMotionData vmd = new(reader);
                 vmd.Write(writer);
@@ -133,7 +133,7 @@ namespace UnitTest
                 Assert.AreEqual(0x00, aCurve.LateControlePoint.Y);
             }
 
-            using (BinaryReader reader = new(new FileStream(@"TestData\cameraInterpolateTest_Result.vmd", FileMode.Open)))
+            using (BinaryReader reader = new(new FileStream(@"../../TestData/\cameraInterpolateTest_Result.vmd", FileMode.Open)))
             {
                 VocaloidMotionData vmd = new(reader);
 
