@@ -67,7 +67,7 @@ namespace MikuMikuMethods.PMM
         /// 描画情報関連をファイルから読み込み
         /// </summary>
         /// <param name="reader">バイナリファイル</param>
-        public void ReadViewState(BinaryReader reader)
+        internal void ReadViewState(BinaryReader reader)
         {
             OutputWidth = reader.ReadInt32();
             OutputHeight = reader.ReadInt32();
@@ -92,7 +92,7 @@ namespace MikuMikuMethods.PMM
         /// 描画情報関連をファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>
-        public void WriteViewState(BinaryWriter writer)
+        internal void WriteViewState(BinaryWriter writer)
         {
             writer.Write(OutputWidth);
             writer.Write(OutputHeight);
@@ -128,7 +128,7 @@ namespace MikuMikuMethods.PMM
         /// アクセサリ情報関連をファイルから読み込み
         /// </summary>
         /// <param name="reader">バイナリファイル</param>
-        public void ReadAccessoryState(BinaryReader reader)
+        internal void ReadAccessoryState(BinaryReader reader)
         {
             SelectedAccessoryIndex = reader.ReadByte();
             VerticalScrollOfAccessoryRow = reader.ReadInt32();
@@ -138,7 +138,7 @@ namespace MikuMikuMethods.PMM
         /// アクセサリ情報関連をファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>
-        public void WriteAccessoryState(BinaryWriter writer)
+        internal void WriteAccessoryState(BinaryWriter writer)
         {
             writer.Write(SelectedAccessoryIndex);
             writer.Write(VerticalScrollOfAccessoryRow);
@@ -167,7 +167,7 @@ namespace MikuMikuMethods.PMM
         /// フレーム編集関連情報をファイルから読み込み
         /// </summary>
         /// <param name="reader">バイナリファイル</param>
-        public void ReadFrameState(BinaryReader reader)
+        internal void ReadFrameState(BinaryReader reader)
         {
             CurrentFrame = reader.ReadInt32();
             HorizontalScroll = reader.ReadInt32();
@@ -179,7 +179,7 @@ namespace MikuMikuMethods.PMM
         /// フレーム編集関連情報をファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>
-        public void WriteFrameState(BinaryWriter writer)
+        internal void WriteFrameState(BinaryWriter writer)
         {
             writer.Write(CurrentFrame);
             writer.Write(HorizontalScroll);
@@ -225,7 +225,7 @@ namespace MikuMikuMethods.PMM
         /// 再生時の視点追従をファイルから読み込み
         /// </summary>
         /// <param name="reader">バイナリファイル</param>
-        public void ReadViewFollowing(BinaryReader reader)
+        internal void ReadViewFollowing(BinaryReader reader)
         {
             IsViewFollowCamera = reader.ReadBoolean();
         }
@@ -234,7 +234,7 @@ namespace MikuMikuMethods.PMM
         /// 再生時の視点追従をファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>
-        public void WriteViewFollowing(BinaryWriter writer)
+        internal void WriteViewFollowing(BinaryWriter writer)
         {
             writer.Write(IsViewFollowCamera);
         }
@@ -250,7 +250,7 @@ namespace MikuMikuMethods.PMM
         /// フレーム入力欄の値をファイルから読み込み
         /// </summary>
         /// <param name="reader">バイナリファイル</param>
-        public void ReadFrameLocation(BinaryReader reader)
+        internal void ReadFrameLocation(BinaryReader reader)
         {
             FrameLocation = reader.ReadInt32();
         }
@@ -259,7 +259,7 @@ namespace MikuMikuMethods.PMM
         /// フレーム入力欄の値をファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>
-        public void WriteFrameLocation(BinaryWriter writer)
+        internal void WriteFrameLocation(BinaryWriter writer)
         {
             writer.Write(FrameLocation);
         }

@@ -62,7 +62,7 @@ namespace MikuMikuMethods.PMM
         /// バイナリデータから読み込み
         /// </summary>
         /// <param name="reader">読み込むファイル</param>
-        public PmmDrawConfig(BinaryReader reader)
+        internal PmmDrawConfig(BinaryReader reader)
         {
             Read(reader);
         }
@@ -71,7 +71,7 @@ namespace MikuMikuMethods.PMM
         /// バイナリデータから読み込み
         /// </summary>
         /// <param name="reader">読み込むファイル</param>
-        public void Read(BinaryReader reader)
+        internal void Read(BinaryReader reader)
         {
             IsShowInfomation = reader.ReadBoolean();
             IsShowAxis = reader.ReadBoolean();
@@ -91,7 +91,7 @@ namespace MikuMikuMethods.PMM
         /// ファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>
-        public void Write(BinaryWriter writer)
+        internal void Write(BinaryWriter writer)
         {
             writer.Write(IsShowInfomation);
             writer.Write(IsShowAxis);
@@ -167,7 +167,7 @@ namespace MikuMikuMethods.PMM
         /// 色関連設定を読み込む
         /// </summary>
         /// <param name="reader">読み込むファイル</param>
-        public void ReadColorConfig(BinaryReader reader)
+        internal void ReadColorConfig(BinaryReader reader)
         {
             EdgeColor = Color.FromArgb(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32());
             IsBackgroundBlack = reader.ReadBoolean();
@@ -177,7 +177,7 @@ namespace MikuMikuMethods.PMM
         /// 色関連設定を書き込む
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>
-        public void WriteColorConfig(BinaryWriter writer)
+        internal void WriteColorConfig(BinaryWriter writer)
         {
             writer.Write((int)EdgeColor.R);
             writer.Write((int)EdgeColor.G);
@@ -196,7 +196,7 @@ namespace MikuMikuMethods.PMM
         /// 物理床設定を読み込む
         /// </summary>
         /// <param name="reader">読み込むファイル</param>
-        public void ReadGroundPhysics(BinaryReader reader)
+        internal void ReadGroundPhysics(BinaryReader reader)
         {
             EnableGroundPhysics = reader.ReadBoolean();
         }
@@ -205,7 +205,7 @@ namespace MikuMikuMethods.PMM
         /// 物理床設定を書き込む
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>
-        public void WriteGroundPhysics(BinaryWriter writer)
+        internal void WriteGroundPhysics(BinaryWriter writer)
         {
             writer.Write(EnableGroundPhysics);
         }

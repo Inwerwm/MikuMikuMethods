@@ -61,7 +61,7 @@ namespace MikuMikuMethods.PMM
         /// バイナリデータから読み込み
         /// </summary>
         /// <param name="reader">読み込むファイル</param>
-        public PmmAccessory(BinaryReader reader) : this()
+        internal PmmAccessory(BinaryReader reader) : this()
         {
             Read(reader);
         }
@@ -70,7 +70,7 @@ namespace MikuMikuMethods.PMM
         /// バイナリデータから読み込み
         /// </summary>
         /// <param name="reader">読み込むファイル</param>
-        public void Read(BinaryReader reader)
+        internal void Read(BinaryReader reader)
         {
             Index = reader.ReadByte();
 
@@ -94,7 +94,7 @@ namespace MikuMikuMethods.PMM
         /// ファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>
-        public void Write(BinaryWriter writer)
+        internal void Write(BinaryWriter writer)
         {
             writer.Write(Index);
 
@@ -160,7 +160,7 @@ namespace MikuMikuMethods.PMM
         /// バイナリデータから読み込み
         /// </summary>
         /// <param name="reader">読み込むファイル</param>
-        public TemporaryAccessoryEditState(BinaryReader reader) : this()
+        internal TemporaryAccessoryEditState(BinaryReader reader) : this()
         {
             Read(reader);
         }
@@ -169,7 +169,7 @@ namespace MikuMikuMethods.PMM
         /// バイナリデータから読み込み
         /// </summary>
         /// <param name="reader">読み込むファイル</param>
-        public void Read(BinaryReader reader)
+        internal void Read(BinaryReader reader)
         {
             OpacityAndVisible = reader.ReadByte();
 
@@ -187,7 +187,7 @@ namespace MikuMikuMethods.PMM
         /// ファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>
-        public void Write(BinaryWriter writer)
+        internal void Write(BinaryWriter writer)
         {
             writer.Write(OpacityAndVisible);
 
