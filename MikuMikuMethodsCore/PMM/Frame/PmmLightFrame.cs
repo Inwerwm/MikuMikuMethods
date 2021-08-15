@@ -32,7 +32,7 @@ namespace MikuMikuMethods.PMM.Frame
         /// </summary>
         /// <param name="reader">読み込むファイル</param>
         /// <param name="index">フレームID</param>
-        public PmmLightFrame(BinaryReader reader, int? index) : this()
+        internal PmmLightFrame(BinaryReader reader, int? index) : this()
         {
             Read(reader, index);
         }
@@ -42,7 +42,7 @@ namespace MikuMikuMethods.PMM.Frame
         /// </summary>
         /// <param name="reader">読み込むファイル</param>
         /// <param name="index">フレームID</param>
-        public void Read(BinaryReader reader, int? index)
+        internal void Read(BinaryReader reader, int? index)
         {
             Index = index;
 
@@ -59,7 +59,7 @@ namespace MikuMikuMethods.PMM.Frame
         /// ファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>
-        public void Write(BinaryWriter writer)
+        internal void Write(BinaryWriter writer)
         {
             if (Index.HasValue)
                 writer.Write(Index.Value);

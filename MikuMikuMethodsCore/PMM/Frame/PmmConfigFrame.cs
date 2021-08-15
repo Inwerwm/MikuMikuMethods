@@ -43,7 +43,7 @@ namespace MikuMikuMethods.PMM.Frame
         /// <param name="index">フレームID</param>
         /// <param name="ikCount">IKボーンの数</param>
         /// <param name="parentCount">外部親設定可能ボーンの数</param>
-        public void Read(BinaryReader reader, int? index, int ikCount, int parentCount)
+        internal void Read(BinaryReader reader, int? index, int ikCount, int parentCount)
         {
             Index = index;
 
@@ -69,7 +69,7 @@ namespace MikuMikuMethods.PMM.Frame
         /// ファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>
-        public void Write(BinaryWriter writer)
+        internal void Write(BinaryWriter writer)
         {
             if (Index.HasValue)
                 writer.Write(Index.Value);

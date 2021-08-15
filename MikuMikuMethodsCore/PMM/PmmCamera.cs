@@ -49,7 +49,7 @@ namespace MikuMikuMethods.PMM
         /// バイナリデータからカメラ情報を読み込み
         /// </summary>
         /// <param name="reader">読み込むファイル</param>
-        public PmmCamera(BinaryReader reader) : this()
+        internal PmmCamera(BinaryReader reader) : this()
         {
             Read(reader);
         }
@@ -58,7 +58,7 @@ namespace MikuMikuMethods.PMM
         /// バイナリデータから読込
         /// </summary>
         /// <param name="reader">読み込むファイル</param>
-        public void Read(BinaryReader reader)
+        internal void Read(BinaryReader reader)
         {
             InitialFrame = new(reader, null);
 
@@ -75,7 +75,7 @@ namespace MikuMikuMethods.PMM
         /// ファイルに書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>
-        public void Write(BinaryWriter writer)
+        internal void Write(BinaryWriter writer)
         {
             InitialFrame.Write(writer);
 
@@ -93,7 +93,7 @@ namespace MikuMikuMethods.PMM
         /// 未確定のカメラ追従状態の読込
         /// </summary>
         /// <param name="reader">読み込むファイル</param>
-        public void ReadUncomittedFollowingState(BinaryReader reader)
+        internal void ReadUncomittedFollowingState(BinaryReader reader)
         {
             UncomittedFollowing.ModelIndex = reader.ReadInt32();
             UncomittedFollowing.BoneIndex = reader.ReadInt32();
@@ -103,7 +103,7 @@ namespace MikuMikuMethods.PMM
         /// 未確定のカメラ追従状態の書込
         /// </summary>
         /// <param name="writer">出力対象バイナリファイル</param>
-        public void WriteUncomittedFollowingState(BinaryWriter writer)
+        internal void WriteUncomittedFollowingState(BinaryWriter writer)
         {
             writer.Write(UncomittedFollowing.ModelIndex);
             writer.Write(UncomittedFollowing.BoneIndex);
