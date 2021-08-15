@@ -1,8 +1,5 @@
-﻿using MikuMikuMethods.Extension;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Numerics;
 
 namespace MikuMikuMethods.PMM.Frame

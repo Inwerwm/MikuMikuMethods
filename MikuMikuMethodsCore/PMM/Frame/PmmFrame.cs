@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace MikuMikuMethods.PMM.Frame
+﻿namespace MikuMikuMethods.PMM.Frame
 {
     /// <summary>
     /// フレーム情報

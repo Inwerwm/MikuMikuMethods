@@ -1,6 +1,4 @@
-﻿using MikuMikuMethods.Extension;
-using System.IO;
-using System.Numerics;
+﻿using System.Numerics;
 
 namespace MikuMikuMethods.PMM.Frame
 {

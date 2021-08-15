@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MikuMikuMethods.VMD
+﻿namespace MikuMikuMethods.VMD
 {
     /// <summary>
     /// 仕様によって定められた変数

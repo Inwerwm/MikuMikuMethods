@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace MikuMikuMethods.PMM
+﻿namespace MikuMikuMethods.PMM
 {
     /// <summary>
     /// Pmmの再生設定
