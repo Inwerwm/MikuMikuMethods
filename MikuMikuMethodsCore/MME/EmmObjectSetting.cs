@@ -11,12 +11,12 @@ namespace MikuMikuMethods.MME
         /// <summary>
         /// 対応するオブジェクト情報
         /// </summary>
-        public EmmObject Entity { get; init; }
+        public EmmObject Object { get; init; }
 
         /// <summary>
         /// オブジェクトに適用するエフェクトの情報
         /// </summary>
-        public EmmMaterial Effect { get; init; }
+        public EmmMaterial Material { get; init; }
 
         /// <summary>
         /// サブセット展開されたときの各材質に適用するエフェクトの情報
@@ -26,12 +26,12 @@ namespace MikuMikuMethods.MME
         /// <summary>
         /// オブジェクト情報を指定してインスタンスを生成
         /// </summary>
-        /// <param name="entity">オブジェクト情報</param>
-        public EmmObjectSetting(EmmObject entity)
+        /// <param name="obj">オブジェクト情報</param>
+        public EmmObjectSetting(EmmObject obj)
         {
-            Effect = new();
+            Material = new();
             Subsets = new();
-            Entity = entity;
+            Object = obj;
         }
     }
 }
