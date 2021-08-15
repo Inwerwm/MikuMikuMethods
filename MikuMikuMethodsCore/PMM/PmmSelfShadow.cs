@@ -30,22 +30,5 @@ namespace MikuMikuMethods.PMM
         /// セルフ影のキーフレーム
         /// </summary>
         public List<PmmSelfShadowFrame> Frames { get; init; } = new();
-
-
-        /// <summary>
-        /// ファイルに書込
-        /// </summary>
-        /// <param name="writer">出力対象バイナリファイル</param>
-        internal void Write(BinaryWriter writer)
-        {
-            writer.Write(EnableSelfShadow);
-            writer.Write(ShadowLimit);
-
-            InitialFrame.Write(writer);
-
-            writer.Write(Frames.Count);
-            foreach (var frame in Frames)
-                frame.Write(writer);
-        }
     }
 }

@@ -110,61 +110,7 @@ namespace MikuMikuMethods.PMM
         /// <param name="filePath">書き出すファイルのパス</param>
         public void Write(string filePath)
         {
-            using (FileStream file = new(filePath, FileMode.Create))
-            using (BinaryWriter writer = new(file, MikuMikuMethods.Encoding.ShiftJIS))
-            {
-                Write(writer);
-            }
-        }
-
-        /// <summary>
-        /// バイナリデータに書込
-        /// </summary>
-        /// <param name="writer">出力対象バイナリファイル</param>
-        public void Write(BinaryWriter writer)
-        {
-            writer.Write(Version, 30, Encoding.ShiftJIS);
-
-            EditorState.WriteViewState(writer);
-
-            writer.Write((byte)Models.Count);
-            foreach (var model in Models)
-                model.Write(writer);
-
-            Camera.Write(writer);
-            Light.Write(writer);
-
-            EditorState.WriteAccessoryState(writer);
-            writer.Write((byte)Accessories.Count);
-            foreach (var acs in Accessories)
-                writer.Write(acs.Name, 100, Encoding.ShiftJIS);
-            foreach (var acs in Accessories)
-                acs.Write(writer);
-
-            EditorState.WriteFrameState(writer);
-            PlayConfig.Write(writer);
-            MediaConfig.Write(writer);
-            DrawConfig.Write(writer);
-            Gravity.Write(writer);
-            SelfShadow.Write(writer);
-            DrawConfig.WriteColorConfig(writer);
-            Camera.WriteUncomittedFollowingState(writer);
-            writer.Write(PmmUnknown.Matrix);
-            EditorState.WriteViewFollowing(writer);
-            writer.Write(Unknown.TruthValue);
-            DrawConfig.WriteGroundPhysics(writer);
-            EditorState.WriteFrameLocation(writer);
-
-            // 範囲選択対象セクションがないバージョンなら終了
-            if (!EditorState.ExistRangeSelectionTargetSection)
-                return;
-
-            writer.Write(EditorState.ExistRangeSelectionTargetSection);
-            foreach (var index in EditorState.RangeSelectionTargetIndices)
-            {
-                writer.Write(index.Model);
-                writer.Write(index.Target);
-            }
+            IO.PmmFileWriter.Write(filePath, this);
         }
     }
 }

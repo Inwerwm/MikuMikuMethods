@@ -56,30 +56,6 @@ namespace MikuMikuMethods.PMM
         {
             Frames = new();
         }
-
-        /// <summary>
-        /// ファイルに書込
-        /// </summary>
-        /// <param name="writer">出力対象バイナリファイル</param>
-        internal void Write(BinaryWriter writer)
-        {
-            writer.Write(Index);
-
-            writer.Write(Name, 100, Encoding.ShiftJIS);
-            writer.Write(Path, 256, Encoding.ShiftJIS);
-
-            writer.Write(RenderOrder);
-
-            InitialFrame.Write(writer);
-
-            writer.Write(Frames.Count);
-            foreach (var frame in Frames)
-                frame.Write(writer);
-
-            Uncomitted.Write(writer);
-
-            writer.Write(EnableAlphaBlend);
-        }
     }
 
     /// <summary>
@@ -117,23 +93,5 @@ namespace MikuMikuMethods.PMM
         /// 影のOn/Off
         /// </summary>
         public bool EnableShadow { get; set; }
-
-        /// <summary>
-        /// ファイルに書込
-        /// </summary>
-        /// <param name="writer">出力対象バイナリファイル</param>
-        internal void Write(BinaryWriter writer)
-        {
-            writer.Write(OpacityAndVisible);
-
-            writer.Write(ParentModelIndex);
-            writer.Write(ParentBoneIndex);
-
-            writer.Write(Position);
-            writer.Write(Rotation);
-            writer.Write(Scale);
-
-            writer.Write(EnableShadow);
-        }
     }
 }

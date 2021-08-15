@@ -35,22 +35,6 @@ namespace MikuMikuMethods.PMM
         public int PlayStopFrame { get; set; }
 
         /// <summary>
-        /// ファイルに書込
-        /// </summary>
-        /// <param name="writer">出力対象バイナリファイル</param>
-        internal void Write(BinaryWriter writer)
-        {
-            writer.Write((byte)CameraTrackingTarget);
-
-            writer.Write(IsRepeat);
-            writer.Write(IsMoveCurrentFrameToStopFrame);
-            writer.Write(IsStartFromCurrentFrame);
-
-            writer.Write(PlayStartFrame);
-            writer.Write(PlayStopFrame);
-        }
-
-        /// <summary>
         /// 視点追従対象
         /// </summary>
         public enum TrackingTarget : byte

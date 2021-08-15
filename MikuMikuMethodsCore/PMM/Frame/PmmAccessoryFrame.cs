@@ -44,32 +44,5 @@ namespace MikuMikuMethods.PMM.Frame
         /// 影のOn/Off
         /// </summary>
         public bool EnableShadow { get; set; }
-
-        /// <summary>
-        /// ファイルに書込
-        /// </summary>
-        /// <param name="writer">出力対象バイナリファイル</param>
-        internal void Write(BinaryWriter writer)
-        {
-            if (Index.HasValue)
-                writer.Write(Index.Value);
-
-            writer.Write(Frame);
-            writer.Write(PreviousFrameIndex);
-            writer.Write(NextFrameIndex);
-
-            writer.Write(OpacityAndVisible);
-
-            writer.Write(ParentModelIndex);
-            writer.Write(ParentBoneIndex);
-
-            writer.Write(Position);
-            writer.Write(Rotation);
-            writer.Write(Scale);
-
-            writer.Write(EnableShadow);
-
-            writer.Write(IsSelected);
-        }
     }
 }

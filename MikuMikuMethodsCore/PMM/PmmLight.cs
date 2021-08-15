@@ -36,22 +36,6 @@ namespace MikuMikuMethods.PMM
             Frames = new();
             Uncomitted = new();
         }
-
-        /// <summary>
-        /// ファイルに書込
-        /// </summary>
-        /// <param name="writer">出力対象バイナリファイル</param>
-        internal void Write(BinaryWriter writer)
-        {
-            InitialFrame.Write(writer);
-
-            writer.Write(Frames.Count);
-            foreach (var frame in Frames)
-                frame.Write(writer);
-
-            writer.Write(Uncomitted.Color, false);
-            writer.Write(Uncomitted.Position);
-        }
     }
 
     /// <summary>

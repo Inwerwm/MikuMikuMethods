@@ -56,27 +56,5 @@ namespace MikuMikuMethods.PMM
         /// 背景画像の表示位置
         /// </summary>
         public Point BackgroundImageOffset { get; set; }
-
-        /// <summary>
-        /// ファイルに書込
-        /// </summary>
-        /// <param name="writer">出力対象バイナリファイル</param>
-        internal void Write(BinaryWriter writer)
-        {
-            writer.Write(EnableAudio);
-            writer.Write(AudioPath, 256, Encoding.ShiftJIS);
-
-            writer.Write(BackgroundVideoOffset.X);
-            writer.Write(BackgroundVideoOffset.Y);
-            writer.Write(BackgroundVideoScale);
-            writer.Write(BackgroundVideoPath, 256, Encoding.ShiftJIS);
-            writer.Write(EnableBackgroundVideo ? 0b01000000 : 0b01000001);
-
-            writer.Write(BackgroundImageOffset.X);
-            writer.Write(BackgroundImageOffset.Y);
-            writer.Write(BackgroundImageScale);
-            writer.Write(BackgroundImagePath, 256, Encoding.ShiftJIS);
-            writer.Write(EnableBackgroundImage);
-        }
     }
 }

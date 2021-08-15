@@ -35,33 +35,5 @@ namespace MikuMikuMethods.PMM.Frame
             EnableIK = new();
             ParentSettings = new();
         }
-
-        /// <summary>
-        /// ファイルに書込
-        /// </summary>
-        /// <param name="writer">出力対象バイナリファイル</param>
-        internal void Write(BinaryWriter writer)
-        {
-            if (Index.HasValue)
-                writer.Write(Index.Value);
-
-            writer.Write(Frame);
-            writer.Write(PreviousFrameIndex);
-            writer.Write(NextFrameIndex);
-            writer.Write(Visible);
-
-            foreach (var f in EnableIK)
-            {
-                writer.Write(f);
-            }
-
-            foreach (var f in ParentSettings)
-            {
-                writer.Write(f.ModelId);
-                writer.Write(f.BoneId);
-            }
-
-            writer.Write(IsSelected);
-        }
     }
 }

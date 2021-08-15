@@ -48,29 +48,5 @@ namespace MikuMikuMethods.PMM.Frame
 
             InterpolationCurces = new(curveDic);
         }
-
-        /// <summary>
-        /// ファイルに書込
-        /// </summary>
-        /// <param name="writer">出力対象バイナリファイル</param>
-        internal void Write(BinaryWriter writer)
-        {
-            if (Index.HasValue)
-                writer.Write(Index.Value);
-
-            writer.Write(Frame);
-            writer.Write(PreviousFrameIndex);
-            writer.Write(NextFrameIndex);
-
-            writer.Write(InterpolationCurces[InterpolationItem.XPosition].ToBytes());
-            writer.Write(InterpolationCurces[InterpolationItem.YPosition].ToBytes());
-            writer.Write(InterpolationCurces[InterpolationItem.ZPosition].ToBytes());
-            writer.Write(InterpolationCurces[InterpolationItem.Rotation].ToBytes());
-
-            writer.Write(Offset);
-            writer.Write(Rotation);
-            writer.Write(IsSelected);
-            writer.Write(!EnablePhysic);
-        }
     }
 }

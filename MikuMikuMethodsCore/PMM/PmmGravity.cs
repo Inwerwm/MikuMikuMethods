@@ -44,23 +44,5 @@ namespace MikuMikuMethods.PMM
         {
             Frames = new();
         }
-
-        /// <summary>
-        /// ファイルに書込
-        /// </summary>
-        /// <param name="writer">出力対象バイナリファイル</param>
-        internal void Write(BinaryWriter writer)
-        {
-            writer.Write(Acceleration);
-            writer.Write(NoizeAmount);
-            writer.Write(Direction);
-            writer.Write(EnableNoize);
-
-            InitialFrame.Write(writer);
-
-            writer.Write(Frames.Count);
-            foreach (var frame in Frames)
-                frame.Write(writer);
-        }
     }
 }

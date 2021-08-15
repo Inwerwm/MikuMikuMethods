@@ -44,34 +44,6 @@ namespace MikuMikuMethods.PMM
             Uncomitted = new();
             UncomittedFollowing = new();
         }
-
-        /// <summary>
-        /// ファイルに書込
-        /// </summary>
-        /// <param name="writer">出力対象バイナリファイル</param>
-        internal void Write(BinaryWriter writer)
-        {
-            InitialFrame.Write(writer);
-
-            writer.Write(Frames.Count);
-            foreach (var frame in Frames)
-                frame.Write(writer);
-
-            writer.Write(Uncomitted.EyePosition);
-            writer.Write(Uncomitted.TargetPosition);
-            writer.Write(Uncomitted.Rotation);
-            writer.Write(Uncomitted.EnablePerspective);
-        }
-
-        /// <summary>
-        /// 未確定のカメラ追従状態の書込
-        /// </summary>
-        /// <param name="writer">出力対象バイナリファイル</param>
-        internal void WriteUncomittedFollowingState(BinaryWriter writer)
-        {
-            writer.Write(UncomittedFollowing.ModelIndex);
-            writer.Write(UncomittedFollowing.BoneIndex);
-        }
     }
 
     /// <summary>

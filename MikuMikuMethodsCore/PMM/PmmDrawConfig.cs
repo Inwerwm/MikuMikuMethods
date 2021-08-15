@@ -54,26 +54,6 @@ namespace MikuMikuMethods.PMM
         public PhysicsMode PhysicsSetting { get; set; }
 
         /// <summary>
-        /// ファイルに書込
-        /// </summary>
-        /// <param name="writer">出力対象バイナリファイル</param>
-        internal void Write(BinaryWriter writer)
-        {
-            writer.Write(IsShowInfomation);
-            writer.Write(IsShowAxis);
-            writer.Write(IsShowGrandShadow);
-
-            writer.Write(FPSLimit);
-            writer.Write((int)ScreenCaptureSetting);
-            writer.Write(AccessoryModelThreshold);
-
-            writer.Write(GroundShadowBrightness);
-            writer.Write(EnableTransparentGroundShadow);
-
-            writer.Write((byte)PhysicsSetting);
-        }
-
-        /// <summary>
         /// スクリーン用キャプチャモード
         /// </summary>
         public enum ScreenCaptureMode : int
@@ -128,19 +108,6 @@ namespace MikuMikuMethods.PMM
         /// 背景色は黒か
         /// </summary>
         public bool IsBackgroundBlack { get; set; }
-
-        /// <summary>
-        /// 色関連設定を書き込む
-        /// </summary>
-        /// <param name="writer">出力対象バイナリファイル</param>
-        internal void WriteColorConfig(BinaryWriter writer)
-        {
-            writer.Write((int)EdgeColor.R);
-            writer.Write((int)EdgeColor.G);
-            writer.Write((int)EdgeColor.B);
-
-            writer.Write(IsBackgroundBlack);
-        }
         #endregion
 
         #region GroundPhysics
@@ -148,15 +115,6 @@ namespace MikuMikuMethods.PMM
         /// 物理床のOn/Off
         /// </summary>
         public bool EnableGroundPhysics { get; set; }
-
-        /// <summary>
-        /// 物理床設定を書き込む
-        /// </summary>
-        /// <param name="writer">出力対象バイナリファイル</param>
-        internal void WriteGroundPhysics(BinaryWriter writer)
-        {
-            writer.Write(EnableGroundPhysics);
-        }
         #endregion
     }
 }

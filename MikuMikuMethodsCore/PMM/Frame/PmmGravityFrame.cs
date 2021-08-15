@@ -37,26 +37,5 @@ namespace MikuMikuMethods.PMM.Frame
             Acceleration = 9.8f;
             Direction = new(0, -1, 0);
         }
-
-        /// <summary>
-        /// ファイルに書込
-        /// </summary>
-        /// <param name="writer">出力対象バイナリファイル</param>
-        internal void Write(BinaryWriter writer)
-        {
-            if (Index.HasValue)
-                writer.Write(Index.Value);
-
-            writer.Write(Frame);
-            writer.Write(PreviousFrameIndex);
-            writer.Write(NextFrameIndex);
-
-            writer.Write(EnableNoize);
-            writer.Write(NoizeAmount);
-            writer.Write(Acceleration);
-            writer.Write(Direction);
-
-            writer.Write(IsSelected);
-        }
     }
 }

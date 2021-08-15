@@ -26,24 +26,5 @@ namespace MikuMikuMethods.PMM.Frame
         {
             Color = ColorF.FromARGB(154, 154, 154);
         }
-
-        /// <summary>
-        /// ファイルに書込
-        /// </summary>
-        /// <param name="writer">出力対象バイナリファイル</param>
-        internal void Write(BinaryWriter writer)
-        {
-            if (Index.HasValue)
-                writer.Write(Index.Value);
-
-            writer.Write(Frame);
-            writer.Write(PreviousFrameIndex);
-            writer.Write(NextFrameIndex);
-
-            writer.Write(Color, false);
-            writer.Write(Position);
-
-            writer.Write(IsSelected);
-        }
     }
 }
