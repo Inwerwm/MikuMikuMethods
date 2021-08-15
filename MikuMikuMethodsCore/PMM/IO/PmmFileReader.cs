@@ -8,5 +8,11 @@ namespace MikuMikuMethods.PMM.IO
 {
     internal static class PmmFileReader
     {
+        public static PolygonMovieMaker Read(string filePath)
+        {
+            PolygonMovieMaker pmm = new();
+
+            return pmm;
+        }
     }
 }

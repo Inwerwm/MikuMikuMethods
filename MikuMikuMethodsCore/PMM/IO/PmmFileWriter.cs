@@ -8,5 +8,9 @@ namespace MikuMikuMethods.PMM.IO
 {
     internal static class PmmFileWriter
     {
+        public static void Write(string filePath, PolygonMovieMaker pmm)
+        {
+
+        }
     }
 }
