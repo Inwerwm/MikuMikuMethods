@@ -84,13 +84,12 @@ namespace MikuMikuMethods.MME
                 var objKeyId = objectKey.Split('[');
                 objectKey = objKeyId[0];
 
-                EmmObjectSetting eo;
-
                 // サブセット添字が存在しなければオブジェクトに対する設定とみなす
                 if (objKeyId.Length == 1)
                 {
-                    eo = ObjectSettings.FirstOrDefault(o => o.Object.Name == objectKey)
+                    var eo = ObjectSettings.FirstOrDefault(o => o.Object.Name == objectKey)
                        ?? new(objects.First(info => info.Name == objectKey));
+
                     if (isShowSetting)
                         eo.Material.Show = bool.Parse(data);
                     else
@@ -98,25 +97,25 @@ namespace MikuMikuMethods.MME
 
                     if (!ObjectSettings.Contains(eo))
                         ObjectSettings.Add(eo);
-                    continue;
                 }
-
-                // サブセットに対する設定
-                eo = ObjectSettings.First(o => o.Object.Name == objectKey);
-                var subsetId = int.Parse(objKeyId[1].Replace("]", ""));
-                // 設定サブセット添字よりオブジェクトに設定されたエフェクトの数が少ない場合
-                // 設定サブセット添字の数まで中身を増やす
-                while (eo.Subsets.Count <= subsetId)
-                {
-                    eo.Subsets.Add(new EmmMaterial());
-                }
-
-                if (isShowSetting)
-                    eo.Subsets[subsetId].Show = bool.Parse(data);
                 else
-                    eo.Subsets[subsetId].Path = data;
+                {
+                    // サブセットに対する設定
+                    var eo = ObjectSettings.First(o => o.Object.Name == objectKey);
+                    var subsetId = int.Parse(objKeyId[1].Replace("]", ""));
 
+                    // 設定サブセット添字よりオブジェクトに設定されたエフェクトの数が少ない場合
+                    // 設定サブセット添字の数まで中身を増やす
+                    while (eo.Subsets.Count <= subsetId)
+                    {
+                        eo.Subsets.Add(new EmmMaterial());
+                    }
 
+                    if (isShowSetting)
+                        eo.Subsets[subsetId].Show = bool.Parse(data);
+                    else
+                        eo.Subsets[subsetId].Path = data;
+                }
             }
         }
 
