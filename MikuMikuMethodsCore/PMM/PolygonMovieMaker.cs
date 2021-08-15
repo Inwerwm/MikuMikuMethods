@@ -1,4 +1,4 @@
-﻿using MikuMikuMethods.Extension;
+using MikuMikuMethods.Extension;
 using System.Collections.Generic;
 using System.IO;
 
@@ -17,7 +17,7 @@ namespace MikuMikuMethods.PMM
         /// <summary>
         /// PMMファイルのバージョン情報
         /// </summary>
-        public string Version { get; private set; }
+        public string Version { get; internal set; }
 
         /// <summary>
         /// 編集画面状態情報
