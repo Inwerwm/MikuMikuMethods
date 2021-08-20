@@ -41,8 +41,8 @@ namespace UnitTest
             var maybeFalse = new PolygonMovieMaker(testDir + "ViewFollowCamera_MaybeFalse.pmm");
             var maybeTrue = new PolygonMovieMaker(testDir + "ViewFollowCamera_MaybeTrue.pmm");
 
-            Assert.IsFalse(maybeFalse.EditorState.IsViewFollowCamera);
-            Assert.IsTrue(maybeTrue.EditorState.IsViewFollowCamera);
+            Assert.IsFalse(maybeFalse.ViewConfig.IsViewFollowCamera);
+            Assert.IsTrue(maybeTrue.ViewConfig.IsViewFollowCamera);
         }
     }
 }

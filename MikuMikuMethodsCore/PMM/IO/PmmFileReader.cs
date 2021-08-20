@@ -41,7 +41,7 @@ namespace MikuMikuMethods.PMM.IO
                 ReadUncomittedFollowingState(reader, pmm.Camera);
                 //謎の行列は読み飛ばす
                 _ = reader.ReadBytes(64);
-                ReadViewFollowing(reader, pmm.EditorState);
+                ReadViewFollowing(reader, pmm.ViewConfig);
                 pmm.Unknown = new PmmUnknown { TruthValue = reader.ReadBoolean() };
                 ReadGroundPhysics(reader, pmm.ViewConfig);
                 ReadFrameLocation(reader, pmm.EditorState);
@@ -529,9 +529,9 @@ namespace MikuMikuMethods.PMM.IO
             camera.UncomittedFollowing.BoneIndex = reader.ReadInt32();
         }
 
-        private static void ReadViewFollowing(BinaryReader reader, PmmEditorState editorState)
+        private static void ReadViewFollowing(BinaryReader reader, PmmViewConfig viewConfig)
         {
-            editorState.IsViewFollowCamera = reader.ReadBoolean();
+            viewConfig.IsViewFollowCamera = reader.ReadBoolean();
         }
 
         private static void ReadGroundPhysics(BinaryReader reader, PmmViewConfig drawConfig)

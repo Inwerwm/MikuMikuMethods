@@ -15,10 +15,6 @@ namespace MikuMikuMethods.PMM
         /// 編集中の視野角
         /// </summary>
         public float CurrentViewAngle { get; set; }
-        /// <summary>
-        /// カメラ追従のOn/Off
-        /// </summary>
-        public bool IsViewFollowCamera { get; set; }
 
         /// <summary>
         /// 現在のフレーム位置

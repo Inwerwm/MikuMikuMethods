@@ -40,7 +40,7 @@ namespace MikuMikuMethods.PMM.IO
                 pmm.ViewConfig.WriteColorConfig(writer);
                 pmm.Camera.UncomittedFollowing.Write(writer);
                 writer.Write(PmmUnknown.Matrix);
-                pmm.EditorState.WriteViewFollowing(writer);
+                pmm.ViewConfig.WriteViewFollowing(writer);
                 writer.Write(pmm.Unknown.TruthValue);
                 pmm.ViewConfig.WriteGroundPhysics(writer);
                 pmm.EditorState.WriteFrameLocation(writer);
@@ -95,9 +95,9 @@ namespace MikuMikuMethods.PMM.IO
             writer.Write(editorState.FrameLocation);
         }
 
-        private static void WriteViewFollowing(this PmmEditorState editorState, BinaryWriter writer)
+        private static void WriteViewFollowing(this PmmViewConfig viewConfig, BinaryWriter writer)
         {
-            writer.Write(editorState.IsViewFollowCamera);
+            writer.Write(viewConfig.IsViewFollowCamera);
         }
 
         private static void Write(this PmmAccessory accessory, BinaryWriter writer)

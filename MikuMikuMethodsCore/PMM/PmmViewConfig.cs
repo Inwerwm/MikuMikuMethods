@@ -17,6 +17,11 @@ namespace MikuMikuMethods.PMM
         public bool IsShowAxis { get; set; }
 
         /// <summary>
+        /// カメラ追従のOn/Off
+        /// </summary>
+        public bool IsViewFollowCamera { get; set; }
+
+        /// <summary>
         /// 背景色は黒か
         /// </summary>
         public bool IsBackgroundBlack { get; set; }
