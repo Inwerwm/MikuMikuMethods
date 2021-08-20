@@ -16,7 +16,7 @@ namespace MikuMikuMethods.PMM
         /// </summary>
         public float CurrentViewAngle { get; set; }
         /// <summary>
-        /// 再生時の視点追従のOn/Off
+        /// カメラ追従のOn/Off
         /// </summary>
         public bool IsViewFollowCamera { get; set; }
 

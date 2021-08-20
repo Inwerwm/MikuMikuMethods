@@ -33,5 +33,16 @@ namespace UnitTest
             
             Assert.AreEqual(JsonSerializer.Serialize(testPmm), JsonSerializer.Serialize(outPmm));
         }
+
+        [TestMethod]
+        public void Test_ViewFollowCamera()
+        {
+            var testDir = "../../TestData/";
+            var maybeFalse = new PolygonMovieMaker(testDir + "ViewFollowCamera_MaybeFalse.pmm");
+            var maybeTrue = new PolygonMovieMaker(testDir + "ViewFollowCamera_MaybeTrue.pmm");
+
+            Assert.IsFalse(maybeFalse.EditorState.IsViewFollowCamera);
+            Assert.IsTrue(maybeTrue.EditorState.IsViewFollowCamera);
+        }
     }
 }
