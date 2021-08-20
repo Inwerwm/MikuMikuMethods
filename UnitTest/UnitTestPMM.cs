@@ -13,31 +13,33 @@ namespace UnitTest
     [TestClass]
     public class UnitTestPMM
     {
-        PolygonMovieMaker testPmm;
-
-        public UnitTestPMM()
-        {
-            testPmm = new();
-        }
+        string testDir = "../../TestData/";
 
         [TestMethod]
         public void Test_IO()
         {
-            testPmm.Read("../../TestData/testProject.pmm");
-            testPmm.Write("../../TestData/output.pmm");
-
-            var outPmm = new PolygonMovieMaker("../../TestData/output.pmm");
+            var srcPmm = new PolygonMovieMaker(testDir + "testProject.pmm");
+            srcPmm.Write(testDir + "output.pmm");
+            var outPmm = new PolygonMovieMaker(testDir + "output.pmm");
 
             //もとのPMMと書込読込PMMのインスタンスをシリアライズして
             //テキストで差分を見れるようにする
-            
-            Assert.AreEqual(JsonSerializer.Serialize(testPmm), JsonSerializer.Serialize(outPmm));
+            Assert.AreEqual(JsonSerializer.Serialize(srcPmm), JsonSerializer.Serialize(outPmm));
+        }
+
+        [TestMethod]
+        public void Test_IO2()
+        {
+            var src = new PolygonMovieMaker(testDir + "testLight.pmm");
+            src.Write(testDir + "outputLight.pmm");
+            var output = new PolygonMovieMaker(testDir + "outputLight.pmm");
+
+            Assert.AreEqual(JsonSerializer.Serialize(src), JsonSerializer.Serialize(output));
         }
 
         [TestMethod]
         public void Test_ViewFollowCamera()
         {
-            var testDir = "../../TestData/";
             var maybeFalse = new PolygonMovieMaker(testDir + "ViewFollowCamera_MaybeFalse.pmm");
             var maybeTrue = new PolygonMovieMaker(testDir + "ViewFollowCamera_MaybeTrue.pmm");
 
