@@ -25,4 +25,8 @@
 	</AssemblyAttribute>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Core\" />
+  </ItemGroup>
+
 </Project>
