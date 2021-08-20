@@ -127,6 +127,11 @@ namespace MikuMikuMethods.PMM
             MorphFrames = new();
             ConfigFrames = new();
         }
+
+        public override string ToString()
+        {
+            return $"{Index}: {Name}({Path})";
+        }
     }
 
     /// <summary>
