@@ -34,15 +34,15 @@ namespace MikuMikuMethods.PMM.IO
                 pmm.EditorState.WriteFrameState(writer);
                 pmm.PlayConfig.Write(writer);
                 pmm.MediaConfig.Write(writer);
-                pmm.DrawConfig.Write(writer);
+                pmm.ViewConfig.Write(writer);
                 pmm.Gravity.Write(writer);
                 pmm.SelfShadow.Write(writer);
-                pmm.DrawConfig.WriteColorConfig(writer);
+                pmm.ViewConfig.WriteColorConfig(writer);
                 pmm.Camera.UncomittedFollowing.Write(writer);
                 writer.Write(PmmUnknown.Matrix);
                 pmm.EditorState.WriteViewFollowing(writer);
                 writer.Write(pmm.Unknown.TruthValue);
-                pmm.DrawConfig.WriteGroundPhysics(writer);
+                pmm.ViewConfig.WriteGroundPhysics(writer);
                 pmm.EditorState.WriteFrameLocation(writer);
 
                 // 範囲選択対象セクションがないバージョンなら終了
@@ -154,7 +154,7 @@ namespace MikuMikuMethods.PMM.IO
             writer.Write(tmp.BoneIndex);
         }
 
-        private static void Write(this PmmDrawConfig drawConfig, BinaryWriter writer)
+        private static void Write(this PmmViewConfig drawConfig, BinaryWriter writer)
         {
             writer.Write(drawConfig.IsShowInfomation);
             writer.Write(drawConfig.IsShowAxis);
@@ -170,7 +170,7 @@ namespace MikuMikuMethods.PMM.IO
             writer.Write((byte)drawConfig.PhysicsSetting);
         }
 
-        private static void WriteColorConfig(this PmmDrawConfig drawConfig, BinaryWriter writer)
+        private static void WriteColorConfig(this PmmViewConfig drawConfig, BinaryWriter writer)
         {
             writer.Write((int)drawConfig.EdgeColor.R);
             writer.Write((int)drawConfig.EdgeColor.G);
@@ -179,7 +179,7 @@ namespace MikuMikuMethods.PMM.IO
             writer.Write(drawConfig.IsBackgroundBlack);
         }
 
-        private static void WriteGroundPhysics(this PmmDrawConfig drawConfig, BinaryWriter writer)
+        private static void WriteGroundPhysics(this PmmViewConfig drawConfig, BinaryWriter writer)
         {
             writer.Write(drawConfig.EnableGroundPhysics);
         }

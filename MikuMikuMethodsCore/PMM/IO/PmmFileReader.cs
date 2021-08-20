@@ -34,16 +34,16 @@ namespace MikuMikuMethods.PMM.IO
                 ReadFrameState(reader, pmm.EditorState);
                 ReadPlayConfig(reader, pmm.PlayConfig);
                 ReadMediaConfig(reader, pmm.MediaConfig);
-                ReadDrawConfig(reader, pmm.DrawConfig);
+                ReadDrawConfig(reader, pmm.ViewConfig);
                 ReadGravity(reader, pmm.Gravity);
                 ReadSelfShadow(reader, pmm.SelfShadow);
-                ReadColorConfig(reader, pmm.DrawConfig);
+                ReadColorConfig(reader, pmm.ViewConfig);
                 ReadUncomittedFollowingState(reader, pmm.Camera);
                 //謎の行列は読み飛ばす
                 _ = reader.ReadBytes(64);
                 ReadViewFollowing(reader, pmm.EditorState);
                 pmm.Unknown = new PmmUnknown { TruthValue = reader.ReadBoolean() };
-                ReadGroundPhysics(reader, pmm.DrawConfig);
+                ReadGroundPhysics(reader, pmm.ViewConfig);
                 ReadFrameLocation(reader, pmm.EditorState);
 
                 // バージョンによってはここで終わりの可能性がある
@@ -445,20 +445,20 @@ namespace MikuMikuMethods.PMM.IO
             mediaConfig.EnableBackgroundImage = reader.ReadBoolean();
         }
 
-        private static void ReadDrawConfig(BinaryReader reader, PmmDrawConfig drawConfig)
+        private static void ReadDrawConfig(BinaryReader reader, PmmViewConfig drawConfig)
         {
             drawConfig.IsShowInfomation = reader.ReadBoolean();
             drawConfig.IsShowAxis = reader.ReadBoolean();
             drawConfig.IsShowGrandShadow = reader.ReadBoolean();
 
             drawConfig.FPSLimit = reader.ReadSingle();
-            drawConfig.ScreenCaptureSetting = (PmmDrawConfig.ScreenCaptureMode)reader.ReadInt32();
+            drawConfig.ScreenCaptureSetting = (PmmViewConfig.ScreenCaptureMode)reader.ReadInt32();
             drawConfig.AccessoryModelThreshold = reader.ReadInt32();
 
             drawConfig.GroundShadowBrightness = reader.ReadSingle();
             drawConfig.EnableTransparentGroundShadow = reader.ReadBoolean();
 
-            drawConfig.PhysicsSetting = (PmmDrawConfig.PhysicsMode)reader.ReadByte();
+            drawConfig.PhysicsSetting = (PmmViewConfig.PhysicsMode)reader.ReadByte();
         }
 
         private static void ReadGravity(BinaryReader reader, PmmGravity gravity)
@@ -517,7 +517,7 @@ namespace MikuMikuMethods.PMM.IO
             };
         }
 
-        private static void ReadColorConfig(BinaryReader reader, PmmDrawConfig drawConfig)
+        private static void ReadColorConfig(BinaryReader reader, PmmViewConfig drawConfig)
         {
             drawConfig.EdgeColor = System.Drawing.Color.FromArgb(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32());
             drawConfig.IsBackgroundBlack = reader.ReadBoolean();
@@ -534,7 +534,7 @@ namespace MikuMikuMethods.PMM.IO
             editorState.IsViewFollowCamera = reader.ReadBoolean();
         }
 
-        private static void ReadGroundPhysics(BinaryReader reader, PmmDrawConfig drawConfig)
+        private static void ReadGroundPhysics(BinaryReader reader, PmmViewConfig drawConfig)
         {
             drawConfig.EnableGroundPhysics = reader.ReadBoolean();
         }

@@ -41,7 +41,7 @@ namespace MikuMikuMethods.PMM
         /// <summary>
         /// 描画設定
         /// </summary>
-        public PmmDrawConfig DrawConfig { get; init; }
+        public PmmViewConfig ViewConfig { get; init; }
 
         /// <summary>
         /// モデル
@@ -82,7 +82,7 @@ namespace MikuMikuMethods.PMM
             EditorState = new();
             PlayConfig = new();
             MediaConfig = new();
-            DrawConfig = new();
+            ViewConfig = new();
 
             Models = new();
             Accessories = new();

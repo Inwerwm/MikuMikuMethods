@@ -3,9 +3,9 @@
 namespace MikuMikuMethods.PMM
 {
     /// <summary>
-    /// 描画関連設定
+    /// 3Dビュー関連設定
     /// </summary>
-    public class PmmDrawConfig
+    public class PmmViewConfig
     {
         /// <summary>
         /// 描画情報の表示/非表示
