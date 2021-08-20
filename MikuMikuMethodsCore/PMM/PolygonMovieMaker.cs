@@ -18,6 +18,15 @@ namespace MikuMikuMethods.PMM
         public string Version { get; internal set; }
 
         /// <summary>
+        /// 大きさを整数で表す
+        /// </summary>
+        public record Size(int Width, int Height);
+        /// <summary>
+        /// 出力解像度
+        /// </summary>
+        public Size Output { get; set; }
+
+        /// <summary>
         /// 編集画面状態情報
         /// </summary>
         public PmmEditorState EditorState { get; init; }

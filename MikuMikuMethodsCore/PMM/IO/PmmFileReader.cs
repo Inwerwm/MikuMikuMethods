@@ -12,6 +12,7 @@ namespace MikuMikuMethods.PMM.IO
             using (BinaryReader reader = new(stream, Encoding.ShiftJIS))
             {
                 pmm.Version = reader.ReadString(30, Encoding.ShiftJIS, '\0');
+                pmm.Output = new(reader.ReadInt32(), reader.ReadInt32());
 
                 ReadViewState(reader, pmm.EditorState);
 
@@ -68,9 +69,6 @@ namespace MikuMikuMethods.PMM.IO
 
         private static void ReadViewState(BinaryReader reader, PmmEditorState editorState)
         {
-            editorState.OutputWidth = reader.ReadInt32();
-            editorState.OutputHeight = reader.ReadInt32();
-
             editorState.KeyframeEditorWidth = reader.ReadInt32();
 
             editorState.CurrentViewAngle = reader.ReadSingle();

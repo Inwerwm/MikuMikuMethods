@@ -12,6 +12,8 @@ namespace MikuMikuMethods.PMM.IO
             using (BinaryWriter writer = new(file, Encoding.ShiftJIS))
             {
                 writer.Write(pmm.Version, 30, Encoding.ShiftJIS);
+                writer.Write(pmm.Output.Width);
+                writer.Write(pmm.Output.Height);
 
                 pmm.EditorState.WriteViewState(writer);
 
@@ -58,9 +60,6 @@ namespace MikuMikuMethods.PMM.IO
 
         private static void WriteViewState(this PmmEditorState editorState, BinaryWriter writer)
         {
-            writer.Write(editorState.OutputWidth);
-            writer.Write(editorState.OutputHeight);
-
             writer.Write(editorState.KeyframeEditorWidth);
 
             writer.Write(editorState.CurrentViewAngle);

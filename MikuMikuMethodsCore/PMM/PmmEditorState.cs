@@ -8,15 +8,6 @@ namespace MikuMikuMethods.PMM
     public class PmmEditorState
     {
         /// <summary>
-        /// 出力解像度幅
-        /// </summary>
-        public int OutputWidth { get; set; }
-        /// <summary>
-        /// 出力解像度高
-        /// </summary>
-        public int OutputHeight { get; set; }
-
-        /// <summary>
         /// キーフレームエディタ(画面左)の幅
         /// </summary>
         public int KeyframeEditorWidth { get; set; }
