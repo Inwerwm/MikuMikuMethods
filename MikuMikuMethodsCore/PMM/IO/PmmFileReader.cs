@@ -44,7 +44,7 @@ namespace MikuMikuMethods.PMM.IO
                 ReadViewFollowing(reader, pmm.ViewConfig);
                 pmm.Unknown = new PmmUnknown { TruthValue = reader.ReadBoolean() };
                 ReadGroundPhysics(reader, pmm.ViewConfig);
-                ReadFrameLocation(reader, pmm.EditorState);
+                ReadFrameLocation(reader, pmm.ViewConfig);
 
                 // バージョンによってはここで終わりの可能性がある
                 if (reader.BaseStream.Position >= reader.BaseStream.Length)
@@ -539,9 +539,9 @@ namespace MikuMikuMethods.PMM.IO
             drawConfig.EnableGroundPhysics = reader.ReadBoolean();
         }
 
-        private static void ReadFrameLocation(BinaryReader reader, PmmEditorState editorState)
+        private static void ReadFrameLocation(BinaryReader reader, PmmViewConfig viewConfig)
         {
-            editorState.FrameLocation = reader.ReadInt32();
+            viewConfig.FrameLocation = reader.ReadInt32();
         }
 
         private static (byte Model, int Target) ReadRangeSelectionTargetIndex(BinaryReader reader)

@@ -38,11 +38,6 @@ namespace MikuMikuMethods.PMM
         public int VerticalScrollOfAccessoryRow { get; set; }
 
         /// <summary>
-        /// 3Dビュー上部のフレーム入力欄の値
-        /// </summary>
-        public int FrameLocation { get; set; }
-
-        /// <summary>
         /// 選択中のモデルインデックス
         /// </summary>
         public byte SelectedModelIndex { get; set; }

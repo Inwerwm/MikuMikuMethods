@@ -43,7 +43,7 @@ namespace MikuMikuMethods.PMM.IO
                 pmm.ViewConfig.WriteViewFollowing(writer);
                 writer.Write(pmm.Unknown.TruthValue);
                 pmm.ViewConfig.WriteGroundPhysics(writer);
-                pmm.EditorState.WriteFrameLocation(writer);
+                pmm.ViewConfig.WriteFrameLocation(writer);
 
                 // 範囲選択対象セクションがないバージョンなら終了
                 if (!pmm.EditorState.ExistRangeSelectionTargetSection)
@@ -90,9 +90,9 @@ namespace MikuMikuMethods.PMM.IO
             writer.Write((int)editorState.SelectedBoneOperation);
         }
 
-        private static void WriteFrameLocation(this PmmEditorState editorState, BinaryWriter writer)
+        private static void WriteFrameLocation(this PmmViewConfig viewConfig, BinaryWriter writer)
         {
-            writer.Write(editorState.FrameLocation);
+            writer.Write(viewConfig.FrameLocation);
         }
 
         private static void WriteViewFollowing(this PmmViewConfig viewConfig, BinaryWriter writer)

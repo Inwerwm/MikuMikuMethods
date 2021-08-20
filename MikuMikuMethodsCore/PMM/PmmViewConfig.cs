@@ -22,6 +22,11 @@ namespace MikuMikuMethods.PMM
         public bool IsViewFollowCamera { get; set; }
 
         /// <summary>
+        /// 3Dビュー上部のフレーム入力欄の値
+        /// </summary>
+        public int FrameLocation { get; set; }
+
+        /// <summary>
         /// 背景色は黒か
         /// </summary>
         public bool IsBackgroundBlack { get; set; }
