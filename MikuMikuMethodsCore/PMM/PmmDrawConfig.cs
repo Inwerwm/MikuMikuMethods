@@ -93,7 +93,6 @@ namespace MikuMikuMethods.PMM
             Trace
         }
 
-        #region ColorConfig
         /// <summary>
         /// エッジの色
         /// </summary>
@@ -102,13 +101,10 @@ namespace MikuMikuMethods.PMM
         /// 背景色は黒か
         /// </summary>
         public bool IsBackgroundBlack { get; set; }
-        #endregion
 
-        #region GroundPhysics
         /// <summary>
         /// 物理床のOn/Off
         /// </summary>
         public bool EnableGroundPhysics { get; set; }
-        #endregion
     }
 }

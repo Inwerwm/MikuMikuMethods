@@ -7,7 +7,6 @@ namespace MikuMikuMethods.PMM
     /// </summary>
     public class PmmEditorState
     {
-        #region ViewState
         /// <summary>
         /// 出力解像度幅
         /// </summary>
@@ -61,9 +60,7 @@ namespace MikuMikuMethods.PMM
         /// 選択中のモデルインデックス
         /// </summary>
         public byte SelectedModelIndex { get; set; }
-        #endregion
 
-        #region AccessoryState
         /// <summary>
         /// 選択中のアクセサリインデックス
         /// </summary>
@@ -72,9 +69,7 @@ namespace MikuMikuMethods.PMM
         /// アクセサリの垂直スクロール量
         /// </summary>
         public int VerticalScrollOfAccessoryRow { get; set; }
-        #endregion
 
-        #region FrameState
         /// <summary>
         /// 現在のフレーム位置
         /// </summary>
@@ -118,23 +113,17 @@ namespace MikuMikuMethods.PMM
             /// </summary>
             None
         }
-        #endregion
 
-        #region ViewFollowing
         /// <summary>
         /// 再生時の視点追従のOn/Off
         /// </summary>
         public bool IsViewFollowCamera { get; set; }
-        #endregion
 
-        #region FrameLocation
         /// <summary>
         /// 3Dビュー上部のフレーム入力欄の値
         /// </summary>
         public int FrameLocation { get; set; }
-        #endregion
 
-        #region RangeSelectionTarget
         /// <summary>
         /// 範囲選択対象のセクションが存在しているか
         /// </summary>
@@ -143,6 +132,5 @@ namespace MikuMikuMethods.PMM
         /// 範囲選択対象
         /// </summary>
         public List<(byte Model, int Target)> RangeSelectionTargetIndices { get; init; } = new();
-        #endregion
     }
 }
