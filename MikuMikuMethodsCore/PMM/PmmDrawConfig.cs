@@ -15,37 +15,20 @@ namespace MikuMikuMethods.PMM
         /// 座標軸の表示/非表示
         /// </summary>
         public bool IsShowAxis { get; set; }
+
         /// <summary>
-        /// 地面影の表示/非表示
+        /// 背景色は黒か
         /// </summary>
-        public bool IsShowGrandShadow { get; set; }
+        public bool IsBackgroundBlack { get; set; }
+        /// <summary>
+        /// エッジの色
+        /// </summary>
+        public Color EdgeColor { get; set; }
 
         /// <summary>
         /// FPS制限量
         /// </summary>
         public float FPSLimit { get; set; }
-        /// <summary>
-        /// スクリーン用キャプチャモード設定
-        /// </summary>
-        public ScreenCaptureMode ScreenCaptureSetting { get; set; }
-        /// <summary>
-        /// モデルより後に描画するアクセサリのインデックス
-        /// </summary>
-        public int AccessoryModelThreshold { get; set; }
-
-        /// <summary>
-        /// 地面影の明るさ
-        /// </summary>
-        public float GroundShadowBrightness { get; set; }
-        /// <summary>
-        /// 地面影の透明化
-        /// </summary>
-        public bool EnableTransparentGroundShadow { get; set; }
-
-        /// <summary>
-        /// 物理演算モード
-        /// </summary>
-        public PhysicsMode PhysicsSetting { get; set; }
 
         /// <summary>
         /// スクリーン用キャプチャモード
@@ -69,6 +52,28 @@ namespace MikuMikuMethods.PMM
             /// </summary>
             BackgroundVideo
         }
+        /// <summary>
+        /// スクリーン用キャプチャモード設定
+        /// </summary>
+        public ScreenCaptureMode ScreenCaptureSetting { get; set; }
+
+        /// <summary>
+        /// モデルより後に描画するアクセサリのインデックス
+        /// </summary>
+        public int AccessoryModelThreshold { get; set; }
+
+        /// <summary>
+        /// 地面影の表示/非表示
+        /// </summary>
+        public bool IsShowGrandShadow { get; set; }
+        /// <summary>
+        /// 地面影の明るさ
+        /// </summary>
+        public float GroundShadowBrightness { get; set; }
+        /// <summary>
+        /// 地面影の透明化
+        /// </summary>
+        public bool EnableTransparentGroundShadow { get; set; }
 
         /// <summary>
         /// 物理演算モード
@@ -92,16 +97,10 @@ namespace MikuMikuMethods.PMM
             /// </summary>
             Trace
         }
-
         /// <summary>
-        /// エッジの色
+        /// 物理演算モード
         /// </summary>
-        public Color EdgeColor { get; set; }
-        /// <summary>
-        /// 背景色は黒か
-        /// </summary>
-        public bool IsBackgroundBlack { get; set; }
-
+        public PhysicsMode PhysicsSetting { get; set; }
         /// <summary>
         /// 物理床のOn/Off
         /// </summary>
