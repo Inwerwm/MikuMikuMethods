@@ -15,23 +15,21 @@ namespace TestWithConsole
         static void Main(string[] args)
         {
             var pmm = new MikuMikuMethods.PMM.PolygonMovieMaker(Path("pmm.pmm"));
-            WLL(pmm.Models.Print("\n"));
+            WLL(pmm.Models.PrintLn());
 
             var miku = pmm.Models[0];
-            var haku = pmm.Models[1];
-            WLL(pmm.Models.Select(m => (m.RenderConfig.RenderOrder, m.Name)).Print("\n"));
-
-            miku.RenderConfig.RenderOrder = 2;
-            haku.RenderConfig.RenderOrder = 1;
-            WLL(pmm.Models.Select(m => (m.RenderConfig.RenderOrder, m.Name)).Print("\n"));
-
-            pmm.Write(Path("out.pmm"));
+            WL(miku.Name);
+            Func<MikuMikuMethods.PMM.Frame.PmmBoneFrame, string> boneFrameInfo = f => $"ID:{f.Index}, Time:{f.Frame}, Offset:{f.Offset}, PreID:{f.PreviousFrameIndex}, PostID:{f.NextFrameIndex}";
+            WLL(miku.BoneFrames.Select(boneFrameInfo).PrintLn());
+            WL($"初期ボーンフレーム数:{miku.InitialBoneFrames.Count}");
+            //WLL(miku.InitialBoneFrames.Select(boneFrameInfo).PrintLn());
         }
     }
 
     static class Extension
     {
         public static string Print<T>(this IEnumerable<T> collection) => Print(collection, ", ");
+        public static string PrintLn<T>(this IEnumerable<T> collection) => Print(collection, Environment.NewLine);
         public static string Print<T>(this IEnumerable<T> collection, string delimiter) => collection.Select(elm => elm.ToString()).Aggregate((acm, elm) => $"{acm}{delimiter}{elm}");
     }
 }
