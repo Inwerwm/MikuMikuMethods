@@ -61,7 +61,7 @@ namespace MikuMikuMethods.PMM.IO
                     if (reader.BaseStream.Position >= reader.BaseStream.Length)
                         break;
 
-                    pmm.EditorState.RangeSelectionTargetIndices.Add(ReadRangeSelectionTargetIndex(reader));
+                    pmm.EditorState.RangeSelectionTargetIndices.Add(ReadRangeSelectionTargetIndex(reader, pmm));
                     //pmm.EditorState.RangeSelectionTargetIndices.Add((reader.ReadByte(), reader.ReadInt32()));
                 }
             }
@@ -544,9 +544,9 @@ namespace MikuMikuMethods.PMM.IO
             viewConfig.FrameLocation = reader.ReadInt32();
         }
 
-        private static (byte Model, int Target) ReadRangeSelectionTargetIndex(BinaryReader reader)
+        private static (PmmModel Model, int Target) ReadRangeSelectionTargetIndex(BinaryReader reader, PolygonMovieMaker pmm)
         {
-            return (reader.ReadByte(), reader.ReadInt32());
+            return (pmm.Models[reader.ReadByte()], reader.ReadInt32());
         }
     }
 }

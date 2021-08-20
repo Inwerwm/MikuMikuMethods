@@ -1,6 +1,7 @@
 ﻿using MikuMikuMethods.Extension;
 using MikuMikuMethods.PMM.Frame;
 using System.IO;
+using System.Linq;
 
 namespace MikuMikuMethods.PMM.IO
 {
@@ -50,9 +51,10 @@ namespace MikuMikuMethods.PMM.IO
                     return;
 
                 writer.Write(pmm.EditorState.ExistRangeSelectionTargetSection);
+                var modelIdMap = pmm.Models.Select((Model, Index) => (Model, Index)).ToDictionary(p => p.Model, p => (byte)p.Index);
                 foreach (var index in pmm.EditorState.RangeSelectionTargetIndices)
                 {
-                    writer.Write(index.Model);
+                    writer.Write(modelIdMap[index.Model]);
                     writer.Write(index.Target);
                 }
             }

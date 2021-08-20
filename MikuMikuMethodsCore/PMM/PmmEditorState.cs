@@ -84,7 +84,7 @@ namespace MikuMikuMethods.PMM
         /// <summary>
         /// 範囲選択対象
         /// </summary>
-        public List<(byte Model, int Target)> RangeSelectionTargetIndices { get; init; } = new();
+        public List<(PmmModel Model, int Target)> RangeSelectionTargetIndices { get; init; } = new();
 
         /// <summary>
         /// カメラ操作パネル開閉状態
