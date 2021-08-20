@@ -4,8 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace UnitTest
@@ -30,7 +30,8 @@ namespace UnitTest
 
             //もとのPMMと書込読込PMMのインスタンスをシリアライズして
             //テキストで差分を見れるようにする
-            Assert.AreEqual(testPmm.ToJson("../../TestData/originPmm.json"), outPmm.ToJson("../../TestData/outputPmm.json"));
+            
+            Assert.AreEqual(JsonSerializer.Serialize(testPmm), JsonSerializer.Serialize(outPmm));
         }
     }
 }
