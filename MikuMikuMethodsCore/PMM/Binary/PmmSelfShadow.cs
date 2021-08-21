@@ -1,7 +1,7 @@
-﻿using MikuMikuMethods.PMM.Frame;
+﻿using MikuMikuMethods.Binary.PMM.Frame;
 using System.Collections.Generic;
 
-namespace MikuMikuMethods.PMM
+namespace MikuMikuMethods.Binary.PMM
 {
     /// <summary>
     /// セルフ影情報

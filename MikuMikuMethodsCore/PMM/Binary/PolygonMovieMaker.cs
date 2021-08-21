@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace MikuMikuMethods.PMM
+namespace MikuMikuMethods.Binary.PMM
 {
     /*
      * 魚圭糸工氏の解析結果から

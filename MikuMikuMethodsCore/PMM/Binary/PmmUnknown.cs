@@ -1,4 +1,4 @@
-﻿namespace MikuMikuMethods.PMM
+﻿namespace MikuMikuMethods.Binary.PMM
 {
     /// <summary>
     /// 意図不明な値

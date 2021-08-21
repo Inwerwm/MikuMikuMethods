@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace MikuMikuMethods.PMM
+namespace MikuMikuMethods.Binary.PMM
 {
     /// <summary>
     /// メディア関連設定

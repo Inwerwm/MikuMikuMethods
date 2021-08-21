@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MikuMikuMethods.PMM
+namespace MikuMikuMethods.Binary.PMM
 {
     /// <summary>
     /// MMD編集画面状態情報

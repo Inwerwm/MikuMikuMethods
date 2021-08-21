@@ -14,12 +14,12 @@ namespace TestWithConsole
 
         static void Main(string[] args)
         {
-            var pmm = new MikuMikuMethods.PMM.PolygonMovieMaker(Path("pmm.pmm"));
+            var pmm = new MikuMikuMethods.Binary.PMM.PolygonMovieMaker(Path("pmm.pmm"));
             WLL(pmm.Models.PrintLn());
 
             var miku = pmm.Models[0];
             WL(miku.Name);
-            Func<MikuMikuMethods.PMM.Frame.PmmBoneFrame, string> boneFrameInfo = f => $"ID:{f.Index}, Time:{f.Frame}, Offset:{f.Offset}, PreID:{f.PreviousFrameIndex}, PostID:{f.NextFrameIndex}";
+            Func<MikuMikuMethods.Binary.PMM.Frame.PmmBoneFrame, string> boneFrameInfo = f => $"ID:{f.Index}, Time:{f.Frame}, Offset:{f.Offset}, PreID:{f.PreviousFrameIndex}, PostID:{f.NextFrameIndex}";
             WLL(miku.BoneFrames.Select(boneFrameInfo).PrintLn());
             WL($"初期ボーンフレーム数:{miku.InitialBoneFrames.Count}");
             //WLL(miku.InitialBoneFrames.Select(boneFrameInfo).PrintLn());

@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Numerics;
 
-namespace MikuMikuMethods.PMM.Frame
+namespace MikuMikuMethods.Binary.PMM.Frame
 {
     /// <summary>
     /// ボーンフレーム情報

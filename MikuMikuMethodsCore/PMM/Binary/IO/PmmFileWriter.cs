@@ -1,9 +1,9 @@
 ﻿using MikuMikuMethods.Extension;
-using MikuMikuMethods.PMM.Frame;
+using MikuMikuMethods.Binary.PMM.Frame;
 using System.IO;
 using System.Linq;
 
-namespace MikuMikuMethods.PMM.IO
+namespace MikuMikuMethods.Binary.PMM.IO
 {
     internal static class PmmFileWriter
     {
