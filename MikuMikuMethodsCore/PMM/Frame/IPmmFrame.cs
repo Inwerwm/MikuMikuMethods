@@ -7,7 +7,7 @@ namespace MikuMikuMethods.PMM.Frame
         /// <summary>
         /// フレーム位置
         /// </summary>
-        int Position { get; set; }
+        int Frame { get; set; }
         /// <summary>
         /// 選択状態か
         /// </summary>

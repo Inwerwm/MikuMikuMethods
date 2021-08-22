@@ -4,7 +4,7 @@ namespace MikuMikuMethods.PMM.Frame
 {
     public class PmmGravityFrame : IPmmFrame
     {
-        public int Position { get; set; } = 0;
+        public int Frame { get; set; } = 0;
         public bool IsSelected { get; set; } = false;
 
         /// <summary>
@@ -22,6 +22,6 @@ namespace MikuMikuMethods.PMM.Frame
         public Vector3 Direction { get; set; } = new(0, -1, 0);
 
         public bool Equals(IPmmFrame other) =>
-            other is PmmGravityFrame f && Position == f.Position;
+            other is PmmGravityFrame f && Frame == f.Frame;
     }
 }
