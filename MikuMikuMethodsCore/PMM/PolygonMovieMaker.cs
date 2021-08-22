@@ -45,7 +45,7 @@ namespace MikuMikuMethods.PMM
         /// <summary>
         /// 背景と音声
         /// </summary>
-        public PmmMedia Media { get; } = new();
+        public PmmBackGroundMedia BackGround { get; } = new();
 
         /// <summary>
         /// 3Dビュー画面の状態
