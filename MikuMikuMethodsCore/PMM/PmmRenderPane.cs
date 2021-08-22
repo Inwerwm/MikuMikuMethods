@@ -69,6 +69,5 @@
         /// 地面影の透明化
         /// </summary>
         public bool EnableTransparentGroundShadow { get; set; }
-
     }
 }
