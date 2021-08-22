@@ -21,8 +21,10 @@ namespace TestWithConsole
             WL(miku.Name);
             Func<MikuMikuMethods.Binary.PMM.Frame.PmmBoneFrame, string> boneFrameInfo = f => $"ID:{f.Index}, Time:{f.Frame}, Offset:{f.Offset}, PreID:{f.PreviousFrameIndex}, PostID:{f.NextFrameIndex}";
             WLL(miku.BoneFrames.Select(boneFrameInfo).PrintLn());
-            WL($"初期ボーンフレーム数:{miku.InitialBoneFrames.Count}");
+            WLL($"初期ボーンフレーム数:{miku.InitialBoneFrames.Count}");
             //WLL(miku.InitialBoneFrames.Select(boneFrameInfo).PrintLn());
+
+            WLL($"FPS制限:{pmm.ViewConfig.FPSLimit}");
         }
     }
 
