@@ -1,9 +1,6 @@
 ﻿using MikuMikuMethods.Common;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Linq;
 
 namespace MikuMikuMethods.PMM
 {
@@ -73,54 +70,8 @@ namespace MikuMikuMethods.PMM
 
         public PolygonMovieMaker()
         {
-            _Accessories.CollectionChanged += SyncOrders(new[] { _AccessoryRenderOrder });
-            _Models.CollectionChanged += SyncOrders(new[] { _ModelRenderOrder, _ModelCalculateOrder });
-
-            NotifyCollectionChangedEventHandler SyncOrders<T>(IEnumerable<List<T>> orderLists) where T : IRelationableElement<T> =>
-                (sender, e) =>
-                {
-                    foreach (var list in orderLists)
-                    {
-                        switch (e.Action)
-                        {
-                            case NotifyCollectionChangedAction.Add:
-                                AddAll(e.NewItems?.Cast<T>() ?? Array.Empty<T>());
-                                break;
-                            case NotifyCollectionChangedAction.Remove:
-                                RemoveAll(e.OldItems?.Cast<T>() ?? Array.Empty<T>());
-                                break;
-                            case NotifyCollectionChangedAction.Replace:
-                                RemoveAll(e.OldItems?.Cast<T>());
-                                AddAll(e.NewItems?.Cast<T>() ?? Array.Empty<T>());
-                                break;
-                            case NotifyCollectionChangedAction.Reset:
-                                RemoveAll(list.ToArray());
-                                AddAll(sender as IEnumerable<T> ?? Array.Empty<T>());
-                                break;
-                            case NotifyCollectionChangedAction.Move:
-                            default:
-                                break;
-                        }
-
-                        void RemoveAll(IEnumerable<T> items)
-                        {
-                            foreach (T item in items)
-                            {
-                                list.Remove(item);
-                                item.RemoveRelation();
-                            }
-                        }
-
-                        void AddAll(IEnumerable<T> items)
-                        {
-                            foreach (T item in items)
-                            {
-                                list.Add(item);
-                                item.AddRelation(orderLists);
-                            }
-                        }
-                    }
-                };
+            _Accessories.CollectionChanged += IRelationableElement<PmmAccessory>.SyncOrders(new[] { _AccessoryRenderOrder });
+            _Models.CollectionChanged += IRelationableElement<PmmModel>.SyncOrders(new[] { _ModelRenderOrder, _ModelCalculateOrder });
         }
     }
 }

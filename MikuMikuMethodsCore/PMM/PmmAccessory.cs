@@ -18,34 +18,14 @@ namespace MikuMikuMethods.PMM
         {
             _RenderOrderCollection = null;
         }
-        public bool RegisteredToPmm => _RenderOrderCollection?.Contains(this) ?? false;
-
         /// <summary>
         /// 描画順
         /// <para>get/set 共に PolygonMovieMaker クラスに属していなければ例外を吐く</para>
         /// </summary>
         public byte RenderOrder
         {
-            get => RegisteredToPmm? (byte)_RenderOrderCollection.IndexOf(this) : throw new InvalidOperationException("描画順操作は PolygonMovieMaker クラスに登録されていなければできません。");
-            set
-            {
-                if (!RegisteredToPmm)
-                {
-                    throw new InvalidOperationException("描画順操作は PolygonMovieMaker クラスに登録されていなければできません。");
-                }
-
-                var oldIndex = _RenderOrderCollection.IndexOf(this);
-                _RenderOrderCollection.Remove(this);
-                try
-                {
-                    _RenderOrderCollection.Insert(value, this);
-                }
-                catch (Exception)
-                {
-                    _RenderOrderCollection.Insert(oldIndex, this);
-                    throw;
-                }
-            }
+            get => IRelationableElement<PmmAccessory>.GetOrder(this, _RenderOrderCollection, "描画");
+            set => IRelationableElement<PmmAccessory>.SetOrder(this, _RenderOrderCollection, "描画", value);
         }
 
         /// <summary>
@@ -83,7 +63,7 @@ namespace MikuMikuMethods.PMM
                 {
                     if (value.IsWithin(0, 1))
                         transparency = value;
-                    else 
+                    else
                         throw new ArgumentOutOfRangeException("透明度は [0, 1] の範囲である必要があります。");
                 }
             }
