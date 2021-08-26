@@ -7,18 +7,29 @@ using System.Numerics;
 
 namespace MikuMikuMethods.PMM
 {
-    public class PmmAccessory
+    public class PmmAccessory : IRelationableElement<PmmAccessory>
     {
-        internal static List<PmmAccessory> _RenderOrderCollection { get; set; }
+        internal List<PmmAccessory> _RenderOrderCollection { get; set; }
+        void IRelationableElement<PmmAccessory>.AddRelation(List<PmmAccessory> list)
+        {
+            _RenderOrderCollection = list;
+        }
+        void IRelationableElement<PmmAccessory>.RemoveRelation()
+        {
+            _RenderOrderCollection = null;
+        }
+        public bool RegisteredToPmm() => _RenderOrderCollection?.Contains(this) ?? false;
+
         /// <summary>
         /// 描画順
+        /// <para>get/set 共に PolygonMovieMaker クラスに属していなければ例外を吐く</para>
         /// </summary>
         public byte RenderOrder
         {
-            get => _RenderOrderCollection.Contains(this) ? (byte)_RenderOrderCollection.IndexOf(this) : throw new InvalidOperationException("描画順操作は PolygonMovieMaker クラスに登録されていなければできません。");
+            get => RegisteredToPmm() ? (byte)_RenderOrderCollection.IndexOf(this) : throw new InvalidOperationException("描画順操作は PolygonMovieMaker クラスに登録されていなければできません。");
             set
             {
-                if (!_RenderOrderCollection.Contains(this))
+                if (!RegisteredToPmm())
                 {
                     throw new InvalidOperationException("描画順操作は PolygonMovieMaker クラスに登録されていなければできません。");
                 }

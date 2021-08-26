@@ -5,17 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MikuMikuMethods.PMM;
+using MikuMikuMethods.PMM.Frame;
 
 namespace UnitTest
 {
     [TestClass]
-    public class MyTestClass
+    public class UnitTestPmm
     {
         [TestMethod]
         public void Test_Asc_TransAndVisible()
         {
-            var tv = PmmAccessory.SeparateTransAndVisible(45);
-            var re = PmmAccessory.CreateTransAndVisible(tv.Transparency, tv.Visible);
+            var tv = PmmAccessoryFrame.SeparateTransAndVisible(45);
+            var re = PmmAccessoryFrame.CreateTransAndVisible(tv.Transparency, tv.Visible);
 
             Assert.IsTrue(tv.Visible);
             Assert.AreEqual(0.78f, tv.Transparency);
@@ -104,6 +105,17 @@ namespace UnitTest
             pmm.Accessories.Add(ascA);
             pmm.Accessories.Add(ascB);
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => ascA.RenderOrder = 2);
+
+            // RenderOrder の get/set は pmm に組み込まれてないとできない
+            Assert.ThrowsException<InvalidOperationException>(() => Console.WriteLine(ascC.RenderOrder));
+            Assert.ThrowsException<InvalidOperationException>(() => ascC.RenderOrder = 0);
+
+            // 違うpmmで異なる描画順が割り振られる
+            var pmm2 = new PolygonMovieMaker();
+            pmm2.Accessories.Add(ascC);
+            pmm2.Accessories.Add(ascD);
+            Assert.AreEqual(0, ascA.RenderOrder);
+            Assert.AreEqual(0, ascC.RenderOrder);
         }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Linq;
 
 namespace MikuMikuMethods.PMM
 {
@@ -68,11 +69,9 @@ namespace MikuMikuMethods.PMM
 
         public PolygonMovieMaker()
         {
-            PmmAccessory._RenderOrderCollection = _AccessoriyRenderOrder;
-
             _Accessories.CollectionChanged += SyncOrders(new[] { _AccessoriyRenderOrder });
 
-            NotifyCollectionChangedEventHandler SyncOrders<T>(IEnumerable<List<T>> orderLists) =>
+            NotifyCollectionChangedEventHandler SyncOrders<T>(IEnumerable<List<T>> orderLists) where T : IRelationableElement<T> =>
                 (sender, e) =>
                 {
                     foreach (var list in orderLists)
@@ -80,44 +79,43 @@ namespace MikuMikuMethods.PMM
                         switch (e.Action)
                         {
                             case NotifyCollectionChangedAction.Add:
-                                AddNewItems<T>(e, list);
+                                AddAll(e.NewItems?.Cast<T>() ?? Array.Empty<T>());
                                 break;
                             case NotifyCollectionChangedAction.Remove:
-                                RemoveOldItems<T>(e, list);
+                                RemoveAll(e.OldItems?.Cast<T>() ?? Array.Empty<T>());
                                 break;
                             case NotifyCollectionChangedAction.Replace:
-                                RemoveOldItems<T>(e, list);
-                                AddNewItems<T>(e, list);
+                                RemoveAll(e.OldItems?.Cast<T>());
+                                AddAll(e.NewItems?.Cast<T>() ?? Array.Empty<T>());
                                 break;
                             case NotifyCollectionChangedAction.Reset:
-                                list.Clear();
-                                foreach (T item in sender as IEnumerable<T> ?? Array.Empty<T>())
-                                {
-                                    list.Add(item);
-                                }
+                                RemoveAll(list.ToArray());
+                                AddAll(sender as IEnumerable<T> ?? Array.Empty<T>());
                                 break;
                             case NotifyCollectionChangedAction.Move:
                             default:
                                 break;
                         }
+
+                        void RemoveAll(IEnumerable<T> items)
+                        {
+                            foreach (T item in items)
+                            {
+                                list.Remove(item);
+                                item.RemoveRelation();
+                            }
+                        }
+
+                        void AddAll(IEnumerable<T> items)
+                        {
+                            foreach (T item in items)
+                            {
+                                list.Add(item);
+                                item.AddRelation(list);
+                            }
+                        }
                     }
                 };
-
-            static void RemoveOldItems<T>(NotifyCollectionChangedEventArgs e, List<T> list)
-            {
-                foreach (T item in e.OldItems ?? Array.Empty<T>())
-                {
-                    list.Remove(item);
-                }
-            }
-
-            static void AddNewItems<T>(NotifyCollectionChangedEventArgs e, List<T> list)
-            {
-                foreach (T item in e.NewItems ?? Array.Empty<T>())
-                {
-                    list.Add(item);
-                }
-            }
         }
     }
 }
