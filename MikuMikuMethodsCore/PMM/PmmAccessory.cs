@@ -34,8 +34,17 @@ namespace MikuMikuMethods.PMM
                     throw new InvalidOperationException("描画順操作は PolygonMovieMaker クラスに登録されていなければできません。");
                 }
 
+                var oldIndex = _RenderOrderCollection.IndexOf(this);
                 _RenderOrderCollection.Remove(this);
-                _RenderOrderCollection.Insert(value, this);
+                try
+                {
+                    _RenderOrderCollection.Insert(value, this);
+                }
+                catch (Exception)
+                {
+                    _RenderOrderCollection.Insert(oldIndex, this);
+                    throw;
+                }
             }
         }
 
