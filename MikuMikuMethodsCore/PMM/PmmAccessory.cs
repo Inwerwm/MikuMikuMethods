@@ -20,7 +20,9 @@ namespace MikuMikuMethods.PMM
         }
         /// <summary>
         /// 描画順
-        /// <para>get/set 共に PolygonMovieMaker クラスに属していなければ例外を吐く</para>
+        /// <para>get/set 共にアクセサリが PolygonMovieMaker クラスに属していなければ例外を吐く</para>
+        /// <para>PMM クラスにアクセサリを追加すると追加先の文脈に応じて順序が定まるようになる</para>
+        /// <para>複数の PMM クラスで共有すると順序に不整合が発生するのでアクセサリ自体を Clone すること</para>
         /// </summary>
         public byte RenderOrder
         {

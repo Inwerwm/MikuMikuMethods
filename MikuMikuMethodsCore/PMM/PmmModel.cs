@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace MikuMikuMethods.PMM
@@ -20,16 +19,21 @@ namespace MikuMikuMethods.PMM
         }
         /// <summary>
         /// 描画順
-        /// <para>get/set 共に PolygonMovieMaker クラスに属していなければ例外を吐く</para>
+        /// <para>get/set 共にモデルが PolygonMovieMaker クラスに属していなければ例外を吐く</para>
+        /// <para>PMM クラスにモデルを追加すると追加先の文脈に応じて順序が定まるようになる</para>
+        /// <para>複数の PMM クラスで共有すると順序に不整合が発生するのでモデル自体を Clone すること</para>
         /// </summary>
         public byte RenderOrder
         {
             get => IRelationableElement<PmmModel>.GetOrder(this, _RenderOrderCollection, "描画");
             set => IRelationableElement<PmmModel>.SetOrder(this, _RenderOrderCollection, "描画", value);
-        }        /// <summary>
-                 /// 計算順
-                 /// <para>get/set 共に PolygonMovieMaker クラスに属していなければ例外を吐く</para>
-                 /// </summary>
+        }
+        /// <summary>
+        /// 計算順
+        /// <para>get/set 共にモデルが PolygonMovieMaker クラスに属していなければ例外を吐く</para>
+        /// <para>PMM クラスにモデルを追加すると追加先の文脈に応じて順序が定まるようになる</para>
+        /// <para>複数の PMM クラスで共有すると順序に不整合が発生するので、共有はせずモデル自体を Clone すること</para>
+        /// </summary>
         public byte CalculateOrder
         {
             get => IRelationableElement<PmmModel>.GetOrder(this, _CalculateOrderCollection, "計算");
