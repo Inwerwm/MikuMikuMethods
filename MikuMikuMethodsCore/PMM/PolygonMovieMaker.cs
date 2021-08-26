@@ -1,5 +1,8 @@
 ﻿using MikuMikuMethods.Common;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace MikuMikuMethods.PMM
 {
@@ -8,6 +11,9 @@ namespace MikuMikuMethods.PMM
     /// </summary>
     public class PolygonMovieMaker
     {
+        internal ObservableCollection<PmmAccessory> _Accessories { get; } = new();
+        internal List<PmmAccessory> _AccessoriyRenderOrder { get; } = new();
+
         /// <summary>
         /// PMMファイルバージョン
         /// </summary>
@@ -36,7 +42,7 @@ namespace MikuMikuMethods.PMM
         /// <summary>
         /// アクセサリー
         /// </summary>
-        public List<PmmAccessory> Accessories { get; } = new();
+        public IList<PmmAccessory> Accessories => _Accessories;
         /// <summary>
         /// モデル
         /// </summary>
@@ -59,5 +65,59 @@ namespace MikuMikuMethods.PMM
         /// 各種操作パネル画面の状態
         /// </summary>
         public PmmPanelPane PanelPane { get; } = new();
+
+        public PolygonMovieMaker()
+        {
+            PmmAccessory._RenderOrderCollection = _AccessoriyRenderOrder;
+
+            _Accessories.CollectionChanged += SyncOrders(new[] { _AccessoriyRenderOrder });
+
+            NotifyCollectionChangedEventHandler SyncOrders<T>(IEnumerable<List<T>> orderLists) =>
+                (sender, e) =>
+                {
+                    foreach (var list in orderLists)
+                    {
+                        switch (e.Action)
+                        {
+                            case NotifyCollectionChangedAction.Add:
+                                AddNewItems<T>(e, list);
+                                break;
+                            case NotifyCollectionChangedAction.Remove:
+                                RemoveOldItems<T>(e, list);
+                                break;
+                            case NotifyCollectionChangedAction.Replace:
+                                RemoveOldItems<T>(e, list);
+                                AddNewItems<T>(e, list);
+                                break;
+                            case NotifyCollectionChangedAction.Reset:
+                                list.Clear();
+                                foreach (T item in sender as IEnumerable<T> ?? Array.Empty<T>())
+                                {
+                                    list.Add(item);
+                                }
+                                break;
+                            case NotifyCollectionChangedAction.Move:
+                            default:
+                                break;
+                        }
+                    }
+                };
+
+            static void RemoveOldItems<T>(NotifyCollectionChangedEventArgs e, List<T> list)
+            {
+                foreach (T item in e.OldItems ?? Array.Empty<T>())
+                {
+                    list.Remove(item);
+                }
+            }
+
+            static void AddNewItems<T>(NotifyCollectionChangedEventArgs e, List<T> list)
+            {
+                foreach (T item in e.NewItems ?? Array.Empty<T>())
+                {
+                    list.Add(item);
+                }
+            }
+        }
     }
 }
