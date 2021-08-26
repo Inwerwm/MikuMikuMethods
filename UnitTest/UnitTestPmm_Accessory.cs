@@ -10,7 +10,7 @@ using MikuMikuMethods.PMM.Frame;
 namespace UnitTest
 {
     [TestClass]
-    public class UnitTestPmm
+    public class UnitTestPmm_Accessory
     {
         [TestMethod]
         public void Test_Asc_TransAndVisible()

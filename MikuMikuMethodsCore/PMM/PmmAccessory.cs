@@ -18,7 +18,7 @@ namespace MikuMikuMethods.PMM
         {
             _RenderOrderCollection = null;
         }
-        public bool RegisteredToPmm() => _RenderOrderCollection?.Contains(this) ?? false;
+        public bool RegisteredToPmm => _RenderOrderCollection?.Contains(this) ?? false;
 
         /// <summary>
         /// 描画順
@@ -26,10 +26,10 @@ namespace MikuMikuMethods.PMM
         /// </summary>
         public byte RenderOrder
         {
-            get => RegisteredToPmm() ? (byte)_RenderOrderCollection.IndexOf(this) : throw new InvalidOperationException("描画順操作は PolygonMovieMaker クラスに登録されていなければできません。");
+            get => RegisteredToPmm? (byte)_RenderOrderCollection.IndexOf(this) : throw new InvalidOperationException("描画順操作は PolygonMovieMaker クラスに登録されていなければできません。");
             set
             {
-                if (!RegisteredToPmm())
+                if (!RegisteredToPmm)
                 {
                     throw new InvalidOperationException("描画順操作は PolygonMovieMaker クラスに登録されていなければできません。");
                 }

@@ -15,6 +15,10 @@ namespace MikuMikuMethods.PMM
         internal ObservableCollection<PmmAccessory> _Accessories { get; } = new();
         internal List<PmmAccessory> _AccessoriyRenderOrder { get; } = new();
 
+        internal ObservableCollection<PmmModel> _Models { get; } = new();
+        internal List<PmmModel> _ModelRenderOrder { get; } = new();
+        internal List<PmmModel> _ModelCalculateOrder { get; } = new();
+
         /// <summary>
         /// PMMファイルバージョン
         /// </summary>
@@ -47,7 +51,7 @@ namespace MikuMikuMethods.PMM
         /// <summary>
         /// モデル
         /// </summary>
-        public List<PmmModel> Models { get; } = new();
+        public IList<PmmModel> Models => _Models;
 
         /// <summary>
         /// 背景と音声
@@ -70,6 +74,7 @@ namespace MikuMikuMethods.PMM
         public PolygonMovieMaker()
         {
             _Accessories.CollectionChanged += SyncOrders(new[] { _AccessoriyRenderOrder });
+            _Models.CollectionChanged += SyncOrders(new[] { _ModelRenderOrder, _ModelCalculateOrder });
 
             NotifyCollectionChangedEventHandler SyncOrders<T>(IEnumerable<List<T>> orderLists) where T : IRelationableElement<T> =>
                 (sender, e) =>
