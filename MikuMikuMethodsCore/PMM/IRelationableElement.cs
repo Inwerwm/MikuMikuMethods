@@ -45,8 +45,7 @@ namespace MikuMikuMethods.PMM
                             RemoveAll(e.OldItems?.Cast<T>() ?? Array.Empty<T>());
                             break;
                         case NotifyCollectionChangedAction.Replace:
-                            RemoveAll(e.OldItems?.Cast<T>());
-                            AddAll(e.NewItems?.Cast<T>() ?? Array.Empty<T>());
+                            ReplaceAll();
                             break;
                         case NotifyCollectionChangedAction.Reset:
                             RemoveAll(list.ToArray());
@@ -55,6 +54,19 @@ namespace MikuMikuMethods.PMM
                         case NotifyCollectionChangedAction.Move:
                         default:
                             break;
+                    }
+
+                    void ReplaceAll()
+                    {
+                        foreach (var item in e.OldItems?.Cast<T>())
+                        {
+                            item.RemoveRelation();
+                        }
+                        foreach (var item in e.NewItems?.Cast<T>().Select((Item, Id) => (Item, Id)))
+                        {
+                            item.Item.AddRelation(orderLists);
+                            list[e.OldStartingIndex + item.Id] = item.Item;
+                        }
                     }
 
                     void RemoveAll(IEnumerable<T> items)

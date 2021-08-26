@@ -139,6 +139,15 @@ namespace UnitTest
             Assert.AreEqual(0, modelA.CalculateOrder);
             Assert.AreEqual(0, modelC.RenderOrder);
             Assert.AreEqual(0, modelC.CalculateOrder);
+
+            // 代入
+            var oldRO = modelC.RenderOrder;
+            var oldCO = modelC.CalculateOrder;
+            pmm2.Models[0] = modelA;
+            Assert.AreEqual(oldRO, modelA.RenderOrder);
+            Assert.AreEqual(oldCO, modelA.RenderOrder);
+            Assert.ThrowsException<InvalidOperationException>(() => Console.WriteLine(modelC.RenderOrder));
+            Assert.ThrowsException<InvalidOperationException>(() => Console.WriteLine(modelC.CalculateOrder));
         }
     }
 }
