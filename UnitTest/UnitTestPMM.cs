@@ -101,7 +101,7 @@ namespace UnitTest
             Assert.AreEqual(0, pmm._Accessories.Count);
             Assert.AreEqual(0, pmm._AccessoriyRenderOrder.Count);
 
-            // 要素数より大きい数が指定される
+            // 要素数より大きい数が指定されると例外を吐く
             pmm.Accessories.Add(ascA);
             pmm.Accessories.Add(ascB);
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => ascA.RenderOrder = 2);
