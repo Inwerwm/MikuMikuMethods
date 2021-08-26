@@ -34,13 +34,13 @@ namespace MikuMikuMethods
         /// バイト整数で値を保持する色構造体から変換
         /// </summary>
         /// <param name="color">変換元の色</param>
-        public void FromColor(Color color)
+        public static ColorF FromColor(Color color) => new()
         {
-            R = color.R / 255.0f;
-            G = color.G / 255.0f;
-            B = color.B / 255.0f;
-            A = color.A / 255.0f;
-        }
+            R = color.R / 255.0f,
+            G = color.G / 255.0f,
+            B = color.B / 255.0f,
+            A = color.A / 255.0f
+        };
 
         /// <summary>
         /// 透明度と元色を指定して色構造体を作成
