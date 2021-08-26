@@ -25,6 +25,11 @@ namespace TestWithConsole
             //WLL(miku.InitialBoneFrames.Select(boneFrameInfo).PrintLn());
 
             WLL($"FPS制限:{pmm.ViewConfig.FPSLimit}");
+
+            MikuMikuMethods.Binary.PMM.PmmAccessory negi = pmm.Accessories[0];
+            WL($"アクセサリ表示: {negi.Uncomitted.OpacityAndVisible & 0x1}");
+            WLL($"アクセサリ透明度数値: {(100 - (negi.Uncomitted.OpacityAndVisible >> 1)) / 100f}");
+
         }
     }
 
