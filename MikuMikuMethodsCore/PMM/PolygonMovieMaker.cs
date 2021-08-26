@@ -111,7 +111,7 @@ namespace MikuMikuMethods.PMM
                             foreach (T item in items)
                             {
                                 list.Add(item);
-                                item.AddRelation(list);
+                                item.AddRelation(orderLists);
                             }
                         }
                     }

@@ -9,7 +9,7 @@ namespace MikuMikuMethods.PMM
     internal interface IRelationableElement<T> where T : IRelationableElement<T>
     {
         bool RegisteredToPmm();
-        internal void AddRelation(List<T> list);
+        internal void AddRelation(IEnumerable<List<T>> lists);
         internal void RemoveRelation();
     }
 }

@@ -10,9 +10,9 @@ namespace MikuMikuMethods.PMM
     public class PmmAccessory : IRelationableElement<PmmAccessory>
     {
         internal List<PmmAccessory> _RenderOrderCollection { get; set; }
-        void IRelationableElement<PmmAccessory>.AddRelation(List<PmmAccessory> list)
+        void IRelationableElement<PmmAccessory>.AddRelation(IEnumerable<List<PmmAccessory>> lists)
         {
-            _RenderOrderCollection = list;
+            _RenderOrderCollection = lists.ElementAt(0);
         }
         void IRelationableElement<PmmAccessory>.RemoveRelation()
         {
