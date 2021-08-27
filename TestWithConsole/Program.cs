@@ -18,6 +18,7 @@ namespace TestWithConsole
             WLL(pmm.Models.PrintLn());
 
             var miku = pmm.Models[0];
+            var haku = pmm.Models[1];
             WL(miku.Name);
             Func<MikuMikuMethods.Binary.PMM.Frame.PmmBoneFrame, string> boneFrameInfo = f => $"ID:{f.Index}, Time:{f.Frame}, Offset:{f.Offset}, PreID:{f.PreviousFrameIndex}, PostID:{f.NextFrameIndex}";
             WLL(miku.BoneFrames.Select(boneFrameInfo).PrintLn());
@@ -30,7 +31,9 @@ namespace TestWithConsole
             WL($"アクセサリ表示: {negi.Uncomitted.OpacityAndVisible}");
             WL($"アクセサリ表示: {negi.Uncomitted.OpacityAndVisible & 0x1}");
             WLL($"アクセサリ透明度数値: {(100 - (negi.Uncomitted.OpacityAndVisible >> 1)) / 100f}");
-            
+
+            WL($"ミク-エッジ太さ: {miku.RenderConfig.EdgeWidth}");
+            WLL($"ハク-エッジ太さ: {haku.RenderConfig.EdgeWidth}");
         }
     }
 
