@@ -7,6 +7,10 @@ using System.Numerics;
 
 namespace MikuMikuMethods.PMM
 {
+    /// <summary>
+    /// PMM用アクセサリークラス
+    /// <para>複数の PMM クラスで共有すると描画/計算順に不整合が発生するので Clone した別インスタンスを入れること</para>
+    /// </summary>
     public class PmmAccessory : IRelationableElement<PmmAccessory>
     {
         internal List<PmmAccessory> _RenderOrderCollection { get; set; }
