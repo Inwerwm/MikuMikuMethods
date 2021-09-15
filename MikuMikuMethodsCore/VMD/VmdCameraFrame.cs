@@ -8,7 +8,7 @@ namespace MikuMikuMethods.VMD
     /// <summary>
     /// カメラフレーム
     /// </summary>
-    public class VmdCameraFrame : VmdCameraTypeFrame
+    public class VmdCameraFrame : VmdCameraTypeFrame, IVmdInterpolatable
     {
         /// <summary>
         /// フレームの種類

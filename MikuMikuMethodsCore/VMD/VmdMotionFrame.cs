@@ -8,7 +8,7 @@ namespace MikuMikuMethods.VMD
     /// <summary>
     /// モーションフレーム
     /// </summary>
-    public class VmdMotionFrame : VmdModelTypeFrame
+    public class VmdMotionFrame : VmdModelTypeFrame, IVmdInterpolatable
     {
         /// <summary>
         /// フレームの種類
