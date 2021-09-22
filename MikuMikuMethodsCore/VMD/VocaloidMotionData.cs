@@ -1,5 +1,6 @@
 ﻿using MikuMikuMethods.Extension;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace MikuMikuMethods.VMD
     /// <summary>
     /// VMDファイルの内部表現
     /// </summary>
-    public class VocaloidMotionData
+    public class VocaloidMotionData: IEnumerable<IVmdFrame>
     {
         /// <summary>
         /// ヘッダー
@@ -28,7 +29,7 @@ namespace MikuMikuMethods.VMD
 
         /// <summary>
         /// <para>全てのフレーム</para>
-        /// <para>各種フレームの結合体</para>
+        /// <para>各種フレームの結合体なのでAddしても無駄</para>
         /// </summary>
         public IEnumerable<IVmdFrame> Frames =>
             CameraFrames.Cast<IVmdFrame>()
@@ -115,6 +116,37 @@ namespace MikuMikuMethods.VMD
         }
 
         /// <summary>
+        /// フレームを追加する
+        /// </summary>
+        /// <param name="frame">追加するフレーム</param>
+        public void AddFrame(IVmdFrame frame)
+        {
+            switch (frame.FrameType)
+            {
+                case VmdFrameType.Camera:
+                    CameraFrames.Add((VmdCameraFrame)frame);
+                    break;
+                case VmdFrameType.Light:
+                    LightFrames.Add((VmdLightFrame)frame);
+                    break;
+                case VmdFrameType.Shadow:
+                    ShadowFrames.Add((VmdShadowFrame)frame);
+                    break;
+                case VmdFrameType.Property:
+                    PropertyFrames.Add((VmdPropertyFrame)frame);
+                    break;
+                case VmdFrameType.Morph:
+                    MorphFrames.Add((VmdMorphFrame)frame);
+                    break;
+                case VmdFrameType.Motion:
+                    MotionFrames.Add((VmdMotionFrame)frame);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        /// <summary>
         /// ファイルから読込
         /// </summary>
         /// <param name="path">読み込むファイルのパス</param>
@@ -186,6 +218,16 @@ namespace MikuMikuMethods.VMD
             // 時間で降順に書き込むと読み込みが早くなる(らしい)
             foreach (var f in frames.OrderByDescending(f => f.Frame))
                 f.Write(writer);
+        }
+
+        public IEnumerator<IVmdFrame> GetEnumerator()
+        {
+            return Frames.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable)Frames).GetEnumerator();
         }
     }
 }
