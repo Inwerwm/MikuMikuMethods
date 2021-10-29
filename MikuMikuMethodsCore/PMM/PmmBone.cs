@@ -7,5 +7,13 @@ namespace MikuMikuMethods.PMM
     {
         public string Name { get; set; }
         public List<PmmBoneFrame> Frames { get; } = new();
+        /// <summary>
+        /// IKボーンか
+        /// </summary>
+        public bool IsIK { get; set; }
+        /// <summary>
+        /// 外部親になれるか
+        /// </summary>
+        public bool CanBecomeOuterParent { get; set; }
     }
 }
