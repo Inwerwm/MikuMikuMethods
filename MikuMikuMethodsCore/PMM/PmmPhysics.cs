@@ -50,7 +50,7 @@ namespace MikuMikuMethods.PMM
         /// <summary>
         /// 物理演算モード
         /// </summary>
-        public PhysicsMode CurrentPhysicsMode { get; set; } = PhysicsMode.Always;
+        public PhysicsMode CurrentMode { get; set; } = PhysicsMode.Always;
         /// <summary>
         /// 物理床のOn/Off
         /// </summary>
