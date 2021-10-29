@@ -11,6 +11,5 @@ namespace MikuMikuMethods.PMM.Frame
     {
         public int Frame { get; set; }
         public bool IsSelected { get; set; }
-        public PmmModel Parent { get; set; }
     }
 }

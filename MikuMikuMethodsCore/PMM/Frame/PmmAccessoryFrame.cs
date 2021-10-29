@@ -6,9 +6,5 @@ namespace MikuMikuMethods.PMM.Frame
     {
         public int Frame { get; set; }
         public bool IsSelected { get; set; }
-        /// <summary>
-        /// 所属アクセサリー
-        /// </summary>
-        public PmmAccessory Parent { get; set; }
     }
 }

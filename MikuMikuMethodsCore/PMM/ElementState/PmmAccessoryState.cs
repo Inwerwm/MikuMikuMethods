@@ -26,6 +26,10 @@ namespace MikuMikuMethods.PMM.ElementState
                     throw new ArgumentOutOfRangeException("透明度は [0, 1] の範囲である必要があります。");
             }
         }
+        /// <summary>
+        /// 名前
+        /// </summary>
+        public string Name { get; set; }
 
         /// <summary>
         /// 親モデル
