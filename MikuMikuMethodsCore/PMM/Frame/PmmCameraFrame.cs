@@ -5,10 +5,11 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using MikuMikuMethods.PMM.ElementState;
 
 namespace MikuMikuMethods.PMM.Frame
 {
-    public class PmmCameraFrame : IPmmFrame
+    public class PmmCameraFrame : PmmCameraState, IPmmFrame
     {
         public int Frame { get; set; } = 0;
         public bool IsSelected { get; set; } = false;
@@ -17,23 +18,6 @@ namespace MikuMikuMethods.PMM.Frame
         /// カメラの距離
         /// </summary>
         public float Distance { get; set; } = 45;
-        /// <summary>
-        /// カメラの位置
-        /// </summary>
-        public Vector3 EyePosition { get; set; } = new(0, 10, 0);
-        /// <summary>
-        /// カメラの回転
-        /// </summary>
-        public Vector3 Rotation { get; set; } = new(0);
-        /// <summary>
-        /// <para>追従モデルのインデックス</para>
-        /// <para>-1 で非選択</para>
-        /// </summary>
-        public PmmModel FollowingModel { get; set; }
-        /// <summary>
-        /// 追従ボーンのインデックス
-        /// </summary>
-        public PmmBone FollowingBone { get; set; }
         /// <summary>
         /// 補間曲線
         /// </summary>
@@ -46,10 +30,6 @@ namespace MikuMikuMethods.PMM.Frame
             { InterpolationItem.Distance, new() },
             { InterpolationItem.ViewAngle, new() },
         });
-        /// <summary>
-        /// パースのOn/Off
-        /// </summary>
-        public bool EnablePerspective { get; set; } = true;
         /// <summary>
         /// 視野角
         /// </summary>

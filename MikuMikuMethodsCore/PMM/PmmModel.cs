@@ -1,4 +1,5 @@
-﻿using MikuMikuMethods.PMM.Frame;
+﻿using MikuMikuMethods.PMM.ElementState;
+using MikuMikuMethods.PMM.Frame;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -146,13 +147,6 @@ namespace MikuMikuMethods.PMM
             public int LastFrame { get; set; }
         }
 
-        public TemporaryConfigEditState Uncomitted { get; } = new();
-        public class TemporaryConfigEditState
-        {
-            /// <summary>
-            /// 表示
-            /// </summary>
-            public bool Visible { get; set; } = true;
-        }
+        public PmmModelConfigState UncomittedState { get; } = new();
     }
 }
