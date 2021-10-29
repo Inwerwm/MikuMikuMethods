@@ -30,9 +30,5 @@ namespace MikuMikuMethods.PMM.Frame
             { InterpolationItem.Distance, new() },
             { InterpolationItem.ViewAngle, new() },
         });
-        /// <summary>
-        /// 視野角
-        /// </summary>
-        public int ViewAngle { get; set; } = 30;
     }
 }

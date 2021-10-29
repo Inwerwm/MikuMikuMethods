@@ -28,5 +28,9 @@ namespace MikuMikuMethods.PMM.ElementState
         /// 視点追従先ボーン
         /// </summary>
         public PmmBone FollowingBone { get; set; }
+        /// <summary>
+        /// 視野角
+        /// </summary>
+        public int ViewAngle { get; set; } = 30;
     }
 }
