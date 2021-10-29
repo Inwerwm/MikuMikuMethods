@@ -60,9 +60,9 @@ namespace MikuMikuMethods.PMM
         /// </summary>
         public PmmRenderPane RenderPane { get; } = new();
         /// <summary>
-        /// キーフレーム編集画面の状態
+        /// 編集対象の状態
         /// </summary>
-        public PmmKeyFramePane KeyFramePane { get; } = new();
+        public PmmEditorState EditorState { get; } = new();
         /// <summary>
         /// 各種操作パネル画面の状態
         /// </summary>

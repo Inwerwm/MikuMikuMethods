@@ -1,6 +1,6 @@
 ﻿namespace MikuMikuMethods.PMM
 {
-    public class PmmKeyFramePane
+    public class PmmEditorState
     {
         /// <summary>
         /// 編集画面の表示幅
