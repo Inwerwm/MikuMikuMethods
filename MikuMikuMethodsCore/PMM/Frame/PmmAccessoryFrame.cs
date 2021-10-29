@@ -10,7 +10,5 @@ namespace MikuMikuMethods.PMM.Frame
         /// 所属アクセサリー
         /// </summary>
         public PmmAccessory Parent { get; set; }
-
-        public bool Equals(IPmmFrame other) => other is PmmAccessoryFrame f && f.Parent == Parent && f.Frame == Frame;
     }
 }

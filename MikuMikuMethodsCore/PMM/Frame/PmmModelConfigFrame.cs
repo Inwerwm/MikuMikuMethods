@@ -12,8 +12,5 @@ namespace MikuMikuMethods.PMM.Frame
         public int Frame { get; set; }
         public bool IsSelected { get; set; }
         public PmmModel Parent { get; set; }
-
-        public bool Equals(IPmmFrame other) =>
-            other is PmmModelConfigFrame f && f.Parent == Parent && f.Frame == Frame;
     }
 }

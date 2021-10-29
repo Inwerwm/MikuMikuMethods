@@ -20,8 +20,5 @@ namespace MikuMikuMethods.PMM.Frame
         /// 現在の方向
         /// </summary>
         public Vector3 Direction { get; set; } = new(0, -1, 0);
-
-        public bool Equals(IPmmFrame other) =>
-            other is PmmGravityFrame f && Frame == f.Frame;
     }
 }

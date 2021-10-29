@@ -32,7 +32,5 @@
             /// </summary>
             Mode2,
         }
-
-        public bool Equals(IPmmFrame other) => other is PmmSelfShadowFrame f && f.Frame == Frame;
     }
 }

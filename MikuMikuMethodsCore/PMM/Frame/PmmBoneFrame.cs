@@ -11,8 +11,5 @@ namespace MikuMikuMethods.PMM.Frame
     {
         public int Frame { get; set; } = 0;
         public bool IsSelected { get; set; } = false;
-
-        public bool Equals(IPmmFrame other) =>
-            other is PmmBoneFrame f && f.Frame == Frame && f.Name == Name;
     }
 }

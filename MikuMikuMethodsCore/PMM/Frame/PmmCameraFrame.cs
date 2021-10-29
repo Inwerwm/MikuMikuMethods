@@ -34,8 +34,5 @@ namespace MikuMikuMethods.PMM.Frame
         /// 視野角
         /// </summary>
         public int ViewAngle { get; set; } = 30;
-
-        public bool Equals(IPmmFrame other) =>
-            other is PmmCameraFrame f && f.Frame == Frame;
     }
 }
