@@ -1,6 +1,6 @@
 ﻿namespace MikuMikuMethods.PMM
 {
-    public class PmmBone : IPmmModelElement
+    public class PmmMorph : IPmmModelElement
     {
         public string Name { get; set; }
     }
