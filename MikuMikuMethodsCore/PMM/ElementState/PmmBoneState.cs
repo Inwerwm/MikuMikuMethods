@@ -16,12 +16,12 @@ namespace MikuMikuMethods.PMM.ElementState
         /// <summary>
         /// 移動量
         /// </summary>
-        public Vector3 Offset { get; set; }
+        public Vector3 Movement { get; set; }
 
         /// <summary>
         /// 回転量
         /// </summary>
-        public Quaternion Rotate { get; set; }
+        public Quaternion Rotation { get; set; }
 
         /// <summary>
         /// 物理が有効か
