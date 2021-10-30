@@ -182,7 +182,7 @@ namespace MikuMikuMethods.PMM.IO
             }
 
             // ボーンフレームの読込
-            ReadFrames(
+            ReadFramesThatRequireResolving(
                 reader,
                 model.Bones,
                 boneCount,
@@ -201,7 +201,7 @@ namespace MikuMikuMethods.PMM.IO
             }
 
             // モーフフレームの読込
-            ReadFrames(
+            ReadFramesThatRequireResolving(
                 reader,
                 model.Morphs,
                 morphCount,
@@ -339,7 +339,7 @@ namespace MikuMikuMethods.PMM.IO
         /// <param name="elementNextFrameDictionary">ボーン/モーフ名とそれに対応する次フレームIDの辞書</param>
         /// <param name="setName">フレームに所属する要素名を書き込む関数</param>
         /// <param name="addFrame">所属要素にフレームを追加する関数</param>
-        private static void ReadFrames(BinaryReader reader, IEnumerable<IPmmModelElement> targetElements, int elementCount, Func<BinaryReader, (IPmmFrame Frame, int PreviousFrameIndex, int NextFrameIndex)> readElementFrame, Dictionary<string, int?> elementNextFrameDictionary, Action<IPmmModelElement, IPmmFrame> addFrame)
+        private static void ReadFramesThatRequireResolving(BinaryReader reader, IEnumerable<IPmmModelElement> targetElements, int elementCount, Func<BinaryReader, (IPmmFrame Frame, int PreviousFrameIndex, int NextFrameIndex)> readElementFrame, Dictionary<string, int?> elementNextFrameDictionary, Action<IPmmModelElement, IPmmFrame> addFrame)
         {
             var elementFrameCount = reader.ReadInt32();
             var elementFrames = Enumerable.Range(0, elementFrameCount).Select(_ => readElementFrame(reader));
