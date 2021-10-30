@@ -27,11 +27,6 @@ namespace MikuMikuMethods.PMM.ElementState
             }
         }
         /// <summary>
-        /// 名前
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
         /// 親モデル
         /// </summary>
         public PmmModel ParentModel { get; set; }

@@ -9,10 +9,6 @@ namespace MikuMikuMethods.PMM.ElementState
     public class PmmMorphState
     {
         /// <summary>
-        /// モーフ名
-        /// </summary>
-        public string Name { get; set; }
-        /// <summary>
         /// 係数
         /// </summary>
         public float Weight { get; set; }

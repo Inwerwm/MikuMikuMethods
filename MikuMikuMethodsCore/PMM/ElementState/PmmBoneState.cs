@@ -10,10 +10,6 @@ namespace MikuMikuMethods.PMM.ElementState
     public class PmmBoneState
     {
         /// <summary>
-        /// ボーン名
-        /// </summary>
-        public string Name { get; set; }
-        /// <summary>
         /// 移動量
         /// </summary>
         public Vector3 Movement { get; set; }
