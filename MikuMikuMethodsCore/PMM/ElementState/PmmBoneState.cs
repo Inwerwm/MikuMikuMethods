@@ -27,15 +27,5 @@ namespace MikuMikuMethods.PMM.ElementState
         /// 物理が有効か
         /// </summary>
         public bool EnablePhysic { get; set; }
-
-        /// <summary>
-        /// 現在選択状態か
-        /// </summary>
-        public bool RowIsSelected { get; set; }
-
-        /// <summary>
-        /// 未確定ボーンか
-        /// </summary>
-        public bool IsThis { get; set; }
     }
 }
