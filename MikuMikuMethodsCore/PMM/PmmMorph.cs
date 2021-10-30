@@ -1,4 +1,5 @@
-﻿using MikuMikuMethods.PMM.Frame;
+﻿using MikuMikuMethods.PMM.ElementState;
+using MikuMikuMethods.PMM.Frame;
 using System.Collections.Generic;
 
 namespace MikuMikuMethods.PMM
@@ -7,5 +8,7 @@ namespace MikuMikuMethods.PMM
     {
         public string Name { get; set; }
         public List<PmmMorphFrame> Frames { get; } = new();
+
+        public PmmMorphState Current { get; } = new();
     }
 }
