@@ -26,10 +26,10 @@ namespace MikuMikuMethods.PMM.ElementState
         ///     </item>
         ///     <item>
         ///         <term>Value</term>
-        ///         <description>外部親ボーン</description>
+        ///         <description>外部親設定情報</description>
         ///     </item>
         /// </list>
         /// </summary>
-        public Dictionary<PmmBone, PmmBone> OuterParent { get; } = new();
+        public Dictionary<PmmBone, PmmOuterParentState> OuterParent { get; } = new();
     }
 }
