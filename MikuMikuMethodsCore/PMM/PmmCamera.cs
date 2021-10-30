@@ -13,7 +13,7 @@ namespace MikuMikuMethods.PMM
         /// <summary>
         /// カメラの編集状態
         /// </summary>
-        public PmmCameraState UncomittedState { get; } = new();
+        public PmmCameraState Current { get; } = new();
 
         /// <summary>
         /// 視点追従のOn/Off

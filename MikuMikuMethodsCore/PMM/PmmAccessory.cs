@@ -47,6 +47,6 @@ namespace MikuMikuMethods.PMM
         public bool EnableAlphaBlend { get; set; } = false;
 
         public List<PmmAccessoryFrame> Frames { get; } = new();
-        public PmmAccessoryState UncomittedState { get; } = new();
+        public PmmAccessoryState Current { get; } = new();
     }
 }

@@ -7,6 +7,6 @@ namespace MikuMikuMethods.PMM
     public class PmmLight
     {
         public List<PmmLightFrame> Frames { get; } = new();
-        public PmmLightState UncomittedState { get; } = new();
+        public PmmLightState Current { get; } = new();
     }
 }

@@ -147,6 +147,6 @@ namespace MikuMikuMethods.PMM
             public int LastFrame { get; set; }
         }
 
-        public PmmModelConfigState UncomittedState { get; } = new();
+        public PmmModelConfigState Current { get; } = new();
     }
 }
