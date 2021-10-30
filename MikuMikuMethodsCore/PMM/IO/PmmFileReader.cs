@@ -86,6 +86,8 @@ namespace MikuMikuMethods.PMM.IO
                         model.CurrentConfig.OuterParent[relation.Key].ParentModel = opModel;
                         model.CurrentConfig.OuterParent[relation.Key].ParentBone = opModel.Bones[relation.Value.BoneID];
                     }
+
+                    ReadCamera(reader, pmm.Camera);
                 }
 
                 return pmm;
@@ -98,6 +100,11 @@ namespace MikuMikuMethods.PMM.IO
             {
                 OuterParentRelation = null;
             }
+        }
+
+        private static void ReadCamera(BinaryReader reader, PmmCamera camera)
+        {
+            throw new NotImplementedException();
         }
 
         private static (PmmModel Model, byte RenderOrder, byte CalculateOrder) ReadModel(BinaryReader reader)
