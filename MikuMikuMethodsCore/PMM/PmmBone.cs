@@ -1,4 +1,5 @@
-﻿using MikuMikuMethods.PMM.Frame;
+﻿using MikuMikuMethods.PMM.ElementState;
+using MikuMikuMethods.PMM.Frame;
 using System.Collections.Generic;
 
 namespace MikuMikuMethods.PMM
@@ -15,5 +16,18 @@ namespace MikuMikuMethods.PMM
         /// 外部親になれるか
         /// </summary>
         public bool CanBecomeOuterParent { get; set; }
+
+        /// <summary>
+        /// 現在の変形状態
+        /// </summary>
+        public PmmBoneState Current { get; } = new();
+        /// <summary>
+        /// 編集画面で選択されているか
+        /// </summary>
+        public bool IsSelected { get; set; }
+        /// <summary>
+        /// 変形状態が確定されているか
+        /// </summary>
+        public bool IsCommitted { get; set; }
     }
 }
