@@ -87,8 +87,9 @@ namespace MikuMikuMethods.PMM.IO
                         model.CurrentConfig.OuterParent[relation.Key].ParentBone = opModel.Bones[relation.Value.BoneID];
                     }
 
-                    ReadCamera(reader, pmm.Camera);
                 }
+
+                ReadCamera(reader, pmm);
 
                 return pmm;
             }
@@ -102,9 +103,57 @@ namespace MikuMikuMethods.PMM.IO
             }
         }
 
-        private static void ReadCamera(BinaryReader reader, PmmCamera camera)
+        private static void ReadCamera(BinaryReader reader, PolygonMovieMaker pmm)
         {
-            throw new NotImplementedException();
+            var camera = pmm.Camera;
+
+            camera.Frames.Add(ReadCameraFrame(reader, pmm, true));
+
+            var cameraFrameCount = reader.ReadInt32();
+            for (int i = 0; i < cameraFrameCount; i++)
+            {
+                camera.Frames.Add(ReadCameraFrame(reader, pmm));
+            }
+
+            camera.Current.EyePosition = reader.ReadVector3();
+            camera.Current.TargetPosition = reader.ReadVector3();
+            camera.Current.Rotation = reader.ReadVector3();
+            camera.Current.EnablePerspective = reader.ReadBoolean();
+        }
+
+        private static PmmCameraFrame ReadCameraFrame(BinaryReader reader, PolygonMovieMaker pmm, bool isInitial = false)
+        {
+            // リストの添え字で管理できるため不要なフレームインデックスを破棄
+            if (!isInitial) _ = reader.ReadInt32();
+
+            var frame = new PmmCameraFrame();
+
+            frame.Frame = reader.ReadInt32();
+
+            // 所属が確実にわかるので pre/next ID から探索してやる必要性がないため破棄
+            _ = reader.ReadInt32();
+            _ = reader.ReadInt32();
+
+            frame.Distance = reader.ReadSingle();
+            frame.EyePosition = reader.ReadVector3();
+            frame.Rotation = reader.ReadVector3();
+
+            frame.FollowingModel = pmm.Models[reader.ReadInt32()];
+            frame.FollowingBone = frame.FollowingModel.Bones[reader.ReadInt32()];
+
+            frame.InterpolationCurces[InterpolationItem.XPosition].FromBytes(reader.ReadBytes(4));
+            frame.InterpolationCurces[InterpolationItem.YPosition].FromBytes(reader.ReadBytes(4));
+            frame.InterpolationCurces[InterpolationItem.ZPosition].FromBytes(reader.ReadBytes(4));
+            frame.InterpolationCurces[InterpolationItem.Rotation].FromBytes(reader.ReadBytes(4));
+            frame.InterpolationCurces[InterpolationItem.Distance].FromBytes(reader.ReadBytes(4));
+            frame.InterpolationCurces[InterpolationItem.ViewAngle].FromBytes(reader.ReadBytes(4));
+
+            frame.EnablePerspective = reader.ReadBoolean();
+            frame.ViewAngle = reader.ReadInt32();
+
+            frame.IsSelected = reader.ReadBoolean();
+
+            return frame;
         }
 
         private static (PmmModel Model, byte RenderOrder, byte CalculateOrder) ReadModel(BinaryReader reader)
