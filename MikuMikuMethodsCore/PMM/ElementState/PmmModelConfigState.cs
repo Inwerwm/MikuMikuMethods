@@ -1,4 +1,6 @@
-﻿namespace MikuMikuMethods.PMM.ElementState
+﻿using System.Collections.Generic;
+
+namespace MikuMikuMethods.PMM.ElementState
 {
     public class PmmModelConfigState
     {
@@ -10,5 +12,24 @@
         /// 表示
         /// </summary>
         public bool Visible { get; set; } = true;
+
+        /// <summary>
+        /// IKが有効か
+        /// </summary>
+        public Dictionary<PmmBone, bool> EnableIK { get; } = new();
+        /// <summary>
+        /// 外部親設定
+        /// <list>
+        ///     <item>
+        ///         <term>Key</term>
+        ///         <description>子側ボーン</description>
+        ///     </item>
+        ///     <item>
+        ///         <term>Value</term>
+        ///         <description>外部親ボーン</description>
+        ///     </item>
+        /// </list>
+        /// </summary>
+        public Dictionary<PmmBone, PmmBone> OuterParent { get; } = new();
     }
 }
