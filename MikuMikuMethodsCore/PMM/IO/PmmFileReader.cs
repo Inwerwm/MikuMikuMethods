@@ -113,6 +113,12 @@ namespace MikuMikuMethods.PMM.IO
                     acs.RenderOrder = accessoryOrderDictionary[acs];
                 }
 
+                // フレーム編集画面の状態読み込み
+                pmm.EditorState.CurrentFrame = reader.ReadInt32();
+                pmm.EditorState.HorizontalScroll = reader.ReadInt32();
+                pmm.EditorState.HorizontalScrollLength = reader.ReadInt32();
+                pmm.EditorState.SelectedBoneOperation = (PmmEditorState.BoneOperation)reader.ReadInt32();
+
 
                 return pmm;
             }
