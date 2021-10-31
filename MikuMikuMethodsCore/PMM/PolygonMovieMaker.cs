@@ -67,6 +67,10 @@ namespace MikuMikuMethods.PMM
         /// 各種操作パネル画面の状態
         /// </summary>
         public PmmPanelPane PanelPane { get; } = new();
+        /// <summary>
+        /// 再生関連設定
+        /// </summary>
+        public PmmPlayConfig PlayConfig { get; } = new();
 
         public PolygonMovieMaker()
         {

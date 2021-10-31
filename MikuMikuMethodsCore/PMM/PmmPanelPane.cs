@@ -26,7 +26,5 @@
         /// セルフ影操作パネル開閉状態
         /// </summary>
         public bool DoesOpenSelfShadowPanel { get; set; } = true;
-
-        public PmmPlayConfig PlayPanel { get; } = new();
     }
 }
