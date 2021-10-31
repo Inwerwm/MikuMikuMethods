@@ -1,6 +1,4 @@
-﻿using MikuMikuMethods.PMM.Panel;
-
-namespace MikuMikuMethods.PMM
+﻿namespace MikuMikuMethods.PMM
 {
     public class PmmPanelPane
     {
@@ -29,6 +27,6 @@ namespace MikuMikuMethods.PMM
         /// </summary>
         public bool DoesOpenSelfShadowPanel { get; set; } = true;
 
-        public PmmPlayPanel PlayPanel { get; } = new();
+        public PmmPlayConfig PlayPanel { get; } = new();
     }
 }

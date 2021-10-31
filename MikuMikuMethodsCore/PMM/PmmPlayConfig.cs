@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MikuMikuMethods.PMM.Panel
+﻿namespace MikuMikuMethods.PMM
 {
-    public class PmmPlayPanel
+    public class PmmPlayConfig
     {
         /// <summary>
         /// 繰り返し再生を行うか
