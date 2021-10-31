@@ -92,6 +92,27 @@ namespace MikuMikuMethods.PMM.IO
                 ReadCamera(reader, pmm);
                 ReadLight(reader, pmm.Light);
 
+                var selectedAccessoryIndex = reader.ReadByte();
+                pmm.EditorState.VerticalScrollOfAccessory = reader.ReadInt32();
+
+                // アクセサリ読み込み
+                var accessoryOrderDictionary = new Dictionary<PmmAccessory, byte>();
+                var accessoryCount = reader.ReadByte();
+                // アクセサリ名一覧
+                // 名前は各アクセサリ領域にも書いてあり、齟齬が出ることは基本無いらしいので読み飛ばす
+                _ = reader.ReadBytes(accessoryCount * 100);
+                for (int i = 0; i < accessoryCount; i++)
+                {
+                    (PmmAccessory accessory, byte renderOrder) = ReadAccessory(reader, pmm);
+                    pmm.Accessories.Add(accessory);
+                    accessoryOrderDictionary.Add(accessory, renderOrder);
+                }
+                pmm.EditorState.SelectedAccessory = pmm.Accessories[selectedAccessoryIndex];
+                foreach (var acs in pmm.Accessories)
+                {
+                    acs.RenderOrder = accessoryOrderDictionary[acs];
+                }
+
 
                 return pmm;
             }
@@ -103,6 +124,73 @@ namespace MikuMikuMethods.PMM.IO
             {
                 OuterParentRelation = null;
             }
+        }
+
+        private static (PmmAccessory Accessory, byte RenderOrder) ReadAccessory(BinaryReader reader, PolygonMovieMaker pmm)
+        {
+            var acs = new PmmAccessory();
+            byte renderOrder;
+
+            // リストの添字で管理するため Index は破棄
+            _ = reader.ReadByte();
+            acs.Name = reader.ReadString(100, Encoding.ShiftJIS, '\0');
+            acs.Path = reader.ReadString(256, Encoding.ShiftJIS, '\0');
+
+            renderOrder = reader.ReadByte();
+
+            acs.Frames.Add(ReadAccessoryFrame(reader, pmm, true));
+
+            var accessoryCount = reader.ReadInt32();
+            for (int i = 0; i < accessoryCount; i++)
+            {
+                acs.Frames.Add(ReadAccessoryFrame(reader, pmm));
+            }
+
+            acs.Current.TransAndVisible = reader.ReadByte();
+            int parentModelIndex = reader.ReadInt32();
+            int parentBoneIndex = reader.ReadInt32();
+            acs.Current.ParentModel = parentModelIndex < 0 ? null : pmm.Models[parentModelIndex];
+            acs.Current.ParentBone = acs.Current.ParentModel?.Bones[parentBoneIndex];
+
+            acs.Current.Position = reader.ReadVector3();
+            acs.Current.Rotation = reader.ReadVector3();
+            acs.Current.Scale = reader.ReadSingle();
+
+            acs.Current.EnableShadow = reader.ReadBoolean();
+
+            acs.EnableAlphaBlend = reader.ReadBoolean();
+
+            return (acs, renderOrder);
+        }
+
+        private static PmmAccessoryFrame ReadAccessoryFrame(BinaryReader reader, PolygonMovieMaker pmm, bool isInitial = false)
+        {
+            // リストの添え字で管理できるため不要なフレームインデックスを破棄
+            if (!isInitial) _ = reader.ReadInt32();
+
+            var frame = new PmmAccessoryFrame();
+
+            frame.Frame = reader.ReadInt32();
+            // 所属が確実にわかるので pre/next ID から探索してやる必要性がないため破棄
+            _ = reader.ReadInt32();
+            _ = reader.ReadInt32();
+
+            frame.TransAndVisible = reader.ReadByte();
+
+            int parentModelIndex = reader.ReadInt32();
+            int parentBoneIndex = reader.ReadInt32();
+            
+            frame.ParentModel = parentModelIndex < 0 ? null : pmm.Models[parentModelIndex];
+            frame.ParentBone = frame.ParentModel?.Bones[parentBoneIndex];
+
+            frame.Position = reader.ReadVector3();
+            frame.Rotation = reader.ReadVector3();
+            frame.Scale = reader.ReadSingle();
+
+            frame.EnableShadow = reader.ReadBoolean();
+            frame.IsSelected = reader.ReadBoolean();
+
+            return frame;
         }
 
         private static void ReadLight(BinaryReader reader, PmmLight light)
