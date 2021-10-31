@@ -1,4 +1,4 @@
-﻿using MikuMikuMethods.Extension;
+using MikuMikuMethods.Extension;
 using MikuMikuMethods.PMM.Frame;
 using System;
 using System.Collections.Generic;
@@ -90,6 +90,8 @@ namespace MikuMikuMethods.PMM.IO
                 }
 
                 ReadCamera(reader, pmm);
+                ReadLight(reader, pmm.Light);
+
 
                 return pmm;
             }
@@ -101,6 +103,40 @@ namespace MikuMikuMethods.PMM.IO
             {
                 OuterParentRelation = null;
             }
+        }
+
+        private static void ReadLight(BinaryReader reader, PmmLight light)
+        {
+            light.Frames.Add(ReadLightFrame(reader, true));
+
+            var frameCount = reader.ReadInt32();
+            for (int i = 0; i < frameCount; i++)
+            {
+                light.Frames.Add(ReadLightFrame(reader));
+            }
+
+            light.Current.Color = reader.ReadSingleRGB();
+            light.Current.Position = reader.ReadVector3();
+        }
+
+        private static PmmLightFrame ReadLightFrame(BinaryReader reader, bool isInitial = false)
+        {
+            // リストの添え字で管理できるため不要なフレームインデックスを破棄
+            if (!isInitial) _ = reader.ReadInt32();
+
+            var frame = new PmmLightFrame();
+            
+            frame.Frame = reader.ReadInt32();
+            // 所属が確実にわかるので pre/next ID から探索してやる必要性がないため破棄
+            _ = reader.ReadInt32();
+            _ = reader.ReadInt32();
+
+            frame.Color = reader.ReadSingleRGB();
+            frame.Position = reader.ReadVector3();
+
+            frame.IsSelected = reader.ReadBoolean();
+
+            return frame;
         }
 
         private static void ReadCamera(BinaryReader reader, PolygonMovieMaker pmm)
