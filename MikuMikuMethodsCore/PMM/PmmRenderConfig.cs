@@ -1,6 +1,6 @@
 ﻿namespace MikuMikuMethods.PMM
 {
-    public class PmmRenderPane
+    public class PmmRenderConfig
     {
         /// <summary>
         /// 描画情報の表示/非表示

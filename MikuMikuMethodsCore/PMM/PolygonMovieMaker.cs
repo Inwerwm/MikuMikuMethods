@@ -56,9 +56,9 @@ namespace MikuMikuMethods.PMM
         public PmmBackGroundMedia BackGround { get; } = new();
 
         /// <summary>
-        /// 3Dビュー画面の状態
+        /// 描画設定
         /// </summary>
-        public PmmRenderPane RenderPane { get; } = new();
+        public PmmRenderConfig RenderConfig { get; } = new();
         /// <summary>
         /// 編集対象の状態
         /// </summary>
