@@ -17,7 +17,7 @@ namespace MikuMikuMethods.PMM
         /// <summary>
         /// 3Dビュー上部のフレーム入力欄の値
         /// </summary>
-        public int FrameLocation { get; set; } = 0;
+        public int JumpFrameLocation { get; set; } = 0;
 
         public enum FPSLimitValue
         {
