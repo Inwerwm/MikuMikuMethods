@@ -77,5 +77,14 @@ namespace MikuMikuMethods.PMM
             _Accessories.CollectionChanged += IRelationableElement<PmmAccessory>.SyncOrders(new[] { _AccessoryRenderOrder });
             _Models.CollectionChanged += IRelationableElement<PmmModel>.SyncOrders(new[] { _ModelRenderOrder, _ModelCalculateOrder });
         }
+
+        /// <summary>
+        /// ファイルから読み込む
+        /// </summary>
+        /// <param name="filePath">読み込むpmmファイル</param>
+        public PolygonMovieMaker(string filePath) : this()
+        {
+            IO.PmmFileReader.Read(filePath, this);
+        }
     }
 }
