@@ -1,4 +1,5 @@
-﻿using MikuMikuMethods.PMM.Frame;
+﻿using MikuMikuMethods.PMM.ElementState;
+using MikuMikuMethods.PMM.Frame;
 using System.Collections.Generic;
 using System.Numerics;
 
@@ -6,19 +7,12 @@ namespace MikuMikuMethods.PMM
 {
     public class PmmPhysics
     {
-        /// <summary>
-        /// ノイズ量
-        /// nullならなし
-        /// </summary>
-        public int? GravityNoize { get; set; } = null;
-        /// <summary>
-        /// 現在の加速度
-        /// </summary>
-        public float GravityAcceleration { get; set; } = 9.8f;
-        /// <summary>
-        /// 現在の方向
-        /// </summary>
-        public Vector3 GravityDirection { get; set; } = new(0, -1, 0);
+        public PmmGravityState CurrentGravity { get; } = new()
+        {
+            Noize = null,
+            Acceleration = 9.8f,
+            Direction = new(0, -1, 0)
+        };
 
         /// <summary>
         /// 重力フレーム
