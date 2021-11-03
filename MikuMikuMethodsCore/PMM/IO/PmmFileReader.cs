@@ -175,6 +175,7 @@ namespace MikuMikuMethods.PMM.IO
             finally
             {
                 OuterParentRelation = null;
+                OuterParentRelationCurrent = null;
             }
         }
 
