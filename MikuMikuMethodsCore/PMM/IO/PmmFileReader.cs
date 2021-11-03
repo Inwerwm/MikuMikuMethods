@@ -504,8 +504,8 @@ namespace MikuMikuMethods.PMM.IO
                 model.Nodes.Add(new() { doesOpen = reader.ReadBoolean() });
             }
 
-            model.KeyFrameEditor.VerticalScrollState = reader.ReadInt32();
-            model.KeyFrameEditor.LastFrame = reader.ReadInt32();
+            model.SpecificEditorState.VerticalScrollState = reader.ReadInt32();
+            model.SpecificEditorState.LastFrame = reader.ReadInt32();
 
             // 初期ボーンフレームの読込
             var boneFrameDictionary = new Dictionary<string, int?>();
