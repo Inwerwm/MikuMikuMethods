@@ -173,6 +173,14 @@ namespace MikuMikuMethods.PMM.IO
                 pmm.Camera.Current.FollowingModel = currentCameraFollowingModelIndex > 0 ? pmm.Models[currentCameraFollowingModelIndex] : null;
                 pmm.Camera.Current.FollowingBone = pmm.Camera.Current.FollowingModel?.Bones[currentCameraFollowingBoneIndex];
 
+                // 意図不明な謎の行列
+                _ = reader.ReadBytes(64);
+
+                pmm.PlayConfig.EnableFollowCamera = reader.ReadBoolean();
+
+                // 意図不明な謎の値
+                _ = reader.ReadByte();
+
 
                 return pmm;
             }
