@@ -165,6 +165,9 @@ namespace MikuMikuMethods.PMM.IO
                 ReadPhysics(reader, pmm.Physics);
                 ReadSelfShadow(reader, pmm.SelfShadow);
 
+                pmm.RenderConfig.EdgeColor = System.Drawing.Color.FromArgb(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32());
+                pmm.BackGround.IsBlack = reader.ReadBoolean();
+
 
                 return pmm;
             }
