@@ -184,6 +184,26 @@ namespace MikuMikuMethods.PMM.IO
                 pmm.Physics.EnableGroundPhysics = reader.ReadBoolean();
                 pmm.RenderConfig.JumpFrameLocation = reader.ReadInt32();
 
+                // バージョン 9.24 より前ならここで終了のため、 EndOfStreamException が投げられる
+                // 9.24 なら後続要素が存在するかの Boolean 値が読める
+                try
+                {
+                    var existSelectorChoiseSection = reader.ReadBoolean();
+                    // 存在しなければここ以降の情報は無意味なので読み飛ばす
+                    // が MMD はそんな値は吐かないと思われる
+                    if (!existSelectorChoiseSection) return pmm;
+                }
+                catch (EndOfStreamException)
+                {
+                    return pmm;
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+
+
+
                 return pmm;
             }
             catch (Exception ex)
