@@ -163,6 +163,8 @@ namespace MikuMikuMethods.PMM.IO
                 pmm.RenderConfig.EnableTransparentGroundShadow = reader.ReadBoolean();
 
                 ReadPhysics(reader, pmm.Physics);
+                ReadSelfShadow(reader, pmm.SelfShadow);
+
 
                 return pmm;
             }
@@ -174,6 +176,38 @@ namespace MikuMikuMethods.PMM.IO
             {
                 OuterParentRelation = null;
             }
+        }
+
+        private static void ReadSelfShadow(BinaryReader reader, PmmSelfShadow selfShadow)
+        {
+            selfShadow.EnableSelfShadow = reader.ReadBoolean();
+            selfShadow.ShadowRange = reader.ReadSingle();
+
+            selfShadow.Frames.Add(ReadSelfShadowFrame(reader, true));
+            var frameCount = reader.ReadInt32();
+            for (int i = 0; i < frameCount; i++)
+            {
+                selfShadow.Frames.Add(ReadSelfShadowFrame(reader));
+            }
+        }
+
+        private static PmmSelfShadowFrame ReadSelfShadowFrame(BinaryReader reader, bool isInitial = false)
+        {
+            // リストの添え字で管理できるため不要なフレームインデックスを破棄
+            if (!isInitial) _ = reader.ReadInt32();
+
+            var frame = new PmmSelfShadowFrame();
+            frame.Frame = reader.ReadInt32();
+            // 所属が確実にわかるので pre/next ID から探索してやる必要性がないため破棄
+            _ = reader.ReadInt32();
+            _ = reader.ReadInt32();
+
+            frame.ShadowMode = (PmmSelfShadowFrame.Shadow)reader.ReadByte();
+            frame.ShadowRange = reader.ReadSingle();
+
+            frame.IsSelected = reader.ReadBoolean();
+
+            return frame;
         }
 
         private static void ReadPhysics(BinaryReader reader, PmmPhysics physics)
