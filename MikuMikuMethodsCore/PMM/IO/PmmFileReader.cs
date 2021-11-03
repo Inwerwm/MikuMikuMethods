@@ -123,6 +123,15 @@ namespace MikuMikuMethods.PMM.IO
                 pmm.EditorState.HorizontalScrollLength = reader.ReadInt32();
                 pmm.EditorState.SelectedBoneOperation = (PmmEditorState.BoneOperation)reader.ReadInt32();
 
+                // 再生関連設定の読込
+                pmm.PlayConfig.CameraTrackingTarget = (PmmPlayConfig.TrackingTarget)reader.ReadByte();
+                
+                pmm.PlayConfig.EnableRepeat = reader.ReadBoolean();
+                pmm.PlayConfig.EnableMoveCurrentFrameToPlayStopping = reader.ReadBoolean();
+                pmm.PlayConfig.EnableStartFromCurrentFrame = reader.ReadBoolean();
+
+                pmm.PlayConfig.PlayStartFrame = reader.ReadInt32();
+                pmm.PlayConfig.PlayStopFrame = reader.ReadInt32();
 
                 return pmm;
             }
