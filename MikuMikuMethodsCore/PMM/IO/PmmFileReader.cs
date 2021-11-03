@@ -168,6 +168,11 @@ namespace MikuMikuMethods.PMM.IO
                 pmm.RenderConfig.EdgeColor = System.Drawing.Color.FromArgb(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32());
                 pmm.BackGround.IsBlack = reader.ReadBoolean();
 
+                int currentCameraFollowingModelIndex = reader.ReadInt32();
+                int currentCameraFollowingBoneIndex = reader.ReadInt32();
+                pmm.Camera.Current.FollowingModel = currentCameraFollowingModelIndex > 0 ? pmm.Models[currentCameraFollowingModelIndex] : null;
+                pmm.Camera.Current.FollowingBone = pmm.Camera.Current.FollowingModel?.Bones[currentCameraFollowingBoneIndex];
+
 
                 return pmm;
             }
