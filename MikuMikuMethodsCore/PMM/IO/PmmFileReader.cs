@@ -150,6 +150,19 @@ namespace MikuMikuMethods.PMM.IO
                 var existsBgi = reader.ReadBoolean();
                 pmm.BackGround.Image = existsBgi ? bgiPath : null;
 
+                // 描画設定の読込
+                pmm.RenderConfig.InfomationVisible = reader.ReadBoolean();
+                pmm.RenderConfig.AxisVisible = reader.ReadBoolean();
+                pmm.RenderConfig.EnableGrandShadow = reader.ReadBoolean();
+
+                pmm.RenderConfig.FPSLimit = (PmmRenderConfig.FPSLimitValue)(int)reader.ReadSingle();
+                pmm.RenderConfig.ScreenCaptureMode = (PmmRenderConfig.ScreenCaptureModeType)reader.ReadInt32();
+                
+                pmm.RenderConfig.PostDrawingAccessoryStartIndex = reader.ReadInt32();
+                pmm.RenderConfig.GroundShadowBrightness = reader.ReadSingle();
+                pmm.RenderConfig.EnableTransparentGroundShadow = reader.ReadBoolean();
+                
+
 
 
                 return pmm;
