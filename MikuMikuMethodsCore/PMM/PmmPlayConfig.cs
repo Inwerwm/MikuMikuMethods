@@ -25,9 +25,15 @@
         public int PlayStopFrame { get; set; } = 0;
 
         /// <summary>
+        /// 再生時のカメラ追従が有効か
+        /// </summary>
+        public bool EnableFollowCamera { get; set; }
+        /// <summary>
         /// 視点追従対象
         /// </summary>
         public TrackingTarget CameraTrackingTarget { get; set; } = TrackingTarget.None;
+
+
         /// <summary>
         /// 視点追従対象
         /// </summary>
