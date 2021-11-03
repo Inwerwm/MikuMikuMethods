@@ -133,6 +133,25 @@ namespace MikuMikuMethods.PMM.IO
                 pmm.PlayConfig.PlayStartFrame = reader.ReadInt32();
                 pmm.PlayConfig.PlayStopFrame = reader.ReadInt32();
 
+                // 背景メディア設定の読込
+                var existsBgm = reader.ReadBoolean();
+                var bgmPath = reader.ReadString(256, Encoding.ShiftJIS, '\0');
+                pmm.BackGround.Audio = existsBgm ? bgmPath : null;
+
+                pmm.BackGround.VideoOffset = new(reader.ReadInt32(), reader.ReadInt32());
+                pmm.BackGround.VideoScale = reader.ReadSingle();
+                var bgvPath = reader.ReadString(256, Encoding.ShiftJIS, '\0');
+                var existsBgv = reader.ReadInt32() == 0b01000000;
+                pmm.BackGround.Video = existsBgv ? bgvPath : null;
+
+                pmm.BackGround.ImageOffset = new(reader.ReadInt32(), reader.ReadInt32());
+                pmm.BackGround.ImageScale = reader.ReadSingle();
+                var bgiPath = reader.ReadString(256, Encoding.ShiftJIS, '\0');
+                var existsBgi = reader.ReadBoolean();
+                pmm.BackGround.Image = existsBgi ? bgiPath : null;
+
+
+
                 return pmm;
             }
             catch (Exception ex)
