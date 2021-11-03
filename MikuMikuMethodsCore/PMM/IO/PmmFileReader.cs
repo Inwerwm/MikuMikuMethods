@@ -125,7 +125,7 @@ namespace MikuMikuMethods.PMM.IO
 
                 // 再生関連設定の読込
                 pmm.PlayConfig.CameraTrackingTarget = (PmmPlayConfig.TrackingTarget)reader.ReadByte();
-                
+
                 pmm.PlayConfig.EnableRepeat = reader.ReadBoolean();
                 pmm.PlayConfig.EnableMoveCurrentFrameToPlayStopping = reader.ReadBoolean();
                 pmm.PlayConfig.EnableStartFromCurrentFrame = reader.ReadBoolean();
@@ -157,13 +157,12 @@ namespace MikuMikuMethods.PMM.IO
 
                 pmm.RenderConfig.FPSLimit = (PmmRenderConfig.FPSLimitValue)(int)reader.ReadSingle();
                 pmm.RenderConfig.ScreenCaptureMode = (PmmRenderConfig.ScreenCaptureModeType)reader.ReadInt32();
-                
+
                 pmm.RenderConfig.PostDrawingAccessoryStartIndex = reader.ReadInt32();
                 pmm.RenderConfig.GroundShadowBrightness = reader.ReadSingle();
                 pmm.RenderConfig.EnableTransparentGroundShadow = reader.ReadBoolean();
-                
 
-
+                ReadPhysics(reader, pmm.Physics);
 
                 return pmm;
             }
@@ -175,6 +174,45 @@ namespace MikuMikuMethods.PMM.IO
             {
                 OuterParentRelation = null;
             }
+        }
+
+        private static void ReadPhysics(BinaryReader reader, PmmPhysics physics)
+        {
+            physics.CalculationMode = (PmmPhysics.PhysicsMode)reader.ReadByte();
+            physics.CurrentGravity.Acceleration = reader.ReadSingle();
+            var currentNoiseAmount = reader.ReadInt32();
+            physics.CurrentGravity.Direction = reader.ReadVector3();
+            var enableNoise = reader.ReadBoolean();
+            physics.CurrentGravity.Noize = enableNoise ? currentNoiseAmount : null;
+
+            physics.GravityFrames.Add(ReadGravityFrame(reader, true));
+            var gravityFrameCount = reader.ReadInt32();
+            for (int i = 0; i < gravityFrameCount; i++)
+            {
+                physics.GravityFrames.Add(ReadGravityFrame(reader));
+            }
+        }
+
+        private static PmmGravityFrame ReadGravityFrame(BinaryReader reader, bool isInitial = false)
+        {
+            // リストの添え字で管理できるため不要なフレームインデックスを破棄
+            if (!isInitial) _ = reader.ReadInt32();
+
+            var frame = new PmmGravityFrame();
+            frame.Frame = reader.ReadInt32();
+            // 所属が確実にわかるので pre/next ID から探索してやる必要性がないため破棄
+            _ = reader.ReadInt32();
+            _ = reader.ReadInt32();
+
+            var enableNoise = reader.ReadBoolean();
+            var noiseAmount = reader.ReadInt32();
+            frame.Noize = enableNoise ? noiseAmount : null;
+            frame.Acceleration = reader.ReadSingle();
+            frame.Direction = reader.ReadVector3();
+
+            frame.IsSelected = reader.ReadBoolean();
+
+            return frame;
         }
 
         private static (PmmAccessory Accessory, byte RenderOrder) ReadAccessory(BinaryReader reader, PolygonMovieMaker pmm)
