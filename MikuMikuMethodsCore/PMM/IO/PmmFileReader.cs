@@ -1,4 +1,4 @@
-using MikuMikuMethods.Extension;
+﻿using MikuMikuMethods.Extension;
 using MikuMikuMethods.PMM.Frame;
 using System;
 using System.Collections.Generic;
@@ -32,6 +32,7 @@ namespace MikuMikuMethods.PMM.IO
         {
             try
             {
+                // 外部親の関係解決のためのプロパティ初期化
                 OuterParentRelation = new();
                 OuterParentRelationCurrent = new();
 
@@ -43,6 +44,7 @@ namespace MikuMikuMethods.PMM.IO
                 pmm.Camera.Current.ViewAngle = reader.ReadInt32();
                 pmm.EditorState.IsCameraMode = reader.ReadBoolean();
 
+                // パネル開閉状態の読み込み
                 pmm.PanelPane.DoesOpenCameraPanel = reader.ReadBoolean();
                 pmm.PanelPane.DoesOpenLightPanel = reader.ReadBoolean();
                 pmm.PanelPane.DoesOpenAccessaryPanel = reader.ReadBoolean();
@@ -50,6 +52,7 @@ namespace MikuMikuMethods.PMM.IO
                 pmm.PanelPane.DoesOpenMorphPanel = reader.ReadBoolean();
                 pmm.PanelPane.DoesOpenSelfShadowPanel = reader.ReadBoolean();
 
+                // モデル読み込み
                 var selectedModelIndex = reader.ReadByte();
                 var modelCount = reader.ReadByte();
                 var modelOrderDictionary = new Dictionary<PmmModel, (byte RenderOrder, byte CalculateOrder)>();
@@ -63,10 +66,12 @@ namespace MikuMikuMethods.PMM.IO
                 pmm.EditorState.SelectedModel = pmm.Models[selectedModelIndex];
                 foreach (var model in pmm.Models)
                 {
+                    // 順序系プロパティはモデルの追加後に設定する
                     (byte RenderOrder, byte CalculateOrder) order = modelOrderDictionary[model];
                     model.RenderOrder = order.RenderOrder;
                     model.CalculateOrder = order.CalculateOrder;
 
+                    // 外部親の関係解決
                     foreach (var relation in OuterParentRelation[model])
                     {
                         var opModel = pmm.Models[relation.Value.ModelID];
@@ -86,7 +91,6 @@ namespace MikuMikuMethods.PMM.IO
                         model.CurrentConfig.OuterParent[relation.Key].ParentModel = opModel;
                         model.CurrentConfig.OuterParent[relation.Key].ParentBone = opModel.Bones[relation.Value.BoneID];
                     }
-
                 }
 
                 ReadCamera(reader, pmm);
@@ -512,10 +516,10 @@ namespace MikuMikuMethods.PMM.IO
         /// <para>フレームの属する要素が前後フレームIDによって管理されているので、各要素内のフレームコレクションに投入するための解決処理を実施する</para>
         /// </summary>
         /// <param name="reader">バイナリ読込クラス</param>
-        /// <param name="targetElements">フレーム追加対象になるボーン/モーフのコレクション</param>
+        /// <param name="targetElements">フレーム追加対象になるPMM要素のコレクション</param>
         /// <param name="elementCount">targetElements の要素数</param>
         /// <param name="readElementFrame">フレーム読込メソッドの呼び出し関数</param>
-        /// <param name="elementNextFrameDictionary">ボーン/モーフ名とそれに対応する次フレームIDの辞書</param>
+        /// <param name="elementNextFrameDictionary">要素名とそれに対応する次フレームIDの辞書</param>
         /// <param name="addFrame">所属要素にフレームを追加する関数</param>
         private static void ReadFramesThatRequireResolving(BinaryReader reader, IEnumerable<IPmmModelElement> targetElements, int elementCount, Func<BinaryReader, (IPmmFrame Frame, int PreviousFrameIndex, int NextFrameIndex)> readElementFrame, Dictionary<string, int?> elementNextFrameDictionary, Action<IPmmModelElement, IPmmFrame> addFrame)
         {
