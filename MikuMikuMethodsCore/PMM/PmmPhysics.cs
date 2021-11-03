@@ -17,7 +17,7 @@ namespace MikuMikuMethods.PMM
         /// <summary>
         /// 重力フレーム
         /// </summary>
-        public List<PmmGravityFrame> Frames { get; } = new();
+        public List<PmmGravityFrame> GravityFrames { get; } = new();
 
         /// <summary>
         /// 物理演算モード
