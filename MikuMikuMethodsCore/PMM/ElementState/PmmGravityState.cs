@@ -11,11 +11,11 @@ namespace MikuMikuMethods.PMM.ElementState
         /// </summary>
         public int? Noize { get; set; } = null;
         /// <summary>
-        /// 現在の加速度
+        /// 加速度
         /// </summary>
         public float Acceleration { get; set; } = 9.8f;
         /// <summary>
-        /// 現在の方向
+        /// 方向
         /// </summary>
         public Vector3 Direction { get; set; } = new(0, -1, 0);
     }
