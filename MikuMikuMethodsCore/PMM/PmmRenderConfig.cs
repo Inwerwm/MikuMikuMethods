@@ -5,12 +5,12 @@
         /// <summary>
         /// 描画情報の表示/非表示
         /// </summary>
-        public bool VisibleInfomation { get; set; } = false;
+        public bool InfomationVisible { get; set; } = false;
 
         /// <summary>
         /// 座標軸の表示/非表示
         /// </summary>
-        public bool VisibleAxis { get; set; } = true;
+        public bool AxisVisible { get; set; } = true;
 
         /// <summary>
         /// 3Dビュー上部のフレーム入力欄の値
