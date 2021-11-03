@@ -181,6 +181,8 @@ namespace MikuMikuMethods.PMM.IO
                 // 意図不明な謎の値
                 _ = reader.ReadByte();
 
+                pmm.Physics.EnableGroundPhysics = reader.ReadBoolean();
+                pmm.RenderConfig.JumpFrameLocation = reader.ReadInt32();
 
                 return pmm;
             }
