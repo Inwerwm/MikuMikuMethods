@@ -1,4 +1,6 @@
-﻿namespace MikuMikuMethods.PMM
+﻿using System.Drawing;
+
+namespace MikuMikuMethods.PMM
 {
     public class PmmRenderConfig
     {
@@ -69,5 +71,9 @@
         /// 地面影の透明化
         /// </summary>
         public bool EnableTransparentGroundShadow { get; set; }
+        /// <summary>
+        /// エッジの色
+        /// </summary>
+        public Color EdgeColor { get; set; }
     }
 }
