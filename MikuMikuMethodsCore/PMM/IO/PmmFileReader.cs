@@ -192,6 +192,11 @@ namespace MikuMikuMethods.PMM.IO
                     // 存在しなければここ以降の情報は無意味なので読み飛ばす
                     // が MMD はそんな値は吐かないと思われる
                     if (!existSelectorChoiseSection) return pmm;
+
+                    for (int i = 0; i < modelCount; i++)
+                    {
+                        pmm.Models[reader.ReadByte()].SpecificEditorState.RangeSelector = new(reader.ReadInt32());
+                    }
                 }
                 catch (EndOfStreamException)
                 {
@@ -201,8 +206,6 @@ namespace MikuMikuMethods.PMM.IO
                 {
                     throw;
                 }
-
-
 
                 return pmm;
             }
