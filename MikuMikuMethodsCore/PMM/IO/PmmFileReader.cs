@@ -184,23 +184,27 @@ namespace MikuMikuMethods.PMM.IO
                 pmm.Physics.EnableGroundPhysics = reader.ReadBoolean();
                 pmm.RenderConfig.JumpFrameLocation = reader.ReadInt32();
 
-                // バージョン 9.24 より前ならここで終了のため、 EndOfStreamException が投げられる
-                // 9.24 なら後続要素が存在するかの Boolean 値が読める
                 try
                 {
+                    // バージョン 9.24 より前ならここで終了のため、 EndOfStreamException が投げられる
+                    // 9.24 なら後続要素が存在するかの Boolean 値が読める
                     var existSelectorChoiseSection = reader.ReadBoolean();
+
                     // 存在しなければここ以降の情報は無意味なので読み飛ばす
                     // が MMD はそんな値は吐かないと思われる
-                    if (!existSelectorChoiseSection) return pmm;
-
-                    for (int i = 0; i < modelCount; i++)
+                    if (existSelectorChoiseSection)
                     {
-                        pmm.Models[reader.ReadByte()].SpecificEditorState.RangeSelector = new(reader.ReadInt32());
+                        // 範囲選択セレクタの読込
+                        for (int i = 0; i < modelCount; i++)
+                        {
+                            pmm.Models[reader.ReadByte()].SpecificEditorState.RangeSelector = new(reader.ReadInt32());
+                        }
                     }
                 }
                 catch (EndOfStreamException)
                 {
-                    return pmm;
+                    // このセクションは途中でファイルが終わってても構わないので
+                    // ストリームの終わり例外なら来ても何もしなくてよい
                 }
                 catch (Exception)
                 {
@@ -344,7 +348,7 @@ namespace MikuMikuMethods.PMM.IO
 
             int parentModelIndex = reader.ReadInt32();
             int parentBoneIndex = reader.ReadInt32();
-            
+
             frame.ParentModel = parentModelIndex < 0 ? null : pmm.Models[parentModelIndex];
             frame.ParentBone = frame.ParentModel?.Bones[parentBoneIndex];
 
@@ -378,7 +382,7 @@ namespace MikuMikuMethods.PMM.IO
             if (!isInitial) _ = reader.ReadInt32();
 
             var frame = new PmmLightFrame();
-            
+
             frame.Frame = reader.ReadInt32();
             // 所属が確実にわかるので pre/next ID から探索してやる必要性がないため破棄
             _ = reader.ReadInt32();
