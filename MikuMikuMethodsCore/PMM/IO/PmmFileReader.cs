@@ -224,6 +224,91 @@ namespace MikuMikuMethods.PMM.IO
             }
         }
 
+        private static void ReadCamera(BinaryReader reader, PolygonMovieMaker pmm)
+        {
+            var camera = pmm.Camera;
+
+            camera.Frames.Add(ReadCameraFrame(reader, pmm, true));
+
+            var cameraFrameCount = reader.ReadInt32();
+            for (int i = 0; i < cameraFrameCount; i++)
+            {
+                camera.Frames.Add(ReadCameraFrame(reader, pmm));
+            }
+
+            camera.Current.EyePosition = reader.ReadVector3();
+            camera.Current.TargetPosition = reader.ReadVector3();
+            camera.Current.Rotation = reader.ReadVector3();
+            camera.Current.EnablePerspective = reader.ReadBoolean();
+        }
+        private static PmmCameraFrame ReadCameraFrame(BinaryReader reader, PolygonMovieMaker pmm, bool isInitial = false)
+        {
+            // リストの添え字で管理できるため不要なフレームインデックスを破棄
+            if (!isInitial) _ = reader.ReadInt32();
+
+            var frame = new PmmCameraFrame();
+
+            frame.Frame = reader.ReadInt32();
+
+            // 所属が確実にわかるので pre/next ID から探索してやる必要性がないため破棄
+            _ = reader.ReadInt32();
+            _ = reader.ReadInt32();
+
+            frame.Distance = reader.ReadSingle();
+            frame.EyePosition = reader.ReadVector3();
+            frame.Rotation = reader.ReadVector3();
+
+            frame.FollowingModel = pmm.Models[reader.ReadInt32()];
+            frame.FollowingBone = frame.FollowingModel.Bones[reader.ReadInt32()];
+
+            frame.InterpolationCurces[InterpolationItem.XPosition].FromBytes(reader.ReadBytes(4));
+            frame.InterpolationCurces[InterpolationItem.YPosition].FromBytes(reader.ReadBytes(4));
+            frame.InterpolationCurces[InterpolationItem.ZPosition].FromBytes(reader.ReadBytes(4));
+            frame.InterpolationCurces[InterpolationItem.Rotation].FromBytes(reader.ReadBytes(4));
+            frame.InterpolationCurces[InterpolationItem.Distance].FromBytes(reader.ReadBytes(4));
+            frame.InterpolationCurces[InterpolationItem.ViewAngle].FromBytes(reader.ReadBytes(4));
+
+            frame.EnablePerspective = reader.ReadBoolean();
+            frame.ViewAngle = reader.ReadInt32();
+
+            frame.IsSelected = reader.ReadBoolean();
+
+            return frame;
+        }
+        
+        private static void ReadLight(BinaryReader reader, PmmLight light)
+        {
+            light.Frames.Add(ReadLightFrame(reader, true));
+
+            var frameCount = reader.ReadInt32();
+            for (int i = 0; i < frameCount; i++)
+            {
+                light.Frames.Add(ReadLightFrame(reader));
+            }
+
+            light.Current.Color = reader.ReadSingleRGB();
+            light.Current.Position = reader.ReadVector3();
+        }
+        private static PmmLightFrame ReadLightFrame(BinaryReader reader, bool isInitial = false)
+        {
+            // リストの添え字で管理できるため不要なフレームインデックスを破棄
+            if (!isInitial) _ = reader.ReadInt32();
+
+            var frame = new PmmLightFrame();
+
+            frame.Frame = reader.ReadInt32();
+            // 所属が確実にわかるので pre/next ID から探索してやる必要性がないため破棄
+            _ = reader.ReadInt32();
+            _ = reader.ReadInt32();
+
+            frame.Color = reader.ReadSingleRGB();
+            frame.Position = reader.ReadVector3();
+
+            frame.IsSelected = reader.ReadBoolean();
+
+            return frame;
+        }
+
         private static void ReadSelfShadow(BinaryReader reader, PmmSelfShadow selfShadow)
         {
             selfShadow.EnableSelfShadow = reader.ReadBoolean();
@@ -236,7 +321,6 @@ namespace MikuMikuMethods.PMM.IO
                 selfShadow.Frames.Add(ReadSelfShadowFrame(reader));
             }
         }
-
         private static PmmSelfShadowFrame ReadSelfShadowFrame(BinaryReader reader, bool isInitial = false)
         {
             // リストの添え字で管理できるため不要なフレームインデックスを破棄
@@ -272,7 +356,6 @@ namespace MikuMikuMethods.PMM.IO
                 physics.GravityFrames.Add(ReadGravityFrame(reader));
             }
         }
-
         private static PmmGravityFrame ReadGravityFrame(BinaryReader reader, bool isInitial = false)
         {
             // リストの添え字で管理できるため不要なフレームインデックスを破棄
@@ -331,7 +414,6 @@ namespace MikuMikuMethods.PMM.IO
 
             return (acs, renderOrder);
         }
-
         private static PmmAccessoryFrame ReadAccessoryFrame(BinaryReader reader, PolygonMovieMaker pmm, bool isInitial = false)
         {
             // リストの添え字で管理できるため不要なフレームインデックスを破棄
@@ -357,93 +439,6 @@ namespace MikuMikuMethods.PMM.IO
             frame.Scale = reader.ReadSingle();
 
             frame.EnableShadow = reader.ReadBoolean();
-            frame.IsSelected = reader.ReadBoolean();
-
-            return frame;
-        }
-
-        private static void ReadLight(BinaryReader reader, PmmLight light)
-        {
-            light.Frames.Add(ReadLightFrame(reader, true));
-
-            var frameCount = reader.ReadInt32();
-            for (int i = 0; i < frameCount; i++)
-            {
-                light.Frames.Add(ReadLightFrame(reader));
-            }
-
-            light.Current.Color = reader.ReadSingleRGB();
-            light.Current.Position = reader.ReadVector3();
-        }
-
-        private static PmmLightFrame ReadLightFrame(BinaryReader reader, bool isInitial = false)
-        {
-            // リストの添え字で管理できるため不要なフレームインデックスを破棄
-            if (!isInitial) _ = reader.ReadInt32();
-
-            var frame = new PmmLightFrame();
-
-            frame.Frame = reader.ReadInt32();
-            // 所属が確実にわかるので pre/next ID から探索してやる必要性がないため破棄
-            _ = reader.ReadInt32();
-            _ = reader.ReadInt32();
-
-            frame.Color = reader.ReadSingleRGB();
-            frame.Position = reader.ReadVector3();
-
-            frame.IsSelected = reader.ReadBoolean();
-
-            return frame;
-        }
-
-        private static void ReadCamera(BinaryReader reader, PolygonMovieMaker pmm)
-        {
-            var camera = pmm.Camera;
-
-            camera.Frames.Add(ReadCameraFrame(reader, pmm, true));
-
-            var cameraFrameCount = reader.ReadInt32();
-            for (int i = 0; i < cameraFrameCount; i++)
-            {
-                camera.Frames.Add(ReadCameraFrame(reader, pmm));
-            }
-
-            camera.Current.EyePosition = reader.ReadVector3();
-            camera.Current.TargetPosition = reader.ReadVector3();
-            camera.Current.Rotation = reader.ReadVector3();
-            camera.Current.EnablePerspective = reader.ReadBoolean();
-        }
-
-        private static PmmCameraFrame ReadCameraFrame(BinaryReader reader, PolygonMovieMaker pmm, bool isInitial = false)
-        {
-            // リストの添え字で管理できるため不要なフレームインデックスを破棄
-            if (!isInitial) _ = reader.ReadInt32();
-
-            var frame = new PmmCameraFrame();
-
-            frame.Frame = reader.ReadInt32();
-
-            // 所属が確実にわかるので pre/next ID から探索してやる必要性がないため破棄
-            _ = reader.ReadInt32();
-            _ = reader.ReadInt32();
-
-            frame.Distance = reader.ReadSingle();
-            frame.EyePosition = reader.ReadVector3();
-            frame.Rotation = reader.ReadVector3();
-
-            frame.FollowingModel = pmm.Models[reader.ReadInt32()];
-            frame.FollowingBone = frame.FollowingModel.Bones[reader.ReadInt32()];
-
-            frame.InterpolationCurces[InterpolationItem.XPosition].FromBytes(reader.ReadBytes(4));
-            frame.InterpolationCurces[InterpolationItem.YPosition].FromBytes(reader.ReadBytes(4));
-            frame.InterpolationCurces[InterpolationItem.ZPosition].FromBytes(reader.ReadBytes(4));
-            frame.InterpolationCurces[InterpolationItem.Rotation].FromBytes(reader.ReadBytes(4));
-            frame.InterpolationCurces[InterpolationItem.Distance].FromBytes(reader.ReadBytes(4));
-            frame.InterpolationCurces[InterpolationItem.ViewAngle].FromBytes(reader.ReadBytes(4));
-
-            frame.EnablePerspective = reader.ReadBoolean();
-            frame.ViewAngle = reader.ReadInt32();
-
             frame.IsSelected = reader.ReadBoolean();
 
             return frame;
@@ -596,7 +591,6 @@ namespace MikuMikuMethods.PMM.IO
 
             return (model, renderOrder, calculateOrder);
         }
-
         private static PmmModelConfigFrame ReadConfigFrame(BinaryReader reader, PmmModel model, IEnumerable<int> ikIndices, IEnumerable<int> parentableIndices, bool isInitial = false)
         {
             // リストの添え字で管理できるため不要なフレームインデックスを破棄
@@ -627,7 +621,6 @@ namespace MikuMikuMethods.PMM.IO
 
             return frame;
         }
-
         private static (PmmMorphFrame Frame, int PreviousFrameIndex, int NextFrameIndex) ReadMorphFrame(BinaryReader reader, string name, bool isInitial = false)
         {
             // リストの添え字で管理できるため不要なフレームインデックスを破棄
@@ -645,7 +638,6 @@ namespace MikuMikuMethods.PMM.IO
 
             return (frame, preID, nextId);
         }
-
         private static (PmmBoneFrame Frame, int PreviousFrameIndex, int NextFrameIndex) ReadBoneFrame(BinaryReader reader, string name, bool isInitial = false)
         {
             // リストの添え字で管理できるため不要なフレームインデックスを破棄
