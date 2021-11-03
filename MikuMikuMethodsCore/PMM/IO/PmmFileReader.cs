@@ -12,14 +12,14 @@ namespace MikuMikuMethods.PMM.IO
         private static Dictionary<PmmModel, Dictionary<PmmBone, (int ModelID, int BoneID)>> OuterParentRelation { get; set; }
         private static Dictionary<PmmModel, Dictionary<PmmBone, (int ModelID, int BoneID)>> OuterParentRelationCurrent { get; set; }
 
-        internal static PolygonMovieMaker Read(string filePath)
+        internal static void Read(string filePath, PolygonMovieMaker pmm)
         {
             try
             {
                 using (FileStream file = new(filePath, FileMode.Open))
                 using (BinaryReader reader = new(file, Encoding.ShiftJIS))
                 {
-                    return Read(reader);
+                    Read(reader, pmm);
                 }
             }
             catch (Exception)
@@ -28,7 +28,7 @@ namespace MikuMikuMethods.PMM.IO
             }
         }
 
-        internal static PolygonMovieMaker Read(BinaryReader reader)
+        internal static void Read(BinaryReader reader, PolygonMovieMaker pmm)
         {
             try
             {
@@ -36,7 +36,6 @@ namespace MikuMikuMethods.PMM.IO
                 OuterParentRelation = new();
                 OuterParentRelationCurrent = new();
 
-                var pmm = new PolygonMovieMaker();
                 pmm.Version = reader.ReadString(30, Encoding.ShiftJIS, '\0');
                 pmm.OutputResolution = new(reader.ReadInt32(), reader.ReadInt32());
 
@@ -210,8 +209,6 @@ namespace MikuMikuMethods.PMM.IO
                 {
                     throw;
                 }
-
-                return pmm;
             }
             catch (Exception ex)
             {
