@@ -482,9 +482,9 @@ namespace MikuMikuMethods.PMM.IO
             }
 
             var parentableBoneCount = reader.ReadInt32();
+            var parentableIndices = Enumerable.Range(0, parentableBoneCount).Select(_ => reader.ReadInt32()).ToArray();
             // なぜか最初に -1 が入っているのでそれは飛ばす
-            var parentableIndices = Enumerable.Range(0, parentableBoneCount).Select(_ => reader.ReadInt32()).Where(i => i >= 0).ToArray();
-            foreach (var i in parentableIndices)
+            foreach (var i in parentableIndices.Skip(1))
             {
                 model.Bones[i].CanBecomeOuterParent = true;
             }
@@ -589,9 +589,12 @@ namespace MikuMikuMethods.PMM.IO
                 var op = new PmmOuterParentState();
                 op.StartFrame = reader.ReadInt32();
                 op.EndFrame = reader.ReadInt32();
-                OuterParentRelationCurrent[model.CurrentConfig].Add(model.Bones[i], (reader.ReadInt32(), reader.ReadInt32()));
-
-                model.CurrentConfig.OuterParent.Add(model.Bones[i], op);
+                (int, int) relation = (reader.ReadInt32(), reader.ReadInt32());
+                if (i >= 0)
+                {
+                    OuterParentRelationCurrent[model.CurrentConfig].Add(model.Bones[i], relation);
+                    model.CurrentConfig.OuterParent.Add(model.Bones[i], op);
+                }
             }
 
             model.EnableAlphaBlend = reader.ReadBoolean();
@@ -625,7 +628,10 @@ namespace MikuMikuMethods.PMM.IO
 
             foreach (var i in parentableIndices)
             {
-                OuterParentRelation[frame].Add(model.Bones[i], (reader.ReadInt32(), reader.ReadInt32()));
+                (int, int) relation = (reader.ReadInt32(), reader.ReadInt32());
+                // parentableIndices 最初の要素は -1 なので飛ばす
+                if (i >= 0)
+                    OuterParentRelation[frame].Add(model.Bones[i], relation);
             }
 
             frame.IsSelected = reader.ReadBoolean();
