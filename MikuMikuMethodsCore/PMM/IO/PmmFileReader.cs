@@ -60,7 +60,7 @@ namespace MikuMikuMethods.PMM.IO
                 {
                     (var model, var renderOrder, var calculateOrder) = ReadModel(reader);
                     pmm.Models.Add(model);
-                    modelOrderDictionary.Add(model, (renderOrder, calculateOrder));
+                    modelOrderDictionary.Add(model, ((byte RenderOrder, byte CalculateOrder))(renderOrder - 1, calculateOrder - 1));
                 }
 
                 pmm.EditorState.SelectedModel = pmm.Models[selectedModelIndex];
