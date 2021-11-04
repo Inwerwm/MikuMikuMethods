@@ -1,4 +1,4 @@
-using MikuMikuMethods.Extension;
+﻿using MikuMikuMethods.Extension;
 using MikuMikuMethods.PMM.Frame;
 using System;
 using System.Collections.Generic;
@@ -272,7 +272,7 @@ namespace MikuMikuMethods.PMM.IO
 
             return frame;
         }
-        
+
         private static void ReadLight(BinaryReader reader, PmmLight light)
         {
             light.Frames.Add(ReadLightFrame(reader, true));
@@ -492,11 +492,22 @@ namespace MikuMikuMethods.PMM.IO
             renderOrder = reader.ReadByte();
             model.CurrentConfig.Visible = reader.ReadBoolean();
 
-            model.SelectedBone = model.Bones[reader.ReadInt32()];
-            model.SelectedBrowMorph = model.Morphs[reader.ReadInt32()];
-            model.SelectedEyeMorph = model.Morphs[reader.ReadInt32()];
-            model.SelectedLipMorph = model.Morphs[reader.ReadInt32()];
-            model.SelectedOtherMorph = model.Morphs[reader.ReadInt32()];
+            int selectedBoneIndex = reader.ReadInt32();
+            int selectedBrowMorphIndex = reader.ReadInt32();
+            int selectedEyeMorphIndex = reader.ReadInt32();
+            int selectedLipMorphIndex = reader.ReadInt32();
+            int selectedOtherMorphIndex = reader.ReadInt32();
+
+            if (selectedBoneIndex >= 0)
+                model.SelectedBone = model.Bones[selectedBoneIndex];
+            if (selectedBrowMorphIndex >= 0)
+                model.SelectedBrowMorph = model.Morphs[selectedBrowMorphIndex];
+            if (selectedEyeMorphIndex >= 0)
+                model.SelectedEyeMorph = model.Morphs[selectedEyeMorphIndex];
+            if (selectedLipMorphIndex >= 0)
+                model.SelectedLipMorph = model.Morphs[selectedLipMorphIndex];
+            if (selectedOtherMorphIndex >= 0)
+                model.SelectedOtherMorph = model.Morphs[selectedOtherMorphIndex];
 
             var nodeCount = reader.ReadByte();
             for (int i = 0; i < nodeCount; i++)
