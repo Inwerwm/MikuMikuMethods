@@ -80,7 +80,7 @@ namespace MikuMikuMethods.PMM
         /// <summary>
         /// 表示枠
         /// </summary>
-        public ImmutableArray<PmmNode> Nodes { get; } = new();
+        public List<PmmNode> Nodes { get; } = new();
 
         /// <summary>
         /// 選択中ボーンの取得/設定
