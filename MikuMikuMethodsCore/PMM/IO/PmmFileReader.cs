@@ -694,6 +694,13 @@ namespace MikuMikuMethods.PMM.IO
             var elementFrameCount = reader.ReadInt32();
             var elementFrames = Enumerable.Range(0, elementFrameCount).Select(_ => readElementFrame(reader)).ToArray();
 
+            // 最初から next が 0 である場合 null に変えておく
+            foreach (var elmNext in elementNextFrameDictionary)
+            {
+                if (elmNext.Value.HasValue && elmNext.Value.Value == 0)
+                    elementNextFrameDictionary[elmNext.Key] = null;
+            }
+
             var AreThereElementLeftThatRequiredFrameSearch = true;
             while (AreThereElementLeftThatRequiredFrameSearch)
             {
