@@ -114,7 +114,7 @@ namespace MikuMikuMethods.PMM.IO
                     pmm.Accessories.Add(accessory);
                     accessoryOrderDictionary.Add(accessory, renderOrder);
                 }
-                pmm.EditorState.SelectedAccessory = pmm.Accessories[selectedAccessoryIndex];
+                pmm.EditorState.SelectedAccessory = selectedAccessoryIndex < pmm.Accessories.Count ? pmm.Accessories[selectedAccessoryIndex] : null;
                 foreach (var acs in pmm.Accessories)
                 {
                     acs.RenderOrder = accessoryOrderDictionary[acs];
