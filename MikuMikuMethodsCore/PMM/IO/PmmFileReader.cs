@@ -1,4 +1,4 @@
-﻿using MikuMikuMethods.Extension;
+using MikuMikuMethods.Extension;
 using MikuMikuMethods.PMM.Frame;
 using System;
 using System.Collections.Generic;
@@ -40,7 +40,7 @@ namespace MikuMikuMethods.PMM.IO
                 pmm.OutputResolution = new(reader.ReadInt32(), reader.ReadInt32());
 
                 pmm.EditorState.Width = reader.ReadInt32();
-                pmm.Camera.Current.ViewAngle = reader.ReadInt32();
+                pmm.Camera.Current.ViewAngle = (int)reader.ReadSingle();
                 pmm.EditorState.IsCameraMode = reader.ReadBoolean();
 
                 // パネル開閉状態の読み込み
