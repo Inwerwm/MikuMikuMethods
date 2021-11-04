@@ -77,11 +77,11 @@ namespace MikuMikuMethods.PMM.IO
                 {
                     foreach (var relation in frame.Value)
                     {
-                        var opModel = pmm.Models[relation.Value.ModelID];
+                        var opModel = relation.Value.ModelID < 0 ? null : pmm.Models[relation.Value.ModelID];
                         frame.Key.OuterParent.Add(relation.Key, new()
                         {
                             ParentModel = opModel,
-                            ParentBone = opModel.Bones[relation.Value.BoneID]
+                            ParentBone = opModel?.Bones[relation.Value.BoneID]
                         });
                     }
                 }
@@ -90,9 +90,9 @@ namespace MikuMikuMethods.PMM.IO
                 {
                     foreach (var relation in state.Value)
                     {
-                        var opModel = pmm.Models[relation.Value.ModelID];
+                        var opModel = relation.Value.ModelID < 0 ? null : pmm.Models[relation.Value.ModelID];
                         state.Key.OuterParent[relation.Key].ParentModel = opModel;
-                        state.Key.OuterParent[relation.Key].ParentBone = opModel.Bones[relation.Value.BoneID];
+                        state.Key.OuterParent[relation.Key].ParentBone = opModel?.Bones[relation.Value.BoneID];
                     }
                 }
 
