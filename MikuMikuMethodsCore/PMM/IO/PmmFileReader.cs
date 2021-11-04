@@ -475,7 +475,7 @@ namespace MikuMikuMethods.PMM.IO
             }
 
             var ikCount = reader.ReadInt32();
-            var ikIndices = Enumerable.Range(0, ikCount).Select(_ => reader.ReadInt32());
+            var ikIndices = Enumerable.Range(0, ikCount).Select(_ => reader.ReadInt32()).ToArray();
             foreach (var i in ikIndices)
             {
                 model.Bones[i].IsIK = true;
@@ -483,7 +483,7 @@ namespace MikuMikuMethods.PMM.IO
 
             var parentableBoneCount = reader.ReadInt32();
             // なぜか最初に -1 が入っているのでそれは飛ばす
-            var parentableIndices = Enumerable.Range(0, parentableBoneCount).Select(_ => reader.ReadInt32()).Where(i => i >= 0);
+            var parentableIndices = Enumerable.Range(0, parentableBoneCount).Select(_ => reader.ReadInt32()).Where(i => i >= 0).ToArray();
             foreach (var i in parentableIndices)
             {
                 model.Bones[i].CanBecomeOuterParent = true;
@@ -684,7 +684,7 @@ namespace MikuMikuMethods.PMM.IO
         private static void ReadFramesThatRequireResolving(BinaryReader reader, IEnumerable<IPmmModelElement> targetElements, int elementCount, Func<BinaryReader, (IPmmFrame Frame, int PreviousFrameIndex, int NextFrameIndex)> readElementFrame, Dictionary<string, int?> elementNextFrameDictionary, Action<IPmmModelElement, IPmmFrame> addFrame)
         {
             var elementFrameCount = reader.ReadInt32();
-            var elementFrames = Enumerable.Range(0, elementFrameCount).Select(_ => readElementFrame(reader));
+            var elementFrames = Enumerable.Range(0, elementFrameCount).Select(_ => readElementFrame(reader)).ToArray();
 
             var AreThereElementLeftThatRequiredFrameSearch = true;
             while (AreThereElementLeftThatRequiredFrameSearch)
