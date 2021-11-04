@@ -482,7 +482,8 @@ namespace MikuMikuMethods.PMM.IO
             }
 
             var parentableBoneCount = reader.ReadInt32();
-            var parentableIndices = Enumerable.Range(0, parentableBoneCount).Select(_ => reader.ReadInt32());
+            // なぜか最初に -1 が入っているのでそれは飛ばす
+            var parentableIndices = Enumerable.Range(0, parentableBoneCount).Select(_ => reader.ReadInt32()).Where(i => i >= 0);
             foreach (var i in parentableIndices)
             {
                 model.Bones[i].CanBecomeOuterParent = true;
