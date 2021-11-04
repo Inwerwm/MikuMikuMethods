@@ -1,4 +1,5 @@
 ﻿using MikuMikuMethods.Extension;
+using MikuMikuMethods.PMM.ElementState;
 using MikuMikuMethods.PMM.Frame;
 using System;
 using System.Collections.Generic;
@@ -9,8 +10,8 @@ namespace MikuMikuMethods.PMM.IO
 {
     internal static class PmmFileReader
     {
-        private static Dictionary<PmmModel, Dictionary<PmmBone, (int ModelID, int BoneID)>> OuterParentRelation { get; set; }
-        private static Dictionary<PmmModel, Dictionary<PmmBone, (int ModelID, int BoneID)>> OuterParentRelationCurrent { get; set; }
+        private static Dictionary<PmmModelConfigFrame, Dictionary<PmmBone, (int ModelID, int BoneID)>> OuterParentRelation { get; set; }
+        private static Dictionary<PmmModelConfigState, Dictionary<PmmBone, (int ModelID, int BoneID)>> OuterParentRelationCurrent { get; set; }
 
         internal static void Read(string filePath, PolygonMovieMaker pmm)
         {
@@ -69,26 +70,29 @@ namespace MikuMikuMethods.PMM.IO
                     (byte RenderOrder, byte CalculateOrder) order = modelOrderDictionary[model];
                     model.RenderOrder = order.RenderOrder;
                     model.CalculateOrder = order.CalculateOrder;
+                }
 
-                    // 外部親の関係解決
-                    foreach (var relation in OuterParentRelation[model])
+                // 外部親の関係解決
+                foreach (var frame in OuterParentRelation)
+                {
+                    foreach (var relation in frame.Value)
                     {
                         var opModel = pmm.Models[relation.Value.ModelID];
-                        foreach (var frame in model.ConfigFrames)
+                        frame.Key.OuterParent.Add(relation.Key, new()
                         {
-                            frame.OuterParent.Add(relation.Key, new()
-                            {
-                                ParentModel = opModel,
-                                ParentBone = opModel.Bones[relation.Value.BoneID]
-                            });
-                        }
+                            ParentModel = opModel,
+                            ParentBone = opModel.Bones[relation.Value.BoneID]
+                        });
                     }
+                }
 
-                    foreach (var relation in OuterParentRelationCurrent[model])
+                foreach (var state in OuterParentRelationCurrent)
+                {
+                    foreach (var relation in state.Value)
                     {
                         var opModel = pmm.Models[relation.Value.ModelID];
-                        model.CurrentConfig.OuterParent[relation.Key].ParentModel = opModel;
-                        model.CurrentConfig.OuterParent[relation.Key].ParentBone = opModel.Bones[relation.Value.BoneID];
+                        state.Key.OuterParent[relation.Key].ParentModel = opModel;
+                        state.Key.OuterParent[relation.Key].ParentBone = opModel.Bones[relation.Value.BoneID];
                     }
                 }
 
@@ -444,10 +448,6 @@ namespace MikuMikuMethods.PMM.IO
         private static (PmmModel Model, byte RenderOrder, byte CalculateOrder) ReadModel(BinaryReader reader)
         {
             var model = new PmmModel();
-
-            OuterParentRelation.Add(model, new());
-            OuterParentRelationCurrent.Add(model, new());
-
             byte renderOrder;
 
             // モデルのインデックス
@@ -583,12 +583,13 @@ namespace MikuMikuMethods.PMM.IO
                 model.CurrentConfig.EnableIK.Add(model.Bones[i], reader.ReadBoolean());
             }
 
+            OuterParentRelationCurrent.Add(model.CurrentConfig, new());
             foreach (var i in parentableIndices)
             {
-                var op = new ElementState.PmmOuterParentState();
+                var op = new PmmOuterParentState();
                 op.StartFrame = reader.ReadInt32();
                 op.EndFrame = reader.ReadInt32();
-                OuterParentRelationCurrent[model].Add(model.Bones[i], (reader.ReadInt32(), reader.ReadInt32()));
+                OuterParentRelationCurrent[model.CurrentConfig].Add(model.Bones[i], (reader.ReadInt32(), reader.ReadInt32()));
 
                 model.CurrentConfig.OuterParent.Add(model.Bones[i], op);
             }
@@ -606,6 +607,7 @@ namespace MikuMikuMethods.PMM.IO
             if (!isInitial) _ = reader.ReadInt32();
 
             var frame = new PmmModelConfigFrame();
+            OuterParentRelation.Add(frame, new());
 
             frame.Frame = reader.ReadInt32();
 
@@ -623,7 +625,7 @@ namespace MikuMikuMethods.PMM.IO
 
             foreach (var i in parentableIndices)
             {
-                OuterParentRelation[model].Add(model.Bones[i], (reader.ReadInt32(), reader.ReadInt32()));
+                OuterParentRelation[frame].Add(model.Bones[i], (reader.ReadInt32(), reader.ReadInt32()));
             }
 
             frame.IsSelected = reader.ReadBoolean();
