@@ -259,8 +259,11 @@ namespace MikuMikuMethods.PMM.IO
             frame.EyePosition = reader.ReadVector3();
             frame.Rotation = reader.ReadVector3();
 
-            frame.FollowingModel = pmm.Models[reader.ReadInt32()];
-            frame.FollowingBone = frame.FollowingModel.Bones[reader.ReadInt32()];
+            int followingModelIndex = reader.ReadInt32();
+            int followingBoneIndex = reader.ReadInt32();
+
+            frame.FollowingModel = followingModelIndex < 0 ? null : pmm.Models[followingModelIndex];
+            frame.FollowingBone = frame.FollowingModel?.Bones[followingBoneIndex];
 
             frame.InterpolationCurces[InterpolationItem.XPosition].FromBytes(reader.ReadBytes(4));
             frame.InterpolationCurces[InterpolationItem.YPosition].FromBytes(reader.ReadBytes(4));
