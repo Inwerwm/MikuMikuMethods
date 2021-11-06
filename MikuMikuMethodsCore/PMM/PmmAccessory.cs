@@ -7,31 +7,9 @@ namespace MikuMikuMethods.PMM
 {
     /// <summary>
     /// PMM用アクセサリークラス
-    /// <para>複数の PMM クラスで共有すると描画/計算順に不整合が発生するので Clone した別インスタンスを入れること</para>
     /// </summary>
-    public class PmmAccessory : IRelationableElement<PmmAccessory>
+    public class PmmAccessory
     {
-        internal List<PmmAccessory> _RenderOrderCollection { get; set; }
-        void IRelationableElement<PmmAccessory>.AddRelation(IEnumerable<List<PmmAccessory>> lists)
-        {
-            _RenderOrderCollection = lists.ElementAt(0);
-        }
-        void IRelationableElement<PmmAccessory>.RemoveRelation()
-        {
-            _RenderOrderCollection = null;
-        }
-        /// <summary>
-        /// 描画順
-        /// <para>get/set 共にアクセサリが PolygonMovieMaker クラスに属していなければ例外を吐く</para>
-        /// <para>PMM クラスにアクセサリを追加すると追加先の文脈に応じて順序が定まるようになる</para>
-        /// <para>複数の PMM クラスで共有すると順序に不整合が発生するのでアクセサリ自体を Clone すること</para>
-        /// </summary>
-        public byte RenderOrder
-        {
-            get => IRelationableElement<PmmAccessory>.GetOrder(this, _RenderOrderCollection, "描画");
-            set => IRelationableElement<PmmAccessory>.SetOrder(this, _RenderOrderCollection, "描画", value);
-        }
-
         /// <summary>
         /// 名前
         /// </summary>

@@ -67,9 +67,9 @@ namespace MikuMikuMethods.PMM.IO
                 foreach (var model in pmm.Models)
                 {
                     // 順序系プロパティはモデルの追加後に設定する
-                    (byte RenderOrder, byte CalculateOrder) order = modelOrderDictionary[model];
-                    model.RenderOrder = order.RenderOrder;
-                    model.CalculateOrder = order.CalculateOrder;
+                    var (renderOrder, calculateOrder) = modelOrderDictionary[model];
+                    pmm.SetRenderOrder(model, renderOrder);
+                    pmm.SetCalculateOrder(model, calculateOrder);
                 }
 
                 // 外部親の関係解決
@@ -117,7 +117,7 @@ namespace MikuMikuMethods.PMM.IO
                 pmm.EditorState.SelectedAccessory = selectedAccessoryIndex < pmm.Accessories.Count ? pmm.Accessories[selectedAccessoryIndex] : null;
                 foreach (var acs in pmm.Accessories)
                 {
-                    acs.RenderOrder = accessoryOrderDictionary[acs];
+                    pmm.SetRenderOrder(acs, accessoryOrderDictionary[acs]);
                 }
 
                 // フレーム編集画面の状態読み込み
