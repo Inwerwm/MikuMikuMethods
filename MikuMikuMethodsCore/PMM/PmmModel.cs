@@ -50,30 +50,30 @@ namespace MikuMikuMethods.PMM
         /// 選択中ボーンの取得/設定
         /// <para>モデルに含まれない要素を設定しようとすると <c>ArgumentOutOfRangeException</c> を投げる</para>
         /// </summary>
-        public PmmBone SelectedBone { get => _selectedBone; set => _selectedBone = GetIfContains(Bones, value, "ボーン"); }
+        public PmmBone SelectedBone { get => _selectedBone; set => _selectedBone = GetIfContains(Bones, value, "bone"); }
         /// <summary>
         /// 選択中眉モーフの取得/設定
         /// <para>モデルに含まれない要素を設定しようとすると <c>ArgumentOutOfRangeException</c> を投げる</para>
         /// </summary>
-        public PmmMorph SelectedBrowMorph { get => _selectedBrowMorph; set => _selectedBrowMorph = GetIfContains(Morphs, value, "モーフ"); }
+        public PmmMorph SelectedBrowMorph { get => _selectedBrowMorph; set => _selectedBrowMorph = GetIfContains(Morphs, value, "morph"); }
         /// <summary>
         /// 選択中目モーフの取得/設定
         /// <para>モデルに含まれない要素を設定しようとすると <c>ArgumentOutOfRangeException</c> を投げる</para>
         /// </summary>
-        public PmmMorph SelectedEyeMorph { get => _selectedEyeMorph; set => _selectedEyeMorph = GetIfContains(Morphs, value, "モーフ"); }
+        public PmmMorph SelectedEyeMorph { get => _selectedEyeMorph; set => _selectedEyeMorph = GetIfContains(Morphs, value, "morph"); }
         /// <summary>
         /// 選択中口モーフの取得/設定
         /// <para>モデルに含まれない要素を設定しようとすると <c>ArgumentOutOfRangeException</c> を投げる</para>
         /// </summary>
-        public PmmMorph SelectedLipMorph { get => _selectedLipMorph; set => _selectedLipMorph = GetIfContains(Morphs, value, "モーフ"); }
+        public PmmMorph SelectedLipMorph { get => _selectedLipMorph; set => _selectedLipMorph = GetIfContains(Morphs, value, "morph"); }
         /// <summary>
         /// 選択中その他モーフの取得/設定
         /// <para>モデルに含まれない要素を設定しようとすると <c>ArgumentOutOfRangeException</c> を投げる</para>
         /// </summary>
-        public PmmMorph SelectedOtherMorph { get => _selectedOtherMorph; set => _selectedOtherMorph = GetIfContains(Morphs, value, "モーフ"); }
+        public PmmMorph SelectedOtherMorph { get => _selectedOtherMorph; set => _selectedOtherMorph = GetIfContains(Morphs, value, "morph"); }
 
         private T GetIfContains<T>(List<T> entity, T value, string dispNameOnException) =>
-            entity.Contains(value) ? value : throw new ArgumentOutOfRangeException($"モデルに含まれない{dispNameOnException}を選択対象にしようとしました");
+            entity.Contains(value) ? value : throw new ArgumentOutOfRangeException($"The model does not contain the {dispNameOnException} which specified as the selection target.");
 
         /// <summary>
         /// 表示・IK・外観のキーフレーム

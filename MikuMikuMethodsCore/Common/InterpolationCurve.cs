@@ -116,9 +116,8 @@ namespace MikuMikuMethods
             }
             catch (ArgumentOutOfRangeException ex)
             {
-                throw new ArgumentException("補間曲線をバイト列から設定する時は少なくとも4つの要素が必要です。", ex);
+                throw new ArgumentException("When setting up an interpolation curve from a byte sequence, at least four elements are required.", ex);
             }
-
         }
 
         /// <summary>
