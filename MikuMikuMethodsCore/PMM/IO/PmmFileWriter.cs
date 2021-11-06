@@ -31,6 +31,22 @@ namespace MikuMikuMethods.PMM.IO
             writer.Write(pmm.Version, 30, Encoding.ShiftJIS);
             writer.Write(pmm.OutputResolution.Width);
             writer.Write(pmm.OutputResolution.Height);
+
+
+            writer.Write(pmm.EditorState.Width);
+
+            writer.Write((float)pmm.Camera.Current.ViewAngle);
+
+            writer.Write(pmm.EditorState.IsCameraMode);
+
+            writer.Write(pmm.PanelPane.DoesOpenCameraPanel);
+            writer.Write(pmm.PanelPane.DoesOpenLightPanel);
+            writer.Write(pmm.PanelPane.DoesOpenAccessaryPanel);
+            writer.Write(pmm.PanelPane.DoesOpenBonePanel);
+            writer.Write(pmm.PanelPane.DoesOpenMorphPanel);
+            writer.Write(pmm.PanelPane.DoesOpenSelfShadowPanel);
+
+
         }
     }
 }
