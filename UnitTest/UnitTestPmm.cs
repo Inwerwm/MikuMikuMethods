@@ -81,7 +81,7 @@ namespace UnitTest
             Assert.AreEqual((byte)1, pmm1.GetRenderOrder(model2).Value);
 
             pmm1.Models.Remove(model1);
-            Assert.ThrowsException<KeyNotFoundException>(() => pmm1.GetRenderOrder(model1).Value);
+            Assert.IsNull(pmm1.GetRenderOrder(model1));
             Assert.AreEqual((byte)0, pmm1.GetCalculateOrder(model2).Value);
 
             // モデルの差し替えが発生したとき順序が保たれるか
