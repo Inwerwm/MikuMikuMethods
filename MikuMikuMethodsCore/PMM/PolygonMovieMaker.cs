@@ -3,6 +3,8 @@ using MikuMikuMethods.Extension;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Linq;
 
 namespace MikuMikuMethods.PMM
 {
@@ -76,8 +78,8 @@ namespace MikuMikuMethods.PMM
 
         public PolygonMovieMaker()
         {
-            AccessoriesSubstance.CollectionChanged += IRelationableElement<PmmAccessory>.SyncOrders(new[] { AccessoryRenderOrder });
-            ModelsSubstance.CollectionChanged += IRelationableElement<PmmModel>.SyncOrders(new[] { ModelRenderOrder, ModelCalculateOrder });
+            AccessoriesSubstance.CollectionChanged += CreateOrderListSynchronizer(new[] { AccessoryRenderOrder });
+            ModelsSubstance.CollectionChanged += CreateOrderListSynchronizer(new[] { ModelRenderOrder, ModelCalculateOrder });
         }
 
         /// <summary>
@@ -124,5 +126,60 @@ namespace MikuMikuMethods.PMM
             var order = ModelCalculateOrder.IndexOf(model);
             return order < 0 ? null : (byte)order;
         }
+
+        static NotifyCollectionChangedEventHandler CreateOrderListSynchronizer<T>(IEnumerable<List<T>> orderLists) =>
+            (sender, e) =>
+            {
+                foreach (var list in orderLists)
+                {
+                    switch (e.Action)
+                    {
+                        case NotifyCollectionChangedAction.Add:
+                            AddAll(e.NewItems?.Cast<T>() ?? Array.Empty<T>());
+                            break;
+                        case NotifyCollectionChangedAction.Remove:
+                            RemoveAll(e.OldItems?.Cast<T>() ?? Array.Empty<T>());
+                            break;
+                        case NotifyCollectionChangedAction.Replace:
+                            ReplaceAll();
+                            break;
+                        case NotifyCollectionChangedAction.Reset:
+                            RemoveAll(list.ToArray());
+                            AddAll(sender as IEnumerable<T> ?? Array.Empty<T>());
+                            break;
+                        case NotifyCollectionChangedAction.Move:
+                        default:
+                            break;
+                    }
+
+                    void ReplaceAll()
+                    {
+                        foreach (var item in e.OldItems?.Cast<T>())
+                        {
+                            list.Remove(item);
+                        }
+                        foreach (var item in e.NewItems?.Cast<T>().Select((Item, Id) => (Item, Id)))
+                        {
+                            list.Insert(e.OldStartingIndex + item.Id, item.Item);
+                        }
+                    }
+
+                    void RemoveAll(IEnumerable<T> items)
+                    {
+                        foreach (T item in items)
+                        {
+                            list.Remove(item);
+                        }
+                    }
+
+                    void AddAll(IEnumerable<T> items)
+                    {
+                        foreach (T item in items)
+                        {
+                            list.Add(item);
+                        }
+                    }
+                }
+            };
     }
 }
