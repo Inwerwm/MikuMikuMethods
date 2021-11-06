@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MikuMikuMethods.Extension;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -27,7 +28,9 @@ namespace MikuMikuMethods.PMM.IO
 
         internal static void Write(BinaryWriter writer, PolygonMovieMaker pmm)
         {
-
+            writer.Write(pmm.Version, 30, Encoding.ShiftJIS);
+            writer.Write(pmm.OutputResolution.Width);
+            writer.Write(pmm.OutputResolution.Height);
         }
     }
 }
