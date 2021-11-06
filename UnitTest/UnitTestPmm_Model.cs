@@ -18,7 +18,7 @@ namespace UnitTest
             var pmm = new PolygonMovieMaker();
 
             int modelCount = 0;
-            pmm._Models.CollectionChanged += (sender, e) =>
+            pmm.ModelsSubstance.CollectionChanged += (sender, e) =>
             {
                 switch (e.Action)
                 {
@@ -46,18 +46,18 @@ namespace UnitTest
             pmm.Models.Add(model);
             Assert.AreEqual(1, modelCount);
             Assert.AreEqual(1, pmm.Models.Count);
-            Assert.AreEqual(1, pmm._Models.Count);
-            Assert.AreEqual(1, pmm._ModelRenderOrder.Count);
-            Assert.AreEqual(1, pmm._ModelCalculateOrder.Count);
-            Assert.AreEqual(pmm._Models[0], pmm._ModelRenderOrder[0]);
+            Assert.AreEqual(1, pmm.ModelsSubstance.Count);
+            Assert.AreEqual(1, pmm.ModelRenderOrder.Count);
+            Assert.AreEqual(1, pmm.ModelCalculateOrder.Count);
+            Assert.AreEqual(pmm.ModelsSubstance[0], pmm.ModelRenderOrder[0]);
 
             // 削除処理の連動
             pmm.Models.Remove(model);
             Assert.AreEqual(0, modelCount);
             Assert.AreEqual(0, pmm.Models.Count);
-            Assert.AreEqual(0, pmm._Models.Count);
-            Assert.AreEqual(0, pmm._ModelRenderOrder.Count);
-            Assert.AreEqual(0, pmm._ModelCalculateOrder.Count);
+            Assert.AreEqual(0, pmm.ModelsSubstance.Count);
+            Assert.AreEqual(0, pmm.ModelRenderOrder.Count);
+            Assert.AreEqual(0, pmm.ModelCalculateOrder.Count);
 
             // 順序管理
             PmmModel modelA = new();
@@ -71,9 +71,9 @@ namespace UnitTest
 
             Assert.AreEqual(4, modelCount);
             Assert.AreEqual(4, pmm.Models.Count);
-            Assert.AreEqual(4, pmm._Models.Count);
-            Assert.AreEqual(4, pmm._ModelRenderOrder.Count);
-            Assert.AreEqual(4, pmm._ModelCalculateOrder.Count);
+            Assert.AreEqual(4, pmm.ModelsSubstance.Count);
+            Assert.AreEqual(4, pmm.ModelRenderOrder.Count);
+            Assert.AreEqual(4, pmm.ModelCalculateOrder.Count);
 
             Assert.AreEqual(0, modelA.RenderOrder);
             Assert.AreEqual(1, modelB.RenderOrder);
@@ -113,9 +113,9 @@ namespace UnitTest
             pmm.Models.Clear();
             Assert.AreEqual(0, modelCount);
             Assert.AreEqual(0, pmm.Models.Count);
-            Assert.AreEqual(0, pmm._Models.Count);
-            Assert.AreEqual(0, pmm._ModelRenderOrder.Count);
-            Assert.AreEqual(0, pmm._ModelCalculateOrder.Count);
+            Assert.AreEqual(0, pmm.ModelsSubstance.Count);
+            Assert.AreEqual(0, pmm.ModelRenderOrder.Count);
+            Assert.AreEqual(0, pmm.ModelCalculateOrder.Count);
 
 
             pmm.Models.Add(modelA);

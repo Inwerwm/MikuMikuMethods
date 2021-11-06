@@ -29,7 +29,7 @@ namespace UnitTest
             var pmm = new PolygonMovieMaker();
 
             int ascCount = 0;
-            pmm._Accessories.CollectionChanged += (sender, e) =>
+            pmm.AccessoriesSubstance.CollectionChanged += (sender, e) =>
             {
                 switch (e.Action)
                 {
@@ -57,16 +57,16 @@ namespace UnitTest
             pmm.Accessories.Add(asc);
             Assert.AreEqual(1, ascCount);
             Assert.AreEqual(1, pmm.Accessories.Count);
-            Assert.AreEqual(1, pmm._Accessories.Count);
-            Assert.AreEqual(1, pmm._AccessoryRenderOrder.Count);
-            Assert.AreEqual(pmm._Accessories[0], pmm._AccessoryRenderOrder[0]);
+            Assert.AreEqual(1, pmm.AccessoriesSubstance.Count);
+            Assert.AreEqual(1, pmm.AccessoryRenderOrder.Count);
+            Assert.AreEqual(pmm.AccessoriesSubstance[0], pmm.AccessoryRenderOrder[0]);
 
             // 削除処理の連動
             pmm.Accessories.Remove(asc);
             Assert.AreEqual(0, ascCount);
             Assert.AreEqual(0, pmm.Accessories.Count);
-            Assert.AreEqual(0, pmm._Accessories.Count);
-            Assert.AreEqual(0, pmm._AccessoryRenderOrder.Count);
+            Assert.AreEqual(0, pmm.AccessoriesSubstance.Count);
+            Assert.AreEqual(0, pmm.AccessoryRenderOrder.Count);
 
             // 順序管理
             PmmAccessory ascA = new();
@@ -80,8 +80,8 @@ namespace UnitTest
 
             Assert.AreEqual(4, ascCount);
             Assert.AreEqual(4, pmm.Accessories.Count);
-            Assert.AreEqual(4, pmm._Accessories.Count);
-            Assert.AreEqual(4, pmm._AccessoryRenderOrder.Count);
+            Assert.AreEqual(4, pmm.AccessoriesSubstance.Count);
+            Assert.AreEqual(4, pmm.AccessoryRenderOrder.Count);
 
             Assert.AreEqual(0, ascA.RenderOrder);
             Assert.AreEqual(1, ascB.RenderOrder);
@@ -98,8 +98,8 @@ namespace UnitTest
             pmm.Accessories.Clear();
             Assert.AreEqual(0, ascCount);
             Assert.AreEqual(0, pmm.Accessories.Count);
-            Assert.AreEqual(0, pmm._Accessories.Count);
-            Assert.AreEqual(0, pmm._AccessoryRenderOrder.Count);
+            Assert.AreEqual(0, pmm.AccessoriesSubstance.Count);
+            Assert.AreEqual(0, pmm.AccessoryRenderOrder.Count);
 
             // 要素数より大きい数が指定されると例外を吐く
             pmm.Accessories.Add(ascA);

@@ -10,12 +10,12 @@ namespace MikuMikuMethods.PMM
     /// </summary>
     public class PolygonMovieMaker
     {
-        internal ObservableCollection<PmmAccessory> _Accessories { get; } = new();
-        internal List<PmmAccessory> _AccessoryRenderOrder { get; } = new();
+        internal ObservableCollection<PmmAccessory> AccessoriesSubstance { get; } = new();
+        internal List<PmmAccessory> AccessoryRenderOrder { get; } = new();
 
-        internal ObservableCollection<PmmModel> _Models { get; } = new();
-        internal List<PmmModel> _ModelRenderOrder { get; } = new();
-        internal List<PmmModel> _ModelCalculateOrder { get; } = new();
+        internal ObservableCollection<PmmModel> ModelsSubstance { get; } = new();
+        internal List<PmmModel> ModelRenderOrder { get; } = new();
+        internal List<PmmModel> ModelCalculateOrder { get; } = new();
 
         /// <summary>
         /// PMMファイルバージョン
@@ -45,11 +45,11 @@ namespace MikuMikuMethods.PMM
         /// <summary>
         /// アクセサリー
         /// </summary>
-        public IList<PmmAccessory> Accessories => _Accessories;
+        public IList<PmmAccessory> Accessories => AccessoriesSubstance;
         /// <summary>
         /// モデル
         /// </summary>
-        public IList<PmmModel> Models => _Models;
+        public IList<PmmModel> Models => ModelsSubstance;
 
         /// <summary>
         /// 背景と音声
@@ -75,8 +75,8 @@ namespace MikuMikuMethods.PMM
 
         public PolygonMovieMaker()
         {
-            _Accessories.CollectionChanged += IRelationableElement<PmmAccessory>.SyncOrders(new[] { _AccessoryRenderOrder });
-            _Models.CollectionChanged += IRelationableElement<PmmModel>.SyncOrders(new[] { _ModelRenderOrder, _ModelCalculateOrder });
+            AccessoriesSubstance.CollectionChanged += IRelationableElement<PmmAccessory>.SyncOrders(new[] { AccessoryRenderOrder });
+            ModelsSubstance.CollectionChanged += IRelationableElement<PmmModel>.SyncOrders(new[] { ModelRenderOrder, ModelCalculateOrder });
         }
 
         /// <summary>
