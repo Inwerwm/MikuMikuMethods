@@ -59,26 +59,26 @@ namespace MikuMikuMethods.MME
         public void Read(StreamReader reader)
         {
             if (reader.CurrentEncoding != Encoding.ShiftJIS)
-                throw new FormatException($"EMMファイル読み込みエンコードエラー{Environment.NewLine}エンコーダがShiftJISと違います。");
+                throw new ArgumentException($"EMMファイル読み込みエンコードエラー{Environment.NewLine}エンコーダがShiftJISと違います。");
 
             string line;
 
             // [Info]
             line = reader.ReadLine();
             if (line != "[Info]")
-                throw new FormatException("読み込まれたファイル形式がEMDファイルと違います");
+                throw new InvalidDataException("読み込まれたファイル形式がEMDファイルと違います");
 
             // Version
             line = reader.ReadLine();
             Version = int.Parse(Regex.Replace(line, @"[^0-9]", ""));
-            if (Version < 3) throw new FormatException("EMDファイルのバージョンが未対応の値です");
+            if (Version < 3) throw new InvalidDataException("EMDファイルのバージョンが未対応の値です");
             // 改行
             reader.ReadLine();
 
             // [Effect]
             line = reader.ReadLine();
             if (line != "[Effect]")
-                throw new FormatException($"読み込まれたファイル形式がEMDファイルと違います{(line == "[Object]" ? Environment.NewLine + "EMMファイルを読み込んだ可能性があります" : "")}");
+                throw new InvalidDataException($"読み込まれたファイル形式がEMDファイルと違います{(line == "[Object]" ? Environment.NewLine + "EMMファイルを読み込んだ可能性があります" : "")}");
 
             while (!string.IsNullOrEmpty(line = reader.ReadLine()))
             {
@@ -144,7 +144,7 @@ namespace MikuMikuMethods.MME
         public void Write(StreamWriter writer)
         {
             if (writer.Encoding != Encoding.ShiftJIS)
-                throw new FormatException($"EMMファイル書き込みエンコードエラー{Environment.NewLine}エンコーダがShiftJISと違います。");
+                throw new ArgumentException($"EMMファイル書き込みエンコードエラー{Environment.NewLine}エンコーダがShiftJISと違います。");
 
             // [Info]
             writer.WriteLine("[Info]");

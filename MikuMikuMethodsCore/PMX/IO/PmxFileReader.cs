@@ -136,10 +136,10 @@ namespace MikuMikuMethods.PMX.IO
             // "PMX "
             reader.ReadBytes(4);
             Model.Header.Version = reader.ReadSingle();
-            if (Model.Header.Version < 2.0) throw new FormatException("PMXが非対応バージョンです。バージョン番号が未対応バージョンです。");
+            if (Model.Header.Version < 2.0) throw new InvalidDataException("PMXが非対応バージョンです。バージョン番号が未対応バージョンです。");
 
             var configSize = reader.ReadByte();
-            if (configSize != 8) throw new FormatException("PMXが非対応バージョンです。ヘッダデータが未対応の形式です。");
+            if (configSize != 8) throw new InvalidDataException("PMXが非対応バージョンです。ヘッダデータが未対応の形式です。");
 
             var config = reader.ReadBytes(header.ConfigSize);
             header.EncodingFormat = config[0];
