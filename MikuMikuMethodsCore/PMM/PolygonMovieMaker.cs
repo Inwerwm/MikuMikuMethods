@@ -1,4 +1,5 @@
 ﻿using MikuMikuMethods.Common;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -85,6 +86,35 @@ namespace MikuMikuMethods.PMM
         public PolygonMovieMaker(string filePath) : this()
         {
             IO.PmmFileReader.Read(filePath, this);
+        }
+        public void SetRenderOrder(PmmAccessory accessory, byte renderOrder)
+        {
+
+        }
+
+        public byte GetRenderOrder(PmmAccessory accessory)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetRenderOrder(PmmModel model, byte renderOrder)
+        {
+
+        }
+
+        public byte GetRenderOrder(PmmModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetCalculateOrder(PmmModel model, byte calculateOrder)
+        {
+
+        }
+
+        public byte GetCalculateOrder(PmmModel model)
+        {
+            throw new NotImplementedException();
         }
     }
 }
