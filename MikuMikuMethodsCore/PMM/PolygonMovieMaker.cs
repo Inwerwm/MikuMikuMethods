@@ -1,4 +1,5 @@
 ﻿using MikuMikuMethods.Common;
+using MikuMikuMethods.Extension;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -90,7 +91,8 @@ namespace MikuMikuMethods.PMM
 
         public void SetRenderOrder(PmmAccessory accessory, byte renderOrder)
         {
-
+            if (!Accessories.Contains(accessory)) throw new ArgumentException("The accessory for which the Render Order setting was tried does not contain the PMM.");
+            AccessoryRenderOrder.Move(renderOrder, accessory);
         }
 
         public byte? GetRenderOrder(PmmAccessory accessory)
@@ -101,7 +103,8 @@ namespace MikuMikuMethods.PMM
 
         public void SetRenderOrder(PmmModel model, byte renderOrder)
         {
-
+            if (!Models.Contains(model)) throw new ArgumentException("The model for which the Render Order setting was tried does not contain the PMM.");
+            ModelRenderOrder.Move(renderOrder, model);
         }
 
         public byte? GetRenderOrder(PmmModel model)
@@ -112,7 +115,8 @@ namespace MikuMikuMethods.PMM
 
         public void SetCalculateOrder(PmmModel model, byte calculateOrder)
         {
-
+            if (!Models.Contains(model)) throw new ArgumentException("The model for which the Calculate Order setting was tried does not contain the PMM.");
+            ModelCalculateOrder.Move(calculateOrder, model);
         }
 
         public byte? GetCalculateOrder(PmmModel model)
