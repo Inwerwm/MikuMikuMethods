@@ -87,14 +87,16 @@ namespace MikuMikuMethods.PMM
         {
             IO.PmmFileReader.Read(filePath, this);
         }
+
         public void SetRenderOrder(PmmAccessory accessory, byte renderOrder)
         {
 
         }
 
-        public byte GetRenderOrder(PmmAccessory accessory)
+        public byte? GetRenderOrder(PmmAccessory accessory)
         {
-            throw new NotImplementedException();
+            int order = AccessoryRenderOrder.IndexOf(accessory);
+            return order < 0 ? null : (byte)order;
         }
 
         public void SetRenderOrder(PmmModel model, byte renderOrder)
@@ -102,9 +104,10 @@ namespace MikuMikuMethods.PMM
 
         }
 
-        public byte GetRenderOrder(PmmModel model)
+        public byte? GetRenderOrder(PmmModel model)
         {
-            throw new NotImplementedException();
+            int order = ModelRenderOrder.IndexOf(model);
+            return order < 0 ? null : (byte)order;
         }
 
         public void SetCalculateOrder(PmmModel model, byte calculateOrder)
@@ -112,9 +115,10 @@ namespace MikuMikuMethods.PMM
 
         }
 
-        public byte GetCalculateOrder(PmmModel model)
+        public byte? GetCalculateOrder(PmmModel model)
         {
-            throw new NotImplementedException();
+            var order = ModelCalculateOrder.IndexOf(model);
+            return order < 0 ? null : (byte)order;
         }
     }
 }
