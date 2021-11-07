@@ -432,7 +432,7 @@ namespace MikuMikuMethods.PMM.IO
                     {
                         var op = frame.OuterParent[model.Bones[parentableId]];
                         writer.Write(pmm.Models.IndexOf(op.ParentModel));
-                        writer.Write(op.ParentModel.Bones.IndexOf(op.ParentBone));
+                        writer.Write(op.ParentModel?.Bones.IndexOf(op.ParentBone) ?? 0);
                     }
 
                     writer.Write(frame.IsSelected);
