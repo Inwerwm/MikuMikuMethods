@@ -106,15 +106,36 @@ namespace MikuMikuMethods.PMM.IO
             writer.Write(pmm.RenderConfig.GroundShadowBrightness);
             writer.Write(pmm.RenderConfig.EnableTransparentGroundShadow);
 
-            Write(writer, pmm.Physics);
+            WritePhysics(writer, pmm.Physics);
         }
 
         /// <summary>
         /// 物理書込み
         /// </summary>
-        private static void Write(BinaryWriter writer, PmmPhysics physics)
+        private static void WritePhysics(BinaryWriter writer, PmmPhysics physics)
         {
-            
+            writer.Write((byte)physics.CalculationMode);
+            writer.Write(physics.CurrentGravity.Acceleration);
+            writer.Write(physics.CurrentGravity.Noize ?? 0);
+            writer.Write(physics.CurrentGravity.Direction);
+            writer.Write(physics.CurrentGravity.Noize is not null);
+
+            WriteFrames(
+                writer,
+                new[] { physics.GravityFrames.ToList<IPmmFrame>() },
+                () => new PmmGravityFrame(),
+                (writer, f) =>
+                {
+                    var frame = (PmmGravityFrame)f;
+
+                    writer.Write(frame.Noize is not null);
+                    writer.Write(frame.Noize ?? 0);
+                    writer.Write(frame.Acceleration);
+                    writer.Write(frame.Direction);
+
+                    writer.Write(frame.IsSelected);
+                }
+            );
         }
 
         /// <summary>
@@ -129,7 +150,8 @@ namespace MikuMikuMethods.PMM.IO
 
             writer.Write(pmm.GetRenderOrder(accessory).Value);
 
-            WriteFrames(writer,
+            WriteFrames(
+                writer,
                 new[] { accessory.Frames.ToList<IPmmFrame>() },
                 () => new PmmAccessoryFrame(),
                 (writer, f) =>
