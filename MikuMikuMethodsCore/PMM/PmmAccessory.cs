@@ -26,5 +26,7 @@ namespace MikuMikuMethods.PMM
 
         public List<PmmAccessoryFrame> Frames { get; } = new();
         public PmmAccessoryState Current { get; } = new();
+
+        public override string ToString() => Name;
     }
 }

@@ -10,5 +10,7 @@ namespace MikuMikuMethods.PMM
         public List<PmmMorphFrame> Frames { get; } = new();
 
         public PmmMorphState Current { get; } = new();
+
+        public override string ToString() => Name;
     }
 }

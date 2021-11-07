@@ -42,5 +42,7 @@
         };
 
         IPmmFrame IPmmFrame.DeepCopy() => DeepCopy();
+
+        public override string ToString() => Frame.ToString();
     }
 }

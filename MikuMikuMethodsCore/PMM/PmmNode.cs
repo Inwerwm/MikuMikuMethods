@@ -7,5 +7,7 @@ namespace MikuMikuMethods.PMM
         public string Name { get; set; }
         public bool doesOpen { get; set; } = false;
         public ImmutableArray<IPmmModelElement> Elements { get; init; } = new();
+
+        public override string ToString() => Name;
     }
 }

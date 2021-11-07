@@ -29,5 +29,7 @@ namespace MikuMikuMethods.PMM
         /// 変形状態が確定されているか
         /// </summary>
         public bool IsCommitted { get; set; }
+
+        public override string ToString() => Name;
     }
 }

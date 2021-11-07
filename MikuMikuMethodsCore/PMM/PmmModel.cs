@@ -97,5 +97,7 @@ namespace MikuMikuMethods.PMM
         public PmmModelSpecificKeyFrameEditorState SpecificEditorState { get; } = new();
 
         public PmmModelConfigState CurrentConfig { get; } = new();
+
+        public override string ToString() => $"{Name} - {Path}";
     }
 }
