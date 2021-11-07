@@ -265,12 +265,12 @@ namespace MikuMikuMethods.PMM.IO
             frame.FollowingModel = followingModelIndex < 0 ? null : pmm.Models[followingModelIndex];
             frame.FollowingBone = frame.FollowingModel?.Bones[followingBoneIndex];
 
-            frame.InterpolationCurces[InterpolationItem.XPosition].FromBytes(reader.ReadBytes(4));
-            frame.InterpolationCurces[InterpolationItem.YPosition].FromBytes(reader.ReadBytes(4));
-            frame.InterpolationCurces[InterpolationItem.ZPosition].FromBytes(reader.ReadBytes(4));
-            frame.InterpolationCurces[InterpolationItem.Rotation].FromBytes(reader.ReadBytes(4));
-            frame.InterpolationCurces[InterpolationItem.Distance].FromBytes(reader.ReadBytes(4));
-            frame.InterpolationCurces[InterpolationItem.ViewAngle].FromBytes(reader.ReadBytes(4));
+            frame.InterpolationCurves[InterpolationItem.XPosition].FromBytes(reader.ReadBytes(4));
+            frame.InterpolationCurves[InterpolationItem.YPosition].FromBytes(reader.ReadBytes(4));
+            frame.InterpolationCurves[InterpolationItem.ZPosition].FromBytes(reader.ReadBytes(4));
+            frame.InterpolationCurves[InterpolationItem.Rotation].FromBytes(reader.ReadBytes(4));
+            frame.InterpolationCurves[InterpolationItem.Distance].FromBytes(reader.ReadBytes(4));
+            frame.InterpolationCurves[InterpolationItem.ViewAngle].FromBytes(reader.ReadBytes(4));
 
             frame.EnablePerspective = reader.ReadBoolean();
             frame.ViewAngle = reader.ReadInt32();
@@ -669,10 +669,10 @@ namespace MikuMikuMethods.PMM.IO
             var previousFrameIndex = reader.ReadInt32();
             var nextFrameIndex = reader.ReadInt32();
 
-            frame.InterpolationCurces[InterpolationItem.XPosition].FromBytes(reader.ReadBytes(4));
-            frame.InterpolationCurces[InterpolationItem.YPosition].FromBytes(reader.ReadBytes(4));
-            frame.InterpolationCurces[InterpolationItem.ZPosition].FromBytes(reader.ReadBytes(4));
-            frame.InterpolationCurces[InterpolationItem.Rotation].FromBytes(reader.ReadBytes(4));
+            frame.InterpolationCurves[InterpolationItem.XPosition].FromBytes(reader.ReadBytes(4));
+            frame.InterpolationCurves[InterpolationItem.YPosition].FromBytes(reader.ReadBytes(4));
+            frame.InterpolationCurves[InterpolationItem.ZPosition].FromBytes(reader.ReadBytes(4));
+            frame.InterpolationCurves[InterpolationItem.Rotation].FromBytes(reader.ReadBytes(4));
 
             frame.Movement = reader.ReadVector3();
             frame.Rotation = reader.ReadQuaternion();
