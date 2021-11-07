@@ -53,6 +53,33 @@ namespace MikuMikuMethods.PMM.IO
             }
 
             Write(writer, pmm.Camera, pmm);
+            Write(writer, pmm.Light, pmm);
+
+
+        }
+
+        /// <summary>
+        /// ライト書込み
+        /// </summary>
+        private static void Write(BinaryWriter writer, PmmLight light, PolygonMovieMaker pmm)
+        {
+            WriteFrames(
+                writer,
+                new[] { light.Frames.ToList<IPmmFrame>() },
+                () => new PmmLightFrame(),
+                (writer, f) =>
+                {
+                    var frame = (PmmLightFrame)f;
+
+                    writer.Write(frame.Color, false);
+                    writer.Write(frame.Position);
+
+                    writer.Write(frame.IsSelected);
+                }
+            );
+
+            writer.Write(light.Current.Color, false);
+            writer.Write(light.Current.Position);
         }
 
         /// <summary>
