@@ -85,10 +85,19 @@ namespace MikuMikuMethods.PMM
         /// <summary>
         /// ファイルから読み込む
         /// </summary>
-        /// <param name="filePath">読み込むpmmファイル</param>
+        /// <param name="filePath">読み込むファイル名</param>
         public PolygonMovieMaker(string filePath) : this()
         {
             IO.PmmFileReader.Read(filePath, this);
+        }
+
+        /// <summary>
+        /// ファイルに書き込む
+        /// </summary>
+        /// <param name="filePath">書き込むファイル名</param>
+        public void Write(string filePath)
+        {
+            IO.PmmFileWriter.Write(filePath, this);
         }
 
         public void SetRenderOrder(PmmAccessory accessory, byte renderOrder)
