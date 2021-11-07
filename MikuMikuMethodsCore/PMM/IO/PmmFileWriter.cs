@@ -147,7 +147,14 @@ namespace MikuMikuMethods.PMM.IO
             writer.Write(pmm.Physics.EnableGroundPhysics);
             writer.Write(pmm.RenderConfig.JumpFrameLocation);
 
-            
+            // Ver 9.24 以降である
+            writer.Write(true);
+
+            foreach (var (model, i) in pmm.Models.Select((m, i) => (m, i)))
+            {
+                writer.Write((byte)i);
+                writer.Write(model.SpecificEditorState.RangeSelector.Index);
+            }
         }
 
         /// <summary>
@@ -491,7 +498,7 @@ namespace MikuMikuMethods.PMM.IO
                     { Frame: 0 } => firstFrame,
                     _ => CreateZeroFrame(firstFrame)
                 };
-            }).Select(f => new InitFrameContainer() { Frame = f, NextIndex = 0}).ToArray();
+            }).Select(f => new InitFrameContainer() { Frame = f, NextIndex = 0 }).ToArray();
 
             IPmmFrame[][] otherFramesContainer = frameContainer.Select(frames => frames.FirstOrDefault() is { Frame: 0 } ? frames.Skip(1).ToArray() : frames.ToArray()).ToArray();
 
