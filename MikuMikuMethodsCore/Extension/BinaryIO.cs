@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 
@@ -163,6 +164,20 @@ namespace MikuMikuMethods.Extension
             writer.Write(value.B);
             if (isWriteAlpha)
                 writer.Write(value.A);
+        }
+
+        /// <summary>
+        /// 4バイト整数色をバイナリに書き込み
+        /// </summary>
+        /// <param name="value">書き込む色</param>
+        /// <param name="isWriteAlpha">アルファ値の情報を書き込むか</param>
+        public static void Write(this BinaryWriter writer, Color value, bool isWriteAlpha)
+        {
+            writer.Write((int)value.R);
+            writer.Write((int)value.G);
+            writer.Write((int)value.B);
+            if (isWriteAlpha)
+                writer.Write((int)value.A);
         }
     }
 }
