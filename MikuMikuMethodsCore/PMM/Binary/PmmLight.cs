@@ -1,8 +1,8 @@
-﻿using MikuMikuMethods.Binary.PMM.Frame;
+﻿using MikuMikuMethods.PMM.Binary.Frame;
 using System.Collections.Generic;
 using System.Numerics;
 
-namespace MikuMikuMethods.Binary.PMM
+namespace MikuMikuMethods.PMM.Binary
 {
     /// <summary>
     /// PMMの照明情報

@@ -14,20 +14,20 @@ namespace TestWithConsole
 
         static void Main(string[] args)
         {
-            var pmm = new MikuMikuMethods.Binary.PMM.PolygonMovieMaker(Path("pmm.pmm"));
+            var pmm = new MikuMikuMethods.PMM.Binary.PolygonMovieMaker(Path("pmm.pmm"));
             WLL(pmm.Models.PrintLn());
 
             var miku = pmm.Models[0];
             var haku = pmm.Models[1];
             WL(miku.Name);
-            Func<MikuMikuMethods.Binary.PMM.Frame.PmmBoneFrame, string> boneFrameInfo = f => $"ID:{f.Index}, Time:{f.Frame}, Offset:{f.Offset}, PreID:{f.PreviousFrameIndex}, PostID:{f.NextFrameIndex}";
+            Func<MikuMikuMethods.PMM.Binary.Frame.PmmBoneFrame, string> boneFrameInfo = f => $"ID:{f.Index}, Time:{f.Frame}, Offset:{f.Offset}, PreID:{f.PreviousFrameIndex}, PostID:{f.NextFrameIndex}";
             WLL(miku.BoneFrames.Select(boneFrameInfo).PrintLn());
             WLL($"初期ボーンフレーム数:{miku.InitialBoneFrames.Count}");
             //WLL(miku.InitialBoneFrames.Select(boneFrameInfo).PrintLn());
 
             WLL($"FPS制限:{pmm.ViewConfig.FPSLimit}");
 
-            MikuMikuMethods.Binary.PMM.PmmAccessory negi = pmm.Accessories[0];
+            MikuMikuMethods.PMM.Binary.PmmAccessory negi = pmm.Accessories[0];
             WL($"アクセサリ表示: {negi.Uncomitted.OpacityAndVisible}");
             WL($"アクセサリ表示: {negi.Uncomitted.OpacityAndVisible & 0x1}");
             WLL($"アクセサリ透明度数値: {(100 - (negi.Uncomitted.OpacityAndVisible >> 1)) / 100f}");

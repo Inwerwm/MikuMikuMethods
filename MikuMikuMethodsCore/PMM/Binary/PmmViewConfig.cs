@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace MikuMikuMethods.Binary.PMM
+namespace MikuMikuMethods.PMM.Binary
 {
     /// <summary>
     /// 3Dビュー関連設定

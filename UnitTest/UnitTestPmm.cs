@@ -16,13 +16,14 @@ namespace UnitTest
         {
             var pmm = new PolygonMovieMaker(TestData.GetPath("PragmaticTestData.pmm"));
             pmm.Write(TestData.GetPath("PragmaticTestData_out.pmm"));
+            var reloaded = new PolygonMovieMaker(TestData.GetPath("PragmaticTestData_out.pmm"));
         }
 
-        //[TestMethod]
-        //public void OldIO()
-        //{
-        //    var pmm = new MikuMikuMethods.Binary.PMM.PolygonMovieMaker(TestData.GetPath("PragmaticTestData.pmm"));
-        //}
+        [TestMethod]
+        public void OldIO()
+        {
+            var pmm = new MikuMikuMethods.PMM.Binary.PolygonMovieMaker(TestData.GetPath("PragmaticTestData_out.pmm"));
+        }
 
         [TestMethod]
         public void ModelOrderTest()

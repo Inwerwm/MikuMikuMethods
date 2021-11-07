@@ -1,4 +1,4 @@
-﻿namespace MikuMikuMethods.Binary.PMM
+﻿namespace MikuMikuMethods.PMM.Binary
 {
     /// <summary>
     /// Pmmの再生設定

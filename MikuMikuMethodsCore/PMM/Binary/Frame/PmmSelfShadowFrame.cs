@@ -1,4 +1,4 @@
-﻿namespace MikuMikuMethods.Binary.PMM.Frame
+﻿namespace MikuMikuMethods.PMM.Binary.Frame
 {
     /// <summary>
     /// セルフ影フレーム情報

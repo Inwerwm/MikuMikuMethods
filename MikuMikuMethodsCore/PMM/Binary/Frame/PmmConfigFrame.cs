@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MikuMikuMethods.Binary.PMM.Frame
+namespace MikuMikuMethods.PMM.Binary.Frame
 {
     /// <summary>
     /// 表示・IK・外観フレーム情報

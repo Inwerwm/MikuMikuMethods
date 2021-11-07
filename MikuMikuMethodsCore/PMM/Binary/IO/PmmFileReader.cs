@@ -1,8 +1,8 @@
 ﻿using MikuMikuMethods.Extension;
-using MikuMikuMethods.Binary.PMM.Frame;
+using MikuMikuMethods.PMM.Binary.Frame;
 using System.IO;
 
-namespace MikuMikuMethods.Binary.PMM.IO
+namespace MikuMikuMethods.PMM.Binary.IO
 {
     internal static class PmmFileReader
     {

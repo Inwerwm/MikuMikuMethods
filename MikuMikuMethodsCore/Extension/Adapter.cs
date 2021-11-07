@@ -8,7 +8,7 @@ namespace MikuMikuMethods.Extension
 {
     static class Adapter
     {
-        public static Binary.PMM.PmmModel CreateFrom(PMX.PmxModel pmx, string modelPath)
+        public static PMM.Binary.PmmModel CreateFrom(PMX.PmxModel pmx, string modelPath)
         {
             throw new NotImplementedException();
             return new()

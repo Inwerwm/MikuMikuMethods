@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace MikuMikuMethods.Binary.PMM.Frame
+namespace MikuMikuMethods.PMM.Binary.Frame
 {
     /// <summary>
     /// アクセサリフレーム情報

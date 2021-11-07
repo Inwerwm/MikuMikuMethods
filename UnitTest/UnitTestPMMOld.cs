@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MikuMikuMethods.Binary.PMM;
+using MikuMikuMethods.PMM.Binary;
 using System;
 using System.Collections.Generic;
 using System.IO;
