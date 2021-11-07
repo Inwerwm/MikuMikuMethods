@@ -67,6 +67,54 @@ namespace MikuMikuMethods.PMM.IO
             {
                 Write(writer, acs, i, pmm);
             }
+
+            writer.Write(pmm.EditorState.CurrentFrame);
+            writer.Write(pmm.EditorState.HorizontalScroll);
+            writer.Write(pmm.EditorState.HorizontalScrollLength);
+            writer.Write((int)pmm.EditorState.SelectedBoneOperation);
+
+            writer.Write((byte)pmm.PlayConfig.CameraTrackingTarget);
+            writer.Write(pmm.PlayConfig.EnableRepeat);
+            writer.Write(pmm.PlayConfig.EnableMoveCurrentFrameToPlayStopping);
+            writer.Write(pmm.PlayConfig.EnableStartFromCurrentFrame);
+            writer.Write(pmm.PlayConfig.PlayStartFrame);
+            writer.Write(pmm.PlayConfig.PlayStopFrame);
+
+            writer.Write(pmm.BackGround.Audio is not null);
+            writer.Write(pmm.BackGround.Audio ?? "", 256, Encoding.ShiftJIS);
+
+            writer.Write(pmm.BackGround.VideoOffset.X);
+            writer.Write(pmm.BackGround.VideoOffset.Y);
+            writer.Write(pmm.BackGround.VideoScale);
+            writer.Write(pmm.BackGround.Video ?? "", 256, Encoding.ShiftJIS);
+            writer.Write(pmm.BackGround.Video is not null ? 0b01000000 : 0b01000001);
+
+            writer.Write(pmm.BackGround.ImageOffset.X);
+            writer.Write(pmm.BackGround.ImageOffset.Y);
+            writer.Write(pmm.BackGround.ImageScale);
+            writer.Write(pmm.BackGround.Image ?? "", 256, Encoding.ShiftJIS);
+            writer.Write(pmm.BackGround.Image is not null);
+
+            writer.Write(pmm.RenderConfig.InfomationVisible);
+            writer.Write(pmm.RenderConfig.AxisVisible);
+            writer.Write(pmm.RenderConfig.EnableGrandShadow);
+
+            writer.Write((int)pmm.RenderConfig.FPSLimit);
+            writer.Write((int)pmm.RenderConfig.ScreenCaptureMode);
+
+            writer.Write(pmm.RenderConfig.PostDrawingAccessoryStartIndex);
+            writer.Write(pmm.RenderConfig.GroundShadowBrightness);
+            writer.Write(pmm.RenderConfig.EnableTransparentGroundShadow);
+
+            Write(writer, pmm.Physics);
+        }
+
+        /// <summary>
+        /// 物理書込み
+        /// </summary>
+        private static void Write(BinaryWriter writer, PmmPhysics physics)
+        {
+            
         }
 
         /// <summary>
@@ -74,7 +122,7 @@ namespace MikuMikuMethods.PMM.IO
         /// </summary>
         private static void Write(BinaryWriter writer, PmmAccessory accessory, int index, PolygonMovieMaker pmm)
         {
-            writer.Write(index);
+            writer.Write((byte)index);
 
             writer.Write(accessory.Name, 100, Encoding.ShiftJIS);
             writer.Write(accessory.Path, 256, Encoding.ShiftJIS);
