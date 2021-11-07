@@ -168,6 +168,43 @@ namespace MikuMikuMethods.PMM.IO
                     writer.Write(frame.IsSelected);
                 }
             );
+
+            foreach (var boneState in model.Bones)
+            {
+                var bc = boneState.Current;
+
+                writer.Write(bc.Movement);
+                writer.Write(bc.Rotation);
+                writer.Write(boneState.IsCommitted);
+                writer.Write(bc.EnablePhysic);
+                writer.Write(boneState.IsSelected);
+            }
+
+            foreach (var morph in model.Morphs)
+            {
+                writer.Write(morph.Current.Weight);
+            }
+
+            foreach (var i in ikBoneIndices)
+            {
+                writer.Write(model.CurrentConfig.EnableIK[model.Bones[i]]);
+            }
+
+            // 最初の -1 が入っている外部親情報
+            writer.Write(-1);
+            writer.Write(-1);
+            writer.Write(-1);
+            writer.Write(-1);
+            foreach (var i in parentableBoneIndices)
+            {
+                var op = model.CurrentConfig.OuterParent[model.Bones[i]];
+                writer.Write(op.StartFrame ?? 0);
+                writer.Write(op.EndFrame ?? 0);
+                writer.Write(pmm.Models.IndexOf(op.ParentModel));
+                writer.Write(op.ParentModel is null ? 0 : model.Bones.IndexOf(op.ParentBone));
+            }
+
+
         }
 
         private static void WriteFrames(BinaryWriter writer, IEnumerable<List<IPmmFrame>> frameContainer, Func<IPmmFrame> constructor, Action<BinaryWriter, IPmmFrame> stateWriter)
