@@ -107,6 +107,32 @@ namespace MikuMikuMethods.PMM.IO
             writer.Write(pmm.RenderConfig.EnableTransparentGroundShadow);
 
             WritePhysics(writer, pmm.Physics);
+            WriteSelfShadow(writer, pmm.SelfShadow);
+
+        }
+
+        /// <summary>
+        /// セルフ影書込み
+        /// </summary>
+        private static void WriteSelfShadow(BinaryWriter writer, PmmSelfShadow selfShadow)
+        {
+            writer.Write(selfShadow.EnableSelfShadow);
+            writer.Write(selfShadow.ShadowRange);
+
+            WriteFrames(
+                writer,
+                new[] { selfShadow.Frames.ToList<IPmmFrame>() },
+                () => new PmmSelfShadowFrame(),
+                (writer, f) =>
+                {
+                    var frame = (PmmSelfShadowFrame)f;
+
+                    writer.Write((byte)frame.ShadowMode);
+                    writer.Write(frame.ShadowRange);
+
+                    writer.Write(frame.IsSelected);
+                }
+            );
         }
 
         /// <summary>
