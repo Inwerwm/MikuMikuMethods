@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MikuMikuMethods.PMM.IO
 {
@@ -113,10 +111,66 @@ namespace MikuMikuMethods.PMM.IO
             writer.Write(model.SpecificEditorState.VerticalScrollState);
             writer.Write(model.SpecificEditorState.LastFrame);
 
-            WriteFrames(writer, model.Bones.Select(b => b.Frames.ToList<IPmmFrame>()));
+            WriteFrames(
+                writer,
+                model.Bones.Select(b => b.Frames.ToList<IPmmFrame>()),
+                () => new PmmBoneFrame(),
+                (writer, f) =>
+                {
+                    var frame = (PmmBoneFrame)f;
+
+                    writer.Write(frame.InterpolationCurves[InterpolationItem.XPosition].ToBytes());
+                    writer.Write(frame.InterpolationCurves[InterpolationItem.YPosition].ToBytes());
+                    writer.Write(frame.InterpolationCurves[InterpolationItem.ZPosition].ToBytes());
+                    writer.Write(frame.InterpolationCurves[InterpolationItem.Rotation].ToBytes());
+
+                    writer.Write(frame.Movement);
+                    writer.Write(frame.Rotation);
+                    writer.Write(frame.IsSelected);
+                    writer.Write(!frame.EnablePhysic);
+                }
+            );
+
+            WriteFrames(
+                writer,
+                model.Morphs.Select(m => m.Frames.ToList<IPmmFrame>()),
+                () => new PmmMorphFrame(),
+                (writer, f) =>
+                {
+                    var frame = (PmmMorphFrame)f;
+
+                    writer.Write(frame.Weight);
+                    writer.Write(frame.IsSelected);
+                }
+            );
+
+            WriteFrames(
+                writer,
+                new[] { model.ConfigFrames.ToList<IPmmFrame>() },
+                () => new PmmModelConfigFrame(),
+                (writer, f) =>
+                {
+                    var frame = (PmmModelConfigFrame)f;
+
+                    writer.Write(frame.Visible);
+
+                    foreach (var ikBoneId in ikBoneIndices)
+                    {
+                        writer.Write(frame.EnableIK[model.Bones[ikBoneId]]);
+                    }
+                    foreach (var parentableId in parentableBoneIndices)
+                    {
+                        var op = frame.OuterParent[model.Bones[parentableId]];
+                        writer.Write(pmm.Models.IndexOf(op.ParentModel));
+                        writer.Write(op.ParentModel.Bones.IndexOf(op.ParentBone));
+                    }
+
+                    writer.Write(frame.IsSelected);
+                }
+            );
         }
 
-        private static void WriteFrames(BinaryWriter writer, IEnumerable<List<IPmmFrame>> frameContainer)
+        private static void WriteFrames(BinaryWriter writer, IEnumerable<List<IPmmFrame>> frameContainer, Func<IPmmFrame> constructor, Action<BinaryWriter, IPmmFrame> stateWriter)
         {
             // フレーム順に整列
             foreach (var frames in frameContainer)
@@ -127,13 +181,72 @@ namespace MikuMikuMethods.PMM.IO
             var initialFrames = frameContainer.Select(frames =>
             {
                 var firstFrame = frames.FirstOrDefault();
-                if(firstFrame is null) return null;
 
-                if(firstFrame.Frame == 0) return firstFrame;
-                return firstFrame/*のフレームを0にしたクローン*/;
-            });
-            var otherFrames = frameContainer.Select(frames => frames.Skip(1));
+                return firstFrame switch
+                {
+                    null => constructor(),
+                    { Frame: 0 } => firstFrame,
+                    _ => CreateZeroFrame(firstFrame)
+                };
+            }).Select(f => new InitFrameContainer() { Frame = f, NextIndex = 0}).ToArray();
 
+            IPmmFrame[][] otherFramesContainer = frameContainer.Select(frames => frames.FirstOrDefault() is { Frame: 0 } ? frames.Skip(1).ToArray() : frames.ToArray()).ToArray();
+
+            // 各フレームに非初期な全フレーム内におけるインデックスを付与
+            int id = initialFrames.Length;
+            (IPmmFrame Frame, int Index)[][] IndexedOtherFrameContainer = otherFramesContainer.Select(frames => frames.Select(frame => (Frame: frame, Index: id++)).ToArray()).ToArray();
+
+            // 各フレームについて前後フレーム番号を得る
+            (IPmmFrame Frame, int Index, int PreIndex, int NextIndex)[] IndexedFrames = IndexedOtherFrameContainer.SelectMany((frames, i) => frames.Select((p, j) =>
+            {
+                // i は行のインデックス
+                // j は行内でのインデックス
+                // Index は全フレーム内でのインデックス
+                var (frame, currentIndex) = p;
+
+                // 行頭フレームなら前フレームはなし
+                var pre = j == 0 ? i : frames[j - 1].Index;
+                // 行末フレームなら次フレームはなし
+                var next = j == frames.Length - 1 ? 0 : frames[j + 1].Index;
+
+                if (j == 0) initialFrames[i].NextIndex = currentIndex;
+
+                return (Frame: frame, Index: currentIndex, PreIndex: pre, NextIndex: next);
+            })).ToArray();
+
+            // フレームを書込み
+            foreach (var frame in initialFrames)
+            {
+                writer.Write(frame.Frame.Frame);
+                writer.Write(0);
+                writer.Write(frame.NextIndex);
+
+                stateWriter(writer, frame.Frame);
+            }
+            writer.Write(IndexedFrames.Length);
+            foreach (var frame in IndexedFrames)
+            {
+                writer.Write(frame.Index);
+
+                writer.Write(frame.Frame.Frame);
+                writer.Write(frame.PreIndex);
+                writer.Write(frame.NextIndex);
+
+                stateWriter(writer, frame.Frame);
+            }
+
+            static IPmmFrame CreateZeroFrame(IPmmFrame frame)
+            {
+                var f = frame.DeepCopy();
+                f.Frame = 0;
+                return f;
+            }
+        }
+
+        private class InitFrameContainer
+        {
+            public IPmmFrame Frame { get; init; }
+            public int NextIndex { get; set; }
         }
     }
 }
