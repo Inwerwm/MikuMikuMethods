@@ -372,7 +372,7 @@ namespace MikuMikuMethods.PMM.IO
             writer.Write(model.Morphs.IndexOf(model.SelectedLipMorph));
             writer.Write(model.Morphs.IndexOf(model.SelectedOtherMorph));
 
-            writer.Write(model.Nodes.Count);
+            writer.Write((byte)model.Nodes.Count);
             foreach (var node in model.Nodes)
             {
                 writer.Write(node.doesOpen);
