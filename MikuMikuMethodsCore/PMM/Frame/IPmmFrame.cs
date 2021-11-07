@@ -12,5 +12,7 @@ namespace MikuMikuMethods.PMM.Frame
         /// 選択状態か
         /// </summary>
         bool IsSelected { get; set; }
+
+        public IPmmFrame DeepCopy();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace MikuMikuMethods.PMM.ElementState
 {
@@ -12,7 +13,7 @@ namespace MikuMikuMethods.PMM.ElementState
         /// <summary>
         /// IKが有効か
         /// </summary>
-        public Dictionary<PmmBone, bool> EnableIK { get; } = new();
+        public Dictionary<PmmBone, bool> EnableIK { get; protected init; } = new();
         /// <summary>
         /// 外部親設定
         /// <list>
@@ -26,6 +27,13 @@ namespace MikuMikuMethods.PMM.ElementState
         ///     </item>
         /// </list>
         /// </summary>
-        public Dictionary<PmmBone, PmmOuterParentState> OuterParent { get; } = new();
+        public Dictionary<PmmBone, PmmOuterParentState> OuterParent { get; protected init; } = new();
+
+        public PmmModelConfigState DeepCopy() => new()
+        {
+            Visible = Visible,
+            EnableIK = new(EnableIK),
+            OuterParent = OuterParent.ToDictionary(p => p.Key, p => p.Value.DeepCopy()),
+        };
     }
 }

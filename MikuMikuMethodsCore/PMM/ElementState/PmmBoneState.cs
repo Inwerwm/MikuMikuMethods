@@ -23,5 +23,12 @@ namespace MikuMikuMethods.PMM.ElementState
         /// 物理が有効か
         /// </summary>
         public bool EnablePhysic { get; set; }
+
+        public PmmBoneState DeepCopy() => new()
+        {
+            Movement = Movement,
+            Rotation = Rotation,
+            EnablePhysic = EnablePhysic
+        };
     }
 }

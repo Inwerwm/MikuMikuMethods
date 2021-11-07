@@ -1,11 +1,6 @@
-﻿using System;
+﻿using MikuMikuMethods.PMM.ElementState;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using MikuMikuMethods.PMM.ElementState;
 
 namespace MikuMikuMethods.PMM.Frame
 {
@@ -21,7 +16,7 @@ namespace MikuMikuMethods.PMM.Frame
         /// <summary>
         /// 補間曲線
         /// </summary>
-        public ReadOnlyDictionary<InterpolationItem, InterpolationCurve> InterpolationCurces { get; } = new(new Dictionary<InterpolationItem, InterpolationCurve>()
+        public ReadOnlyDictionary<InterpolationItem, InterpolationCurve> InterpolationCurves { get; private init; } = new(new Dictionary<InterpolationItem, InterpolationCurve>()
         {
             { InterpolationItem.XPosition, new() },
             { InterpolationItem.YPosition, new() },
@@ -30,5 +25,30 @@ namespace MikuMikuMethods.PMM.Frame
             { InterpolationItem.Distance, new() },
             { InterpolationItem.ViewAngle, new() },
         });
+
+        public PmmCameraFrame DeepCopy() => new()
+        {
+            Frame = Frame,
+            IsSelected = IsSelected,
+            Distance = Distance,
+            EnablePerspective = EnablePerspective,
+            EyePosition = EyePosition,
+            FollowingBone = FollowingBone,
+            FollowingModel = FollowingModel,
+            Rotation = Rotation,
+            TargetPosition = TargetPosition,
+            ViewAngle = ViewAngle,
+            InterpolationCurves = new(new Dictionary<InterpolationItem, InterpolationCurve>()
+            {
+                { InterpolationItem.XPosition, InterpolationCurves[InterpolationItem.XPosition].Clone() as InterpolationCurve },
+                { InterpolationItem.YPosition, InterpolationCurves[InterpolationItem.YPosition].Clone() as InterpolationCurve },
+                { InterpolationItem.ZPosition, InterpolationCurves[InterpolationItem.ZPosition].Clone() as InterpolationCurve },
+                { InterpolationItem.Rotation, InterpolationCurves[InterpolationItem.Rotation].Clone() as InterpolationCurve },
+                { InterpolationItem.Distance, InterpolationCurves[InterpolationItem.Distance].Clone() as InterpolationCurve },
+                { InterpolationItem.ViewAngle, InterpolationCurves[InterpolationItem.ViewAngle].Clone() as InterpolationCurve },
+            })
+        };
+
+        IPmmFrame IPmmFrame.DeepCopy() => DeepCopy();
     }
 }

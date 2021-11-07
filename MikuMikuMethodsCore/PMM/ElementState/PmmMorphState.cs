@@ -12,5 +12,7 @@ namespace MikuMikuMethods.PMM.ElementState
         /// 係数
         /// </summary>
         public float Weight { get; set; }
+
+        public PmmMorphState DeepCopy() => new() { Weight = Weight };
     }
 }

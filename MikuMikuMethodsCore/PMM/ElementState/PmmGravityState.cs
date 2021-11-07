@@ -18,5 +18,12 @@ namespace MikuMikuMethods.PMM.ElementState
         /// 方向
         /// </summary>
         public Vector3 Direction { get; set; } = new(0, -1, 0);
+
+        public PmmGravityState DeepCopy() => new()
+        {
+            Noize = Noize,
+            Acceleration = Acceleration,
+            Direction = Direction
+        };
     }
 }

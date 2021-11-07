@@ -13,5 +13,11 @@ namespace MikuMikuMethods.PMM.ElementState
         /// 位置
         /// </summary>
         public Vector3 Position { get; set; } = new(-0.5f, -1.0f, 0.5f);
+
+        public PmmLightState DeepCopy() => new()
+        {
+            Color = Color,
+            Position = Position
+        };
     }
 }

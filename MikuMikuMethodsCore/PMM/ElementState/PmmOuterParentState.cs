@@ -19,5 +19,13 @@ namespace MikuMikuMethods.PMM.ElementState
 
         public PmmModel ParentModel { get; set; }
         public PmmBone ParentBone { get; set; }
+
+        public PmmOuterParentState DeepCopy() => new()
+        {
+            StartFrame = StartFrame,
+            EndFrame = EndFrame,
+            ParentModel = ParentModel,
+            ParentBone = ParentBone
+        };
     }
 }

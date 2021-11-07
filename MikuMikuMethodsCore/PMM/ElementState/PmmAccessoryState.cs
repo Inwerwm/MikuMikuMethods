@@ -52,6 +52,17 @@ namespace MikuMikuMethods.PMM.ElementState
         /// </summary>
         public bool EnableShadow { get; set; }
 
+        public PmmAccessoryState DeepCopy() => new()
+        {
+            TransAndVisible = TransAndVisible,
+            EnableShadow = EnableShadow,
+            ParentModel = ParentModel,
+            ParentBone = ParentBone,
+            Position = Position,
+            Rotation = Rotation,
+            Scale = Scale,
+        };
+
         internal static (bool Visible, float Transparency) SeparateTransAndVisible(byte value) =>
             ((value & 0x1) == 0x1, (100 - (value >> 1)) / 100f);
         internal static byte CreateTransAndVisible(float transparency, bool visible)

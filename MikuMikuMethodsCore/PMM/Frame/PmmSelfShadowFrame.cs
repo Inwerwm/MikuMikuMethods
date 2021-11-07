@@ -6,15 +6,6 @@
         public bool IsSelected { get; set; }
 
         /// <summary>
-        /// 影モード
-        /// </summary>
-        public Shadow ShadowMode { get; set; }
-        /// <summary>
-        /// 影範囲
-        /// </summary>
-        public float ShadowRange { get; set; }
-
-        /// <summary>
         /// 影のモード
         /// </summary>
         public enum Shadow : byte
@@ -32,5 +23,24 @@
             /// </summary>
             Mode2,
         }
+        /// <summary>
+        /// 影モード
+        /// </summary>
+        public Shadow ShadowMode { get; set; }
+
+        /// <summary>
+        /// 影範囲
+        /// </summary>
+        public float ShadowRange { get; set; }
+
+        public PmmSelfShadowFrame DeepCopy() => new()
+        {
+            Frame = Frame,
+            IsSelected = IsSelected,
+            ShadowRange = ShadowRange,
+            ShadowMode = ShadowMode
+        };
+
+        IPmmFrame IPmmFrame.DeepCopy() => DeepCopy();
     }
 }

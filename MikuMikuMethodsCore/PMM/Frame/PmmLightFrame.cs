@@ -1,6 +1,4 @@
-﻿using MikuMikuMethods.Extension;
-using MikuMikuMethods.PMM.ElementState;
-using System.Numerics;
+﻿using MikuMikuMethods.PMM.ElementState;
 
 namespace MikuMikuMethods.PMM.Frame
 {
@@ -8,5 +6,15 @@ namespace MikuMikuMethods.PMM.Frame
     {
         public int Frame { get; set; }
         public bool IsSelected { get; set; }
+
+        public PmmLightFrame DeepCopy() => new()
+        {
+            Frame = Frame,
+            IsSelected = IsSelected,
+            Color = Color,
+            Position = Position,
+        };
+
+        IPmmFrame IPmmFrame.DeepCopy() => DeepCopy();
     }
 }

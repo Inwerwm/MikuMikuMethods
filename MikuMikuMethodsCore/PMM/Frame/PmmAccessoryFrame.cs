@@ -6,5 +6,20 @@ namespace MikuMikuMethods.PMM.Frame
     {
         public int Frame { get; set; }
         public bool IsSelected { get; set; }
+
+        public PmmAccessoryFrame DeepCopy() => new()
+        {
+            Frame = Frame,
+            IsSelected = IsSelected,
+            EnableShadow = EnableShadow,
+            ParentModel = ParentModel,
+            ParentBone = ParentBone,
+            Position = Position,
+            Rotation = Rotation,
+            Scale = Scale,
+            TransAndVisible = TransAndVisible,
+        };
+
+        IPmmFrame IPmmFrame.DeepCopy() => DeepCopy();
     }
 }

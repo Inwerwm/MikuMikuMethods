@@ -19,5 +19,12 @@
         /// 範囲選択の対象
         /// </summary>
         public PmmRangeSelector RangeSelector { get; set; } = PmmRangeSelector.SelectedBones;
+
+        public PmmModelSpecificKeyFrameEditorState DeepCopy() => new()
+        {
+            VerticalScrollState = VerticalScrollState,
+            LastFrame = LastFrame,
+            RangeSelector = RangeSelector.DeepCopy()
+        };
     }
 }

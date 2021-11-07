@@ -8,5 +8,7 @@
         public static readonly PmmRangeSelector SelectedBones = new PmmRangeSelector(3);
         public static readonly PmmRangeSelector SelectedMorphs = new PmmRangeSelector(4);
         public static readonly PmmRangeSelector AllMorphFrames = new PmmRangeSelector(5);
+
+        public PmmRangeSelector DeepCopy() => new(Index);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using MikuMikuMethods.PMM.ElementState;
-using System.Numerics;
 
 namespace MikuMikuMethods.PMM.Frame
 {
@@ -7,5 +6,16 @@ namespace MikuMikuMethods.PMM.Frame
     {
         public int Frame { get; set; } = 0;
         public bool IsSelected { get; set; } = false;
+
+        public PmmGravityFrame DeepCopy() => new()
+        {
+            Frame = Frame,
+            IsSelected = IsSelected,
+            Acceleration = Acceleration,
+            Direction = Direction,
+            Noize = Noize
+        };
+
+        IPmmFrame IPmmFrame.DeepCopy() => DeepCopy();
     }
 }

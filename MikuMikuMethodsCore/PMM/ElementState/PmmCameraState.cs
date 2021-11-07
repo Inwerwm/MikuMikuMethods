@@ -32,5 +32,16 @@ namespace MikuMikuMethods.PMM.ElementState
         /// 視野角
         /// </summary>
         public int ViewAngle { get; set; } = 30;
+
+        public PmmCameraState DeepCopy() => new()
+        {
+            EyePosition = EyePosition,
+            TargetPosition = TargetPosition,
+            Rotation = Rotation,
+            EnablePerspective = EnablePerspective,
+            FollowingBone = FollowingBone,
+            FollowingModel = FollowingModel,
+            ViewAngle = ViewAngle
+        };
     }
 }
