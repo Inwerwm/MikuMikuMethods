@@ -712,7 +712,7 @@ namespace MikuMikuMethods.PMM.IO
 
                 foreach (var element in targetElements)
                 {
-                    if (!elementNextFrameDictionary[element.Name].HasValue) break;
+                    if (!elementNextFrameDictionary[element.Name].HasValue) continue;
 
                     // 読み込んだインデックスは初期フレームの数だけ先に進んでいるので
                     // 初期フレーム数(= 要素数)の分だけ引いたのがモデル内フレームコレクションでのインデックスになる
