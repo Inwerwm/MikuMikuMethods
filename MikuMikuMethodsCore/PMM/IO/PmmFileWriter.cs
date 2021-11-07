@@ -109,6 +109,45 @@ namespace MikuMikuMethods.PMM.IO
             WritePhysics(writer, pmm.Physics);
             WriteSelfShadow(writer, pmm.SelfShadow);
 
+            writer.Write(pmm.RenderConfig.EdgeColor, false);
+            writer.Write(pmm.BackGround.IsBlack);
+
+            writer.Write(pmm.Models.IndexOf(pmm.Camera.Current.FollowingModel));
+            writer.Write(pmm.Camera.Current.FollowingModel?.Bones.IndexOf(pmm.Camera.Current.FollowingBone) ?? 0);
+
+            // 意図不明な謎の行列
+            writer.Write(new byte[]
+            {
+                0x00,0x00,0x80,0x3F,
+                0x00,0x00,0x00,0x00,
+                0x00,0x00,0x00,0x00,
+                0x00,0x00,0x00,0x00,
+
+                0x00,0x00,0x00,0x00,
+                0x00,0x00,0x80,0x3F,
+                0x00,0x00,0x00,0x00,
+                0x00,0x00,0x00,0x00,
+
+                0x00,0x00,0x00,0x00,
+                0x00,0x00,0x00,0x00,
+                0x00,0x00,0x80,0x3F,
+                0x00,0x00,0x00,0x00,
+
+                0x00,0x00,0x00,0x00,
+                0x00,0x00,0x00,0x00,
+                0x00,0x00,0x00,0x00,
+                0x00,0x00,0x80,0x3F
+            });
+
+            writer.Write(pmm.PlayConfig.EnableFollowCamera);
+
+            // 意図不明な謎の値
+            writer.Write(0);
+
+            writer.Write(pmm.Physics.EnableGroundPhysics);
+            writer.Write(pmm.RenderConfig.JumpFrameLocation);
+
+            
         }
 
         /// <summary>
