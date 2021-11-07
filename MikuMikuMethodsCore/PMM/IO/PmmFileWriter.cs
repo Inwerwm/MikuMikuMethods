@@ -53,15 +53,71 @@ namespace MikuMikuMethods.PMM.IO
             }
 
             Write(writer, pmm.Camera, pmm);
-            Write(writer, pmm.Light, pmm);
+            Write(writer, pmm.Light);
 
+            writer.Write(pmm.Accessories.IndexOf(pmm.EditorState.SelectedAccessory));
+            writer.Write(pmm.EditorState.VerticalScrollOfAccessory);
 
+            writer.Write(pmm.Accessories.Count);
+            foreach (var acs in pmm.Accessories)
+            {
+                writer.Write(acs.Name, 100, Encoding.ShiftJIS);
+            }
+            foreach (var (acs, i) in pmm.Accessories.Select((acs, i) => (acs, i)))
+            {
+                Write(writer, acs, i, pmm);
+            }
+        }
+
+        /// <summary>
+        /// アクセサリー書込み
+        /// </summary>
+        private static void Write(BinaryWriter writer, PmmAccessory accessory, int index, PolygonMovieMaker pmm)
+        {
+            writer.Write(index);
+
+            writer.Write(accessory.Name, 100, Encoding.ShiftJIS);
+            writer.Write(accessory.Path, 256, Encoding.ShiftJIS);
+
+            writer.Write(pmm.GetRenderOrder(accessory).Value);
+
+            WriteFrames(writer,
+                new[] { accessory.Frames.ToList<IPmmFrame>() },
+                () => new PmmAccessoryFrame(),
+                (writer, f) =>
+                {
+                    var frame = (PmmAccessoryFrame)f;
+
+                    writer.Write(frame.TransAndVisible);
+
+                    writer.Write(pmm.Models.IndexOf(frame.ParentModel));
+                    writer.Write(frame.ParentModel?.Bones.IndexOf(frame.ParentBone) ?? 0);
+
+                    writer.Write(frame.Position);
+                    writer.Write(frame.Rotation);
+                    writer.Write(frame.Scale);
+
+                    writer.Write(frame.EnableShadow);
+
+                    writer.Write(frame.IsSelected);
+                }
+            );
+
+            writer.Write(accessory.Current.TransAndVisible);
+            writer.Write(pmm.Models.IndexOf(accessory.Current.ParentModel));
+            writer.Write(accessory.Current.ParentModel?.Bones.IndexOf(accessory.Current.ParentBone) ?? 0);
+            writer.Write(accessory.Current.Position);
+            writer.Write(accessory.Current.Rotation);
+            writer.Write(accessory.Current.Scale);
+            writer.Write(accessory.Current.EnableShadow);
+
+            writer.Write(accessory.EnableAlphaBlend);
         }
 
         /// <summary>
         /// ライト書込み
         /// </summary>
-        private static void Write(BinaryWriter writer, PmmLight light, PolygonMovieMaker pmm)
+        private static void Write(BinaryWriter writer, PmmLight light)
         {
             WriteFrames(
                 writer,
