@@ -51,8 +51,53 @@ namespace MikuMikuMethods.PMM.IO
             {
                 Write(writer, pmm, item.Model, item.Index);
             }
+
+            Write(writer, pmm.Camera, pmm);
         }
 
+        /// <summary>
+        /// カメラ書込み
+        /// </summary>
+        private static void Write(BinaryWriter writer, PmmCamera camera, PolygonMovieMaker pmm)
+        {
+            WriteFrames(
+                writer,
+                new[] { camera.Frames.ToList<IPmmFrame>() },
+                () => new PmmCameraFrame(),
+                (writer, f) =>
+                {
+                    var frame = (PmmCameraFrame)f;
+
+                    writer.Write(frame.Distance);
+                    writer.Write(frame.EyePosition);
+                    writer.Write(frame.Rotation);
+
+                    writer.Write(pmm.Models.IndexOf(frame.FollowingModel));
+                    writer.Write(frame.FollowingModel?.Bones.IndexOf(frame.FollowingBone) ?? 0);
+
+                    writer.Write(frame.InterpolationCurves[InterpolationItem.XPosition].ToBytes());
+                    writer.Write(frame.InterpolationCurves[InterpolationItem.YPosition].ToBytes());
+                    writer.Write(frame.InterpolationCurves[InterpolationItem.ZPosition].ToBytes());
+                    writer.Write(frame.InterpolationCurves[InterpolationItem.Rotation].ToBytes());
+                    writer.Write(frame.InterpolationCurves[InterpolationItem.Distance].ToBytes());
+                    writer.Write(frame.InterpolationCurves[InterpolationItem.ViewAngle].ToBytes());
+
+                    writer.Write(frame.EnablePerspective);
+                    writer.Write(frame.ViewAngle);
+
+                    writer.Write(frame.IsSelected);
+                }
+            );
+
+            writer.Write(camera.Current.EyePosition);
+            writer.Write(camera.Current.TargetPosition);
+            writer.Write(camera.Current.Rotation);
+            writer.Write(camera.Current.EnablePerspective);
+        }
+
+        /// <summary>
+        /// モデル書込み
+        /// </summary>
         private static void Write(BinaryWriter writer, PolygonMovieMaker pmm, PmmModel model, int index)
         {
             writer.Write((byte)index);
