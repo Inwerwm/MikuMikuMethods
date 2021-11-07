@@ -55,10 +55,10 @@ namespace MikuMikuMethods.PMM.IO
             WriteCamera(writer, pmm.Camera, pmm);
             WriteLight(writer, pmm.Light);
 
-            writer.Write(pmm.Accessories.IndexOf(pmm.EditorState.SelectedAccessory));
+            writer.Write((byte)pmm.Accessories.IndexOf(pmm.EditorState.SelectedAccessory));
             writer.Write(pmm.EditorState.VerticalScrollOfAccessory);
 
-            writer.Write(pmm.Accessories.Count);
+            writer.Write((byte)pmm.Accessories.Count);
             foreach (var acs in pmm.Accessories)
             {
                 writer.Write(acs.Name, 100, Encoding.ShiftJIS);
@@ -99,7 +99,7 @@ namespace MikuMikuMethods.PMM.IO
             writer.Write(pmm.RenderConfig.AxisVisible);
             writer.Write(pmm.RenderConfig.EnableGrandShadow);
 
-            writer.Write((int)pmm.RenderConfig.FPSLimit);
+            writer.Write((float)pmm.RenderConfig.FPSLimit);
             writer.Write((int)pmm.RenderConfig.ScreenCaptureMode);
 
             writer.Write(pmm.RenderConfig.PostDrawingAccessoryStartIndex);
@@ -220,7 +220,7 @@ namespace MikuMikuMethods.PMM.IO
             writer.Write(accessory.Name, 100, Encoding.ShiftJIS);
             writer.Write(accessory.Path, 256, Encoding.ShiftJIS);
 
-            writer.Write(pmm.GetRenderOrder(accessory).Value);
+            writer.Write(pmm.GetRenderOrder(accessory).Value + 1);
 
             WriteFrames(
                 writer,
@@ -363,7 +363,7 @@ namespace MikuMikuMethods.PMM.IO
                 writer.Write(parentableBoneIndex);
             }
 
-            writer.Write(pmm.GetRenderOrder(model).Value);
+            writer.Write(pmm.GetRenderOrder(model).Value + 1);
             writer.Write(model.CurrentConfig.Visible);
 
             writer.Write(model.Bones.IndexOf(model.SelectedBone));
@@ -428,6 +428,10 @@ namespace MikuMikuMethods.PMM.IO
                     {
                         writer.Write(frame.EnableIK[model.Bones[ikBoneId]]);
                     }
+
+                    // 最初に入っている -1
+                    writer.Write(-1);
+                    writer.Write(-1);
                     foreach (var parentableId in parentableBoneIndices)
                     {
                         var op = frame.OuterParent[model.Bones[parentableId]];
@@ -477,7 +481,7 @@ namespace MikuMikuMethods.PMM.IO
             writer.Write(model.EnableAlphaBlend);
             writer.Write(model.EdgeWidth);
             writer.Write(model.EnableSelfShadow);
-            writer.Write(pmm.GetCalculateOrder(model).Value);
+            writer.Write(pmm.GetCalculateOrder(model).Value + 1);
         }
 
         private static void WriteFrames(BinaryWriter writer, IEnumerable<List<IPmmFrame>> frameContainer, Func<IPmmFrame> constructor, Action<BinaryWriter, IPmmFrame> stateWriter)
