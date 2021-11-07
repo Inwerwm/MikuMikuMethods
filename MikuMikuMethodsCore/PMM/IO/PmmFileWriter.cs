@@ -204,7 +204,10 @@ namespace MikuMikuMethods.PMM.IO
                 writer.Write(op.ParentModel is null ? 0 : model.Bones.IndexOf(op.ParentBone));
             }
 
-
+            writer.Write(model.EnableAlphaBlend);
+            writer.Write(model.EdgeWidth);
+            writer.Write(model.EnableSelfShadow);
+            writer.Write(pmm.GetCalculateOrder(model).Value);
         }
 
         private static void WriteFrames(BinaryWriter writer, IEnumerable<List<IPmmFrame>> frameContainer, Func<IPmmFrame> constructor, Action<BinaryWriter, IPmmFrame> stateWriter)
