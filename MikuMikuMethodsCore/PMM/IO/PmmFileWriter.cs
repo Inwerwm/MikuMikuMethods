@@ -461,10 +461,10 @@ namespace MikuMikuMethods.PMM.IO
             }
 
             // 最初の -1 が入っている外部親情報
+            writer.Write(0);
+            writer.Write(0);
             writer.Write(-1);
-            writer.Write(-1);
-            writer.Write(-1);
-            writer.Write(-1);
+            writer.Write(0);
             foreach (var i in parentableBoneIndices)
             {
                 var op = model.CurrentConfig.OuterParent[model.Bones[i]];
