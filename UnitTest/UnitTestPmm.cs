@@ -22,7 +22,11 @@ namespace UnitTest
         [TestMethod]
         public void OldIO()
         {
-            var pmm = new MikuMikuMethods.PMM.Binary.PolygonMovieMaker(TestData.GetPath("PragmaticTestData_out.pmm"));
+            var pmm = new MikuMikuMethods.PMM.Binary.PolygonMovieMaker(TestData.GetPath("PragmaticTestData.pmm"));
+            pmm.Write(TestData.GetPath("PragmaticTestData_out_old.pmm"));
+
+            //var reloadedOld = new MikuMikuMethods.PMM.Binary.PolygonMovieMaker(TestData.GetPath("PragmaticTestData_out_old.pmm"));
+            var reloaded = new MikuMikuMethods.PMM.Binary.PolygonMovieMaker(TestData.GetPath("PragmaticTestData_out.pmm"));
         }
 
         [TestMethod]
