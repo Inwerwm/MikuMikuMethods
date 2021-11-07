@@ -220,7 +220,7 @@ namespace MikuMikuMethods.PMM.IO
             writer.Write(accessory.Name, 100, Encoding.ShiftJIS);
             writer.Write(accessory.Path, 256, Encoding.ShiftJIS);
 
-            writer.Write(pmm.GetRenderOrder(accessory).Value + 1);
+            writer.Write((byte)(pmm.GetRenderOrder(accessory).Value + 1));
 
             WriteFrames(
                 writer,
@@ -363,7 +363,7 @@ namespace MikuMikuMethods.PMM.IO
                 writer.Write(parentableBoneIndex);
             }
 
-            writer.Write(pmm.GetRenderOrder(model).Value + 1);
+            writer.Write((byte)(pmm.GetRenderOrder(model).Value + 1));
             writer.Write(model.CurrentConfig.Visible);
 
             writer.Write(model.Bones.IndexOf(model.SelectedBone));
@@ -481,7 +481,7 @@ namespace MikuMikuMethods.PMM.IO
             writer.Write(model.EnableAlphaBlend);
             writer.Write(model.EdgeWidth);
             writer.Write(model.EnableSelfShadow);
-            writer.Write(pmm.GetCalculateOrder(model).Value + 1);
+            writer.Write((byte)(pmm.GetCalculateOrder(model).Value + 1));
         }
 
         private static void WriteFrames(BinaryWriter writer, IEnumerable<List<IPmmFrame>> frameContainer, Func<IPmmFrame> constructor, Action<BinaryWriter, IPmmFrame> stateWriter)
