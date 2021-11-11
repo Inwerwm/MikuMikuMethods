@@ -63,7 +63,7 @@ namespace MikuMikuMethods.PMM.IO
                     modelOrderDictionary.Add(model, ((byte RenderOrder, byte CalculateOrder))(renderOrder - 1, calculateOrder - 1));
                 }
 
-                pmm.EditorState.SelectedModel = pmm.Models[selectedModelIndex];
+                pmm.EditorState.SelectedModel = selectedModelIndex < pmm.Models.Count ? pmm.Models[selectedModelIndex] : null;
                 foreach (var model in pmm.Models)
                 {
                     // 順序系プロパティはモデルの追加後に設定する
