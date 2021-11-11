@@ -1,4 +1,4 @@
-using MikuMikuMethods.Extension;
+﻿using MikuMikuMethods.Extension;
 using MikuMikuMethods.PMM.Frame;
 using System;
 using System.Collections.Generic;
@@ -142,7 +142,7 @@ namespace MikuMikuMethods.PMM.IO
             writer.Write(pmm.PlayConfig.EnableFollowCamera);
 
             // 意図不明な謎の値
-            writer.Write(0);
+            writer.Write(false);
 
             writer.Write(pmm.Physics.EnableGroundPhysics);
             writer.Write(pmm.RenderConfig.JumpFrameLocation);
