@@ -209,10 +209,6 @@ namespace MikuMikuMethods.PMM.IO
                     // このセクションは途中でファイルが終わってても構わないので
                     // ストリームの終わり例外なら来ても何もしなくてよい
                 }
-                catch (Exception)
-                {
-                    throw;
-                }
             }
             catch (Exception ex)
             {
