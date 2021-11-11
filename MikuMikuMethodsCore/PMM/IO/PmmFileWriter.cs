@@ -1,4 +1,4 @@
-﻿using MikuMikuMethods.Extension;
+using MikuMikuMethods.Extension;
 using MikuMikuMethods.PMM.Frame;
 using System;
 using System.Collections.Generic;
@@ -45,7 +45,7 @@ namespace MikuMikuMethods.PMM.IO
             writer.Write(pmm.PanelPane.DoesOpenMorphPanel);
             writer.Write(pmm.PanelPane.DoesOpenSelfShadowPanel);
 
-            writer.Write((byte)pmm.Models.IndexOf(pmm.EditorState.SelectedModel));
+            writer.Write((byte)(pmm.EditorState.SelectedModel is null ? 0 : pmm.Models.IndexOf(pmm.EditorState.SelectedModel)));
             writer.Write((byte)pmm.Models.Count);
             foreach (var item in pmm.Models.Select((Model, Index) => (Model, Index)))
             {
@@ -55,7 +55,7 @@ namespace MikuMikuMethods.PMM.IO
             WriteCamera(writer, pmm.Camera, pmm);
             WriteLight(writer, pmm.Light);
 
-            writer.Write((byte)pmm.Accessories.IndexOf(pmm.EditorState.SelectedAccessory));
+            writer.Write((byte)(pmm.EditorState.SelectedAccessory is null ? 0 : pmm.Accessories.IndexOf(pmm.EditorState.SelectedAccessory)));
             writer.Write(pmm.EditorState.VerticalScrollOfAccessory);
 
             writer.Write((byte)pmm.Accessories.Count);
