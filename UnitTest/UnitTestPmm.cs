@@ -2,8 +2,10 @@
 using MikuMikuMethods.PMM;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace UnitTest
@@ -11,22 +13,38 @@ namespace UnitTest
     [TestClass]
     public class UnitTestPmm
     {
+        private readonly string PmmName = "SimpleTestData";
+
         [TestMethod]
         public void IOTest()
         {
-            var pmm = new PolygonMovieMaker(TestData.GetPath("PragmaticTestData.pmm"));
-            pmm.Write(TestData.GetPath("PragmaticTestData_out.pmm"));
-            var reloaded = new PolygonMovieMaker(TestData.GetPath("PragmaticTestData_out.pmm"));
+            var pmm = new PolygonMovieMaker(TestData.GetPath(PmmName + ".pmm"));
+            pmm.Write(TestData.GetPath(PmmName + "_out.pmm"));
+            var reloaded = new PolygonMovieMaker(TestData.GetPath(PmmName + "_out.pmm"));
         }
 
         [TestMethod]
         public void OldIO()
         {
-            var pmm = new MikuMikuMethods.PMM.Binary.PolygonMovieMaker(TestData.GetPath("PragmaticTestData.pmm"));
-            pmm.Write(TestData.GetPath("PragmaticTestData_out_old.pmm"));
+            var pmmOld = new MikuMikuMethods.PMM.Binary.PolygonMovieMaker(TestData.GetPath(PmmName + ".pmm"));
+            var pmmNeo = new PolygonMovieMaker(TestData.GetPath(PmmName + ".pmm"));
 
-            //var reloadedOld = new MikuMikuMethods.PMM.Binary.PolygonMovieMaker(TestData.GetPath("PragmaticTestData_out_old.pmm"));
-            var reloaded = new MikuMikuMethods.PMM.Binary.PolygonMovieMaker(TestData.GetPath("PragmaticTestData_out.pmm"));
+            pmmOld.Write(TestData.GetPath(PmmName + "_out_old.pmm"));
+            pmmNeo.Write(TestData.GetPath(PmmName + "_out.pmm"));
+
+            var old = new MikuMikuMethods.PMM.Binary.PolygonMovieMaker(TestData.GetPath(PmmName + "_out_old.pmm"));
+            var neo = new MikuMikuMethods.PMM.Binary.PolygonMovieMaker(TestData.GetPath(PmmName + "_out.pmm"));
+
+            var oldJson = JsonSerializer.Serialize(old, new() { WriteIndented = true });
+            var neoJson = JsonSerializer.Serialize(neo, new() { WriteIndented = true });
+
+            File.WriteAllText(TestData.GetPath(PmmName + "_out_old.Json"), oldJson);
+            File.WriteAllText(TestData.GetPath(PmmName + "_out.Json"), neoJson);
+
+            Assert.AreEqual(pmmOld.ViewConfig.EnableGroundPhysics, pmmNeo.Physics.EnableGroundPhysics, "床物理");
+            Assert.AreEqual(pmmOld.ViewConfig.FrameLocation, pmmNeo.RenderConfig.JumpFrameLocation, "3Dビューの移動フレーム");
+
+            Assert.AreEqual(neoJson, oldJson, "Json 比較での失敗");
         }
 
         [TestMethod]
