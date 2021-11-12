@@ -24,13 +24,13 @@ public class BoneNameComparer : IComparer<string>
     /// <para>0 - このインスタンスはotherとソート順が同じである</para>
     /// <para>0超 - このインスタンスはotherよりソート順が後である</para>
     /// </returns>
-    public int Compare(string x, string y)
+    public int Compare(string? x, string? y)
     {
         if (x == y)
             return 0;
 
-        var xo = new Ordo(x);
-        var yo = new Ordo(y);
+        var xo = new Ordo(x ?? "");
+        var yo = new Ordo(y ?? "");
 
         return xo.CompareTo(yo);
     }
