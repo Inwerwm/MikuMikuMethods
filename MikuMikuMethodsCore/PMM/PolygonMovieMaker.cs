@@ -163,11 +163,11 @@ public class PolygonMovieMaker
 
                 void ReplaceAll()
                 {
-                    foreach (var item in e.OldItems?.Cast<T>())
+                    foreach (var item in e.OldItems?.Cast<T>() ?? Array.Empty<T>())
                     {
                         list.Remove(item);
                     }
-                    foreach (var item in e.NewItems?.Cast<T>().Select((Item, Id) => (Item, Id)))
+                    foreach (var item in e.NewItems?.Cast<T>().Select((Item, Id) => (Item, Id)) ?? Array.Empty<(T, int)>())
                     {
                         list.Insert(e.OldStartingIndex + item.Id, item.Item);
                     }
