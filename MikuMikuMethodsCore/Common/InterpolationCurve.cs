@@ -246,7 +246,7 @@ public class InterpolationCurve : ICloneable
     }
 
     public static Dictionary<InterpolationItem, InterpolationCurve> Clone(Dictionary<InterpolationItem, InterpolationCurve> curves) =>
-        curves.ToDictionary(p => p.Key, p => p.Value.Clone() as InterpolationCurve);
+        curves.ToDictionary(p => p.Key, p => (InterpolationCurve)p.Value.Clone());
 
     public object Clone() => new InterpolationCurve()
     {
