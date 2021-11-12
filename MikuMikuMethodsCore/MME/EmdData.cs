@@ -61,7 +61,7 @@ public class EmdData
         if (reader.CurrentEncoding != Encoding.ShiftJIS)
             throw new ArgumentException($"EMMファイル読み込みエンコードエラー{Environment.NewLine}エンコーダがShiftJISと違います。");
 
-        string line;
+        string? line;
 
         // [Info]
         line = reader.ReadLine();
