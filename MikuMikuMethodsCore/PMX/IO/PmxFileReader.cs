@@ -11,23 +11,23 @@ namespace MikuMikuMethods.Pmx.IO;
 /// </summary>
 internal static class PmxFileReader
 {
-    private static StringEncoder Encoder;
+    private static StringEncoder Encoder = new(Encoding.UTF8);
 
-    private static PmxModel Model { get; set; }
+    private static PmxModel Model { get; set; } = new();
 
-    private static List<PmxFace> Faces { get; set; }
+    private static List<PmxFace> Faces { get; set; } = new();
     private static int LoadedFaceCount { get; set; }
 
-    private static List<PmxTexture> Textures { get; set; }
+    private static List<PmxTexture> Textures { get; set; } = new();
 
-    private static List<(PmxWeight Instance, int RelationID)> TmpWeightBoneIndices { get; set; }
-    private static List<(PmxBone Instance, int RelationID)> TmpParentBoneIndices { get; set; }
-    private static List<(PmxBone Instance, int RelationID)> TmpConnectionTargetBoneIndices { get; set; }
-    private static List<(PmxBone Instance, int RelationID)> TmpAdditionParentBoneIndices { get; set; }
-    private static List<(PmxInverseKinematics Instance, int RelationID)> TmpIKTargetBoneIndices { get; set; }
-    private static List<(PmxIKLink Instance, int RelationID)> TmpIKLinkBoneIndices { get; set; }
-    private static List<(PmxOffsetGroup Instance, int RelationID)> TmpGroupedMorphIndices { get; set; }
-    private static List<(PmxOffsetImpulse Instance, int RelationID)> TmpImpulseTargetBodyIndices { get; set; }
+    private static List<(PmxWeight Instance, int RelationID)> TmpWeightBoneIndices { get; set; } = new();
+    private static List<(PmxBone Instance, int RelationID)> TmpParentBoneIndices { get; set; } = new();
+    private static List<(PmxBone Instance, int RelationID)> TmpConnectionTargetBoneIndices { get; set; } = new();
+    private static List<(PmxBone Instance, int RelationID)> TmpAdditionParentBoneIndices { get; set; } = new();
+    private static List<(PmxInverseKinematics Instance, int RelationID)> TmpIKTargetBoneIndices { get; set; } = new();
+    private static List<(PmxIKLink Instance, int RelationID)> TmpIKLinkBoneIndices { get; set; } = new();
+    private static List<(PmxOffsetGroup Instance, int RelationID)> TmpGroupedMorphIndices { get; set; } = new();
+    private static List<(PmxOffsetImpulse Instance, int RelationID)> TmpImpulseTargetBodyIndices { get; set; } = new();
 
     private static void CreateTmpInstances()
     {
@@ -68,19 +68,19 @@ internal static class PmxFileReader
 
     private static void CleanUpProperties()
     {
-        Encoder = null;
-        Model = null;
-        Faces = null;
-        Textures = null;
+        Encoder = null!;
+        Model = null!;
+        Faces = null!;
+        Textures = null!;
 
-        TmpWeightBoneIndices = null;
-        TmpParentBoneIndices = null;
-        TmpConnectionTargetBoneIndices = null;
-        TmpAdditionParentBoneIndices = null;
-        TmpIKTargetBoneIndices = null;
-        TmpIKLinkBoneIndices = null;
-        TmpGroupedMorphIndices = null;
-        TmpImpulseTargetBodyIndices = null;
+        TmpWeightBoneIndices = null!;
+        TmpParentBoneIndices = null!;
+        TmpConnectionTargetBoneIndices = null!;
+        TmpAdditionParentBoneIndices = null!;
+        TmpIKTargetBoneIndices = null!;
+        TmpIKLinkBoneIndices = null!;
+        TmpGroupedMorphIndices = null!;
+        TmpImpulseTargetBodyIndices = null!;
     }
 
     /// <summary>
