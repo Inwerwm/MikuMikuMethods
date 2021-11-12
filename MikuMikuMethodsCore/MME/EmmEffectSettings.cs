@@ -55,7 +55,7 @@ public class EmmEffectSettings
     /// <param name="reader">[.*]の次行が読み込まれる状態であること</param>
     internal void Read(StreamReader reader, List<EmmObject> objects)
     {
-        string line;
+        string? line;
         while (!string.IsNullOrEmpty(line = reader.ReadLine()))
         {
             var lineData = line.Split('=', StringSplitOptions.TrimEntries);
