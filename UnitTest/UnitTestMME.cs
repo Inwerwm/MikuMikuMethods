@@ -35,11 +35,11 @@ public class UnitTestMME
         }
 
         List<EmmObject> keys = new();
-        keys.Add(new EmmModel(1) { Path = "モデル1" });
-        keys.Add(new EmmModel(2) { Path = "モデル2" });
-        keys.Add(new EmmModel(3) { Path = "モデル3" });
-        keys.Add(new EmmModel(4) { Path = "モデル4" });
-        keys.Add(new EmmModel(5) { Path = "モデル5" });
+        keys.Add(new EmmModel(1,"モデル1"));
+        keys.Add(new EmmModel(2,"モデル2"));
+        keys.Add(new EmmModel(3,"モデル3"));
+        keys.Add(new EmmModel(4,"モデル4"));
+        keys.Add(new EmmModel(5,"モデル5"));
 
         // テストのためのインスタンスを生成
         EmmEffectSettings target = new("Main");

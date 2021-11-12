@@ -107,12 +107,10 @@ public class EmmData
             int objectIndex = int.Parse(Regex.Replace(objectKey, @"[^0-9]", ""));
             EmmObject obj = Regex.Replace(objectKey, @"[0-9]", "") switch
             {
-                "Pmd" => new EmmModel(objectIndex),
-                "Acs" => new EmmAccessory(objectIndex),
+                "Pmd" => new EmmModel(objectIndex, path),
+                "Acs" => new EmmAccessory(objectIndex, path),
                 _ => throw new InvalidOperationException("EMMオブジェクト読み込みで不正なオブジェクト読み込みがなされました。")
             };
-
-            obj.Path = path;
             Objects.Add(obj);
         }
     }

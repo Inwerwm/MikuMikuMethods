@@ -14,5 +14,5 @@ public class EmmModel : EmmObject
     /// コンストラクタ
     /// </summary>
     /// <param name="index">オブジェクト番号</param>
-    public EmmModel(int index) : base(index) { }
+    public EmmModel(int index, string path) : base(index, path) { }
 }
