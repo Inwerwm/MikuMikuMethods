@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MikuMikuMethods.Vmd
+namespace MikuMikuMethods.Vmd;
+
+public interface IVmdInterpolatable
 {
-    public interface IVmdInterpolatable
-    {
-        /// <summary>
-        /// 補間曲線
-        /// </summary>
-        Dictionary<InterpolationItem, InterpolationCurve> InterpolationCurves { get; }
-    }
+    /// <summary>
+    /// 補間曲線
+    /// </summary>
+    Dictionary<InterpolationItem, InterpolationCurve> InterpolationCurves { get; }
 }

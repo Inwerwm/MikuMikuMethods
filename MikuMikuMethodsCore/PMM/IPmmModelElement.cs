@@ -1,7 +1,6 @@
-﻿namespace MikuMikuMethods.Pmm
+﻿namespace MikuMikuMethods.Pmm;
+
+public interface IPmmModelElement
 {
-    public interface IPmmModelElement
-    {
-        string Name { get; }
-    }
+    string Name { get; }
 }

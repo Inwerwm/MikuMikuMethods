@@ -1,17 +1,16 @@
-﻿namespace MikuMikuMethods.Pmx
+﻿namespace MikuMikuMethods.Pmx;
+
+/// <summary>
+/// ボーンの表情枠要素
+/// </summary>
+public class PmxNodeElementBone : IPmxNodeElement
 {
-    /// <summary>
-    /// ボーンの表情枠要素
-    /// </summary>
-    public class PmxNodeElementBone : IPmxNodeElement
-    {
-        public byte TypeNumber => 0;
+    public byte TypeNumber => 0;
 
-        public PmxBone Entity { get; set; }
-        IPmxData IPmxNodeElement.Entity { get => Entity; set => Entity = (PmxBone)value; }
+    public PmxBone Entity { get; set; }
+    IPmxData IPmxNodeElement.Entity { get => Entity; set => Entity = (PmxBone)value; }
 
-        public int FindIndex(PmxModel model) => model.Bones.IndexOf(Entity);
+    public int FindIndex(PmxModel model) => model.Bones.IndexOf(Entity);
 
-        public override string ToString() => $"Bone : {Entity.Name}";
-    }
+    public override string ToString() => $"Bone : {Entity.Name}";
 }

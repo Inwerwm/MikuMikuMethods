@@ -1,18 +1,17 @@
-﻿namespace MikuMikuMethods.Vmd
+﻿namespace MikuMikuMethods.Vmd;
+
+/// <summary>
+/// モデル系フレームの抽象クラス
+/// </summary>
+public abstract class VmdModelTypeFrame : VmdFrame
 {
     /// <summary>
-    /// モデル系フレームの抽象クラス
+    /// カメラ系フレームか？
     /// </summary>
-    public abstract class VmdModelTypeFrame : VmdFrame
-    {
-        /// <summary>
-        /// カメラ系フレームか？
-        /// </summary>
-        public override bool IsCameraType => false;
+    public override bool IsCameraType => false;
 
-        /// <summary>
-        /// モデル系フレームか？
-        /// </summary>
-        public override bool IsModelType => true;
-    }
+    /// <summary>
+    /// モデル系フレームか？
+    /// </summary>
+    public override bool IsModelType => true;
 }

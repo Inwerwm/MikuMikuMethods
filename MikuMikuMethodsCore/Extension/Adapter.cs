@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MikuMikuMethods.Extension
+namespace MikuMikuMethods.Extension;
+
+static class Adapter
 {
-    static class Adapter
+    public static Pmm.PmmModel CreateFrom(Pmx.PmxModel pmx, string modelPath)
     {
-        public static Pmm.PmmModel CreateFrom(Pmx.PmxModel pmx, string modelPath)
-        {
-            throw new NotImplementedException();
-        }
+        throw new NotImplementedException();
     }
 }

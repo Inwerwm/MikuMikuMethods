@@ -1,9 +1,8 @@
-﻿namespace MikuMikuMethods.Pmx
+﻿namespace MikuMikuMethods.Pmx;
+
+/// <summary>
+/// PMX関連のインターフェイス
+/// </summary>
+public interface IPmxData
 {
-    /// <summary>
-    /// PMX関連のインターフェイス
-    /// </summary>
-    public interface IPmxData
-    {
-    }
 }
