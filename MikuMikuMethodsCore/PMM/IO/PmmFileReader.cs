@@ -1,4 +1,5 @@
-﻿using MikuMikuMethods.Extension;
+﻿using MikuMikuMethods.Common;
+using MikuMikuMethods.Extension;
 using MikuMikuMethods.PMM.ElementState;
 using MikuMikuMethods.PMM.Frame;
 using System;
@@ -12,6 +13,8 @@ namespace MikuMikuMethods.PMM.IO
     {
         private static Dictionary<PmmModelConfigFrame, Dictionary<PmmBone, (int ModelID, int BoneID)>> OuterParentRelation { get; set; }
         private static Dictionary<PmmModelConfigState, Dictionary<PmmBone, (int ModelID, int BoneID)>> OuterParentRelationCurrent { get; set; }
+
+        private static DataLoadErrorInfomation Current;
 
         internal static void Read(string filePath, PolygonMovieMaker pmm)
         {
@@ -29,6 +32,7 @@ namespace MikuMikuMethods.PMM.IO
             }
         }
 
+
         internal static void Read(BinaryReader reader, PolygonMovieMaker pmm)
         {
             try
@@ -37,13 +41,16 @@ namespace MikuMikuMethods.PMM.IO
                 OuterParentRelation = new();
                 OuterParentRelationCurrent = new();
 
+                Current = new("Header", null, "Header section of the PMM file.");
                 pmm.Version = reader.ReadString(30, Encoding.ShiftJIS, '\0');
+                if (pmm.Version != "Polygon Movie maker 0002") throw new InvalidDataException("This is not PMM file.");
                 pmm.OutputResolution = new(reader.ReadInt32(), reader.ReadInt32());
 
                 pmm.EditorState.Width = reader.ReadInt32();
                 pmm.Camera.Current.ViewAngle = (int)reader.ReadSingle();
                 pmm.EditorState.IsCameraMode = reader.ReadBoolean();
 
+                Current = new("PanelOpeningStatus", null, "Section of the opening status of various operation panels.");
                 // パネル開閉状態の読み込み
                 pmm.PanelPane.DoesOpenCameraPanel = reader.ReadBoolean();
                 pmm.PanelPane.DoesOpenLightPanel = reader.ReadBoolean();
@@ -52,17 +59,20 @@ namespace MikuMikuMethods.PMM.IO
                 pmm.PanelPane.DoesOpenMorphPanel = reader.ReadBoolean();
                 pmm.PanelPane.DoesOpenSelfShadowPanel = reader.ReadBoolean();
 
+                Current = new("HeaderOfModels", null, "Section of selected model index and total number of models.");
                 // モデル読み込み
                 var selectedModelIndex = reader.ReadByte();
                 var modelCount = reader.ReadByte();
                 var modelOrderDictionary = new Dictionary<PmmModel, (byte RenderOrder, byte CalculateOrder)>();
                 for (int i = 0; i < modelCount; i++)
                 {
+                    Current = new($"Model:{i}", i, $"Section of {DataLoadErrorInfomation.GetOrdinal(i)} model data.");
                     (var model, var renderOrder, var calculateOrder) = ReadModel(reader);
                     pmm.Models.Add(model);
                     modelOrderDictionary.Add(model, ((byte RenderOrder, byte CalculateOrder))(renderOrder - 1, calculateOrder - 1));
                 }
 
+                Current = new($"ModelRelationSolving", null, $"The section that resolves the relations of the selected model and the render/calculate order. In this section, no reading is done, only calculation.");
                 pmm.EditorState.SelectedModel = selectedModelIndex < pmm.Models.Count ? pmm.Models[selectedModelIndex] : null;
                 foreach (var model in pmm.Models)
                 {
@@ -73,6 +83,7 @@ namespace MikuMikuMethods.PMM.IO
                 }
 
                 // 外部親の関係解決
+                Current = new("OuterParentSolving", null, $"The section that resolves the outer parent relation. In this section, no reading is done, only calculation.");
                 foreach (var frame in OuterParentRelation)
                 {
                     foreach (var relation in frame.Value)
@@ -99,6 +110,7 @@ namespace MikuMikuMethods.PMM.IO
                 ReadCamera(reader, pmm);
                 ReadLight(reader, pmm.Light);
 
+                Current = new("HeaderOfAccessories", null, "Section of selected accessory index and total number of accessories.");
                 var selectedAccessoryIndex = reader.ReadByte();
                 pmm.EditorState.VerticalScrollOfAccessory = reader.ReadInt32();
 
@@ -110,22 +122,27 @@ namespace MikuMikuMethods.PMM.IO
                 _ = reader.ReadBytes(accessoryCount * 100);
                 for (int i = 0; i < accessoryCount; i++)
                 {
+                    Current = new($"Accessory:{i}", i, $"The section of {DataLoadErrorInfomation.GetOrdinal(i)} accessory data.");
                     (PmmAccessory accessory, byte renderOrder) = ReadAccessory(reader, pmm);
                     pmm.Accessories.Add(accessory);
                     accessoryOrderDictionary.Add(accessory, renderOrder);
                 }
+
+                Current = new($"AccessoryRelationSolving", null, $"The section that resolves the relations of the selected accessory and the render order. In this section, no reading is done, only calculation.");
                 pmm.EditorState.SelectedAccessory = selectedAccessoryIndex < pmm.Accessories.Count ? pmm.Accessories[selectedAccessoryIndex] : null;
                 foreach (var acs in pmm.Accessories)
                 {
                     pmm.SetRenderOrder(acs, accessoryOrderDictionary[acs]);
                 }
 
+                Current = new($"KeyFrameEditorCurrentTarget", null, $"Sections for the current keyframe editor editing target and scroll amount.");
                 // フレーム編集画面の状態読み込み
                 pmm.EditorState.CurrentFrame = reader.ReadInt32();
                 pmm.EditorState.HorizontalScroll = reader.ReadInt32();
                 pmm.EditorState.HorizontalScrollLength = reader.ReadInt32();
                 pmm.EditorState.SelectedBoneOperation = (PmmEditorState.BoneOperation)reader.ReadInt32();
 
+                Current = new($"Media", null, $"The sections of play config ,background media, render config.");
                 // 再生関連設定の読込
                 pmm.PlayConfig.CameraTrackingTarget = (PmmPlayConfig.TrackingTarget)reader.ReadByte();
 
@@ -168,6 +185,7 @@ namespace MikuMikuMethods.PMM.IO
                 ReadPhysics(reader, pmm.Physics);
                 ReadSelfShadow(reader, pmm.SelfShadow);
 
+                Current = new("FollowingSettings", null, "Camera following settings and more");
                 pmm.RenderConfig.EdgeColor = System.Drawing.Color.FromArgb(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32());
                 pmm.BackGround.IsBlack = reader.ReadBoolean();
 
@@ -200,6 +218,7 @@ namespace MikuMikuMethods.PMM.IO
                         // 範囲選択セレクタの読込
                         for (int i = 0; i < modelCount; i++)
                         {
+                            Current = new("RangeSelector", i, $"The section of {DataLoadErrorInfomation.GetOrdinal(i)} range selection target.");
                             pmm.Models[reader.ReadByte()].SpecificEditorState.RangeSelector = new(reader.ReadInt32());
                         }
                     }
@@ -212,7 +231,9 @@ namespace MikuMikuMethods.PMM.IO
             }
             catch (Exception ex)
             {
-                throw new IOException("Failed to read PMM file.", ex);
+                IOException exception = new IOException($"Failed to read PMM file. This exception occurred in {Current.Section}. See Data[\"Section\"] property, that type is DataLoadErrorInfomation, of this exception for details on where exceptions are occurred.", ex);
+                exception.Data.Add("Section", Current);
+                throw exception;
             }
             finally
             {
@@ -223,16 +244,20 @@ namespace MikuMikuMethods.PMM.IO
 
         private static void ReadCamera(BinaryReader reader, PolygonMovieMaker pmm)
         {
+            
             var camera = pmm.Camera;
 
+            Current = new("CameraFrame", null, $"The section of initial camera frame data.");
             camera.Frames.Add(ReadCameraFrame(reader, pmm, true));
 
             var cameraFrameCount = reader.ReadInt32();
             for (int i = 0; i < cameraFrameCount; i++)
             {
+                Current = Current with { Index = i , Description = $"The section of {DataLoadErrorInfomation.GetOrdinal(i)} camera frame data." };
                 camera.Frames.Add(ReadCameraFrame(reader, pmm));
             }
 
+            Current = new("CurrentCamera", null, $"The section of camera settings.");
             camera.Current.EyePosition = reader.ReadVector3();
             camera.Current.TargetPosition = reader.ReadVector3();
             camera.Current.Rotation = reader.ReadVector3();
@@ -278,14 +303,17 @@ namespace MikuMikuMethods.PMM.IO
 
         private static void ReadLight(BinaryReader reader, PmmLight light)
         {
+            Current = new("LightFrame", null, $"The section of initial light frame data.");
             light.Frames.Add(ReadLightFrame(reader, true));
 
             var frameCount = reader.ReadInt32();
             for (int i = 0; i < frameCount; i++)
             {
+                Current = Current with { Index = i, Description = $"The section of {DataLoadErrorInfomation.GetOrdinal(i)} light frame data." };
                 light.Frames.Add(ReadLightFrame(reader));
             }
 
+            Current = new("CurrentLight", null, $"The section of light settings.");
             light.Current.Color = reader.ReadSingleRGB();
             light.Current.Position = reader.ReadVector3();
         }
@@ -311,6 +339,7 @@ namespace MikuMikuMethods.PMM.IO
 
         private static void ReadSelfShadow(BinaryReader reader, PmmSelfShadow selfShadow)
         {
+            Current = new("SelfShadow", null, $"The section of self shadow config and frames");
             selfShadow.EnableSelfShadow = reader.ReadBoolean();
             selfShadow.ShadowRange = reader.ReadSingle();
 
@@ -342,6 +371,7 @@ namespace MikuMikuMethods.PMM.IO
 
         private static void ReadPhysics(BinaryReader reader, PmmPhysics physics)
         {
+            Current = new("Physics", null, $"The section of physics config and gravity frames");
             physics.CalculationMode = (PmmPhysics.PhysicsMode)reader.ReadByte();
             physics.CurrentGravity.Acceleration = reader.ReadSingle();
             var currentNoiseAmount = reader.ReadInt32();
