@@ -11,6 +11,10 @@ namespace MikuMikuMethods.Pmx.IO;
 /// </summary>
 internal static class PmxFileWriter
 {
+    // 書き込み処理開始時にモデルのデータを使ってプロパティの要素が作られるので、クラス生成時には値が入らないが使用時には必ずインスタンスが入っている
+    // そういう情報は与えられないので宣言部のみ nullable を無効化してしまう
+    // ついでにメソッド終了後の参照解放のための null 入力も無効化部に入れてしまう
+#nullable disable
     private static StringEncoder Encoder;
 
     private static PmxModel Model { get; set; }
@@ -50,6 +54,7 @@ internal static class PmxFileWriter
         MphMap = null;
         BodyMap = null;
     }
+#nullable enable
 
     private static void CreatePropaties()
     {
