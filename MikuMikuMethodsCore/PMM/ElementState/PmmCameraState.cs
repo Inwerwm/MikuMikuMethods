@@ -23,11 +23,11 @@ public class PmmCameraState
     /// <summary>
     /// 視点追従先モデル
     /// </summary>
-    public PmmModel FollowingModel { get; set; }
+    public PmmModel? FollowingModel { get; set; }
     /// <summary>
     /// 視点追従先ボーン
     /// </summary>
-    public PmmBone FollowingBone { get; set; }
+    public PmmBone? FollowingBone { get; set; }
     /// <summary>
     /// 視野角
     /// </summary>

@@ -17,11 +17,11 @@ public class PmmEditorState
     /// <summary>
     /// 選択中のモデル
     /// </summary>
-    public PmmModel SelectedModel { get; set; }
+    public PmmModel? SelectedModel { get; set; }
     /// <summary>
     /// 選択中のアクセサリ
     /// </summary>
-    public PmmAccessory SelectedAccessory { get; set; }
+    public PmmAccessory? SelectedAccessory { get; set; }
     /// <summary>
     /// 選択中のボーン操作方法
     /// </summary>

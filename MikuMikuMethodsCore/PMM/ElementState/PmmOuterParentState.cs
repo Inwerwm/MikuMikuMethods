@@ -17,8 +17,8 @@ public record PmmOuterParentState
     /// </summary>
     public int? EndFrame { get; set; }
 
-    public PmmModel ParentModel { get; set; }
-    public PmmBone ParentBone { get; set; }
+    public PmmModel? ParentModel { get; set; }
+    public PmmBone? ParentBone { get; set; }
 
     public PmmOuterParentState DeepCopy() => new()
     {

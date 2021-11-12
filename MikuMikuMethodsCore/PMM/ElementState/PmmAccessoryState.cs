@@ -29,11 +29,11 @@ public class PmmAccessoryState
     /// <summary>
     /// 親モデル
     /// </summary>
-    public PmmModel ParentModel { get; set; }
+    public PmmModel? ParentModel { get; set; }
     /// <summary>
     /// 親ボーン
     /// </summary>
-    public PmmBone ParentBone { get; set; }
+    public PmmBone? ParentBone { get; set; }
 
     /// <summary>
     /// 位置
