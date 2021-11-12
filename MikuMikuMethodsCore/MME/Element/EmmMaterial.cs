@@ -14,5 +14,5 @@ public class EmmMaterial
     /// エフェクトの位置
     /// <para>出力時、nullなら書き込まれず、 "none" なら書き込まれる</para>
     /// </summary>
-    public string Path { get; set; }
+    public string? Path { get; set; }
 }
