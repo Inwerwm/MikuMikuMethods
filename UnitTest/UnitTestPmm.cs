@@ -24,31 +24,6 @@ namespace UnitTest
         }
 
         [TestMethod]
-        public void OldIO()
-        {
-            var pmmOld = new MikuMikuMethods.PMM.Binary.PolygonMovieMaker(TestData.GetPath(PmmName + ".pmm"));
-            var pmmNeo = new PolygonMovieMaker(TestData.GetPath(PmmName + ".pmm"));
-
-            pmmOld.Write(TestData.GetPath(PmmName + "_out_old.pmm"));
-            pmmNeo.Write(TestData.GetPath(PmmName + "_out.pmm"));
-
-            var old = new MikuMikuMethods.PMM.Binary.PolygonMovieMaker(TestData.GetPath(PmmName + "_out_old.pmm"));
-            var neo = new MikuMikuMethods.PMM.Binary.PolygonMovieMaker(TestData.GetPath(PmmName + "_out.pmm"));
-
-            var oldJson = JsonSerializer.Serialize(old, new() { WriteIndented = true });
-            var neoJson = JsonSerializer.Serialize(neo, new() { WriteIndented = true });
-
-            File.WriteAllText(TestData.GetPath(PmmName + "_out_old.Json"), oldJson);
-            File.WriteAllText(TestData.GetPath(PmmName + "_out.Json"), neoJson);
-
-            Assert.AreEqual(pmmOld.ViewConfig.EnableGroundPhysics, pmmNeo.Physics.EnableGroundPhysics, "床物理");
-            Assert.AreEqual(pmmOld.ViewConfig.FrameLocation, pmmNeo.RenderConfig.JumpFrameLocation, "3Dビューの移動フレーム");
-
-            // フレームの並べ替えがあるので絶対失敗する
-            //Assert.AreEqual(neoJson, oldJson, "Json 比較での失敗");
-        }
-
-        [TestMethod]
         public void ModelOrderTest()
         {
             var pmm1 = new PolygonMovieMaker();
