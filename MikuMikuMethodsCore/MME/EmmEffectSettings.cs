@@ -26,12 +26,12 @@ public class EmmEffectSettings
     /// <summary>
     /// Mainタブの(default)に設定されたエフェクト
     /// </summary>
-    public EmmMaterial Default { get; set; }
+    public EmmMaterial? Default { get; set; }
     /// <summary>
     /// <para>エフェクトが依拠するオブジェクト</para>
     /// <para>オブジェクト定義で記述された名前が入る</para>
     /// </summary>
-    public EmmObject Owner { get; set; }
+    public EmmObject? Owner { get; set; }
 
     /// <summary>
     /// 設定対象オブジェクトのリスト
@@ -125,7 +125,8 @@ public class EmmEffectSettings
     /// <param name="writer">書き込みストリーム</param>
     internal void Write(StreamWriter writer)
     {
-        writer.WriteLine(IsMain ? $"Default = {Default.Path}" : $"Owner = {Owner.Name}");
+        // Main なら Default に、そうでなければ Owner には必ず値が入っている
+        writer.WriteLine(IsMain ? $"Default = {Default!.Path}" : $"Owner = {Owner!.Name}");
 
         foreach (var obj in ObjectSettings)
         {
