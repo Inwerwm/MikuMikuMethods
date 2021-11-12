@@ -11,10 +11,10 @@ namespace MikuMikuMethods.Pmm.IO;
 
 internal static class PmmFileReader
 {
-    private static Dictionary<PmmModelConfigFrame, Dictionary<PmmBone, (int ModelID, int BoneID)>> OuterParentRelation { get; set; }
-    private static Dictionary<PmmModelConfigState, Dictionary<PmmBone, (int ModelID, int BoneID)>> OuterParentRelationCurrent { get; set; }
+    private static Dictionary<PmmModelConfigFrame, Dictionary<PmmBone, (int ModelID, int BoneID)>> OuterParentRelation { get; set; } = new();
+    private static Dictionary<PmmModelConfigState, Dictionary<PmmBone, (int ModelID, int BoneID)>> OuterParentRelationCurrent { get; set; } = new();
 
-    private static DataLoadErrorInfomation Current;
+    private static DataLoadErrorInfomation Current = new("", null, "");
 
     internal static void Read(string filePath, PolygonMovieMaker pmm)
     {
@@ -37,10 +37,6 @@ internal static class PmmFileReader
     {
         try
         {
-            // 外部親の関係解決のためのプロパティ初期化
-            OuterParentRelation = new();
-            OuterParentRelationCurrent = new();
-
             Current = new("Header", null, "Header section of the PMM file.");
             pmm.Version = reader.ReadString(30, Encoding.ShiftJIS, '\0');
             if (pmm.Version != "Polygon Movie maker 0002") throw new InvalidDataException("This is not PMM file.");
@@ -237,8 +233,8 @@ internal static class PmmFileReader
         }
         finally
         {
-            OuterParentRelation = null;
-            OuterParentRelationCurrent = null;
+            OuterParentRelation = new();
+            OuterParentRelationCurrent = new();
         }
     }
 

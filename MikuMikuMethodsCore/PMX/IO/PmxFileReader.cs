@@ -29,7 +29,7 @@ internal static class PmxFileReader
     private static List<(PmxOffsetGroup Instance, int RelationID)> TmpGroupedMorphIndices { get; set; } = new();
     private static List<(PmxOffsetImpulse Instance, int RelationID)> TmpImpulseTargetBodyIndices { get; set; } = new();
 
-    private static void CreateTmpInstances()
+    private static void InitializeTmpInstances()
     {
         Faces = new();
         LoadedFaceCount = 0;
@@ -66,23 +66,6 @@ internal static class PmxFileReader
         Solve(TmpImpulseTargetBodyIndices, (instance, id) => instance.Target = Model.Bodies[id]);
     }
 
-    private static void CleanUpProperties()
-    {
-        Encoder = null!;
-        Model = null!;
-        Faces = null!;
-        Textures = null!;
-
-        TmpWeightBoneIndices = null!;
-        TmpParentBoneIndices = null!;
-        TmpConnectionTargetBoneIndices = null!;
-        TmpAdditionParentBoneIndices = null!;
-        TmpIKTargetBoneIndices = null!;
-        TmpIKLinkBoneIndices = null!;
-        TmpGroupedMorphIndices = null!;
-        TmpImpulseTargetBodyIndices = null!;
-    }
-
     /// <summary>
     /// モデル読込
     /// </summary>
@@ -95,8 +78,6 @@ internal static class PmxFileReader
             using (FileStream stream = new(filePath, FileMode.Open))
             using (BinaryReader reader = new(stream))
             {
-                CreateTmpInstances();
-
                 Model = model;
 
                 ReadHeader(reader, Model.Header);
@@ -127,7 +108,7 @@ internal static class PmxFileReader
         }
         finally
         {
-            CleanUpProperties();
+            InitializeTmpInstances();
         }
     }
 
