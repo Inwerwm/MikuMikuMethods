@@ -2,7 +2,7 @@
 using System.IO;
 using System.Numerics;
 
-namespace MikuMikuMethods.VMD
+namespace MikuMikuMethods.Vmd
 {
     /// <summary>
     /// 照明フレーム

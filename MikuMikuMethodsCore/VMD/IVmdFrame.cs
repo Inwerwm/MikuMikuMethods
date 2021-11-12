@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace MikuMikuMethods.VMD
+namespace MikuMikuMethods.Vmd
 {
     /// <summary>
     /// フレームのインターフェイス

@@ -1,4 +1,4 @@
-﻿namespace MikuMikuMethods.VMD
+﻿namespace MikuMikuMethods.Vmd
 {
     /// <summary>
     /// カメラ系フレームの抽象クラス

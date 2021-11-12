@@ -2,7 +2,7 @@
 using System;
 using System.Text.RegularExpressions;
 
-namespace MikuMikuMethods.PMX
+namespace MikuMikuMethods.Pmx
 {
     /// <summary>
     /// テクスチャ情報

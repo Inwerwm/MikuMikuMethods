@@ -1,7 +1,7 @@
 ﻿using MikuMikuMethods.Extension;
 using System.Numerics;
 
-namespace MikuMikuMethods.PMM.ElementState
+namespace MikuMikuMethods.Pmm.ElementState
 {
     public class PmmLightState
     {

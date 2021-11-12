@@ -1,11 +1,11 @@
-﻿using MikuMikuMethods.PMM.ElementState;
-using MikuMikuMethods.PMM.Frame;
+﻿using MikuMikuMethods.Pmm.ElementState;
+using MikuMikuMethods.Pmm.Frame;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
-namespace MikuMikuMethods.PMM
+namespace MikuMikuMethods.Pmm
 {
     /// <summary>
     /// PMM用モデルクラス

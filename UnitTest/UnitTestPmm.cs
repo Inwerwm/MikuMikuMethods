@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MikuMikuMethods.PMM;
-using MikuMikuMethods.PMM.Frame;
+using MikuMikuMethods.Pmm;
+using MikuMikuMethods.Pmm.Frame;
 using System;
 
 namespace UnitTest

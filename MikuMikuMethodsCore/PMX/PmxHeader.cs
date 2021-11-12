@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace MikuMikuMethods.PMX
+namespace MikuMikuMethods.Pmx
 {
     /// <summary>
     /// ヘッダー

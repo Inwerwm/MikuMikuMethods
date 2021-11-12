@@ -1,8 +1,8 @@
-﻿using MikuMikuMethods.PMM.ElementState;
+﻿using MikuMikuMethods.Pmm.ElementState;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace MikuMikuMethods.PMM.Frame
+namespace MikuMikuMethods.Pmm.Frame
 {
     public class PmmCameraFrame : PmmCameraState, IPmmFrame
     {

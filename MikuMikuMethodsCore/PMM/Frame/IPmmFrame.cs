@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MikuMikuMethods.PMM.Frame
+namespace MikuMikuMethods.Pmm.Frame
 {
     public interface IPmmFrame
     {

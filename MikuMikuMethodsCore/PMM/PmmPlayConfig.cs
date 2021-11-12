@@ -1,4 +1,4 @@
-﻿namespace MikuMikuMethods.PMM
+﻿namespace MikuMikuMethods.Pmm
 {
     public class PmmPlayConfig
     {

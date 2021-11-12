@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
 
-namespace MikuMikuMethods.VMD
+namespace MikuMikuMethods.Vmd
 {
     /// <summary>
     /// カメラフレーム
@@ -13,7 +13,7 @@ namespace MikuMikuMethods.VMD
         /// <summary>
         /// フレームの種類
         /// </summary>
-        public override VmdFrameType FrameType => VMD.VmdFrameType.Camera;
+        public override VmdFrameType FrameType => Vmd.VmdFrameType.Camera;
 
         /// <summary>
         /// 距離

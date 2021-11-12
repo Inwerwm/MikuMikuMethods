@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace MikuMikuMethods.PMX
+namespace MikuMikuMethods.Pmx
 {
     /// <summary>
     /// PMXモデル

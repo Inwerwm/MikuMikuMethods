@@ -1,7 +1,7 @@
-﻿using MikuMikuMethods.PMM.ElementState;
+﻿using MikuMikuMethods.Pmm.ElementState;
 using System.Linq;
 
-namespace MikuMikuMethods.PMM.Frame
+namespace MikuMikuMethods.Pmm.Frame
 {
     public class PmmModelConfigFrame : PmmModelConfigState, IPmmFrame
     {

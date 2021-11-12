@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MikuMikuMethods.PMX
+namespace MikuMikuMethods.Pmx
 {
     /// <summary>
     /// モーフ

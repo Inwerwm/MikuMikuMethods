@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MikuMikuMethods.PMX;
-using MikuMikuMethods.PMX.IO;
+using MikuMikuMethods.Pmx;
+using MikuMikuMethods.Pmx.IO;
 using System;
 using System.Collections.Generic;
 using System.IO;

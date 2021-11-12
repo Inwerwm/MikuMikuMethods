@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace MikuMikuMethods.VMD
+namespace MikuMikuMethods.Vmd
 {
     /// <summary>
     /// 表示・IKフレーム

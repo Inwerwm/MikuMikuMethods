@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MikuMikuMethods.VMD
+namespace MikuMikuMethods.Vmd
 {
     public interface IVmdInterpolatable
     {

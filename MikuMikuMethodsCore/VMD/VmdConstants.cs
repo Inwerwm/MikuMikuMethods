@@ -1,4 +1,4 @@
-﻿namespace MikuMikuMethods.VMD
+﻿namespace MikuMikuMethods.Vmd
 {
     /// <summary>
     /// 仕様によって定められた変数

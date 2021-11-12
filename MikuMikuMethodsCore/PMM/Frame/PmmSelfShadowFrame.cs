@@ -1,4 +1,4 @@
-﻿namespace MikuMikuMethods.PMM.Frame
+﻿namespace MikuMikuMethods.Pmm.Frame
 {
     public class PmmSelfShadowFrame : IPmmFrame
     {

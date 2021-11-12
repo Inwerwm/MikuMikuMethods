@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace MikuMikuMethods.PMX
+namespace MikuMikuMethods.Pmx
 {
     /// <summary>
     /// 頂点モーフ

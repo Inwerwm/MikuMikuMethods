@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace MikuMikuMethods.PMM.ElementState
+namespace MikuMikuMethods.Pmm.ElementState
 {
     public class PmmModelConfigState
     {

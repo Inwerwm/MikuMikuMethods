@@ -1,4 +1,4 @@
-﻿namespace MikuMikuMethods.PMX
+﻿namespace MikuMikuMethods.Pmx
 {
     /// <summary>
     /// ウェイト変形方式

@@ -1,4 +1,4 @@
-﻿namespace MikuMikuMethods.PMM.ElementState
+﻿namespace MikuMikuMethods.Pmm.ElementState
 {
     public record PmmRangeSelector(int Index)
     {

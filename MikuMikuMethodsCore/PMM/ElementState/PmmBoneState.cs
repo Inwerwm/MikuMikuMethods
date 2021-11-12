@@ -5,7 +5,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MikuMikuMethods.PMM.ElementState
+namespace MikuMikuMethods.Pmm.ElementState
 {
     public class PmmBoneState
     {

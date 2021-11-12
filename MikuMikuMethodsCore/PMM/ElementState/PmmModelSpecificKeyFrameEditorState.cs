@@ -1,4 +1,4 @@
-﻿namespace MikuMikuMethods.PMM.ElementState
+﻿namespace MikuMikuMethods.Pmm.ElementState
 {
     /// <summary>
     /// 各モデルにおけるキーフレーム編集画面の状態

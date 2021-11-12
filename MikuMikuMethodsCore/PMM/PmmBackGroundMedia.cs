@@ -1,6 +1,6 @@
 ﻿using MikuMikuMethods.Common;
 
-namespace MikuMikuMethods.PMM
+namespace MikuMikuMethods.Pmm
 {
     /// <summary>
     /// 背景メディア情報

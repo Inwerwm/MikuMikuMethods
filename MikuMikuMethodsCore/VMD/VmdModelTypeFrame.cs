@@ -1,4 +1,4 @@
-﻿namespace MikuMikuMethods.VMD
+﻿namespace MikuMikuMethods.Vmd
 {
     /// <summary>
     /// モデル系フレームの抽象クラス

@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 
-namespace MikuMikuMethods.PMX.IO
+namespace MikuMikuMethods.Pmx.IO
 {
     internal class Indexer
     {

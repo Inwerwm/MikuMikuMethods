@@ -1,11 +1,11 @@
-﻿using MikuMikuMethods.MME.Element;
+﻿using MikuMikuMethods.Mme.Element;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace MikuMikuMethods.MME
+namespace MikuMikuMethods.Mme
 {
     /// <summary>
     /// Emdファイルの内部表現

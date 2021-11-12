@@ -1,4 +1,4 @@
-﻿namespace MikuMikuMethods.PMX
+﻿namespace MikuMikuMethods.Pmx
 {
     /// <summary>
     /// 材質モーフのオフセット

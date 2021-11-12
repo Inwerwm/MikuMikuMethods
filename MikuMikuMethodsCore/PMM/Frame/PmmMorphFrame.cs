@@ -1,6 +1,6 @@
-﻿using MikuMikuMethods.PMM.ElementState;
+﻿using MikuMikuMethods.Pmm.ElementState;
 
-namespace MikuMikuMethods.PMM.Frame
+namespace MikuMikuMethods.Pmm.Frame
 {
     public class PmmMorphFrame : PmmMorphState, IPmmFrame
     {

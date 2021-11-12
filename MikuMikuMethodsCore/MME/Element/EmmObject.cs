@@ -1,4 +1,4 @@
-﻿namespace MikuMikuMethods.MME.Element
+﻿namespace MikuMikuMethods.Mme.Element
 {
     /// <summary>
     /// オブジェクト情報

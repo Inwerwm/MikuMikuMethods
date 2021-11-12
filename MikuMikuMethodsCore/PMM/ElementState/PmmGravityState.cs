@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace MikuMikuMethods.PMM.ElementState
+namespace MikuMikuMethods.Pmm.ElementState
 {
     public class PmmGravityState
     {

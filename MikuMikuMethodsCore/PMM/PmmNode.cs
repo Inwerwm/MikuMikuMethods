@@ -1,6 +1,6 @@
 ﻿using System.Collections.Immutable;
 
-namespace MikuMikuMethods.PMM
+namespace MikuMikuMethods.Pmm
 {
     public record PmmNode
     {

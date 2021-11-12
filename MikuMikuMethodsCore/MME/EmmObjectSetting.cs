@@ -1,7 +1,7 @@
-﻿using MikuMikuMethods.MME.Element;
+﻿using MikuMikuMethods.Mme.Element;
 using System.Collections.Generic;
 
-namespace MikuMikuMethods.MME
+namespace MikuMikuMethods.Mme
 {
     /// <summary>
     /// オブジェクト単位のエフェクト設定

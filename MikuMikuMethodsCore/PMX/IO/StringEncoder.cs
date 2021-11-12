@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace MikuMikuMethods.PMX.IO
+namespace MikuMikuMethods.Pmx.IO
 {
     /// <summary>
     /// PMX用エンコードを気にせず文字列を読み書きできるようにしたクラス

@@ -1,7 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MikuMikuMethods;
-using MikuMikuMethods.MME;
-using MikuMikuMethods.MME.Element;
+using MikuMikuMethods.Mme;
+using MikuMikuMethods.Mme.Element;
 using System;
 using System.Collections.Generic;
 using System.IO;

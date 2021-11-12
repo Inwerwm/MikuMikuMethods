@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace MikuMikuMethods.PMM
+namespace MikuMikuMethods.Pmm
 {
     public class PmmRenderConfig
     {

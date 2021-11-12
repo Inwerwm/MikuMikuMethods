@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace MikuMikuMethods.PMX.IO
+namespace MikuMikuMethods.Pmx.IO
 {
     /// <summary>
     /// PMXファイル書込クラス

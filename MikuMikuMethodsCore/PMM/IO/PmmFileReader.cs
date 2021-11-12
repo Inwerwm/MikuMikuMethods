@@ -1,13 +1,13 @@
 ﻿using MikuMikuMethods.Common;
 using MikuMikuMethods.Extension;
-using MikuMikuMethods.PMM.ElementState;
-using MikuMikuMethods.PMM.Frame;
+using MikuMikuMethods.Pmm.ElementState;
+using MikuMikuMethods.Pmm.Frame;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace MikuMikuMethods.PMM.IO
+namespace MikuMikuMethods.Pmm.IO
 {
     internal static class PmmFileReader
     {
