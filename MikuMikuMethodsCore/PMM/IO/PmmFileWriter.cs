@@ -429,14 +429,15 @@ internal static class PmmFileWriter
                     writer.Write(frame.EnableIK[model.Bones[ikBoneId]]);
                 }
 
-                    // 最初に入っている -1
-                    writer.Write(-1);
+                // 最初に入っている -1
+                writer.Write(-1);
                 writer.Write(-1);
                 foreach (var parentableId in parentableBoneIndices)
                 {
-                    var op = frame.OuterParent[model.Bones[parentableId]];
-                    writer.Write(pmm.Models.IndexOf(op.ParentModel));
-                    writer.Write(op.ParentModel?.Bones.IndexOf(op.ParentBone) ?? 0);
+                    ElementState.PmmOuterParentState? op;
+                    frame.OuterParent.TryGetValue(model.Bones[parentableId], out op);
+                    writer.Write(pmm.Models.IndexOf(op?.ParentModel!));
+                    writer.Write(op?.ParentModel?.Bones.IndexOf(op?.ParentBone!) ?? 0);
                 }
 
                 writer.Write(frame.IsSelected);
@@ -513,15 +514,15 @@ internal static class PmmFileWriter
         // 各フレームについて前後フレーム番号を得る
         (IPmmFrame Frame, int Index, int PreIndex, int NextIndex)[] IndexedFrames = IndexedOtherFrameContainer.SelectMany((frames, i) => frames.Select((p, j) =>
         {
-                // i は行のインデックス
-                // j は行内でのインデックス
-                // Index は全フレーム内でのインデックス
-                var (frame, currentIndex) = p;
+            // i は行のインデックス
+            // j は行内でのインデックス
+            // Index は全フレーム内でのインデックス
+            var (frame, currentIndex) = p;
 
-                // 行頭フレームなら前フレームはなし
-                var pre = j == 0 ? i : frames[j - 1].Index;
-                // 行末フレームなら次フレームはなし
-                var next = j == frames.Length - 1 ? 0 : frames[j + 1].Index;
+            // 行頭フレームなら前フレームはなし
+            var pre = j == 0 ? i : frames[j - 1].Index;
+            // 行末フレームなら次フレームはなし
+            var next = j == frames.Length - 1 ? 0 : frames[j + 1].Index;
 
             if (j == 0) initialFrames[i].NextIndex = currentIndex;
 
