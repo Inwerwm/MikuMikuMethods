@@ -406,13 +406,13 @@ internal static class PmmFileReader
 
     private static (PmmAccessory Accessory, byte RenderOrder) ReadAccessory(BinaryReader reader, PolygonMovieMaker pmm)
     {
-        var acs = new PmmAccessory();
         byte renderOrder;
 
         // リストの添字で管理するため Index は破棄
         _ = reader.ReadByte();
-        acs.Name = reader.ReadString(100, Encoding.ShiftJIS, '\0');
-        acs.Path = reader.ReadString(256, Encoding.ShiftJIS, '\0');
+        var name = reader.ReadString(100, Encoding.ShiftJIS, '\0');
+        var path = reader.ReadString(256, Encoding.ShiftJIS, '\0');
+        var acs = new PmmAccessory(name, path);
 
         renderOrder = reader.ReadByte();
 

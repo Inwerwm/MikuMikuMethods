@@ -13,11 +13,11 @@ public class PmmAccessory
     /// <summary>
     /// 名前
     /// </summary>
-    public string Name { get; set; }
+    public string Name { get; }
     /// <summary>
     /// ファイルパス
     /// </summary>
-    public string Path { get; set; }
+    public string Path { get; }
 
     /// <summary>
     /// 加算合成のOn/Off
@@ -26,6 +26,12 @@ public class PmmAccessory
 
     public List<PmmAccessoryFrame> Frames { get; } = new();
     public PmmAccessoryState Current { get; } = new();
+
+    public PmmAccessory(string name, string path)
+    {
+        Name = name;
+        Path = path;
+    }
 
     public override string ToString() => Name;
 }
