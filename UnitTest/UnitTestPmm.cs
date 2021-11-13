@@ -101,8 +101,8 @@ public class UnitTestPmm
         var pmm1 = new PolygonMovieMaker();
         var pmm2 = new PolygonMovieMaker();
 
-        var acs1 = new PmmAccessory() { Name = "アクセサリー1" };
-        var acs2 = new PmmAccessory() { Name = "アクセサリー2" };
+        var acs1 = new PmmAccessory("アクセサリー1", "");
+        var acs2 = new PmmAccessory("アクセサリー2", "");
 
         pmm1.Accessories.Add(acs1);
         pmm1.Accessories.Add(acs2);
@@ -148,7 +148,7 @@ public class UnitTestPmm
         Assert.AreEqual((byte)0, pmm2.GetRenderOrder(acs2).Value);
         Assert.AreEqual((byte)1, pmm2.GetRenderOrder(acs1).Value);
 
-        var acs3 = new PmmAccessory() { Name = "アクセサリー3" };
+        var acs3 = new PmmAccessory("アクセサリー3", "");
         pmm2.Accessories[0] = acs3;
         Assert.AreEqual((byte)0, pmm2.GetRenderOrder(acs3).Value);
         Assert.IsNull(pmm2.GetRenderOrder(acs2));
