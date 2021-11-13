@@ -490,7 +490,7 @@ internal static class PmmFileReader
         var boneCount = reader.ReadInt32();
         for (int i = 0; i < boneCount; i++)
         {
-            model.Bones.Add(new PmmBone() { Name = reader.ReadString() });
+            model.Bones.Add(new PmmBone(reader.ReadString()));
         }
 
         var morphCount = reader.ReadInt32();

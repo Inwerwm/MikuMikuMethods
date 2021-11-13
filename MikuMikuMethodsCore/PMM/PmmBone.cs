@@ -6,7 +6,7 @@ namespace MikuMikuMethods.Pmm;
 
 public class PmmBone : IPmmModelElement
 {
-    public string Name { get; set; }
+    public string Name { get; }
     public List<PmmBoneFrame> Frames { get; } = new();
     /// <summary>
     /// IKボーンか
@@ -29,6 +29,11 @@ public class PmmBone : IPmmModelElement
     /// 変形状態が確定されているか
     /// </summary>
     public bool IsCommitted { get; set; }
+
+    internal PmmBone(string name)
+    {
+        Name = name;
+    }
 
     public override string ToString() => Name;
 }
