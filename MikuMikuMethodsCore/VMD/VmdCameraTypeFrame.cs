@@ -5,6 +5,10 @@
 /// </summary>
 public abstract class VmdCameraTypeFrame : VmdFrame
 {
+    protected VmdCameraTypeFrame(string name) : base(name)
+    {
+    }
+
     /// <summary>
     /// カメラ系フレームか？
     /// </summary>

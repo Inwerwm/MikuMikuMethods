@@ -30,6 +30,11 @@ public abstract class VmdFrame : IVmdFrame
 
     public abstract object Clone();
 
+    protected VmdFrame(string name)
+    {
+        Name = name;
+    }
+
     /// <summary>
     /// 時間の前後を比較する
     /// </summary>
@@ -39,7 +44,7 @@ public abstract class VmdFrame : IVmdFrame
     /// <para>0 - このフレームはotherと同時</para>
     /// <para>0超 - このフレームはother以降</para>
     /// </returns>
-    public int CompareTo(IVmdFrame other) => Frame.CompareTo(other.Frame);
+    public int CompareTo(IVmdFrame? other) => Frame.CompareTo(other?.Frame);
     /// <summary>
     /// 読み込み
     /// </summary>

@@ -28,9 +28,8 @@ public class VmdLightFrame : VmdCameraTypeFrame
     /// コンストラクタ
     /// </summary>
     /// <param name="frame">フレーム</param>
-    public VmdLightFrame(uint frame = 0)
+    public VmdLightFrame(uint frame = 0):base("Light")
     {
-        Name = "照明";
         Frame = frame;
         Color = new Vector3(154f / 255, 154f / 255, 154f / 255);
         Position = new Vector3(-0.5f, -1.0f, 0.5f);
@@ -39,9 +38,8 @@ public class VmdLightFrame : VmdCameraTypeFrame
     /// <summary>
     /// バイナリから読み込むコンストラクタ
     /// </summary>
-    public VmdLightFrame(BinaryReader reader)
+    public VmdLightFrame(BinaryReader reader):base("Light")
     {
-        Name = "照明";
         Read(reader);
     }
 

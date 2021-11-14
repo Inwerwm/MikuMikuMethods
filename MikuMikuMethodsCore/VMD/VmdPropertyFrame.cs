@@ -28,9 +28,8 @@ public class VmdPropertyFrame : VmdModelTypeFrame
     /// コンストラクタ
     /// </summary>
     /// <param name="frame">フレーム</param>
-    public VmdPropertyFrame(uint frame = 0)
+    public VmdPropertyFrame(uint frame = 0) : base("Property")
     {
-        Name = "プロパティ";
         Frame = frame;
 
         IKEnabled = new();
@@ -39,7 +38,7 @@ public class VmdPropertyFrame : VmdModelTypeFrame
     /// <summary>
     /// バイナリから読み込むコンストラクタ
     /// </summary>
-    public VmdPropertyFrame(BinaryReader reader)
+    public VmdPropertyFrame(BinaryReader reader) : base("Property")
     {
         IKEnabled = new();
 

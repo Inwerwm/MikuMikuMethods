@@ -49,9 +49,8 @@ public class VmdCameraFrame : VmdCameraTypeFrame, IVmdInterpolatable
     /// コンストラクタ
     /// </summary>
     /// <param name="frame">フレーム時間</param>
-    public VmdCameraFrame(uint frame = 0)
+    public VmdCameraFrame(uint frame = 0) : base("Camera")
     {
-        Name = "Camera";
         Frame = frame;
         ViewAngle = 30;
         InterpolationCurves = new();
@@ -61,7 +60,7 @@ public class VmdCameraFrame : VmdCameraTypeFrame, IVmdInterpolatable
     /// <summary>
     /// バイナリから読み込むコンストラクタ
     /// </summary>
-    public VmdCameraFrame(BinaryReader reader)
+    public VmdCameraFrame(BinaryReader reader) : base("Camera")
     {
         InterpolationCurves = new();
         Read(reader);

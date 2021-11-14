@@ -34,9 +34,8 @@ public class VmdMotionFrame : VmdModelTypeFrame, IVmdInterpolatable
     /// </summary>
     /// <param name="name">ボーン名</param>
     /// <param name="frame">フレーム時間</param>
-    public VmdMotionFrame(string name, uint frame = 0)
+    public VmdMotionFrame(string name, uint frame = 0) : base(name)
     {
-        Name = name;
         Frame = frame;
         InterpolationCurves = new();
         InitializeInterpolationCurves();
@@ -45,7 +44,7 @@ public class VmdMotionFrame : VmdModelTypeFrame, IVmdInterpolatable
     /// <summary>
     /// バイナリから読み込むコンストラクタ
     /// </summary>
-    public VmdMotionFrame(BinaryReader reader)
+    public VmdMotionFrame(BinaryReader reader) : base("")
     {
         InterpolationCurves = new();
         Read(reader);

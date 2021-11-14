@@ -26,9 +26,8 @@ public class VmdShadowFrame : VmdCameraTypeFrame
     /// コンストラクタ
     /// </summary>
     /// <param name="frame">フレーム</param>
-    public VmdShadowFrame(uint frame = 0)
+    public VmdShadowFrame(uint frame = 0) : base("SelfShadow")
     {
-        Name = "セルフ影";
         Frame = frame;
         Mode = 1;
         Range = 8875 * 0.00001f;
@@ -37,7 +36,7 @@ public class VmdShadowFrame : VmdCameraTypeFrame
     /// <summary>
     /// バイナリから読み込むコンストラクタ
     /// </summary>
-    public VmdShadowFrame(BinaryReader reader)
+    public VmdShadowFrame(BinaryReader reader) : base("SelfShadow")
     {
         Read(reader);
     }

@@ -23,16 +23,15 @@ public class VmdMorphFrame : VmdModelTypeFrame
     /// </summary>
     /// <param name="name">ボーン名</param>
     /// <param name="frame">フレーム時間</param>
-    public VmdMorphFrame(string name, uint frame = 0)
+    public VmdMorphFrame(string name, uint frame = 0) : base(name)
     {
-        Name = name;
         Frame = frame;
     }
 
     /// <summary>
     /// バイナリから読み込むコンストラクタ
     /// </summary>
-    public VmdMorphFrame(BinaryReader reader)
+    public VmdMorphFrame(BinaryReader reader) : base("Morph")
     {
         Read(reader);
     }
