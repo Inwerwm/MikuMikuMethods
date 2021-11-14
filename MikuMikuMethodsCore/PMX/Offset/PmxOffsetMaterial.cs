@@ -8,7 +8,7 @@ public class PmxOffsetMaterial : IPmxOffset
     /// <summary>
     /// 対象材質
     /// </summary>
-    public PmxMaterial Target { get; set; }
+    public PmxMaterial? Target { get; set; }
     /// <summary>
     /// 演算形式
     /// </summary>
@@ -94,5 +94,5 @@ public class PmxOffsetMaterial : IPmxOffset
         Addition,
     }
 
-    public override string ToString() => $"{Target.Name} : {Operation}";
+    public override string ToString() => $"{Target?.Name} : {Operation}";
 }
