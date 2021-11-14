@@ -559,7 +559,7 @@ internal static class PmmFileReader
             boneCount,
             static reader => ReadBoneFrame(reader, null),
             boneFrameDictionary,
-            static (element, frame) => (element as PmmBone)?.Frames.Add(frame as PmmBoneFrame)
+            static (element, frame) => (element as PmmBone)?.Frames.Add((PmmBoneFrame)frame)
         );
 
         // 初期モーフフレームの読込
@@ -578,7 +578,7 @@ internal static class PmmFileReader
             morphCount,
             static reader => ReadMorphFrame(reader, null),
             morphFrameDictionary,
-            static (element, frame) => (element as PmmMorph)?.Frames.Add(frame as PmmMorphFrame)
+            static (element, frame) => (element as PmmMorph)?.Frames.Add((PmmMorphFrame)frame)
         );
 
         model.ConfigFrames.Add(ReadConfigFrame(reader, model, ikIndices, parentableIndices, true));
