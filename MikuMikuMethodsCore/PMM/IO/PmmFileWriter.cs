@@ -375,7 +375,7 @@ internal static class PmmFileWriter
         writer.Write((byte)model.Nodes.Count);
         foreach (var node in model.Nodes)
         {
-            writer.Write(node.doesOpen);
+            writer.Write(node.DoesOpen);
         }
 
         writer.Write(model.SpecificEditorState.VerticalScrollState);

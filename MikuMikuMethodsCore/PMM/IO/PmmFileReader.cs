@@ -535,7 +535,7 @@ internal static class PmmFileReader
         var nodeCount = reader.ReadByte();
         for (int i = 0; i < nodeCount; i++)
         {
-            model.Nodes.Add(new() { doesOpen = reader.ReadBoolean() });
+            model.Nodes.Add(new() { DoesOpen = reader.ReadBoolean() });
         }
 
         model.SpecificEditorState.VerticalScrollState = reader.ReadInt32();
