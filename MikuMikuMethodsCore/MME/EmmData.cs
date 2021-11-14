@@ -49,11 +49,9 @@ public class EmmData
     /// <param name="filePath">ファイルパス</param>
     public void Read(string filePath)
     {
-        using (FileStream stream = new(filePath, FileMode.Open))
-        using (StreamReader reader = new(stream, MikuMikuMethods.Encoding.ShiftJIS))
-        {
-            Read(reader);
-        }
+        using FileStream stream = new(filePath, FileMode.Open);
+        using StreamReader reader = new(stream, MikuMikuMethods.Encoding.ShiftJIS);
+        Read(reader);
     }
 
     /// <summary>
@@ -125,11 +123,9 @@ public class EmmData
     /// <param name="filePath">書き出すファイルのパス</param>
     public void Write(string filePath)
     {
-        using (FileStream file = new(filePath, FileMode.Create))
-        using (StreamWriter writer = new(file, MikuMikuMethods.Encoding.ShiftJIS))
-        {
-            Write(writer);
-        }
+        using FileStream file = new(filePath, FileMode.Create);
+        using StreamWriter writer = new(file, MikuMikuMethods.Encoding.ShiftJIS);
+        Write(writer);
     }
 
     /// <summary>

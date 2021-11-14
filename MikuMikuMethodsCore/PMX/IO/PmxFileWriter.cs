@@ -90,32 +90,30 @@ internal static class PmxFileWriter
             Model.ValidateVersion();
             CreatePropaties();
 
-            using (FileStream file = new(filePath, FileMode.Create))
-            using (BinaryWriter writer = new(file))
+            using FileStream file = new(filePath, FileMode.Create);
+            using BinaryWriter writer = new(file);
+            WriteHeader(writer, Model.Header);
+            WriteInfo(writer, Model.ModelInfo);
+
+            WriteData(Model.Vertices, WriteVertex);
+            WriteData(Model.Faces, WriteFace, 2, 3);
+            WriteData(Textures, WriteTexture);
+            WriteData(Model.Materials, WriteMaterial);
+            WriteData(Model.Bones, WriteBone);
+            WriteData(Model.Morphs, WriteMorph);
+            WriteData(Model.Nodes, WriteNode);
+            WriteData(Model.Bodies, WriteBody);
+            WriteData(Model.Joints, WriteJoint);
+            WriteData(Model.SoftBodies, WriteSoftBody, 2.1f);
+
+            void WriteData<T>(IList<T> list, Action<BinaryWriter, T> DataWriter, float requireVersion = 2.0f, int countScale = 1)
             {
-                WriteHeader(writer, Model.Header);
-                WriteInfo(writer, Model.ModelInfo);
-
-                WriteData(Model.Vertices, WriteVertex);
-                WriteData(Model.Faces, WriteFace, 2, 3);
-                WriteData(Textures, WriteTexture);
-                WriteData(Model.Materials, WriteMaterial);
-                WriteData(Model.Bones, WriteBone);
-                WriteData(Model.Morphs, WriteMorph);
-                WriteData(Model.Nodes, WriteNode);
-                WriteData(Model.Bodies, WriteBody);
-                WriteData(Model.Joints, WriteJoint);
-                WriteData(Model.SoftBodies, WriteSoftBody, 2.1f);
-
-                void WriteData<T>(IList<T> list, Action<BinaryWriter, T> DataWriter, float requireVersion = 2.0f, int countScale = 1)
+                if (Model.Header.Version >= requireVersion)
                 {
-                    if (Model.Header.Version >= requireVersion)
+                    writer.Write(list.Count * countScale);
+                    foreach (var item in list)
                     {
-                        writer.Write(list.Count * countScale);
-                        foreach (var item in list)
-                        {
-                            DataWriter(writer, item);
-                        }
+                        DataWriter(writer, item);
                     }
                 }
             }

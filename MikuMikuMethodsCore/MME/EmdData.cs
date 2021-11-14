@@ -48,8 +48,8 @@ public class EmdData
 
     public void Read(string filePath)
     {
-        using (StreamReader reader = new(filePath, Encoding.ShiftJIS))
-            Read(reader);
+        using StreamReader reader = new(filePath, Encoding.ShiftJIS);
+        Read(reader);
     }
 
     /// <summary>
@@ -131,11 +131,9 @@ public class EmdData
     /// <param name="filePath">書き出すファイルのパス</param>
     public void Write(string filePath)
     {
-        using (FileStream file = new(filePath, FileMode.Create))
-        using (StreamWriter writer = new(file, Encoding.ShiftJIS))
-        {
-            Write(writer);
-        }
+        using FileStream file = new(filePath, FileMode.Create);
+        using StreamWriter writer = new(file, Encoding.ShiftJIS);
+        Write(writer);
     }
 
     /// <summary>

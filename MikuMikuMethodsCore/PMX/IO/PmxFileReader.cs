@@ -75,35 +75,33 @@ internal static class PmxFileReader
     {
         try
         {
-            using (FileStream stream = new(filePath, FileMode.Open))
-            using (BinaryReader reader = new(stream))
+            using FileStream stream = new(filePath, FileMode.Open);
+            using BinaryReader reader = new(stream);
+            Model = model;
+
+            ReadHeader(reader, Model.Header);
+            Encoder = new StringEncoder(Model.Header.Encoding);
+
+            ReadInfo(reader, Model.ModelInfo);
+
+            AddDataToList(Model.Vertices, ReadVertex);
+            AddDataToList(Faces, ReadFace, 3);
+            AddDataToList(Textures, ReadTexture);
+            AddDataToList(Model.Materials, ReadMaterial);
+            AddDataToList(Model.Bones, ReadBone);
+            AddDataToList(Model.Morphs, ReadMorph);
+            AddDataToList(Model.Nodes, ReadNode);
+            AddDataToList(Model.Bodies, ReadBody);
+            AddDataToList(Model.Joints, ReadJoint);
+            if (Model.Header.Version >= 2.1)
+                AddDataToList(Model.SoftBodies, ReadSoftBody);
+
+            SolveRelations();
+
+            void AddDataToList<T>(List<T> list, Func<BinaryReader, T> dataReader, int divisor = 1)
             {
-                Model = model;
-
-                ReadHeader(reader, Model.Header);
-                Encoder = new StringEncoder(Model.Header.Encoding);
-
-                ReadInfo(reader, Model.ModelInfo);
-
-                AddDataToList(Model.Vertices, ReadVertex);
-                AddDataToList(Faces, ReadFace, 3);
-                AddDataToList(Textures, ReadTexture);
-                AddDataToList(Model.Materials, ReadMaterial);
-                AddDataToList(Model.Bones, ReadBone);
-                AddDataToList(Model.Morphs, ReadMorph);
-                AddDataToList(Model.Nodes, ReadNode);
-                AddDataToList(Model.Bodies, ReadBody);
-                AddDataToList(Model.Joints, ReadJoint);
-                if (Model.Header.Version >= 2.1)
-                    AddDataToList(Model.SoftBodies, ReadSoftBody);
-
-                SolveRelations();
-
-                void AddDataToList<T>(List<T> list, Func<BinaryReader, T> dataReader, int divisor = 1)
-                {
-                    int count = reader.ReadInt32() / divisor;
-                    list.AddRange(Enumerable.Range(0, count).Select(_ => dataReader(reader)));
-                }
+                int count = reader.ReadInt32() / divisor;
+                list.AddRange(Enumerable.Range(0, count).Select(_ => dataReader(reader)));
             }
         }
         finally

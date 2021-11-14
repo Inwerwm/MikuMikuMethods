@@ -152,11 +152,9 @@ public class VocaloidMotionData : IEnumerable<IVmdFrame>
     /// <param name="path">読み込むファイルのパス</param>
     public void Read(string path)
     {
-        using (FileStream stream = new(path, FileMode.Open))
-        using (BinaryReader reader = new(stream, MikuMikuMethods.Encoding.ShiftJIS))
-        {
-            Read(reader);
-        }
+        using FileStream stream = new(path, FileMode.Open);
+        using BinaryReader reader = new(stream, MikuMikuMethods.Encoding.ShiftJIS);
+        Read(reader);
     }
 
     /// <summary>
@@ -189,11 +187,9 @@ public class VocaloidMotionData : IEnumerable<IVmdFrame>
     /// <param name="filePath">書き出すファイルのパス</param>
     public void Write(string filePath)
     {
-        using (FileStream file = new(filePath, FileMode.Create))
-        using (BinaryWriter writer = new(file, MikuMikuMethods.Encoding.ShiftJIS))
-        {
-            Write(writer);
-        }
+        using FileStream file = new(filePath, FileMode.Create);
+        using BinaryWriter writer = new(file, MikuMikuMethods.Encoding.ShiftJIS);
+        Write(writer);
     }
 
     /// <summary>

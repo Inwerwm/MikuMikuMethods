@@ -13,11 +13,9 @@ internal static class PmmFileWriter
     {
         try
         {
-            using (FileStream file = new(filePath, FileMode.Create))
-            using (BinaryWriter writer = new(file, Encoding.ShiftJIS))
-            {
-                Write(writer, pmm);
-            }
+            using FileStream file = new(filePath, FileMode.Create);
+            using BinaryWriter writer = new(file, Encoding.ShiftJIS);
+            Write(writer, pmm);
         }
         catch (Exception)
         {
