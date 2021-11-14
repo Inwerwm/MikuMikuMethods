@@ -72,8 +72,8 @@ public class PmmModel
     /// </summary>
     public PmmMorph? SelectedOtherMorph { get => _selectedOtherMorph; set => _selectedOtherMorph = GetIfContains(Morphs, value, "morph"); }
 
-    private T GetIfContains<T>(List<T> entity, T value, string dispNameOnException) =>
-        entity.Contains(value) ? value : throw new ArgumentOutOfRangeException($"The model does not contain the {dispNameOnException} which specified as the selection target.");
+    private T? GetIfContains<T>(List<T> entity, T? value, string dispNameOnException) =>
+        value is null || entity.Contains(value!) ? value : throw new ArgumentOutOfRangeException($"The model does not contain the {dispNameOnException} which specified as the selection target.");
 
     /// <summary>
     /// 表示・IK・外観のキーフレーム
