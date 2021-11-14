@@ -40,12 +40,12 @@ public class PmmCameraFrame : PmmCameraState, IPmmFrame
         ViewAngle = ViewAngle,
         InterpolationCurves = new(new Dictionary<InterpolationItem, InterpolationCurve>()
             {
-                { InterpolationItem.XPosition, InterpolationCurves[InterpolationItem.XPosition].Clone() as InterpolationCurve },
-                { InterpolationItem.YPosition, InterpolationCurves[InterpolationItem.YPosition].Clone() as InterpolationCurve },
-                { InterpolationItem.ZPosition, InterpolationCurves[InterpolationItem.ZPosition].Clone() as InterpolationCurve },
-                { InterpolationItem.Rotation, InterpolationCurves[InterpolationItem.Rotation].Clone() as InterpolationCurve },
-                { InterpolationItem.Distance, InterpolationCurves[InterpolationItem.Distance].Clone() as InterpolationCurve },
-                { InterpolationItem.ViewAngle, InterpolationCurves[InterpolationItem.ViewAngle].Clone() as InterpolationCurve },
+                { InterpolationItem.XPosition, (InterpolationCurve)InterpolationCurves[InterpolationItem.XPosition].Clone() },
+                { InterpolationItem.YPosition, (InterpolationCurve)InterpolationCurves[InterpolationItem.YPosition].Clone() },
+                { InterpolationItem.ZPosition, (InterpolationCurve)InterpolationCurves[InterpolationItem.ZPosition].Clone() },
+                { InterpolationItem.Rotation, (InterpolationCurve)InterpolationCurves[InterpolationItem.Rotation].Clone() },
+                { InterpolationItem.Distance, (InterpolationCurve)InterpolationCurves[InterpolationItem.Distance].Clone() },
+                { InterpolationItem.ViewAngle, (InterpolationCurve)InterpolationCurves[InterpolationItem.ViewAngle].Clone() },
             })
     };
 
