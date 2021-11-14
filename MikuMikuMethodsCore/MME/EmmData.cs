@@ -88,7 +88,7 @@ public class EmmData
         while (!string.IsNullOrEmpty(line = reader.ReadLine()))
         {
             // Effect
-            effect = !line.Contains("@") ? new("Main") : new(line.Split('@')[1].Replace("]", ""));
+            effect = !line.Contains('@') ? new("Main") : new(line.Split('@')[1].Replace("]", ""));
             effect.Read(reader, Objects);
             EffectSettings.Add(effect);
         }
