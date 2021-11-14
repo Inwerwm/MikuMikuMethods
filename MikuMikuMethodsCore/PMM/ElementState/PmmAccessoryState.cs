@@ -1,5 +1,4 @@
 ﻿using MikuMikuMethods.Extension;
-using System;
 using System.Numerics;
 
 namespace MikuMikuMethods.Pmm.ElementState;

@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace MikuMikuMethods.Vmd;
+﻿namespace MikuMikuMethods.Vmd;
 
 /// <summary>
 /// フレームの抽象クラス

@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-
-namespace MikuMikuMethods.Pmx.IO;
+﻿namespace MikuMikuMethods.Pmx.IO;
 
 internal class Indexer
 {

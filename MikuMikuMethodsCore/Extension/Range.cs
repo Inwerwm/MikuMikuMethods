@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MikuMikuMethods.Extension;
+﻿namespace MikuMikuMethods.Extension;
 
 /// <summary>
 /// 範囲内判定系拡張メソッド

@@ -1,8 +1,4 @@
 ﻿using MikuMikuMethods.Extension;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 
 namespace MikuMikuMethods.Pmx.IO;
 

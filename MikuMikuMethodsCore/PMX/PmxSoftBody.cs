@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MikuMikuMethods.Pmx;
+﻿namespace MikuMikuMethods.Pmx;
 
 /// <summary>
 /// SoftBody (未実装)

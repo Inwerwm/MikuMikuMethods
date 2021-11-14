@@ -1,5 +1,4 @@
 ﻿using MikuMikuMethods.Extension;
-using System.IO;
 
 namespace MikuMikuMethods.Vmd;
 

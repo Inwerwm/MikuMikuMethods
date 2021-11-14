@@ -1,5 +1,4 @@
 ﻿using MikuMikuMethods.Mme.Element;
-using System.Collections.Generic;
 
 namespace MikuMikuMethods.Mme;
 

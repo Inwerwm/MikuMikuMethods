@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace MikuMikuMethods;
+﻿namespace MikuMikuMethods;
 
 /// <summary>
 /// 補間項目
