@@ -13,4 +13,9 @@ public class PmxNodeElementBone : IPmxNodeElement
     public int FindIndex(PmxModel model) => model.Bones.IndexOf(Entity);
 
     public override string ToString() => $"Bone : {Entity.Name}";
+
+    public PmxNodeElementBone(PmxBone entity)
+    {
+        Entity = entity;
+    }
 }

@@ -10,4 +10,9 @@ public class PmxNodeElementMorph : IPmxNodeElement
     public int FindIndex(PmxModel model) => model.Morphs.IndexOf(Entity);
 
     public override string ToString() => $"Morph : {Entity.Name}";
+
+    public PmxNodeElementMorph(PmxMorph entity)
+    {
+        Entity = entity;
+    }
 }

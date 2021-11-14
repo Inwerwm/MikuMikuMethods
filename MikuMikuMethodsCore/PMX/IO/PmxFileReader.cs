@@ -499,8 +499,8 @@ internal static class PmxFileReader
         int elmNum = reader.ReadInt32();
         node.Elements.AddRange(Enumerable.Range(0, elmNum).Select<int, IPmxNodeElement>(_ => reader.ReadByte() switch
             {
-                0 => new PmxNodeElementBone() { Entity = Model.Bones[bid.Read(reader)] },
-                1 => new PmxNodeElementMorph() { Entity = Model.Morphs[mid.Read(reader)] },
+                0 => new PmxNodeElementBone(Model.Bones[bid.Read(reader)]),
+                1 => new PmxNodeElementMorph(Model.Morphs[mid.Read(reader)]),
                 _ => throw new InvalidOperationException("表情枠要素種別に意図せぬ値が入っていました。"),
             }));
 
