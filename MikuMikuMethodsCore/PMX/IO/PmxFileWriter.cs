@@ -265,9 +265,8 @@ internal static class PmxFileWriter
         TexID.Write(writer, material.Texture == null ? -1 : TexMap[material.Texture]);
         TexID.Write(writer, material.SphereMap == null ? -1 : TexMap[material.SphereMap]);
         writer.Write((byte)material.SphereMode);
-        bool isSharedToon = material.ToonMap != null && material.ToonMap.ToonIndex != null;
-        writer.Write(isSharedToon);
-        if (isSharedToon)
+        writer.Write(material.ToonMap != null && material.ToonMap.ToonIndex != null);
+        if (material.ToonMap != null && material.ToonMap.ToonIndex != null)
             writer.Write((byte)(material.ToonMap.ToonIndex.Value - 1));
         else
             TexID.Write(writer, material.ToonMap == null ? -1 : TexMap[material.ToonMap]);
