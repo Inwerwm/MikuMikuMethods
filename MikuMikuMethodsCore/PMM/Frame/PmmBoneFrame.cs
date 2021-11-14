@@ -20,7 +20,7 @@ public class PmmBoneFrame : PmmBoneState, IPmmFrame
             { InterpolationItem.Rotation, new() },
         });
 
-    public PmmBoneFrame DeepCopy() => new()
+    public new PmmBoneFrame DeepCopy() => new()
     {
         Frame = Frame,
         IsSelected = IsSelected,

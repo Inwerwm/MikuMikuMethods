@@ -7,7 +7,7 @@ public class PmmMorphFrame : PmmMorphState, IPmmFrame
     public int Frame { get; set; } = 0;
     public bool IsSelected { get; set; } = false;
 
-    public PmmMorphFrame DeepCopy() => new()
+    public new PmmMorphFrame DeepCopy() => new()
     {
         Frame = Frame,
         IsSelected = IsSelected,

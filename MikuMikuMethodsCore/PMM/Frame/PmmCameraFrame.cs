@@ -26,7 +26,7 @@ public class PmmCameraFrame : PmmCameraState, IPmmFrame
             { InterpolationItem.ViewAngle, new() },
         });
 
-    public PmmCameraFrame DeepCopy() => new()
+    public new PmmCameraFrame DeepCopy() => new()
     {
         Frame = Frame,
         IsSelected = IsSelected,
