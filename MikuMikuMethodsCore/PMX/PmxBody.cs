@@ -10,16 +10,16 @@ public class PmxBody : IPmxData
     /// <summary>
     /// 名前
     /// </summary>
-    public string Name { get; set; }
+    public string Name { get; set; } = "";
     /// <summary>
     /// 英名
     /// </summary>
-    public string NameEn { get; set; }
+    public string NameEn { get; set; } = "";
 
     /// <summary>
     /// 関連ボーン
     /// </summary>
-    public PmxBone RelationBone { get; set; }
+    public PmxBone? RelationBone { get; set; }
 
     /// <summary>
     /// グループ
