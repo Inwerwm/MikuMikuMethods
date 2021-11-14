@@ -112,8 +112,8 @@ internal static class PmmFileWriter
         writer.Write(pmm.RenderConfig.EdgeColor, false);
         writer.Write(pmm.BackGround.IsBlack);
 
-        writer.Write(pmm.Models.IndexOf(pmm.Camera.Current.FollowingModel));
-        writer.Write(pmm.Camera.Current.FollowingModel?.Bones.IndexOf(pmm.Camera.Current.FollowingBone) ?? 0);
+        writer.Write(pmm.Models.IndexOf(pmm.Camera.Current.FollowingModel!));
+        writer.Write(pmm.Camera.Current.FollowingModel?.Bones.IndexOf(pmm.Camera.Current.FollowingBone!) ?? 0);
 
         // 意図不明な謎の行列
         writer.Write(new byte[]
@@ -232,8 +232,8 @@ internal static class PmmFileWriter
 
                 writer.Write(frame.TransAndVisible);
 
-                writer.Write(pmm.Models.IndexOf(frame.ParentModel));
-                writer.Write(frame.ParentModel?.Bones.IndexOf(frame.ParentBone) ?? 0);
+                writer.Write(pmm.Models.IndexOf(frame.ParentModel!));
+                writer.Write(frame.ParentModel?.Bones.IndexOf(frame.ParentBone!) ?? 0);
 
                 writer.Write(frame.Position);
                 writer.Write(frame.Rotation);
@@ -246,8 +246,8 @@ internal static class PmmFileWriter
         );
 
         writer.Write(accessory.Current.TransAndVisible);
-        writer.Write(pmm.Models.IndexOf(accessory.Current.ParentModel));
-        writer.Write(accessory.Current.ParentModel?.Bones.IndexOf(accessory.Current.ParentBone) ?? 0);
+        writer.Write(pmm.Models.IndexOf(accessory.Current.ParentModel!));
+        writer.Write(accessory.Current.ParentModel?.Bones.IndexOf(accessory.Current.ParentBone!) ?? 0);
         writer.Write(accessory.Current.Position);
         writer.Write(accessory.Current.Rotation);
         writer.Write(accessory.Current.Scale);
@@ -297,8 +297,8 @@ internal static class PmmFileWriter
                 writer.Write(frame.EyePosition);
                 writer.Write(frame.Rotation);
 
-                writer.Write(pmm.Models.IndexOf(frame.FollowingModel));
-                writer.Write(frame.FollowingModel?.Bones.IndexOf(frame.FollowingBone) ?? 0);
+                writer.Write(pmm.Models.IndexOf(frame.FollowingModel!));
+                writer.Write(frame.FollowingModel?.Bones.IndexOf(frame.FollowingBone!) ?? 0);
 
                 writer.Write(frame.InterpolationCurves[InterpolationItem.XPosition].ToBytes());
                 writer.Write(frame.InterpolationCurves[InterpolationItem.YPosition].ToBytes());
@@ -366,11 +366,11 @@ internal static class PmmFileWriter
         writer.Write((byte)(pmm.GetRenderOrder(model).Value + 1));
         writer.Write(model.CurrentConfig.Visible);
 
-        writer.Write(model.Bones.IndexOf(model.SelectedBone));
-        writer.Write(model.Morphs.IndexOf(model.SelectedBrowMorph));
-        writer.Write(model.Morphs.IndexOf(model.SelectedEyeMorph));
-        writer.Write(model.Morphs.IndexOf(model.SelectedLipMorph));
-        writer.Write(model.Morphs.IndexOf(model.SelectedOtherMorph));
+        writer.Write(model.Bones.IndexOf(model.SelectedBone!));
+        writer.Write(model.Morphs.IndexOf(model.SelectedBrowMorph!));
+        writer.Write(model.Morphs.IndexOf(model.SelectedEyeMorph!));
+        writer.Write(model.Morphs.IndexOf(model.SelectedLipMorph!));
+        writer.Write(model.Morphs.IndexOf(model.SelectedOtherMorph!));
 
         writer.Write((byte)model.Nodes.Count);
         foreach (var node in model.Nodes)
@@ -475,8 +475,8 @@ internal static class PmmFileWriter
             var op = model.CurrentConfig.OuterParent[model.Bones[i]];
             writer.Write(op.StartFrame ?? 0);
             writer.Write(op.EndFrame ?? 0);
-            writer.Write(pmm.Models.IndexOf(op.ParentModel));
-            writer.Write(op.ParentModel is null ? 0 : model.Bones.IndexOf(op.ParentBone));
+            writer.Write(pmm.Models.IndexOf(op.ParentModel!));
+            writer.Write(op.ParentModel is null ? 0 : model.Bones.IndexOf(op.ParentBone!));
         }
 
         writer.Write(model.EnableAlphaBlend);
