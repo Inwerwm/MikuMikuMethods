@@ -23,7 +23,7 @@ public class PmmAccessoryState
             if (value.IsWithin(0, 1))
                 transparency = value;
             else
-                throw new ArgumentOutOfRangeException("透明度は [0, 1] の範囲である必要があります。");
+                throw new ArgumentOutOfRangeException(nameof(Transparency), "透明度は [0, 1] の範囲である必要があります。");
         }
     }
     /// <summary>
