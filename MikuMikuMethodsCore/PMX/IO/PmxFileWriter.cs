@@ -59,7 +59,8 @@ internal static class PmxFileWriter
     private static void CreatePropaties()
     {
         Encoder = new(Model.Header.Encoding);
-        Textures = Model.Materials.SelectMany(m => new[] { m.Texture, m.SphereMap, m.ToonMap }.Where(t => t != null).Where(t => t.ToonIndex == null)).Distinct().ToList();
+        // 共有トゥーンでない全てのテクスチャ情報
+        Textures = Model.Materials.SelectMany(m => new[] { m.Texture, m.SphereMap, m.ToonMap }.Where(t => t is not null && t.ToonIndex is null)).Distinct().ToList();
 
         VtxID = new(Model.Header.SizeOfVertexIndex, true);
         TexID = new(Model.Header.SizeOfTextureIndex, false);
