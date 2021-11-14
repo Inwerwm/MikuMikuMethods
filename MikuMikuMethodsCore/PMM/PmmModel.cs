@@ -21,17 +21,17 @@ public class PmmModel
     /// <summary>
     /// モデル名
     /// </summary>
-    public string Name { get; set; }
+    public string Name { get; set; } = "";
 
     /// <summary>
     /// モデル名(英語)
     /// </summary>
-    public string NameEn { get; set; }
+    public string NameEn { get; set; } = "";
 
     /// <summary>
     /// ファイルパス
     /// </summary>
-    public string Path { get; set; }
+    public string Path { get; set; } = "";
 
     /// <summary>
     /// ボーン
