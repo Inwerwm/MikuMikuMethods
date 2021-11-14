@@ -48,7 +48,7 @@ internal static class PmxFileReader
 
     private static void SolveRelations()
     {
-        void Solve<T>(List<(T Instance, int RelationID)> Tmp, Action<T, int> setter)
+        static void Solve<T>(List<(T Instance, int RelationID)> Tmp, Action<T, int> setter)
         {
             foreach (var (instance, relationID) in Tmp.Where(item => item.RelationID >= 0))
             {

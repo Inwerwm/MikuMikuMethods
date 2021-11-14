@@ -141,7 +141,7 @@ public class InterpolationCurve : ICloneable
 
     private static Dictionary<InterpolationItem, InterpolationCurve> CreateCameraCurves(byte[] data)
     {
-        IEnumerable<byte> Swap_1_2(IEnumerable<byte> bytes) =>
+        static IEnumerable<byte> Swap_1_2(IEnumerable<byte> bytes) =>
             new byte[] { bytes.ElementAt(0) }.Append(bytes.ElementAt(2)).Append(bytes.ElementAt(1)).Concat(bytes.Skip(3));
 
         Dictionary<InterpolationItem, InterpolationCurve> interpolationCurves = new()
@@ -201,7 +201,7 @@ public class InterpolationCurve : ICloneable
 
     private static byte[] CreateCameraBytes(Dictionary<InterpolationItem, InterpolationCurve> curves)
     {
-        byte[] CreateBytes(InterpolationCurve curve) =>
+        static byte[] CreateBytes(InterpolationCurve curve) =>
             new byte[] { curve.EarlyControlePoint.X, curve.LateControlePoint.X, curve.EarlyControlePoint.Y, curve.LateControlePoint.Y };
 
         return CreateBytes(curves[InterpolationItem.XPosition])
