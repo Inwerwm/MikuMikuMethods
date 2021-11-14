@@ -547,7 +547,7 @@ internal static class PmmFileReader
         var boneFrameDictionary = new Dictionary<string, int?>();
         foreach (var bone in model.Bones)
         {
-            (var frame, _, var nextId) = ReadBoneFrame(reader, bone.Name, true);
+            (var frame, _, var nextId) = ReadBoneFrame(reader, true);
             bone.Frames.Add(frame);
             boneFrameDictionary.Add(bone.Name, nextId);
         }
@@ -557,7 +557,7 @@ internal static class PmmFileReader
             reader,
             model.Bones,
             boneCount,
-            static reader => ReadBoneFrame(reader, null),
+            static reader => ReadBoneFrame(reader),
             boneFrameDictionary,
             static (element, frame) => (element as PmmBone)?.Frames.Add((PmmBoneFrame)frame)
         );
@@ -566,7 +566,7 @@ internal static class PmmFileReader
         var morphFrameDictionary = new Dictionary<string, int?>();
         foreach (var morph in model.Morphs)
         {
-            (var frame, _, var nextId) = ReadMorphFrame(reader, morph.Name, true);
+            (var frame, _, var nextId) = ReadMorphFrame(reader, true);
             morph.Frames.Add(frame);
             morphFrameDictionary.Add(morph.Name, nextId);
         }
@@ -576,7 +576,7 @@ internal static class PmmFileReader
             reader,
             model.Morphs,
             morphCount,
-            static reader => ReadMorphFrame(reader, null),
+            static reader => ReadMorphFrame(reader),
             morphFrameDictionary,
             static (element, frame) => (element as PmmMorph)?.Frames.Add((PmmMorphFrame)frame)
         );
@@ -663,7 +663,7 @@ internal static class PmmFileReader
 
         return frame;
     }
-    private static (PmmMorphFrame Frame, int PreviousFrameIndex, int NextFrameIndex) ReadMorphFrame(BinaryReader reader, string name, bool isInitial = false)
+    private static (PmmMorphFrame Frame, int PreviousFrameIndex, int NextFrameIndex) ReadMorphFrame(BinaryReader reader, bool isInitial = false)
     {
         // リストの添え字で管理できるため不要なフレームインデックスを破棄
         if (!isInitial) _ = reader.ReadInt32();
@@ -680,7 +680,7 @@ internal static class PmmFileReader
 
         return (frame, preID, nextId);
     }
-    private static (PmmBoneFrame Frame, int PreviousFrameIndex, int NextFrameIndex) ReadBoneFrame(BinaryReader reader, string name, bool isInitial = false)
+    private static (PmmBoneFrame Frame, int PreviousFrameIndex, int NextFrameIndex) ReadBoneFrame(BinaryReader reader, bool isInitial = false)
     {
         // リストの添え字で管理できるため不要なフレームインデックスを破棄
         if (!isInitial) _ = reader.ReadInt32();
