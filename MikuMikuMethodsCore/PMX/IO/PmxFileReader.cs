@@ -441,16 +441,16 @@ internal static class PmxFileReader
             of.Ratio = reader.ReadSingle();
             return of;
         }
-        PmxOffsetVertex CreateVertexOffset() => new PmxOffsetVertex(Model.Vertices[vid.Read(reader)])
+        PmxOffsetVertex CreateVertexOffset() => new(Model.Vertices[vid.Read(reader)])
         {
             Offset = reader.ReadVector3()
         };
-        PmxOffsetBone CreateBoneOffset() => new PmxOffsetBone(Model.Bones[bnid.Read(reader)])
+        PmxOffsetBone CreateBoneOffset() => new(Model.Bones[bnid.Read(reader)])
         {
             Offset = reader.ReadVector3(),
             Rotate = reader.ReadQuaternion()
         };
-        PmxOffsetUV CreateUVOffset() => new PmxOffsetUV(Model.Vertices[vid.Read(reader)])
+        PmxOffsetUV CreateUVOffset() => new(Model.Vertices[vid.Read(reader)])
         {
             Offset = reader.ReadVector4()
         };

@@ -34,7 +34,7 @@ public class PmxEdge
     /// <summary>
     /// ベクトルに変換
     /// </summary>
-    public Vector3 ToVector() => new Vector3(
+    public Vector3 ToVector() => new(
             Vertices[1].Position.X - Vertices[0].Position.X,
             Vertices[1].Position.Y - Vertices[0].Position.Y,
             Vertices[1].Position.Z - Vertices[0].Position.Z
