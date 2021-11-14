@@ -38,7 +38,7 @@ public class EmmData
         EffectSettings = new();
     }
 
-    public EmmData(string filePath)
+    public EmmData(string filePath) : this()
     {
         Read(filePath);
     }
@@ -65,7 +65,7 @@ public class EmmData
         if (reader.CurrentEncoding != Encoding.ShiftJIS)
             throw new FormatException($"EMMファイル読み込みエンコードエラー{Environment.NewLine}エンコーダがShiftJISと違います。");
 
-        string line;
+        string? line;
         EmmEffectSettings effect;
 
         // [Info]
@@ -75,6 +75,7 @@ public class EmmData
 
         // Version
         line = reader.ReadLine();
+        if(line is null) throw new InvalidOperationException("Invalid line reading occurred.");
         Version = int.Parse(Regex.Replace(line, @"[^0-9]", ""));
         if (Version < 3) throw new FormatException("EMMファイルのバージョンが未対応の値です");
         // 改行
@@ -97,19 +98,22 @@ public class EmmData
 
     private void ReadObjects(StreamReader reader)
     {
-        string line;
+        string? line;
         while ((line = reader.ReadLine()) != "")
         {
-            var lineData = line.Split('=').Select(str => str.Trim());
-            var objectKey = lineData.ElementAt(0);
-            var path = lineData.ElementAt(1);
+            var lineData = line?.Split('=').Select(str => str.Trim());
+            var objectKey = lineData?.ElementAt(0);
+            var path = lineData?.ElementAt(1);
+
+            if (objectKey is null || path is null)
+                throw new InvalidOperationException("Invalid line reading occurred.");
 
             int objectIndex = int.Parse(Regex.Replace(objectKey, @"[^0-9]", ""));
             EmmObject obj = Regex.Replace(objectKey, @"[0-9]", "") switch
             {
                 "Pmd" => new EmmModel(objectIndex, path),
                 "Acs" => new EmmAccessory(objectIndex, path),
-                _ => throw new InvalidOperationException("EMMオブジェクト読み込みで不正なオブジェクト読み込みがなされました。")
+                _ => throw new InvalidOperationException("Invalid line reading occurred.")
             };
             Objects.Add(obj);
         }
