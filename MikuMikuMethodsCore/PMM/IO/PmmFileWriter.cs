@@ -503,7 +503,7 @@ internal static class PmmFileWriter
                 { Frame: 0 } => firstFrame,
                 _ => CreateZeroFrame(firstFrame)
             };
-        }).Select(f => new InitFrameContainer() { Frame = f, NextIndex = 0 }).ToArray();
+        }).Select(f => new InitFrameContainer(f) { NextIndex = 0 }).ToArray();
 
         IPmmFrame[][] otherFramesContainer = frameContainer.Select(frames => frames.FirstOrDefault() is { Frame: 0 } ? frames.Skip(1).ToArray() : frames.ToArray()).ToArray();
 
@@ -558,9 +558,14 @@ internal static class PmmFileWriter
         }
     }
 
-    private class InitFrameContainer
+    private record InitFrameContainer
     {
         public IPmmFrame Frame { get; init; }
         public int NextIndex { get; set; }
+
+        public InitFrameContainer(IPmmFrame frame)
+        {
+            Frame = frame;
+        }
     }
 }
