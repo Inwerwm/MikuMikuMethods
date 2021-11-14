@@ -10,15 +10,15 @@ public class PmxMaterial : IPmxData
     /// <summary>
     /// 材質名
     /// </summary>
-    public string Name { get; set; }
+    public string Name { get; set; } = "";
     /// <summary>
     /// 材質名(英語)
     /// </summary>
-    public string NameEn { get; set; }
+    public string NameEn { get; set; } = "";
     /// <summary>
     /// メモ
     /// </summary>
-    public string Memo { get; set; }
+    public string Memo { get; set; } = "";
 
     /// <summary>
     /// 拡散色
@@ -83,12 +83,12 @@ public class PmxMaterial : IPmxData
     /// <summary>
     /// テクスチャ
     /// </summary>
-    public PmxTexture Texture { get; set; }
+    public PmxTexture? Texture { get; set; }
 
     /// <summary>
     /// スフィアマップ
     /// </summary>
-    public PmxTexture SphereMap { get; set; }
+    public PmxTexture? SphereMap { get; set; }
     /// <summary>
     /// スフィア種別
     /// </summary>
@@ -97,7 +97,7 @@ public class PmxMaterial : IPmxData
     /// <summary>
     /// トゥーンマップ
     /// </summary>
-    public PmxTexture ToonMap { get; set; }
+    public PmxTexture? ToonMap { get; set; }
 
     /// <summary>
     /// 描画プリミティブタイプ
