@@ -13,7 +13,7 @@ public interface IPmxNodeElement
     /// <summary>
     /// 表情枠要素本体
     /// </summary>
-    IPmxData Entity { get; set; }
+    IPmxData Entity { get; }
 
     /// <summary>
     /// この要素のインデックスを探す
