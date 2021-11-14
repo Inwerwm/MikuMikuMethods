@@ -24,7 +24,7 @@ public class PmxSoftBody : IPmxData
     /// <summary>
     /// 関連材質
     /// </summary>
-    public PmxMaterial RelationMaterial { get; set; }
+    public PmxMaterial? RelationMaterial { get; set; }
 
     /// <summary>
     /// グループ
@@ -128,11 +128,11 @@ public class PmxSoftBody : IPmxData
         /// <summary>
         /// 関連剛体
         /// </summary>
-        public PmxBody RelationBody { get; set; }
+        public PmxBody? RelationBody { get; set; }
         /// <summary>
         /// 関連頂点
         /// </summary>
-        public PmxVertex RelationVertex { get; set; }
+        public PmxVertex? RelationVertex { get; set; }
         /// <summary>
         /// Nearモード
         /// </summary>

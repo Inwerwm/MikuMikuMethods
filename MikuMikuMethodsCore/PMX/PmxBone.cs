@@ -24,7 +24,7 @@ public class PmxBone : IPmxData
     /// <summary>
     /// 親ボーン
     /// </summary>
-    public PmxBone Parent { get; set; }
+    public PmxBone? Parent { get; set; }
 
     /// <summary>
     /// 変形階層
@@ -42,7 +42,7 @@ public class PmxBone : IPmxData
     /// <summary>
     /// 接続先ボーン
     /// </summary>
-    public PmxBone ConnectionTargetBone { get; set; }
+    public PmxBone? ConnectionTargetBone { get; set; }
 
     /// <summary>
     /// 回転可能か
@@ -69,7 +69,7 @@ public class PmxBone : IPmxData
     /// <summary>
     /// IK情報
     /// </summary>
-    public PmxInverseKinematics IKInfo { get; set; }
+    public PmxInverseKinematics? IKInfo { get; set; }
 
     /// <summary>
     /// ローカル付与か
@@ -87,7 +87,7 @@ public class PmxBone : IPmxData
     /// <summary>
     /// 付与親
     /// </summary>
-    public PmxBone AdditionParent { get; set; }
+    public PmxBone? AdditionParent { get; set; }
     /// <summary>
     /// 付与率
     /// </summary>

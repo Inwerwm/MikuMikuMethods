@@ -11,7 +11,7 @@ public class PmxInverseKinematics
     /// <summary>
     /// IKのターゲットボーン
     /// </summary>
-    public PmxBone Target { get; set; }
+    public PmxBone? Target { get; set; }
     /// <summary>
     /// ループ回数
     /// </summary>
@@ -26,7 +26,7 @@ public class PmxInverseKinematics
     /// </summary>
     public List<PmxIKLink> Links { get; } = new();
 
-    public override string ToString() => $"{Target.Name} - {LoopNum} : {LimitAngle:###.00}";
+    public override string ToString() => $"{Target?.Name} - {LoopNum} : {LimitAngle:###.00}";
 }
 
 /// <summary>
@@ -37,7 +37,7 @@ public class PmxIKLink
     /// <summary>
     /// 対象ボーン
     /// </summary>
-    public PmxBone Bone { get; set; }
+    public PmxBone? Bone { get; set; }
 
     /// <summary>
     /// 角度制限の有無
@@ -52,5 +52,5 @@ public class PmxIKLink
     /// </summary>
     public Vector3 LowerLimit { get; set; }
 
-    public override string ToString() => $"Link: {Bone.Name}{(EnableAngleLimit ? "(Limited)" : "")}";
+    public override string ToString() => $"Link: {Bone?.Name}{(EnableAngleLimit ? "(Limited)" : "")}";
 }

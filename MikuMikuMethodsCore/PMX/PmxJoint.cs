@@ -24,11 +24,11 @@ public class PmxJoint : IPmxData
     /// <summary>
     /// 関連剛体A
     /// </summary>
-    public PmxBody RelationBodyA { get; set; }
+    public PmxBody? RelationBodyA { get; set; }
     /// <summary>
     /// 関連剛体B
     /// </summary>
-    public PmxBody RelationBodyB { get; set; }
+    public PmxBody? RelationBodyB { get; set; }
 
     /// <summary>
     /// 位置
