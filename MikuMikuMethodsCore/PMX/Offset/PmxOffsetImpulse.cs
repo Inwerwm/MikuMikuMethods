@@ -25,4 +25,17 @@ public class PmxOffsetImpulse : IPmxOffset
     public Vector3 RotationTorque { get; set; }
 
     public override string ToString() => $"{Target.Name} : {{{MovingSpead} - {RotationTorque}}}";
+
+    public PmxOffsetImpulse(PmxBody target, bool isLocal = default, Vector3 movingSpead = default, Vector3 rotationTorque = default)
+    {
+        Target = target;
+        IsLocal = isLocal;
+        MovingSpead = movingSpead;
+        RotationTorque = rotationTorque;
+    }
+
+    internal PmxOffsetImpulse()
+    {
+        Target = null!;
+    }
 }

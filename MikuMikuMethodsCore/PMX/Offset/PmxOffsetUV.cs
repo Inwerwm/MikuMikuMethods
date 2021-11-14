@@ -17,4 +17,10 @@ public class PmxOffsetUV : IPmxOffset
     public Vector4 Offset { get; set; }
 
     public override string ToString() => $"{Target.UV} : {Offset}";
+
+    public PmxOffsetUV(PmxVertex target, Vector4 offset = default)
+    {
+        Target = target;
+        Offset = offset;
+    }
 }

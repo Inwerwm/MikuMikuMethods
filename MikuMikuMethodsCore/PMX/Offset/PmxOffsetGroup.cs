@@ -15,4 +15,15 @@ public class PmxOffsetGroup : IPmxOffset
     public float Ratio { get; set; }
 
     public override string ToString() => $"{Target.Name} - {Ratio:###.00}";
+
+    public PmxOffsetGroup(PmxMorph target, float ratio = default)
+    {
+        Target = target;
+        Ratio = ratio;
+    }
+
+    internal PmxOffsetGroup()
+    {
+        Target = null!;
+    }
 }

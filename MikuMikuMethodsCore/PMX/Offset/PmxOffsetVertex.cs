@@ -18,4 +18,10 @@ public class PmxOffsetVertex : IPmxOffset
     public Vector3 Offset { get; set; }
 
     public override string ToString() => $"{Target.Position} : {Offset}";
+
+    public PmxOffsetVertex(PmxVertex target, Vector3 offset = default)
+    {
+        Target = target;
+        Offset = offset;
+    }
 }

@@ -22,4 +22,11 @@ public class PmxOffsetBone : IPmxOffset
     public Quaternion Rotate { get; set; }
 
     public override string ToString() => $"{Target.Name} : {{{Offset} - {Rotate}}}";
+
+    public PmxOffsetBone(PmxBone target, Vector3 offset = default, Quaternion rotate = default)
+    {
+        Target = target;
+        Offset = offset;
+        Rotate = rotate;
+    }
 }
