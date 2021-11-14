@@ -20,7 +20,7 @@ public class VocaloidMotionData : IEnumerable<IVmdFrame>
     /// <summary>
     /// モデル名
     /// </summary>
-    public string ModelName { get; set; }
+    public string ModelName { get; set; } = "";
 
     /// <summary>
     /// VMDの種類
