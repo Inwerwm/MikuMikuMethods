@@ -432,8 +432,7 @@ internal static class PmmFileWriter
                 writer.Write(-1);
                 foreach (var parentableId in parentableBoneIndices)
                 {
-                    ElementState.PmmOuterParentState? op;
-                    frame.OuterParent.TryGetValue(model.Bones[parentableId], out op);
+                    frame.OuterParent.TryGetValue(model.Bones[parentableId], out ElementState.PmmOuterParentState? op);
                     writer.Write(pmm.Models.IndexOf(op?.ParentModel!));
                     writer.Write(op?.ParentModel?.Bones.IndexOf(op?.ParentBone!) ?? 0);
                 }
