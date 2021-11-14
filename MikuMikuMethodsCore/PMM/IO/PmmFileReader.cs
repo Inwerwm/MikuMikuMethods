@@ -20,11 +20,9 @@ internal static class PmmFileReader
     {
         try
         {
-            using (FileStream file = new(filePath, FileMode.Open))
-            using (BinaryReader reader = new(file, Encoding.ShiftJIS))
-            {
-                Read(reader, pmm);
-            }
+            using FileStream file = new(filePath, FileMode.Open);
+            using BinaryReader reader = new(file, Encoding.ShiftJIS);
+            Read(reader, pmm);
         }
         catch (Exception)
         {
@@ -227,7 +225,7 @@ internal static class PmmFileReader
         }
         catch (Exception ex)
         {
-            IOException exception = new IOException($"Failed to read PMM file. This exception occurred in {Current.Section}. See Data[\"Section\"] property, that type is DataLoadErrorInfomation, of this exception for details on where exceptions are occurred.", ex);
+            IOException exception = new($"Failed to read PMM file. This exception occurred in {Current.Section}. See Data[\"Section\"] property, that type is DataLoadErrorInfomation, of this exception for details on where exceptions are occurred.", ex);
             exception.Data.Add("Section", Current);
             throw exception;
         }
