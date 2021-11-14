@@ -734,11 +734,12 @@ internal static class PmmFileReader
 
             foreach (var element in targetElements)
             {
-                if (!elementNextFrameDictionary[element.Name].HasValue) continue;
+                var nextIndex = elementNextFrameDictionary[element.Name];
+                if (nextIndex is null) continue;
 
                 // 読み込んだインデックスは初期フレームの数だけ先に進んでいるので
                 // 初期フレーム数(= 要素数)の分だけ引いたのがモデル内フレームコレクションでのインデックスになる
-                var nextFrame = elementFrames.ElementAt(elementNextFrameDictionary[element.Name].Value - elementCount);
+                var nextFrame = elementFrames.ElementAt(nextIndex.Value - elementCount);
 
                 addFrame(element, nextFrame.Frame);
 
