@@ -70,6 +70,7 @@ public class EmdData
 
         // Version
         line = reader.ReadLine();
+        if (line is null) throw new InvalidOperationException("Invalid line reading occurred.");
         Version = int.Parse(Regex.Replace(line, @"[^0-9]", ""));
         if (Version < 3) throw new InvalidDataException("EMDファイルのバージョンが未対応の値です");
         // 改行
