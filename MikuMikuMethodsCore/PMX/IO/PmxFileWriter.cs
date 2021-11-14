@@ -379,32 +379,32 @@ internal static class PmxFileWriter
 
         void WriteGroupOffset(IPmxOffset offset)
         {
-            var of = offset as PmxOffsetGroup;
+            var of = (PmxOffsetGroup)offset;
             MphID.Write(writer, of.Target == null ? -1 : MphMap[of.Target]);
             writer.Write(of.Ratio);
         }
         void WriteVertexOffset(IPmxOffset offset)
         {
-            var of = offset as PmxOffsetVertex;
+            var of = (PmxOffsetVertex)offset;
             VtxID.Write(writer, of.Target == null ? -1 : VtxMap[of.Target]);
             writer.Write(of.Offset);
         }
         void WriteBoneOffset(IPmxOffset offset)
         {
-            var of = offset as PmxOffsetBone;
+            var of = (PmxOffsetBone)offset;
             BoneID.Write(writer, of.Target == null ? -1 : BoneMap[of.Target]);
             writer.Write(of.Offset);
             writer.Write(of.Rotate);
         }
         void WriteUVOffset(IPmxOffset offset)
         {
-            var of = offset as PmxOffsetUV;
+            var of = (PmxOffsetUV)offset;
             VtxID.Write(writer, of.Target == null ? -1 : VtxMap[of.Target]);
             writer.Write(of.Offset);
         }
         void WriteMaterialOffset(IPmxOffset offset)
         {
-            var of = offset as PmxOffsetMaterial;
+            var of = (PmxOffsetMaterial)offset;
             MatID.Write(writer, of.Target == null ? -1 : MatMap[of.Target]);
             writer.Write((byte)of.Operation);
             writer.Write(of.Diffuse, true);
@@ -419,7 +419,7 @@ internal static class PmxFileWriter
         }
         void WriteImpulseOffset(IPmxOffset offset)
         {
-            var of = offset as PmxOffsetImpulse;
+            var of = (PmxOffsetImpulse)offset;
             BodyID.Write(writer, of.Target == null ? -1 : BodyMap[of.Target]);
             writer.Write(of.IsLocal);
             writer.Write(of.MovingSpead);
