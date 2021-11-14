@@ -20,17 +20,17 @@ public class PmxWeight : IPmxData
     /// <summary>
     /// ボーン
     /// </summary>
-    public PmxBone Bone { get; set; }
+    public PmxBone? Bone { get; set; }
     /// <summary>
     /// ウェイト値
     /// </summary>
     public float Value { get; set; }
 
-    public PmxWeight(PmxBone bone, float value)
+    public PmxWeight(PmxBone? bone, float value)
     {
         Bone = bone;
         Value = value;
     }
 
-    public override string ToString() => $"{Bone.Name} : {Value}";
+    public override string ToString() => $"{Bone?.Name ?? ""} : {Value}";
 }
