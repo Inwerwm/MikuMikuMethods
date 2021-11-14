@@ -494,7 +494,7 @@ internal static class PmmFileReader
         var morphCount = reader.ReadInt32();
         for (int i = 0; i < morphCount; i++)
         {
-            model.Morphs.Add(new PmmMorph() { Name = reader.ReadString() });
+            model.Morphs.Add(new PmmMorph(reader.ReadString()));
         }
 
         var ikCount = reader.ReadInt32();
