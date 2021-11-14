@@ -7,7 +7,7 @@ public class PmmAccessoryFrame : PmmAccessoryState, IPmmFrame
     public int Frame { get; set; }
     public bool IsSelected { get; set; }
 
-    public PmmAccessoryFrame DeepCopy() => new()
+    public new PmmAccessoryFrame DeepCopy() => new()
     {
         Frame = Frame,
         IsSelected = IsSelected,

@@ -8,7 +8,7 @@ public class PmmModelConfigFrame : PmmModelConfigState, IPmmFrame
     public int Frame { get; set; }
     public bool IsSelected { get; set; }
 
-    public PmmModelConfigFrame DeepCopy() => new()
+    public new PmmModelConfigFrame DeepCopy() => new()
     {
         Frame = Frame,
         IsSelected = IsSelected,

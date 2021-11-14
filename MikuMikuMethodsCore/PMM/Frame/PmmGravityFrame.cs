@@ -7,7 +7,7 @@ public class PmmGravityFrame : PmmGravityState, IPmmFrame
     public int Frame { get; set; } = 0;
     public bool IsSelected { get; set; } = false;
 
-    public PmmGravityFrame DeepCopy() => new()
+    public new PmmGravityFrame DeepCopy() => new()
     {
         Frame = Frame,
         IsSelected = IsSelected,
