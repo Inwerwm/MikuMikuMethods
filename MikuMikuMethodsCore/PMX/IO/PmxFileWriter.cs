@@ -330,6 +330,8 @@ internal static class PmxFileWriter
 
         if (bone.IsIK)
         {
+            if (bone.IKInfo is null) throw new InvalidOperationException("IKInfo is null even though it is an IK bone.");
+
             BoneID.Write(writer, bone.IKInfo.Target == null ? -1 : BoneMap[bone.IKInfo.Target]);
             writer.Write(bone.IKInfo.LoopNum);
             writer.Write(bone.IKInfo.LimitAngle);
