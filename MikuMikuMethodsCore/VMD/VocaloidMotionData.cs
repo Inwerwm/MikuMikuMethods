@@ -1,4 +1,4 @@
-using MikuMikuMethods.Extension;
+﻿using MikuMikuMethods.Extension;
 using MikuMikuMethods.Vmd.IO;
 using System.Collections;
 
@@ -23,18 +23,6 @@ public class VocaloidMotionData : IEnumerable<IVmdFrame>
     /// VMDの種類
     /// </summary>
     public VmdKind Kind => ModelName == VmdConstants.CameraTypeVMDName ? VmdKind.Camera : VmdKind.Model;
-
-    /// <summary>
-    /// <para>全てのフレーム</para>
-    /// <para>各種フレームの結合体なのでAddしても無駄</para>
-    /// </summary>
-    public IEnumerable<IVmdFrame> Frames =>
-        CameraFrames.Cast<IVmdFrame>()
-        .Concat(LightFrames)
-        .Concat(ShadowFrames)
-        .Concat(PropertyFrames)
-        .Concat(MorphFrames)
-        .Concat(MotionFrames);
 
     /// <summary>
     /// カメラフレーム
@@ -135,6 +123,17 @@ public class VocaloidMotionData : IEnumerable<IVmdFrame>
     }
 
     /// <summary>
+    /// <para>全てのフレームコレクションを結合したものを返す</para>
+    /// </summary>
+    public IEnumerable<IVmdFrame> GetAllFrames() =>
+        CameraFrames.Cast<IVmdFrame>()
+                    .Concat(LightFrames)
+                    .Concat(ShadowFrames)
+                    .Concat(PropertyFrames)
+                    .Concat(MorphFrames)
+                    .Concat(MotionFrames);
+
+    /// <summary>
     /// ファイルから読込
     /// </summary>
     /// <param name="filePath">読み込むファイルのパス</param>
@@ -152,7 +151,7 @@ public class VocaloidMotionData : IEnumerable<IVmdFrame>
         VmdFileWriter.Write(filePath, this);
     }
 
-    public IEnumerator<IVmdFrame> GetEnumerator() => Frames.GetEnumerator();
+    public IEnumerator<IVmdFrame> GetEnumerator() => GetAllFrames().GetEnumerator();
 
-    IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)Frames).GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)GetAllFrames()).GetEnumerator();
 }
