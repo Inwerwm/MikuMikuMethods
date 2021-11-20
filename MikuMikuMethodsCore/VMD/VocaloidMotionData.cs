@@ -94,6 +94,18 @@ public class VocaloidMotionData : IEnumerable<IVmdFrame>
     /// <summary>
     /// フレームを追加する
     /// </summary>
+    /// <param name="frames">追加するフレームのコレクション</param>
+    public void AddFrames(IEnumerable<IVmdFrame> frames)
+    {
+        foreach (var frame in frames)
+        {
+            AddFrame(frame);
+        }
+    }
+
+    /// <summary>
+    /// フレームを追加する
+    /// </summary>
     /// <param name="frame">追加するフレーム</param>
     public void AddFrame(IVmdFrame frame)
     {
