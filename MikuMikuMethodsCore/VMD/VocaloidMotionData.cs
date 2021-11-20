@@ -1,4 +1,4 @@
-﻿using MikuMikuMethods.Extension;
+using MikuMikuMethods.Extension;
 using MikuMikuMethods.Vmd.IO;
 using System.Collections;
 
@@ -109,25 +109,25 @@ public class VocaloidMotionData : IEnumerable<IVmdFrame>
     /// <param name="frame">追加するフレーム</param>
     public void AddFrame(IVmdFrame frame)
     {
-        switch (frame.FrameKind)
+        switch (frame)
         {
-            case VmdFrameKind.Camera:
-                CameraFrames.Add((VmdCameraFrame)frame);
+            case VmdCameraFrame f:
+                CameraFrames.Add(f);
                 break;
-            case VmdFrameKind.Light:
-                LightFrames.Add((VmdLightFrame)frame);
+            case VmdLightFrame f:
+                LightFrames.Add(f);
                 break;
-            case VmdFrameKind.Shadow:
-                ShadowFrames.Add((VmdShadowFrame)frame);
+            case VmdShadowFrame f:
+                ShadowFrames.Add(f);
                 break;
-            case VmdFrameKind.Property:
-                PropertyFrames.Add((VmdPropertyFrame)frame);
+            case VmdPropertyFrame f:
+                PropertyFrames.Add(f);
                 break;
-            case VmdFrameKind.Morph:
-                MorphFrames.Add((VmdMorphFrame)frame);
+            case VmdMorphFrame f:
+                MorphFrames.Add(f);
                 break;
-            case VmdFrameKind.Motion:
-                MotionFrames.Add((VmdMotionFrame)frame);
+            case VmdMotionFrame f:
+                MotionFrames.Add(f);
                 break;
             default:
                 break;
