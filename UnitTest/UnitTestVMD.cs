@@ -20,6 +20,18 @@ public class UnitTestVMD
     }
 
     [TestMethod]
+    public void Test_FrameAdding()
+    {
+        VocaloidMotionData vmd = new();
+
+        var mf = new VmdMotionFrame("テスト");
+
+        vmd.AddFrame(mf);
+
+        Assert.AreEqual(1, vmd.MotionFrames.Count);
+    }
+
+    [TestMethod]
     public void Test_MotionInterpolation()
     {
         {
