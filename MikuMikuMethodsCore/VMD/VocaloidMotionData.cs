@@ -1,4 +1,5 @@
 ﻿using MikuMikuMethods.Extension;
+using MikuMikuMethods.Vmd.IO;
 using System.Collections;
 
 namespace MikuMikuMethods.Vmd;
@@ -87,15 +88,6 @@ public class VocaloidMotionData : IEnumerable<IVmdFrame>
     }
 
     /// <summary>
-    /// バイナリ読み込みコンストラクタ
-    /// </summary>
-    /// <param name="reader"></param>
-    public VocaloidMotionData(BinaryReader reader) : this()
-    {
-        Read(reader);
-    }
-
-    /// <summary>
     /// 内容の初期化
     /// </summary>
     public void Clear()
@@ -145,36 +137,10 @@ public class VocaloidMotionData : IEnumerable<IVmdFrame>
     /// <summary>
     /// ファイルから読込
     /// </summary>
-    /// <param name="path">読み込むファイルのパス</param>
-    public void Read(string path)
+    /// <param name="filePath">読み込むファイルのパス</param>
+    public void Read(string filePath)
     {
-        using FileStream stream = new(path, FileMode.Open);
-        using BinaryReader reader = new(stream, MikuMikuMethods.Encoding.ShiftJIS);
-        Read(reader);
-    }
-
-    /// <summary>
-    /// 読み込み
-    /// </summary>
-    /// <param name="reader">VMDファイルのリーダー</param>
-    public void Read(BinaryReader reader)
-    {
-        Header = reader.ReadString(VmdConstants.HeaderLength, Encoding.ShiftJIS, '\0');
-        ModelName = reader.ReadString(VmdConstants.ModelNameLength, Encoding.ShiftJIS, '\0');
-
-        ReadFrames(reader, r => MotionFrames.Add(new(r)));
-        ReadFrames(reader, r => MorphFrames.Add(new(r)));
-        ReadFrames(reader, r => CameraFrames.Add(new(r)));
-        ReadFrames(reader, r => LightFrames.Add(new(r)));
-        ReadFrames(reader, r => ShadowFrames.Add(new(r)));
-        ReadFrames(reader, r => PropertyFrames.Add(new(r)));
-    }
-
-    private void ReadFrames(BinaryReader reader, Action<BinaryReader> addToList)
-    {
-        var elementNum = reader.ReadUInt32();
-        for (int i = 0; i < elementNum; i++)
-            addToList(reader);
+        VmdFileReader.Read(filePath, this);
     }
 
     /// <summary>
@@ -183,33 +149,7 @@ public class VocaloidMotionData : IEnumerable<IVmdFrame>
     /// <param name="filePath">書き出すファイルのパス</param>
     public void Write(string filePath)
     {
-        using FileStream file = new(filePath, FileMode.Create);
-        using BinaryWriter writer = new(file, MikuMikuMethods.Encoding.ShiftJIS);
-        Write(writer);
-    }
-
-    /// <summary>
-    /// VMD形式で書き出し
-    /// </summary>
-    public void Write(BinaryWriter writer)
-    {
-        writer.Write(Header, VmdConstants.HeaderLength, Encoding.ShiftJIS);
-        writer.Write(ModelName, VmdConstants.ModelNameLength, Encoding.ShiftJIS);
-
-        WriteFrames(writer, MotionFrames);
-        WriteFrames(writer, MorphFrames);
-        WriteFrames(writer, CameraFrames);
-        WriteFrames(writer, LightFrames);
-        WriteFrames(writer, ShadowFrames);
-        WriteFrames(writer, PropertyFrames);
-    }
-
-    private void WriteFrames<T>(BinaryWriter writer, List<T> frames) where T : IVmdFrame
-    {
-        writer.Write((uint)frames.Count);
-        // 時間で降順に書き込むと読み込みが早くなる(らしい)
-        foreach (var f in frames.OrderByDescending(f => f.Frame))
-            f.Write(writer);
+        VmdFileWriter.Write(filePath, this);
     }
 
     public IEnumerator<IVmdFrame> GetEnumerator()
