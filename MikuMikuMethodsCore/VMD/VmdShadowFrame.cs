@@ -31,34 +31,6 @@ public class VmdShadowFrame : VmdCameraTypeFrame
         Range = 8875 * 0.00001f;
     }
 
-    /// <summary>
-    /// バイナリから読み込むコンストラクタ
-    /// </summary>
-    public VmdShadowFrame(BinaryReader reader) : base("SelfShadow")
-    {
-        Read(reader);
-    }
-
-    /// <summary>
-    /// VMD形式から読み込み
-    /// </summary>
-    public override void Read(BinaryReader reader)
-    {
-        Frame = reader.ReadUInt32();
-        Mode = reader.ReadByte();
-        Range = reader.ReadSingle();
-    }
-
-    /// <summary>
-    /// VMD形式に書き込み
-    /// </summary>
-    public override void Write(BinaryWriter writer)
-    {
-        writer.Write(Frame);
-        writer.Write(Mode);
-        writer.Write(Range);
-    }
-
     public override object Clone() => new VmdShadowFrame(Frame)
     {
         Mode = Mode,

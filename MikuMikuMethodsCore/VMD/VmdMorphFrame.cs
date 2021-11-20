@@ -27,34 +27,6 @@ public class VmdMorphFrame : VmdModelTypeFrame
         Frame = frame;
     }
 
-    /// <summary>
-    /// バイナリから読み込むコンストラクタ
-    /// </summary>
-    public VmdMorphFrame(BinaryReader reader) : base("Morph")
-    {
-        Read(reader);
-    }
-
-    /// <summary>
-    /// VMD形式から読み込み
-    /// </summary>
-    public override void Read(BinaryReader reader)
-    {
-        Name = reader.ReadString(VmdConstants.MorphNameLength, Encoding.ShiftJIS, '\0');
-        Frame = reader.ReadUInt32();
-        Weight = reader.ReadSingle();
-    }
-
-    /// <summary>
-    /// VMD形式に書き込み
-    /// </summary>
-    public override void Write(BinaryWriter writer)
-    {
-        writer.Write(Name, VmdConstants.MorphNameLength, Encoding.ShiftJIS);
-        writer.Write(Frame);
-        writer.Write(Weight);
-    }
-
     public override object Clone() => new VmdMorphFrame(Name, Frame)
     {
         Weight = Weight

@@ -25,7 +25,7 @@ public class VmdMotionFrame : VmdModelTypeFrame, IVmdInterpolatable
     /// <summary>
     /// 補間曲線
     /// </summary>
-    public Dictionary<InterpolationItem, InterpolationCurve> InterpolationCurves { get; private set; }
+    public Dictionary<InterpolationItem, InterpolationCurve> InterpolationCurves { get; internal init; }
 
     /// <summary>
     /// コンストラクタ
@@ -35,54 +35,12 @@ public class VmdMotionFrame : VmdModelTypeFrame, IVmdInterpolatable
     public VmdMotionFrame(string name, uint frame = 0) : base(name)
     {
         Frame = frame;
-        InterpolationCurves = new();
-        InitializeInterpolationCurves();
-    }
 
-    /// <summary>
-    /// バイナリから読み込むコンストラクタ
-    /// </summary>
-    public VmdMotionFrame(BinaryReader reader) : base("")
-    {
         InterpolationCurves = new();
-        Read(reader);
-    }
-
-    private void InitializeInterpolationCurves()
-    {
         InterpolationCurves.Add(InterpolationItem.XPosition, new());
         InterpolationCurves.Add(InterpolationItem.YPosition, new());
         InterpolationCurves.Add(InterpolationItem.ZPosition, new());
         InterpolationCurves.Add(InterpolationItem.Rotation, new());
-    }
-
-    /// <summary>
-    /// VMD形式から読み込み
-    /// </summary>
-    public override void Read(BinaryReader reader)
-    {
-        //ボーン名を読み込み
-        Name = reader.ReadString(VmdConstants.BoneNameLength, Encoding.ShiftJIS, '\0');
-
-        //各種パラメータを読み込み
-        Frame = reader.ReadUInt32();
-        Position = reader.ReadVector3();
-        Rotation = reader.ReadQuaternion();
-
-        //補間曲線を読み込み
-        InterpolationCurves = InterpolationCurve.CreateByVMDFormat(reader.ReadBytes(64), FrameType);
-    }
-
-    /// <summary>
-    /// VMD形式に書き込み
-    /// </summary>
-    public override void Write(BinaryWriter writer)
-    {
-        writer.Write(Name, VmdConstants.BoneNameLength, Encoding.ShiftJIS);
-        writer.Write(Frame);
-        writer.Write(Position);
-        writer.Write(Rotation);
-        writer.Write(InterpolationCurve.CreateVMDFormatBytes(InterpolationCurves, FrameType));
     }
 
     public override object Clone() => new VmdMotionFrame(Name, Frame)

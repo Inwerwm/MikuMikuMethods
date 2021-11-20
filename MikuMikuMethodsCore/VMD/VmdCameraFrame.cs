@@ -41,7 +41,7 @@ public class VmdCameraFrame : VmdCameraTypeFrame, IVmdInterpolatable
     /// <summary>
     /// 補間曲線
     /// </summary>
-    public Dictionary<InterpolationItem, InterpolationCurve> InterpolationCurves { get; private set; }
+    public Dictionary<InterpolationItem, InterpolationCurve> InterpolationCurves { get; internal init; }
 
     /// <summary>
     /// コンストラクタ
@@ -51,59 +51,14 @@ public class VmdCameraFrame : VmdCameraTypeFrame, IVmdInterpolatable
     {
         Frame = frame;
         ViewAngle = 30;
-        InterpolationCurves = new();
-        InitializeInterpolationCurves();
-    }
 
-    /// <summary>
-    /// バイナリから読み込むコンストラクタ
-    /// </summary>
-    public VmdCameraFrame(BinaryReader reader) : base("Camera")
-    {
         InterpolationCurves = new();
-        Read(reader);
-    }
-
-    private void InitializeInterpolationCurves()
-    {
         InterpolationCurves.Add(InterpolationItem.XPosition, new());
         InterpolationCurves.Add(InterpolationItem.YPosition, new());
         InterpolationCurves.Add(InterpolationItem.ZPosition, new());
         InterpolationCurves.Add(InterpolationItem.Rotation, new());
         InterpolationCurves.Add(InterpolationItem.Distance, new());
         InterpolationCurves.Add(InterpolationItem.ViewAngle, new());
-    }
-
-    /// <summary>
-    /// VMD形式から読み込み
-    /// </summary>
-    public override void Read(BinaryReader reader)
-    {
-        Frame = reader.ReadUInt32();
-        Distance = reader.ReadSingle();
-        Position = reader.ReadVector3();
-        Rotation = reader.ReadVector3();
-
-        //補間曲線を読み込み
-        var interpolationMatrix = reader.ReadBytes(24);
-        InterpolationCurves = InterpolationCurve.CreateByVMDFormat(interpolationMatrix, FrameType);
-
-        ViewAngle = reader.ReadUInt32();
-        IsPerspectiveOff = reader.ReadBoolean();
-    }
-
-    /// <summary>
-    /// VMD形式に書き込み
-    /// </summary>
-    public override void Write(BinaryWriter writer)
-    {
-        writer.Write(Frame);
-        writer.Write(Distance);
-        writer.Write(Position);
-        writer.Write(Rotation);
-        writer.Write(InterpolationCurve.CreateVMDFormatBytes(InterpolationCurves, FrameType));
-        writer.Write(ViewAngle);
-        writer.Write(IsPerspectiveOff);
     }
 
     public override object Clone() => new VmdCameraFrame(Frame)
