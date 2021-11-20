@@ -1,5 +1,4 @@
-﻿using MikuMikuMethods.Extension;
-using MikuMikuMethods.Vmd.IO;
+﻿using MikuMikuMethods.Vmd.IO;
 using System.Collections;
 
 namespace MikuMikuMethods.Vmd;

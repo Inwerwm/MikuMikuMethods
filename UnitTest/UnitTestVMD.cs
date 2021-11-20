@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MikuMikuMethods;
 using MikuMikuMethods.Vmd;
-using System.IO;
 
 namespace UnitTest;
 

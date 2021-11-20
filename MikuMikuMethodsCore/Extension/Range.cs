@@ -3,7 +3,7 @@
 /// <summary>
 /// 範囲内判定系拡張メソッド
 /// </summary>
-public static class Range
+internal static class Range
 {
     /// <summary>
     /// 指定された閉区間の範囲内であるかを判断します。

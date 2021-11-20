@@ -1,6 +1,4 @@
-﻿using MikuMikuMethods.Extension;
-
-namespace MikuMikuMethods.Vmd;
+﻿namespace MikuMikuMethods.Vmd;
 
 /// <summary>
 /// 表示・IKフレーム

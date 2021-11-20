@@ -3,7 +3,7 @@
 /// <summary>
 /// 便利メソッド集
 /// </summary>
-public static class Utility
+internal static class Utility
 {
     /// <summary>
     /// queryを新しい連番で整列する

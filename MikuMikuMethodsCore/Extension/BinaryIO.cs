@@ -6,7 +6,7 @@ namespace MikuMikuMethods.Extension;
 /// <summary>
 /// BinaryReader向け拡張メソッド
 /// </summary>
-public static class BinaryRead
+internal static class BinaryRead
 {
     /// <summary>
     /// Reads a 2 dimension vector including two 4-byte floating point values from the current stream and advances the current position of the stream by 8 bytes.
@@ -84,7 +84,7 @@ public static class BinaryRead
 /// <summary>
 /// BinaryWriter向け拡張メソッド
 /// </summary>
-public static class BinaryWrite
+internal static class BinaryWrite
 {
     /// <summary>
     /// Writes a 2 dimension vector including two four-byte floating-point value to the current stream and advances the stream position by 8 bytes.
