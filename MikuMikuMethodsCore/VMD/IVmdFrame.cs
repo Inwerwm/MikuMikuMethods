@@ -26,15 +26,4 @@ public interface IVmdFrame : IComparable<IVmdFrame>, ICloneable
     /// モデル系フレームか？
     /// </summary>
     bool IsModelType { get; }
-
-    /// <summary>
-    /// 読み込み
-    /// </summary>
-    /// <param name="reader"></param>
-    void Read(BinaryReader reader);
-    /// <summary>
-    /// 書き込み
-    /// </summary>
-    /// <param name="writer"></param>
-    void Write(BinaryWriter writer);
 }

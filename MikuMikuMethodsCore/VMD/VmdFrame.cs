@@ -43,13 +43,4 @@ public abstract class VmdFrame : IVmdFrame
     /// <para>0超 - このフレームはother以降</para>
     /// </returns>
     public int CompareTo(IVmdFrame? other) => Frame.CompareTo(other?.Frame);
-    /// <summary>
-    /// 読み込み
-    /// </summary>
-    public abstract void Read(BinaryReader reader);
-    /// <summary>
-    /// 書き込み
-    /// </summary>
-    /// <param name="writer"></param>
-    public abstract void Write(BinaryWriter writer);
 }
