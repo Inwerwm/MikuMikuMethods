@@ -35,7 +35,7 @@ internal static class VmdFileReader
     {
         Position = reader.ReadVector3(),
         Rotation = reader.ReadQuaternion(),
-        InterpolationCurves = InterpolationCurve.CreateByVMDFormat(reader.ReadBytes(64), VmdFrameType.Motion)
+        InterpolationCurves = InterpolationCurve.CreateByVMDFormat(reader.ReadBytes(64), VmdFrameKind.Motion)
     };
 
     public static VmdMorphFrame ReadMorphFrame(BinaryReader reader) => new(reader.ReadString(VmdConstants.MorphNameLength, Encoding.ShiftJIS, '\0'), reader.ReadUInt32())
@@ -49,7 +49,7 @@ internal static class VmdFileReader
         Distance = reader.ReadSingle(),
         Position = reader.ReadVector3(),
         Rotation = reader.ReadVector3(),
-        InterpolationCurves = InterpolationCurve.CreateByVMDFormat(reader.ReadBytes(24), VmdFrameType.Camera),
+        InterpolationCurves = InterpolationCurve.CreateByVMDFormat(reader.ReadBytes(24), VmdFrameKind.Camera),
         ViewAngle = reader.ReadUInt32(),
         IsPerspectiveOff = reader.ReadBoolean()
     };

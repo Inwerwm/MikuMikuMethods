@@ -8,7 +8,7 @@ public class VmdShadowFrame : VmdCameraTypeFrame
     /// <summary>
     /// フレームの種類
     /// </summary>
-    public override VmdFrameType FrameType => VmdFrameType.Shadow;
+    public override VmdFrameKind FrameKind => VmdFrameKind.Shadow;
 
     /// <summary>
     /// セルフ影モード

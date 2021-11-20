@@ -8,7 +8,7 @@ public abstract class VmdFrame : IVmdFrame
     /// <summary>
     /// フレームの種類
     /// </summary>
-    public abstract VmdFrameType FrameType { get; }
+    public abstract VmdFrameKind FrameKind { get; }
     /// <summary>
     /// フレームの名前
     /// </summary>

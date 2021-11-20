@@ -38,7 +38,7 @@ internal static class VmdFileWriter
         writer.Write(frame.Frame);
         writer.Write(frame.Position);
         writer.Write(frame.Rotation);
-        writer.Write(InterpolationCurve.CreateVMDFormatBytes(frame.InterpolationCurves, frame.FrameType));
+        writer.Write(InterpolationCurve.CreateVMDFormatBytes(frame.InterpolationCurves, frame.FrameKind));
     }
 
     public static void WriteMorphFrame(BinaryWriter writer, VmdMorphFrame frame)
@@ -54,7 +54,7 @@ internal static class VmdFileWriter
         writer.Write(frame.Distance);
         writer.Write(frame.Position);
         writer.Write(frame.Rotation);
-        writer.Write(InterpolationCurve.CreateVMDFormatBytes(frame.InterpolationCurves, frame.FrameType));
+        writer.Write(InterpolationCurve.CreateVMDFormatBytes(frame.InterpolationCurves, frame.FrameKind));
         writer.Write(frame.ViewAngle);
         writer.Write(frame.IsPerspectiveOff);
     }

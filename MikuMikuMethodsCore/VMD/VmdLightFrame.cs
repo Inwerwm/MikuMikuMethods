@@ -11,7 +11,7 @@ public class VmdLightFrame : VmdCameraTypeFrame
     /// <summary>
     /// フレームの種類
     /// </summary>
-    public override VmdFrameType FrameType => VmdFrameType.Light;
+    public override VmdFrameKind FrameKind => VmdFrameKind.Light;
 
     /// <summary>
     /// 照明色

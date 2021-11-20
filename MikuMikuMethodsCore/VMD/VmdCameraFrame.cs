@@ -11,7 +11,7 @@ public class VmdCameraFrame : VmdCameraTypeFrame, IVmdInterpolatable
     /// <summary>
     /// フレームの種類
     /// </summary>
-    public override VmdFrameType FrameType => Vmd.VmdFrameType.Camera;
+    public override VmdFrameKind FrameKind => Vmd.VmdFrameKind.Camera;
 
     /// <summary>
     /// 距離

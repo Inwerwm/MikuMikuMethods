@@ -8,7 +8,7 @@ public interface IVmdFrame : IComparable<IVmdFrame>, ICloneable
     /// <summary>
     /// フレームの種類
     /// </summary>
-    VmdFrameType FrameType { get; }
+    VmdFrameKind FrameKind { get; }
     /// <summary>
     /// フレームの名前
     /// </summary>

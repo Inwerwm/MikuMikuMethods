@@ -3,7 +3,7 @@
 /// <summary>
 /// VMDの種類
 /// </summary>
-public enum VMDType
+public enum VmdKind
 {
     /// <summary>
     /// カメラ系

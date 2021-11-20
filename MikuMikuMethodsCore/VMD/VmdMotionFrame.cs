@@ -11,7 +11,7 @@ public class VmdMotionFrame : VmdModelTypeFrame, IVmdInterpolatable
     /// <summary>
     /// フレームの種類
     /// </summary>
-    public override VmdFrameType FrameType => VmdFrameType.Motion;
+    public override VmdFrameKind FrameKind => VmdFrameKind.Motion;
 
     /// <summary>
     /// 移動量

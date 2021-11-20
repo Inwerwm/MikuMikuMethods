@@ -3,7 +3,7 @@
 /// <summary>
 /// フレームの種類
 /// </summary>
-public enum VmdFrameType
+public enum VmdFrameKind
 {
     /// <summary>
     /// カメラ

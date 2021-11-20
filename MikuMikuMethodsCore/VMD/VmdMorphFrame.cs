@@ -10,7 +10,7 @@ public class VmdMorphFrame : VmdModelTypeFrame
     /// <summary>
     /// フレームの種類
     /// </summary>
-    public override VmdFrameType FrameType => VmdFrameType.Morph;
+    public override VmdFrameKind FrameKind => VmdFrameKind.Morph;
 
     /// <summary>
     /// モーフ適用係数

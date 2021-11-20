@@ -22,7 +22,7 @@ public class VocaloidMotionData : IEnumerable<IVmdFrame>
     /// <summary>
     /// VMDの種類
     /// </summary>
-    public VMDType Type => ModelName == VmdConstants.CameraTypeVMDName ? VMDType.Camera : VMDType.Model;
+    public VmdKind Kind => ModelName == VmdConstants.CameraTypeVMDName ? VmdKind.Camera : VmdKind.Model;
 
     /// <summary>
     /// <para>全てのフレーム</para>
@@ -109,24 +109,24 @@ public class VocaloidMotionData : IEnumerable<IVmdFrame>
     /// <param name="frame">追加するフレーム</param>
     public void AddFrame(IVmdFrame frame)
     {
-        switch (frame.FrameType)
+        switch (frame.FrameKind)
         {
-            case VmdFrameType.Camera:
+            case VmdFrameKind.Camera:
                 CameraFrames.Add((VmdCameraFrame)frame);
                 break;
-            case VmdFrameType.Light:
+            case VmdFrameKind.Light:
                 LightFrames.Add((VmdLightFrame)frame);
                 break;
-            case VmdFrameType.Shadow:
+            case VmdFrameKind.Shadow:
                 ShadowFrames.Add((VmdShadowFrame)frame);
                 break;
-            case VmdFrameType.Property:
+            case VmdFrameKind.Property:
                 PropertyFrames.Add((VmdPropertyFrame)frame);
                 break;
-            case VmdFrameType.Morph:
+            case VmdFrameKind.Morph:
                 MorphFrames.Add((VmdMorphFrame)frame);
                 break;
-            case VmdFrameType.Motion:
+            case VmdFrameKind.Motion:
                 MotionFrames.Add((VmdMotionFrame)frame);
                 break;
             default:

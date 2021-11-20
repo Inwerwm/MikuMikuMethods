@@ -10,7 +10,7 @@ public class VmdPropertyFrame : VmdModelTypeFrame
     /// <summary>
     /// フレームの種類
     /// </summary>
-    public override VmdFrameType FrameType => VmdFrameType.Property;
+    public override VmdFrameKind FrameKind => VmdFrameKind.Property;
 
     /// <summary>
     /// 表示/非表示

@@ -128,10 +128,10 @@ public class InterpolationCurve : ICloneable
     /// <param name="data">バイト列</param>
     /// <param name="type">フレームの種類</param>
     /// <returns>補間曲線の連想配列</returns>
-    public static Dictionary<InterpolationItem, InterpolationCurve> CreateByVMDFormat(byte[] data, Vmd.VmdFrameType type) => type switch
+    public static Dictionary<InterpolationItem, InterpolationCurve> CreateByVMDFormat(byte[] data, Vmd.VmdFrameKind type) => type switch
     {
-        Vmd.VmdFrameType.Camera => CreateCameraCurves(data),
-        Vmd.VmdFrameType.Motion => CreateMotionCurves(data),
+        Vmd.VmdFrameKind.Camera => CreateCameraCurves(data),
+        Vmd.VmdFrameKind.Motion => CreateMotionCurves(data),
         _ => throw new InvalidOperationException(),
     };
 
@@ -185,12 +185,12 @@ public class InterpolationCurve : ICloneable
     /// <param name="curves">補間曲線の連想配列</param>
     /// <param name="type">フレームの種類</param>
     /// <returns>バイト列</returns>
-    public static byte[] CreateVMDFormatBytes(Dictionary<InterpolationItem, InterpolationCurve> curves, Vmd.VmdFrameType type)
+    public static byte[] CreateVMDFormatBytes(Dictionary<InterpolationItem, InterpolationCurve> curves, Vmd.VmdFrameKind type)
     {
         return type switch
         {
-            Vmd.VmdFrameType.Camera => CreateCameraBytes(curves),
-            Vmd.VmdFrameType.Motion => CreateMotionBytes(curves),
+            Vmd.VmdFrameKind.Camera => CreateCameraBytes(curves),
+            Vmd.VmdFrameKind.Motion => CreateMotionBytes(curves),
             _ => throw new InvalidOperationException(),
         };
     }
