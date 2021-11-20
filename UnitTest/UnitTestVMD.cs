@@ -22,11 +22,9 @@ public class UnitTestVMD
     [TestMethod]
     public void Test_MotionInterpolation()
     {
-        using (BinaryReader reader = new(new FileStream(@"../../TestData/\interpolateTest.vmd", FileMode.Open)))
-        using (BinaryWriter writer = new(new FileStream(@"../../TestData/\interpolateTest_Result.vmd", FileMode.OpenOrCreate)))
         {
-            VocaloidMotionData vmd = new(reader);
-            vmd.Write(writer);
+            VocaloidMotionData vmd = new(@"../../TestData/\interpolateTest.vmd");
+            vmd.Write(@"../../TestData/\interpolateTest_Result.vmd");
 
             var curves = vmd.MotionFrames[0].InterpolationCurves;
 
@@ -56,9 +54,8 @@ public class UnitTestVMD
             Assert.AreEqual(0x7F, rCurve.LateControlePoint.Y);
         }
 
-        using (BinaryReader reader = new(new FileStream(@"../../TestData/\interpolateTest_Result.vmd", FileMode.Open)))
         {
-            VocaloidMotionData vmd = new(reader);
+            VocaloidMotionData vmd = new(@"../../TestData/\interpolateTest_Result.vmd");
 
             var curves = vmd.MotionFrames[0].InterpolationCurves;
 
@@ -92,11 +89,9 @@ public class UnitTestVMD
     [TestMethod]
     public void Test_CameraInterpolation()
     {
-        using (BinaryReader reader = new(new FileStream(@"../../TestData/\cameraInterpolateTest.vmd", FileMode.Open)))
-        using (BinaryWriter writer = new(new FileStream(@"../../TestData/\cameraInterpolateTest_Result.vmd", FileMode.OpenOrCreate)))
         {
-            VocaloidMotionData vmd = new(reader);
-            vmd.Write(writer);
+            VocaloidMotionData vmd = new(@"../../TestData/\cameraInterpolateTest.vmd");
+            vmd.Write(@"../../TestData/\cameraInterpolateTest_Result.vmd");
 
             var curves = vmd.CameraFrames[0].InterpolationCurves;
 
@@ -133,9 +128,8 @@ public class UnitTestVMD
             Assert.AreEqual(0x00, aCurve.LateControlePoint.Y);
         }
 
-        using (BinaryReader reader = new(new FileStream(@"../../TestData/\cameraInterpolateTest_Result.vmd", FileMode.Open)))
         {
-            VocaloidMotionData vmd = new(reader);
+            VocaloidMotionData vmd = new(@"../../TestData/\cameraInterpolateTest_Result.vmd");
 
             var curves = vmd.CameraFrames[0].InterpolationCurves;
 
