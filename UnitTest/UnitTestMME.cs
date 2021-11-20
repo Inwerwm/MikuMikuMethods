@@ -2,6 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MikuMikuMethods;
 using MikuMikuMethods.Mme;
 using MikuMikuMethods.Mme.Element;
+using MikuMikuMethods.Mme.IO;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -47,11 +48,12 @@ public class UnitTestMME
         /// テスト実行
 
         // テストデータを読み込み
+        
         using (StreamReader reader = new("../../TestData/EffectSettings.txt", Encoding.ShiftJIS))
-            target.Read(reader, keys);
+            MmeFileReader.ReadEffectSettings(reader, target, keys);
         // テスト書き込み
         using (StreamWriter writer = new("../../TestData/EffectSettings_Result.txt", false, Encoding.ShiftJIS))
-            target.Write(writer);
+            MmeFileWriter.WriteEffectSettings(writer, target);
 
         /// 結果
 
@@ -90,16 +92,8 @@ public class UnitTestMME
 
         /// テスト
 
-        EmmData emm = new();
-        using (StreamReader reader = new(sourcePath, Encoding.ShiftJIS))
-        {
-            emm.Read(reader);
-        }
-
-        using (StreamWriter writer = new(resultPath, false, Encoding.ShiftJIS))
-        {
-            emm.Write(writer);
-        }
+        EmmData emm = new(sourcePath);
+        emm.Write(resultPath);
 
         /// 結果
 
