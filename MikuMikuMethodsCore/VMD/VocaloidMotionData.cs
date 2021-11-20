@@ -152,13 +152,7 @@ public class VocaloidMotionData : IEnumerable<IVmdFrame>
         VmdFileWriter.Write(filePath, this);
     }
 
-    public IEnumerator<IVmdFrame> GetEnumerator()
-    {
-        return Frames.GetEnumerator();
-    }
+    public IEnumerator<IVmdFrame> GetEnumerator() => Frames.GetEnumerator();
 
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return ((IEnumerable)Frames).GetEnumerator();
-    }
+    IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)Frames).GetEnumerator();
 }
