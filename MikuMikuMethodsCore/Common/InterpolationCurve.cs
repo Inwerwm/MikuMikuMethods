@@ -1,4 +1,6 @@
-﻿namespace MikuMikuMethods;
+using System.Collections.ObjectModel;
+
+namespace MikuMikuMethods;
 
 /// <summary>
 /// 補間項目
@@ -241,8 +243,9 @@ public class InterpolationCurve : ICloneable
         return interpolateMatrix.ToArray();
     }
 
-    public static Dictionary<InterpolationItem, InterpolationCurve> Clone(Dictionary<InterpolationItem, InterpolationCurve> curves) =>
-        curves.ToDictionary(p => p.Key, p => (InterpolationCurve)p.Value.Clone());
+    public static ReadOnlyDictionary<InterpolationItem, InterpolationCurve> Clone(ReadOnlyDictionary<InterpolationItem, InterpolationCurve> curves) =>
+        new(curves.ToDictionary(p => p.Key, p => (InterpolationCurve)p.Value.Clone()));
+
 
     public object Clone() => new InterpolationCurve()
     {
