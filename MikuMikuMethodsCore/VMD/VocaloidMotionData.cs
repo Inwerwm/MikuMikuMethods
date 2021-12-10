@@ -16,7 +16,7 @@ public class VocaloidMotionData : IEnumerable<IVmdFrame>
     /// <summary>
     /// ヘッダー
     /// </summary>
-    public string Header { get; set; }
+    public string Header { get; internal set; } = VmdConstants.HeaderString;
 
     /// <summary>
     /// モデル名
@@ -59,8 +59,6 @@ public class VocaloidMotionData : IEnumerable<IVmdFrame>
     /// </summary>
     public VocaloidMotionData()
     {
-        Header = VmdConstants.HeaderString;
-
         CameraFrames = new();
         LightFrames = new();
         ShadowFrames = new();
