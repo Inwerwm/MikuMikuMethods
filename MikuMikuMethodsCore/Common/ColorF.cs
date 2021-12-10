@@ -5,7 +5,7 @@ namespace MikuMikuMethods;
 /// <summary>
 /// 浮動小数点で値を保持する色構造体
 /// </summary>
-public struct ColorF
+public record ColorF
 {
     /// <summary>
     /// 赤
