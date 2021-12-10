@@ -1,4 +1,4 @@
-using MikuMikuMethods.Pmm.ElementState;
+﻿using MikuMikuMethods.Pmm.ElementState;
 using System.Collections.ObjectModel;
 
 namespace MikuMikuMethods.Pmm.Frame;
@@ -20,13 +20,7 @@ public class PmmBoneFrame : PmmBoneState, IPmmFrame
         EnablePhysic = EnablePhysic,
         Rotation = Rotation,
         Movement = Movement,
-        InterpolationCurves = new(new Dictionary<InterpolationItem, InterpolationCurve>()
-            {
-                { InterpolationItem.XPosition, (InterpolationCurve)InterpolationCurves[InterpolationItem.XPosition].Clone() },
-                { InterpolationItem.YPosition, (InterpolationCurve)InterpolationCurves[InterpolationItem.YPosition].Clone() },
-                { InterpolationItem.ZPosition, (InterpolationCurve)InterpolationCurves[InterpolationItem.ZPosition].Clone() },
-                { InterpolationItem.Rotation, (InterpolationCurve)InterpolationCurves[InterpolationItem.Rotation].Clone() },
-            })
+        InterpolationCurves = InterpolationCurve.Clone(InterpolationCurves),
     };
 
     IPmmFrame IPmmFrame.DeepCopy() => DeepCopy();

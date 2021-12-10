@@ -1,4 +1,4 @@
-using MikuMikuMethods.Pmm.ElementState;
+﻿using MikuMikuMethods.Pmm.ElementState;
 using System.Collections.ObjectModel;
 
 namespace MikuMikuMethods.Pmm.Frame;
@@ -29,15 +29,7 @@ public class PmmCameraFrame : PmmCameraState, IPmmFrame
         Rotation = Rotation,
         TargetPosition = TargetPosition,
         ViewAngle = ViewAngle,
-        InterpolationCurves = new(new Dictionary<InterpolationItem, InterpolationCurve>()
-            {
-                { InterpolationItem.XPosition, (InterpolationCurve)InterpolationCurves[InterpolationItem.XPosition].Clone() },
-                { InterpolationItem.YPosition, (InterpolationCurve)InterpolationCurves[InterpolationItem.YPosition].Clone() },
-                { InterpolationItem.ZPosition, (InterpolationCurve)InterpolationCurves[InterpolationItem.ZPosition].Clone() },
-                { InterpolationItem.Rotation, (InterpolationCurve)InterpolationCurves[InterpolationItem.Rotation].Clone() },
-                { InterpolationItem.Distance, (InterpolationCurve)InterpolationCurves[InterpolationItem.Distance].Clone() },
-                { InterpolationItem.ViewAngle, (InterpolationCurve)InterpolationCurves[InterpolationItem.ViewAngle].Clone() },
-            })
+        InterpolationCurves = InterpolationCurve.Clone(InterpolationCurves),
     };
 
     IPmmFrame IPmmFrame.DeepCopy() => DeepCopy();
