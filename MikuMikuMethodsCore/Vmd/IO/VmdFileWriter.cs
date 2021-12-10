@@ -62,7 +62,7 @@ internal static class VmdFileWriter
     public static void WriteLightFrame(BinaryWriter writer, VmdLightFrame frame)
     {
         writer.Write(frame.Frame);
-        writer.Write(frame.Color);
+        writer.Write(frame.Color, false);
         writer.Write(frame.Position);
     }
 

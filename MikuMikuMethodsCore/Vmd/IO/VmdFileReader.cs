@@ -57,7 +57,7 @@ internal static class VmdFileReader
     public static VmdLightFrame ReadLightFrame(BinaryReader reader) => new()
     {
         Frame = reader.ReadUInt32(),
-        Color = reader.ReadVector3(),
+        Color = reader.ReadSingleRGB(),
         Position = reader.ReadVector3()
     };
 

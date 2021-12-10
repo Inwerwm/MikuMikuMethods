@@ -15,7 +15,7 @@ public class VmdLightFrame : VmdCameraTypeFrame
     /// <summary>
     /// 照明色
     /// </summary>
-    public Vector3 Color { get; set; }
+    public ColorF Color { get; set; }
 
     /// <summary>
     /// 照明位置
@@ -29,7 +29,7 @@ public class VmdLightFrame : VmdCameraTypeFrame
     public VmdLightFrame(uint frame = 0):base("Light")
     {
         Frame = frame;
-        Color = new Vector3(154f / 255, 154f / 255, 154f / 255);
+        Color = new(154, 154, 154);
         Position = new Vector3(-0.5f, -1.0f, 0.5f);
     }
 
