@@ -6,11 +6,6 @@
 public static class VmdConstants
 {
     /// <summary>
-    /// カメラVMDファイルのモデル名
-    /// </summary>
-    public static readonly string CameraTypeVMDName = "カメラ・照明";
-
-    /// <summary>
     /// VMDファイルのヘッダー文字列
     /// </summary>
     public static readonly string HeaderString = "Vocaloid Motion Data 0002";

@@ -9,6 +9,11 @@ namespace MikuMikuMethods.Vmd;
 public class VocaloidMotionData : IEnumerable<IVmdFrame>
 {
     /// <summary>
+    /// カメラVMDファイルのモデル名
+    /// </summary>
+    public static readonly string CameraTypeVMDName = "カメラ・照明";
+
+    /// <summary>
     /// ヘッダー
     /// </summary>
     public string Header { get; set; }
@@ -21,7 +26,7 @@ public class VocaloidMotionData : IEnumerable<IVmdFrame>
     /// <summary>
     /// VMDの種類
     /// </summary>
-    public VmdKind Kind => ModelName == VmdConstants.CameraTypeVMDName ? VmdKind.Camera : VmdKind.Model;
+    public VmdKind Kind => ModelName == CameraTypeVMDName ? VmdKind.Camera : VmdKind.Model;
 
     /// <summary>
     /// カメラフレーム
