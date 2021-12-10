@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 
 namespace MikuMikuMethods;
 
@@ -246,6 +246,23 @@ public class InterpolationCurve : ICloneable
     public static ReadOnlyDictionary<InterpolationItem, InterpolationCurve> Clone(ReadOnlyDictionary<InterpolationItem, InterpolationCurve> curves) =>
         new(curves.ToDictionary(p => p.Key, p => (InterpolationCurve)p.Value.Clone()));
 
+    public static ReadOnlyDictionary<InterpolationItem, InterpolationCurve> CreateCameraCurves() => new(new Dictionary<InterpolationItem, InterpolationCurve>()
+        {
+            { InterpolationItem.XPosition, new() },
+            { InterpolationItem.YPosition, new() },
+            { InterpolationItem.ZPosition, new() },
+            { InterpolationItem.Rotation, new() },
+            { InterpolationItem.Distance, new() },
+            { InterpolationItem.ViewAngle, new() },
+        });
+
+    public static ReadOnlyDictionary<InterpolationItem, InterpolationCurve> CreateBoneCurves() => new(new Dictionary<InterpolationItem, InterpolationCurve>()
+        {
+            { InterpolationItem.XPosition, new() },
+            { InterpolationItem.YPosition, new() },
+            { InterpolationItem.ZPosition, new() },
+            { InterpolationItem.Rotation, new() },
+        });
 
     public object Clone() => new InterpolationCurve()
     {

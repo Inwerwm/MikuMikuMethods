@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Collections.ObjectModel;
+using System.Numerics;
 
 namespace MikuMikuMethods.Vmd;
 
@@ -24,7 +25,7 @@ public class VmdMotionFrame : VmdModelTypeFrame, IVmdInterpolatable
     /// <summary>
     /// 補間曲線
     /// </summary>
-    public Dictionary<InterpolationItem, InterpolationCurve> InterpolationCurves { get; internal init; }
+    public ReadOnlyDictionary<InterpolationItem, InterpolationCurve> InterpolationCurves { get; internal init; } = InterpolationCurve.CreateBoneCurves();
 
     /// <summary>
     /// コンストラクタ
@@ -34,12 +35,6 @@ public class VmdMotionFrame : VmdModelTypeFrame, IVmdInterpolatable
     public VmdMotionFrame(string name, uint frame = 0) : base(name)
     {
         Frame = frame;
-
-        InterpolationCurves = new();
-        InterpolationCurves.Add(InterpolationItem.XPosition, new());
-        InterpolationCurves.Add(InterpolationItem.YPosition, new());
-        InterpolationCurves.Add(InterpolationItem.ZPosition, new());
-        InterpolationCurves.Add(InterpolationItem.Rotation, new());
     }
 
     public override object Clone() => new VmdMotionFrame(Name, Frame)

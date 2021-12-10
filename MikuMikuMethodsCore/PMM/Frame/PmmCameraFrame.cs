@@ -1,4 +1,4 @@
-﻿using MikuMikuMethods.Pmm.ElementState;
+using MikuMikuMethods.Pmm.ElementState;
 using System.Collections.ObjectModel;
 
 namespace MikuMikuMethods.Pmm.Frame;
@@ -15,15 +15,7 @@ public class PmmCameraFrame : PmmCameraState, IPmmFrame
     /// <summary>
     /// 補間曲線
     /// </summary>
-    public ReadOnlyDictionary<InterpolationItem, InterpolationCurve> InterpolationCurves { get; private init; } = new(new Dictionary<InterpolationItem, InterpolationCurve>()
-        {
-            { InterpolationItem.XPosition, new() },
-            { InterpolationItem.YPosition, new() },
-            { InterpolationItem.ZPosition, new() },
-            { InterpolationItem.Rotation, new() },
-            { InterpolationItem.Distance, new() },
-            { InterpolationItem.ViewAngle, new() },
-        });
+    public ReadOnlyDictionary<InterpolationItem, InterpolationCurve> InterpolationCurves { get; private init; } = InterpolationCurve.CreateCameraCurves();
 
     public new PmmCameraFrame DeepCopy() => new()
     {

@@ -1,4 +1,4 @@
-﻿using MikuMikuMethods.Pmm.ElementState;
+using MikuMikuMethods.Pmm.ElementState;
 using System.Collections.ObjectModel;
 
 namespace MikuMikuMethods.Pmm.Frame;
@@ -11,13 +11,7 @@ public class PmmBoneFrame : PmmBoneState, IPmmFrame
     /// <summary>
     /// 補間曲線
     /// </summary>
-    public ReadOnlyDictionary<InterpolationItem, InterpolationCurve> InterpolationCurves { get; private init; } = new(new Dictionary<InterpolationItem, InterpolationCurve>()
-        {
-            { InterpolationItem.XPosition, new() },
-            { InterpolationItem.YPosition, new() },
-            { InterpolationItem.ZPosition, new() },
-            { InterpolationItem.Rotation, new() },
-        });
+    public ReadOnlyDictionary<InterpolationItem, InterpolationCurve> InterpolationCurves { get; private init; } = InterpolationCurve.CreateBoneCurves();
 
     public new PmmBoneFrame DeepCopy() => new()
     {
