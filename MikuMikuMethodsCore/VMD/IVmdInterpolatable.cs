@@ -1,9 +1,11 @@
-﻿namespace MikuMikuMethods.Vmd;
+﻿using System.Collections.ObjectModel;
+
+namespace MikuMikuMethods.Vmd;
 
 public interface IVmdInterpolatable
 {
     /// <summary>
     /// 補間曲線
     /// </summary>
-    Dictionary<InterpolationItem, InterpolationCurve> InterpolationCurves { get; }
+    ReadOnlyDictionary<InterpolationItem, InterpolationCurve> InterpolationCurves { get; }
 }
