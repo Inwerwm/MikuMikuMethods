@@ -10,19 +10,19 @@ public struct ColorF
     /// <summary>
     /// 赤
     /// </summary>
-    public float R { get; set; }
+    public float R { get; init; }
     /// <summary>
     /// 緑
     /// </summary>
-    public float G { get; set; }
+    public float G { get; init; }
     /// <summary>
     /// 青
     /// </summary>
-    public float B { get; set; }
+    public float B { get; init; }
     /// <summary>
     /// 不透明度
     /// </summary>
-    public float A { get; set; }
+    public float A { get; init; }
 
     public ColorF(float red, float green, float blue)
     {
