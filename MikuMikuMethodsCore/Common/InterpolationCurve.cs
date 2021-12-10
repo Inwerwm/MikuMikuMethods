@@ -130,19 +130,19 @@ public class InterpolationCurve : ICloneable
     /// <param name="data">バイト列</param>
     /// <param name="type">フレームの種類</param>
     /// <returns>補間曲線の連想配列</returns>
-    public static Dictionary<InterpolationItem, InterpolationCurve> CreateByVMDFormat(byte[] data, Vmd.VmdFrameKind type) => type switch
+    public static ReadOnlyDictionary<InterpolationItem, InterpolationCurve> CreateByVMDFormat(byte[] data, Vmd.VmdFrameKind type) => type switch
     {
         Vmd.VmdFrameKind.Camera => CreateCameraCurves(data),
         Vmd.VmdFrameKind.Motion => CreateMotionCurves(data),
         _ => throw new InvalidOperationException(),
     };
 
-    private static Dictionary<InterpolationItem, InterpolationCurve> CreateCameraCurves(byte[] data)
+    private static ReadOnlyDictionary<InterpolationItem, InterpolationCurve> CreateCameraCurves(byte[] data)
     {
         static IEnumerable<byte> Swap_1_2(IEnumerable<byte> bytes) =>
             new byte[] { bytes.ElementAt(0) }.Append(bytes.ElementAt(2)).Append(bytes.ElementAt(1)).Concat(bytes.Skip(3));
 
-        Dictionary<InterpolationItem, InterpolationCurve> interpolationCurves = new()
+        ReadOnlyDictionary<InterpolationItem, InterpolationCurve> interpolationCurves = new(new Dictionary<InterpolationItem, InterpolationCurve>()
         {
             { InterpolationItem.XPosition, new() },
             { InterpolationItem.YPosition, new() },
@@ -150,7 +150,7 @@ public class InterpolationCurve : ICloneable
             { InterpolationItem.Rotation, new() },
             { InterpolationItem.Distance, new() },
             { InterpolationItem.ViewAngle, new() },
-        };
+        });
 
         interpolationCurves[InterpolationItem.XPosition].FromBytes(Swap_1_2(data.Skip(0)));
         interpolationCurves[InterpolationItem.YPosition].FromBytes(Swap_1_2(data.Skip(4)));
@@ -162,15 +162,15 @@ public class InterpolationCurve : ICloneable
         return interpolationCurves;
     }
 
-    private static Dictionary<InterpolationItem, InterpolationCurve> CreateMotionCurves(byte[] data)
+    private static ReadOnlyDictionary<InterpolationItem, InterpolationCurve> CreateMotionCurves(byte[] data)
     {
-        Dictionary<InterpolationItem, InterpolationCurve> interpolationCurves = new()
+        ReadOnlyDictionary<InterpolationItem, InterpolationCurve> interpolationCurves = new(new Dictionary<InterpolationItem, InterpolationCurve>()
         {
             { InterpolationItem.XPosition, new() },
             { InterpolationItem.YPosition, new() },
             { InterpolationItem.ZPosition, new() },
             { InterpolationItem.Rotation, new() },
-        };
+        });
 
         var interpolationNum = data.Select((num, i) => (num, i)).Where(elm => elm.i % 4 == 0);
         interpolationCurves[InterpolationItem.XPosition].FromBytes(interpolationNum.Skip(0).Select(elm => elm.num));
@@ -187,7 +187,7 @@ public class InterpolationCurve : ICloneable
     /// <param name="curves">補間曲線の連想配列</param>
     /// <param name="type">フレームの種類</param>
     /// <returns>バイト列</returns>
-    public static byte[] CreateVMDFormatBytes(Dictionary<InterpolationItem, InterpolationCurve> curves, Vmd.VmdFrameKind type)
+    public static byte[] CreateVMDFormatBytes(ReadOnlyDictionary<InterpolationItem, InterpolationCurve> curves, Vmd.VmdFrameKind type)
     {
         return type switch
         {
@@ -197,7 +197,7 @@ public class InterpolationCurve : ICloneable
         };
     }
 
-    private static byte[] CreateCameraBytes(Dictionary<InterpolationItem, InterpolationCurve> curves)
+    private static byte[] CreateCameraBytes(ReadOnlyDictionary<InterpolationItem, InterpolationCurve> curves)
     {
         static byte[] CreateBytes(InterpolationCurve curve) =>
             new byte[] { curve.EarlyControlePoint.X, curve.LateControlePoint.X, curve.EarlyControlePoint.Y, curve.LateControlePoint.Y };
@@ -211,7 +211,7 @@ public class InterpolationCurve : ICloneable
                .ToArray();
     }
 
-    private static byte[] CreateMotionBytes(Dictionary<InterpolationItem, InterpolationCurve> curves)
+    private static byte[] CreateMotionBytes(ReadOnlyDictionary<InterpolationItem, InterpolationCurve> curves)
     {
         // 補間曲線をbyte配列化
         var xPositionPoints = curves[InterpolationItem.XPosition].ToBytes();
