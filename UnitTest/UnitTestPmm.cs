@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MikuMikuMethods.Pmm;
+using MikuMikuMethods.Pmm.ElementState;
 using MikuMikuMethods.Pmm.Frame;
 using System;
 
@@ -164,5 +165,21 @@ public class UnitTestPmm
         Assert.IsTrue(tv.Visible);
         Assert.AreEqual(0.78f, tv.Transparency);
         Assert.AreEqual(45, re);
+    }
+
+    [TestMethod]
+    public void RangeSelectorTest()
+    {
+        PmmModel model = new() { Name = "テストモデル" };
+        PmmBone bone1 = new("ボーン1");
+        model.Bones.Add(bone1);
+
+        Assert.AreEqual(7, PmmRangeSelector.Create(bone1, model).Index);
+
+        PmmMorph morph1 = new("モーフ1");
+        model.Morphs.Add(morph1);
+
+        Assert.AreEqual(6, PmmRangeSelector.Create(morph1, model).Index);
+        Assert.AreEqual(7, PmmRangeSelector.Create(bone1, model).Index);
     }
 }
