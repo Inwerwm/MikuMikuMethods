@@ -24,6 +24,35 @@ public struct ColorF
     /// </summary>
     public float A { get; set; }
 
+    public ColorF(float red, float green, float blue)
+    {
+        A = 1;
+        R = red;
+        G = green;
+        B = blue;
+    }
+    public ColorF(int red, int green, int blue)
+    {
+        A = 1;
+        R = red / 255.0f;
+        G = green / 255.0f;
+        B = blue / 255.0f;
+    }
+    public ColorF(float alpha, float red, float green, float blue)
+    {
+        A = alpha;
+        R = red;
+        G = green;
+        B = blue;
+    }
+    public ColorF(int alpha, int red, int green, int blue)
+    {
+        A = alpha / 255.0f;
+        R = red / 255.0f;
+        G = green / 255.0f;
+        B = blue / 255.0f;
+    }
+
     /// <summary>
     /// バイト整数で値を保持する色構造体に変換
     /// </summary>
@@ -34,13 +63,7 @@ public struct ColorF
     /// バイト整数で値を保持する色構造体から変換
     /// </summary>
     /// <param name="color">変換元の色</param>
-    public static ColorF FromColor(Color color) => new()
-    {
-        R = color.R / 255.0f,
-        G = color.G / 255.0f,
-        B = color.B / 255.0f,
-        A = color.A / 255.0f
-    };
+    public static ColorF FromColor(Color color) => new(color.A, color.R, color.G, color.B);
 
     /// <summary>
     /// 透明度と元色を指定して色構造体を作成
@@ -48,16 +71,7 @@ public struct ColorF
     /// <param name="alpha">透明度</param>
     /// <param name="baseColor">元となる色</param>
     /// <returns>浮動小数色構造体</returns>
-    public static ColorF FromARGB(float alpha, ColorF baseColor)
-    {
-        ColorF resultColor = new();
-        resultColor.A = alpha;
-        resultColor.R = baseColor.R;
-        resultColor.G = baseColor.G;
-        resultColor.B = baseColor.B;
-
-        return resultColor;
-    }
+    public static ColorF FromARGB(float alpha, ColorF baseColor) => new(alpha, baseColor.R, baseColor.G, baseColor.B);
 
     /// <summary>
     /// 数値指定で色構造体を作成
@@ -67,15 +81,7 @@ public struct ColorF
     /// <param name="green">緑</param>
     /// <param name="blue">青</param>
     /// <returns>浮動小数色構造体</returns>
-    public static ColorF FromARGB(float alpha, float red, float green, float blue)
-    {
-        ColorF resultColor = new();
-        resultColor.A = alpha;
-        resultColor.R = red;
-        resultColor.G = green;
-        resultColor.B = blue;
-        return resultColor;
-    }
+    public static ColorF FromARGB(float alpha, float red, float green, float blue) => new(alpha, red, green, blue);
 
     /// <summary>
     /// 数値指定で色構造体を作成
@@ -84,13 +90,5 @@ public struct ColorF
     /// <param name="green">緑</param>
     /// <param name="blue">青</param>
     /// <returns>浮動小数色構造体</returns>
-    public static ColorF FromARGB(float red, float green, float blue)
-    {
-        ColorF resultColor = new();
-        resultColor.A = 1;
-        resultColor.R = red;
-        resultColor.G = green;
-        resultColor.B = blue;
-        return resultColor;
-    }
+    public static ColorF FromARGB(float red, float green, float blue) => new(red, green, blue);
 }
