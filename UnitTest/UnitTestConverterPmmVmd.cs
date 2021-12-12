@@ -13,18 +13,31 @@ public class UnitTestConverterPmmVmd
     public void ExtractCameraFrameTest()
     {
         var pmm = new PolygonMovieMaker(TestData.GetPath("ConvertSource.pmm"));
-        VocaloidMotionData vmd = pmm.ExtractCameraMotion();
-
-        AssertCameraFrame(0, expectedFrame: 0, expectedViewAngle: 30, expectedPosition: new(0, 10, 0));
-        AssertCameraFrame(1, expectedFrame: 30, expectedViewAngle: 50, expectedPosition: new(0, 11.25f, 0));
-
-        void AssertCameraFrame(int index,uint expectedFrame, uint expectedViewAngle, Vector3 expectedPosition)
+        VocaloidMotionData vmd = pmm.ExtractCameraMotion(new()
         {
-            Assert.AreEqual(expectedFrame, vmd.CameraFrames[index].Frame);
-            Assert.AreEqual(expectedViewAngle, vmd.CameraFrames[index].ViewAngle);
-            Assert.AreEqual(expectedPosition.X, vmd.CameraFrames[index].Position.X, 0.005);
-            Assert.AreEqual(expectedPosition.Y, vmd.CameraFrames[index].Position.Y, 0.005);
-            Assert.AreEqual(expectedPosition.Z, vmd.CameraFrames[index].Position.Z, 0.005);
+            ExtractCamera = true,
+            ExtractLight = true,
+            ExtractShadow = true,
+        });
+
+        AssertCameraFrame(0);
+        AssertCameraFrame(1);
+
+        AssertLightFrame(0);
+        AssertLightFrame(1);
+
+        void AssertCameraFrame(int index)
+        {
+            Assert.AreEqual((uint)pmm.Camera.Frames[index].Frame, vmd.CameraFrames[index].Frame);
+            Assert.AreEqual((uint)pmm.Camera.Frames[index].ViewAngle, vmd.CameraFrames[index].ViewAngle);
+            Assert.AreEqual(pmm.Camera.Frames[index].EyePosition, vmd.CameraFrames[index].Position);
+        }
+
+        void AssertLightFrame(int index)
+        {
+            Assert.AreEqual((uint)pmm.Light.Frames[index].Frame, vmd.LightFrames[index].Frame);
+            Assert.AreEqual(pmm.Light.Frames[index].Color, vmd.LightFrames[index].Color);
+            Assert.AreEqual(pmm.Light.Frames[index].Position, vmd.LightFrames[index].Position);
         }
     }
 }
