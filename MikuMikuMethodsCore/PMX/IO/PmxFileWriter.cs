@@ -78,7 +78,14 @@ public static class PmxFileWriter
     /// </summary>
     /// <param name="filePath">書込むファイルパス</param>
     /// <param name="model">書き込むモデル</param>
-    public static void WriteModel(string filePath, PmxModel model)
+    public static void Write(string filePath, PmxModel model)
+    {
+        using FileStream file = new(filePath, FileMode.Create);
+        using BinaryWriter writer = new(file);
+        Write(writer, model);
+    }
+
+    public static void Write(BinaryWriter writer, PmxModel model)
     {
         try
         {
@@ -86,8 +93,6 @@ public static class PmxFileWriter
             Model.ValidateVersion();
             CreatePropaties();
 
-            using FileStream file = new(filePath, FileMode.Create);
-            using BinaryWriter writer = new(file);
             WriteHeader(writer, Model.Header);
             WriteInfo(writer, Model.ModelInfo);
 

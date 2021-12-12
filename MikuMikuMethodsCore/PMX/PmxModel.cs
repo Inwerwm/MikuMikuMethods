@@ -80,13 +80,13 @@ public class PmxModel : IPmxData
     /// ファイルからモデルを読み込む
     /// </summary>
     /// <param name="filePath">読み込むファイルパス</param>
-    public void Read(string filePath) => IO.PmxFileReader.ReadModel(filePath, this);
+    public void Read(string filePath) => IO.PmxFileReader.Read(filePath, this);
 
     /// <summary>
     /// ファイルにモデルを書き込む
     /// </summary>
     /// <param name="filePath">書き込むファイルパス</param>
-    public void Write(string filePath) => IO.PmxFileWriter.WriteModel(filePath, this);
+    public void Write(string filePath) => IO.PmxFileWriter.Write(filePath, this);
 
     /// <summary>
     /// このモデルのバージョン番号を最小化する

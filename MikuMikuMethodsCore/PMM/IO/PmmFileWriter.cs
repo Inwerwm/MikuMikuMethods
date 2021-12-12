@@ -5,7 +5,7 @@ namespace MikuMikuMethods.Pmm.IO;
 
 public static class PmmFileWriter
 {
-    internal static void Write(string filePath, PolygonMovieMaker pmm)
+    public static void Write(string filePath, PolygonMovieMaker pmm)
     {
         try
         {
@@ -19,7 +19,7 @@ public static class PmmFileWriter
         }
     }
 
-    internal static void Write(BinaryWriter writer, PolygonMovieMaker pmm)
+    public static void Write(BinaryWriter writer, PolygonMovieMaker pmm)
     {
         writer.Write(pmm.Version, 30, Encoding.ShiftJIS);
         writer.Write(pmm.OutputResolution.Width);

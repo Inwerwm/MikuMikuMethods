@@ -66,13 +66,17 @@ public static class PmxFileReader
     /// モデル読込
     /// </summary>
     /// <param name="filePath">読み込むモデルファイルのパス</param>
-    /// <returns>読み込んだモデル</returns>
-    public static void ReadModel(string filePath, PmxModel model)
+    public static void Read(string filePath, PmxModel model)
+    {
+        using FileStream stream = new(filePath, FileMode.Open);
+        using BinaryReader reader = new(stream);
+        Read(reader, model);
+    }
+
+    public static void Read(BinaryReader reader, PmxModel model)
     {
         try
         {
-            using FileStream stream = new(filePath, FileMode.Open);
-            using BinaryReader reader = new(stream);
             Model = model;
 
             ReadHeader(reader, Model.Header);

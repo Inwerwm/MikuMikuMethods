@@ -12,7 +12,7 @@ public static class PmmFileReader
 
     private static DataLoadErrorInfomation Current = new("", null, "");
 
-    internal static void Read(string filePath, PolygonMovieMaker pmm)
+    public static void Read(string filePath, PolygonMovieMaker pmm)
     {
         try
         {
@@ -27,7 +27,7 @@ public static class PmmFileReader
     }
 
 
-    internal static void Read(BinaryReader reader, PolygonMovieMaker pmm)
+    public static void Read(BinaryReader reader, PolygonMovieMaker pmm)
     {
         try
         {
