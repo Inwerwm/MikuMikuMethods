@@ -22,7 +22,9 @@ public class UnitTestConverterPmmVmd
         {
             Assert.AreEqual(expectedFrame, vmd.CameraFrames[index].Frame);
             Assert.AreEqual(expectedViewAngle, vmd.CameraFrames[index].ViewAngle);
-            Assert.AreEqual(expectedPosition, vmd.CameraFrames[index].Position);
+            Assert.AreEqual(expectedPosition.X, vmd.CameraFrames[index].Position.X, 0.005);
+            Assert.AreEqual(expectedPosition.Y, vmd.CameraFrames[index].Position.Y, 0.005);
+            Assert.AreEqual(expectedPosition.Z, vmd.CameraFrames[index].Position.Z, 0.005);
         }
     }
 }
