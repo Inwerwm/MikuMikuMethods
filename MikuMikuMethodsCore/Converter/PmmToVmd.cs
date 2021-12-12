@@ -6,6 +6,12 @@ namespace MikuMikuMethods.Converter;
 
 public static class PmmToVmd
 {
+    /// <summary>
+    /// カメラモーション VMD を PMM から抽出して作成する
+    /// </summary>
+    /// <param name="pmm">もととなる PMM</param>
+    /// <param name="options">抽出設定</param>
+    /// <returns>カメラモーション VMD</returns>
     public static VocaloidMotionData ExtractCameraMotion(this PolygonMovieMaker pmm, ExtractCameraMotionOptions? options = default)
     {
         // 引数の既定値ではコンパイル時定数しか無理なのでここで null 時の規定値を入れる
@@ -33,6 +39,12 @@ public static class PmmToVmd
         return vmd;
     }
 
+    /// <summary>
+    /// モデルモーション VMD を PMM から抽出して作成する
+    /// </summary>
+    /// <param name="model">もととなるモデル</param>
+    /// <param name="options">抽出設定</param>
+    /// <returns>モデルモーション VMD</returns>
     public static VocaloidMotionData ExtractModelMotion(this PmmModel model, ExtractModelMotionOptions? options = default)
     {
         // 引数の既定値ではコンパイル時定数しか無理なのでここで null 時の規定値を入れる
