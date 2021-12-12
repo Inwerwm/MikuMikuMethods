@@ -1,6 +1,6 @@
 ﻿namespace MikuMikuMethods.Mme.IO;
 
-internal static class MmeFileWriter
+public static class MmeFileWriter
 {
     public static void WriteEmdData(string filePath, EmdData emd)
     {

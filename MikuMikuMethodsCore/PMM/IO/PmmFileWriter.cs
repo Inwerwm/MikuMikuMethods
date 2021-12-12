@@ -3,7 +3,7 @@ using MikuMikuMethods.Pmm.Frame;
 
 namespace MikuMikuMethods.Pmm.IO;
 
-internal static class PmmFileWriter
+public static class PmmFileWriter
 {
     internal static void Write(string filePath, PolygonMovieMaker pmm)
     {

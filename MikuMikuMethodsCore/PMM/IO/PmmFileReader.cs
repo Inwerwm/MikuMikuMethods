@@ -5,7 +5,7 @@ using MikuMikuMethods.Pmm.Frame;
 
 namespace MikuMikuMethods.Pmm.IO;
 
-internal static class PmmFileReader
+public static class PmmFileReader
 {
     private static Dictionary<PmmModelConfigFrame, Dictionary<PmmBone, (int ModelID, int BoneID)>> OuterParentRelation { get; set; } = new();
     private static Dictionary<PmmModelConfigState, Dictionary<PmmBone, (int ModelID, int BoneID)>> OuterParentRelationCurrent { get; set; } = new();

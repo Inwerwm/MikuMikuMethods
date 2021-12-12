@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace MikuMikuMethods.Mme.IO;
 
-internal static class MmeFileReader
+public static class MmeFileReader
 {
     public static void ReadEmdData(string filePath, EmdData emd)
     {

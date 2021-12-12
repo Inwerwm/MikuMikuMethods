@@ -5,7 +5,7 @@ namespace MikuMikuMethods.Pmx.IO;
 /// <summary>
 /// PMXファイル読込クラス
 /// </summary>
-internal static class PmxFileReader
+public static class PmxFileReader
 {
     private static StringEncoder Encoder = new(Encoding.UTF8);
 

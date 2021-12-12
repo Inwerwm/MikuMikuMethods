@@ -2,7 +2,7 @@
 
 namespace MikuMikuMethods.Vmd.IO;
 
-internal static class VmdFileReader
+public static class VmdFileReader
 {
     public static void Read(string filePath, VocaloidMotionData vmd)
     {

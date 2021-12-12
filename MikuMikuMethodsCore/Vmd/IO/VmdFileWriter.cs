@@ -2,7 +2,7 @@
 
 namespace MikuMikuMethods.Vmd.IO;
 
-internal static class VmdFileWriter
+public static class VmdFileWriter
 {
     public static void Write(string filePath, VocaloidMotionData vmd)
     {
