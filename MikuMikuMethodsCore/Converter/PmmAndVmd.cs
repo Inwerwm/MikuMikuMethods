@@ -1,11 +1,6 @@
 ﻿using MikuMikuMethods.Pmm;
 using MikuMikuMethods.Pmm.Frame;
 using MikuMikuMethods.Vmd;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MikuMikuMethods.Converter;
 
