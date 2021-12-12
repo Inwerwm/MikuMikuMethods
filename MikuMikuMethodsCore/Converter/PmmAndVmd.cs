@@ -1,4 +1,4 @@
-﻿using MikuMikuMethods.Pmm;
+using MikuMikuMethods.Pmm;
 using MikuMikuMethods.Pmm.Frame;
 using MikuMikuMethods.Vmd;
 using System;
@@ -45,7 +45,7 @@ public static class PmmAndVmd
         Rotation = frame.Rotation,
         ViewAngle = (uint)frame.ViewAngle,
         IsPerspectiveOff = !frame.EnablePerspective,
-        InterpolationCurves = frame.InterpolationCurves,
+        InterpolationCurves = new(frame.InterpolationCurves),
     };
 
     public static VmdLightFrame ToVmdFrame(this PmmLightFrame frame) => new((uint)frame.Frame)
