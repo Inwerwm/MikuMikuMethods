@@ -65,7 +65,7 @@ public static class PmmToVmd
     public static VmdCameraFrame ToVmdFrame(this PmmCameraFrame frame) => new((uint)frame.Frame)
     {
         Distance = frame.Distance,
-        Position = frame.TargetPosition,
+        Position = frame.EyePosition,
         Rotation = frame.Rotation,
         ViewAngle = (uint)frame.ViewAngle,
         IsPerspectiveOff = !frame.EnablePerspective,
