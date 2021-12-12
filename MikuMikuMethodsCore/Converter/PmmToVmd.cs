@@ -4,7 +4,7 @@ using MikuMikuMethods.Vmd;
 
 namespace MikuMikuMethods.Converter;
 
-public static class PmmAndVmd
+public static class PmmToVmd
 {
     public static VocaloidMotionData ExtractCameraMotion(this PolygonMovieMaker pmm, ExtractCameraMotionOptions? options = default)
     {
