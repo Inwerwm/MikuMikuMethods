@@ -91,6 +91,8 @@ public class UnitTestConverterPmmVmd
         pmm.ApplyCameraVmd(cameraVmd);
         miku.ApplyModelVmd(motionVmd);
 
+        var expected = new PolygonMovieMaker(TestData.GetPath("ApplyExpected.pmm"));
+
         pmm.Write(TestData.GetPath("ApplyResult.pmm"));
     }
 }
