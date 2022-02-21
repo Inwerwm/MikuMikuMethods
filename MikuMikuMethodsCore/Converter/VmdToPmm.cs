@@ -34,4 +34,11 @@ public static class VmdToPmm
         EnablePerspective = !frame.IsPerspectiveOff,
         InterpolationCurves = frame.InterpolationCurves,
     };
+
+    public static PmmLightFrame ToPmmFrame(VmdLightFrame frame) => new()
+    {
+        Frame = (int)frame.Frame,
+        Color = frame.Color,
+        Position = frame.Position,
+    };
 }
