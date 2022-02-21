@@ -80,8 +80,8 @@ public static class VmdToPmm
         Frame = (int)frame.Frame,
         Visible = frame.IsVisible,
         EnableIK = frame.IKEnabled.Select(p => 
-            KeyValuePair.Create(
-                bones.FirstOrDefault(b => b.Name == p.Key),
+            (
+                Key: bones.FirstOrDefault(b => b.Name == p.Key),
                 p.Value
             )
         ).Where(p => p.Key is not null).ToDictionary(p => p.Key!, p => p.Value),
