@@ -1,6 +1,7 @@
 ﻿using MikuMikuMethods.Pmm;
 using MikuMikuMethods.Pmm.Frame;
 using MikuMikuMethods.Vmd;
+using MikuMikuMethods.Common;
 
 namespace MikuMikuMethods.Converter;
 public static class ApplyVmd
@@ -9,9 +10,20 @@ public static class ApplyVmd
     {
         if (cameraVmd.Kind != VmdKind.Camera) throw new ArgumentException("The Model VMD was passed as the argument where the Camera VMD was expected.");
 
-        pmm.Camera.Frames.AddRange(cameraVmd.CameraFrames.Select(ToPmmFrame));
-        pmm.Light.Frames.AddRange(cameraVmd.LightFrames.Select(ToPmmFrame));
-        pmm.SelfShadow.Frames.AddRange(cameraVmd.ShadowFrames.Select(ToPmmFrame));
+        foreach (var frame in cameraVmd.CameraFrames)
+        {
+            pmm.Camera.Frames.AddOrOverWrite(frame.ToPmmFrame(), (left, right) => left.Frame == right.Frame);
+        }
+
+        foreach (var frame in cameraVmd.LightFrames)
+        {
+            pmm.Light.Frames.AddOrOverWrite(frame.ToPmmFrame(), (left, right) => left.Frame == right.Frame);
+        }
+
+        foreach (var frame in cameraVmd.ShadowFrames)
+        {
+            pmm.SelfShadow.Frames.AddOrOverWrite(frame.ToPmmFrame(), (left, right) => left.Frame == right.Frame);
+        }
     }
 
     public static void ApplyModelVmd(this PmmModel model, VocaloidMotionData modelVmd)
@@ -21,22 +33,22 @@ public static class ApplyVmd
         foreach (var frame in modelVmd.MotionFrames)
         {
             var targetBone = model.Bones.FirstOrDefault(bone => bone.Name == frame.Name);
-            targetBone?.Frames.Add(frame.ToPmmFrame());
+            targetBone?.Frames.AddOrOverWrite(frame.ToPmmFrame(), (left, right) => left.Frame == right.Frame);
         }
 
         foreach (var frame in modelVmd.MorphFrames)
         {
             var targetMorph = model.Morphs.FirstOrDefault(morph => morph.Name == frame.Name);
-            targetMorph?.Frames.Add(frame.ToPmmFrame());
+            targetMorph?.Frames.AddOrOverWrite(frame.ToPmmFrame(), (left, right) => left.Frame == right.Frame);
         }
 
         foreach (var frame in modelVmd.PropertyFrames)
         {
-            model.ConfigFrames.Add(frame.ToPmmFrame(model.Bones));
+            model.ConfigFrames.AddOrOverWrite(frame.ToPmmFrame(model.Bones), (left, right) => left.Frame == right.Frame);
         }
     }
 
-    private static PmmCameraFrame ToPmmFrame(VmdCameraFrame frame) => new()
+    private static PmmCameraFrame ToPmmFrame(this VmdCameraFrame frame) => new()
     {
         Frame = (int)frame.Frame,
         Distance = frame.Distance,
@@ -47,14 +59,14 @@ public static class ApplyVmd
         InterpolationCurves = frame.InterpolationCurves,
     };
 
-    public static PmmLightFrame ToPmmFrame(VmdLightFrame frame) => new()
+    public static PmmLightFrame ToPmmFrame(this VmdLightFrame frame) => new()
     {
         Frame = (int)frame.Frame,
         Color = frame.Color,
         Position = frame.Position,
     };
 
-    public static PmmSelfShadowFrame ToPmmFrame(VmdShadowFrame frame) => new()
+    public static PmmSelfShadowFrame ToPmmFrame(this VmdShadowFrame frame) => new()
     {
         Frame = (int)frame.Frame,
         ShadowMode = frame.Mode,
