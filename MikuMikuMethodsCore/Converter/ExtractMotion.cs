@@ -4,7 +4,7 @@ using MikuMikuMethods.Vmd;
 
 namespace MikuMikuMethods.Converter;
 
-public static class PmmToVmd
+public static class ExtractMotion
 {
     /// <summary>
     /// カメラモーション VMD を PMM から抽出して作成する

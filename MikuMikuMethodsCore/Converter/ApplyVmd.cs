@@ -3,7 +3,7 @@ using MikuMikuMethods.Pmm.Frame;
 using MikuMikuMethods.Vmd;
 
 namespace MikuMikuMethods.Converter;
-public static class VmdToPmm
+public static class ApplyVmd
 {
     public static void ApplyCameraVmd(this PolygonMovieMaker pmm, VocaloidMotionData cameraVmd)
     {
