@@ -11,7 +11,7 @@ public class PmmBoneFrame : PmmBoneState, IPmmFrame
     /// <summary>
     /// 補間曲線
     /// </summary>
-    public ReadOnlyDictionary<InterpolationItem, InterpolationCurve> InterpolationCurves { get; private init; } = InterpolationCurve.CreateBoneCurves();
+    public ReadOnlyDictionary<InterpolationItem, InterpolationCurve> InterpolationCurves { get; internal init; } = InterpolationCurve.CreateBoneCurves();
 
     public new PmmBoneFrame DeepCopy() => new()
     {

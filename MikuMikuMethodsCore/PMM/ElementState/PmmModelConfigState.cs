@@ -10,7 +10,7 @@ public class PmmModelConfigState
     /// <summary>
     /// IKが有効か
     /// </summary>
-    public Dictionary<PmmBone, bool> EnableIK { get; protected init; } = new();
+    public Dictionary<PmmBone, bool> EnableIK { get; protected internal init; } = new();
     /// <summary>
     /// 外部親設定
     /// <list>
