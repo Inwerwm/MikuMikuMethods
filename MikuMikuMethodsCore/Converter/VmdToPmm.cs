@@ -1,4 +1,5 @@
 ﻿using MikuMikuMethods.Pmm;
+using MikuMikuMethods.Pmm.Frame;
 using MikuMikuMethods.Vmd;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ public static class VmdToPmm
     {
         if (cameraVmd.Kind != VmdKind.Camera) throw new ArgumentException("The Model VMD was passed as the argument where the Camera VMD was expected.");
 
-
+        pmm.Camera.Frames.AddRange(cameraVmd.CameraFrames.Select(ToPmmFrame));
     }
 
     public static void ApplyModelVmd(this PmmModel model, VocaloidMotionData modelVmd)
@@ -22,4 +23,15 @@ public static class VmdToPmm
 
 
     }
+
+    private static PmmCameraFrame ToPmmFrame(VmdCameraFrame frame) => new()
+    {
+        Frame = (int)frame.Frame,
+        EyePosition = frame.Position,
+        Rotation = frame.Rotation,
+        Distance = frame.Distance,
+        ViewAngle = (int)frame.ViewAngle,
+        InterpolationCurves = frame.InterpolationCurves,
+        EnablePerspective = !frame.IsPerspectiveOff,
+    };
 }
