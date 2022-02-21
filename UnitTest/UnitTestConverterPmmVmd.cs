@@ -40,4 +40,43 @@ public class UnitTestConverterPmmVmd
             Assert.AreEqual(pmm.Light.Frames[index].Position, vmd.LightFrames[index].Position);
         }
     }
+
+    [TestMethod]
+    public void ExtractModelFrameTest()
+    {
+        var pmm = new PolygonMovieMaker(TestData.GetPath("ConvertSource.pmm"));
+        PmmModel model = pmm.Models[0];
+        VocaloidMotionData vmd = model.ExtractModelMotion();
+
+        var pmmBoneFrames = model.Bones.SelectMany(b => b.Frames).ToArray();
+        var pmmMorphFrames = model.Morphs.SelectMany(b => b.Frames).ToArray();
+
+        Assert.AreEqual(model.Name, vmd.ModelName);
+
+        for (int i = 0; i < vmd.MotionFrames.Count; i++)
+        {
+            Assert.AreEqual((uint)pmmBoneFrames[i].Frame, vmd.MotionFrames[i].Frame);
+            Assert.AreEqual(pmmBoneFrames[i].Movement, vmd.MotionFrames[i].Position);
+            Assert.AreEqual(pmmBoneFrames[i].Rotation, vmd.MotionFrames[i].Rotation);
+        }
+
+        for (int i = 0; i < vmd.MorphFrames.Count; i++)
+        {
+            Assert.AreEqual((uint)pmmMorphFrames[i].Frame, vmd.MorphFrames[i].Frame);
+            Assert.AreEqual(pmmMorphFrames[i].Weight, vmd.MorphFrames[i].Weight);
+        }
+
+        for (int i = 0; i < vmd.PropertyFrames.Count; i++)
+        {
+            Assert.AreEqual((uint)model.ConfigFrames[i].Frame, vmd.PropertyFrames[i].Frame);
+            Assert.AreEqual(model.ConfigFrames[i].Visible, vmd.PropertyFrames[i].IsVisible);
+
+            var IKs = model.ConfigFrames[i].EnableIK.Zip(vmd.PropertyFrames[i].IKEnabled);
+            foreach (var comPair in IKs)
+            {
+                Assert.AreEqual(comPair.First.Key.Name, comPair.Second.Key);
+                Assert.AreEqual(comPair.First.Value, comPair.Second.Value);
+            }
+        }
+    }
 }
