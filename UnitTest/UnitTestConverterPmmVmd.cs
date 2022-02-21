@@ -94,5 +94,6 @@ public class UnitTestConverterPmmVmd
         var expected = new PolygonMovieMaker(TestData.GetPath("ApplyExpected.pmm"));
 
         pmm.Write(TestData.GetPath("ApplyResult.pmm"));
+        var result = new PolygonMovieMaker(TestData.GetPath("ApplyResult.pmm"));
     }
 }
