@@ -41,4 +41,11 @@ public static class VmdToPmm
         Color = frame.Color,
         Position = frame.Position,
     };
+
+    public static PmmSelfShadowFrame ToPmmFrame(VmdShadowFrame frame) => new()
+    {
+        Frame = (int)frame.Frame,
+        ShadowMode = (PmmSelfShadowFrame.Shadow)frame.Mode,
+        ShadowRange = frame.Range,
+    };
 }
