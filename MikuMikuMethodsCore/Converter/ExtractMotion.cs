@@ -12,7 +12,7 @@ public static class ExtractMotion
     /// <param name="pmm">もととなる PMM</param>
     /// <param name="options">抽出設定</param>
     /// <returns>カメラモーション VMD</returns>
-    public static VocaloidMotionData ExtractCameraMotion(this PolygonMovieMaker pmm, ExtractCameraMotionOptions? options = default)
+    public static VocaloidMotionData ExtractCameraMotion(this PolygonMovieMaker pmm, CameraMotionOptions? options = default)
     {
         // 引数の既定値ではコンパイル時定数しか無理なのでここで null 時の規定値を入れる
         if (options is null) options = new();
@@ -23,15 +23,15 @@ public static class ExtractMotion
         var vmd = new VocaloidMotionData();
         vmd.ModelName = VocaloidMotionData.CameraTypeVMDName;
 
-        if (options.ExtractCamera)
+        if (options.Camera)
         {
             vmd.CameraFrames.AddRange(pmm.Camera.Frames.Where(isFrameInRange).Select(f => ((PmmCameraFrame)f).ToVmdFrame()));
         }
-        if (options.ExtractLight)
+        if (options.Light)
         {
             vmd.LightFrames.AddRange(pmm.Light.Frames.Where(isFrameInRange).Select(f => ((PmmLightFrame)f).ToVmdFrame()));
         }
-        if (options.ExtractShadow)
+        if (options.Shadow)
         {
             vmd.ShadowFrames.AddRange(pmm.SelfShadow.Frames.Where(isFrameInRange).Select(f => ((PmmSelfShadowFrame)f).ToVmdFrame()));
         }
@@ -45,7 +45,7 @@ public static class ExtractMotion
     /// <param name="model">もととなるモデル</param>
     /// <param name="options">抽出設定</param>
     /// <returns>モデルモーション VMD</returns>
-    public static VocaloidMotionData ExtractModelMotion(this PmmModel model, ExtractModelMotionOptions? options = default)
+    public static VocaloidMotionData ExtractModelMotion(this PmmModel model, ModelMotionOptions? options = default)
     {
         // 引数の既定値ではコンパイル時定数しか無理なのでここで null 時の規定値を入れる
         if (options is null) options = new();
@@ -56,9 +56,9 @@ public static class ExtractMotion
         return new()
         {
             ModelName = model.Name,
-            MotionFrames = options.ExtractMotion ? model.Bones.SelectMany(bone => bone.Frames.Where(isFrameInRange).Select(f => ((PmmBoneFrame)f).ToVmdFrame(bone.Name))).ToList() : new(),
-            MorphFrames = options.ExtractMorph ? model.Morphs.SelectMany(morph => morph.Frames.Where(isFrameInRange).Select(f => ((PmmMorphFrame)f).ToVmdFrame(morph.Name))).ToList() : new(),
-            PropertyFrames = options.ExtractProperty ? model.ConfigFrames.Where(isFrameInRange).Select(f => ((PmmModelConfigFrame)f).ToVmdFrame()).ToList() : new(),
+            MotionFrames = options.Motion ? model.Bones.SelectMany(bone => bone.Frames.Where(isFrameInRange).Select(f => ((PmmBoneFrame)f).ToVmdFrame(bone.Name))).ToList() : new(),
+            MorphFrames = options.Morph ? model.Morphs.SelectMany(morph => morph.Frames.Where(isFrameInRange).Select(f => ((PmmMorphFrame)f).ToVmdFrame(morph.Name))).ToList() : new(),
+            PropertyFrames = options.Property ? model.ConfigFrames.Where(isFrameInRange).Select(f => ((PmmModelConfigFrame)f).ToVmdFrame()).ToList() : new(),
         };
     }
 

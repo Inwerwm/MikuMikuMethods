@@ -3,19 +3,19 @@
 /// <summary>
 /// PMMデータからカメラ情報を抽出する際のオプション
 /// </summary>
-/// <param name="StartFrame">抽出開始フレーム</param>
-/// <param name="EndFrame">抽出終了フレーム nullなら全フレーム</param>
-/// <param name="ExtractCamera">カメラフレームを抽出する</param>
-/// <param name="ExtractLight">照明フレームを抽出する</param>
-/// <param name="ExtractShadow">影フレームを抽出する</param>
-public sealed record ExtractCameraMotionOptions(uint StartFrame = 0, uint? EndFrame = null, bool ExtractCamera = true, bool ExtractLight = false, bool ExtractShadow = false);
+/// <param name="StartFrame">開始フレーム</param>
+/// <param name="EndFrame">終了フレーム nullなら全フレーム</param>
+/// <param name="Camera">カメラ</param>
+/// <param name="Light">照明</param>
+/// <param name="Shadow">セルフ影</param>
+public sealed record CameraMotionOptions(uint StartFrame = 0, uint? EndFrame = null, bool Camera = true, bool Light = false, bool Shadow = false);
 
 /// <summary>
 /// PMMデータからモデルモーション情報を抽出する際のオプション
 /// </summary>
-/// <param name="StartFrame">抽出開始フレーム</param>
-/// <param name="EndFrame">抽出終了フレーム nullなら全フレーム</param>
-/// <param name="ExtractMotion">モーションフレームを抽出する</param>
-/// <param name="ExtractMorph">モーフフレームを抽出する</param>
-/// <param name="ExtractProperty">表示・IKフレームを抽出する</param>
-public sealed record ExtractModelMotionOptions(uint StartFrame = 0, uint? EndFrame = null, bool ExtractMotion = true, bool ExtractMorph = true, bool ExtractProperty = true);
+/// <param name="StartFrame">開始フレーム</param>
+/// <param name="EndFrame">終了フレーム nullなら全フレーム</param>
+/// <param name="Motion">モーション</param>
+/// <param name="Morph">モーフ</param>
+/// <param name="Property">表示・IK</param>
+public sealed record ModelMotionOptions(uint StartFrame = 0, uint? EndFrame = null, bool Motion = true, bool Morph = true, bool Property = true);

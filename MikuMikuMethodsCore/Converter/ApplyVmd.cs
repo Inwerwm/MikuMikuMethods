@@ -5,18 +5,18 @@ using MikuMikuMethods.Vmd;
 namespace MikuMikuMethods.Converter;
 public static class ApplyVmd
 {
-    public static void ApplyCameraVmd(this PolygonMovieMaker pmm, VocaloidMotionData cameraVmd, ExtractCameraMotionOptions? options = default)
+    public static void ApplyCameraVmd(this PolygonMovieMaker pmm, VocaloidMotionData cameraVmd, CameraMotionOptions? options = default)
     {
         if (cameraVmd.Kind != VmdKind.Camera) throw new ArgumentException("The Model VMD was passed as the argument where the Camera VMD was expected.");
 
-        if (options is null) options = new ExtractCameraMotionOptions()
+        if (options is null) options = new CameraMotionOptions()
         {
-            ExtractCamera = true,
-            ExtractLight = true,
-            ExtractShadow = true,
+            Camera = true,
+            Light = true,
+            Shadow = true,
         };
 
-        if (options.ExtractCamera)
+        if (options.Camera)
         {
             foreach (var frame in cameraVmd.CameraFrames)
             {
@@ -24,7 +24,7 @@ public static class ApplyVmd
             }
         }
 
-        if (options.ExtractLight)
+        if (options.Light)
         {
             foreach (var frame in cameraVmd.LightFrames)
             {
@@ -32,7 +32,7 @@ public static class ApplyVmd
             }
         }
 
-        if (options.ExtractShadow)
+        if (options.Shadow)
         {
             foreach (var frame in cameraVmd.ShadowFrames)
             {
@@ -41,18 +41,18 @@ public static class ApplyVmd
         }
     }
 
-    public static void ApplyModelVmd(this PmmModel model, VocaloidMotionData modelVmd, ExtractModelMotionOptions? options = default)
+    public static void ApplyModelVmd(this PmmModel model, VocaloidMotionData modelVmd, ModelMotionOptions? options = default)
     {
         if (modelVmd.Kind != VmdKind.Model) throw new ArgumentException("The Camera VMD was passed as the argument where the Model VMD was expected.");
 
-        if (options is null) options = new ExtractModelMotionOptions()
+        if (options is null) options = new ModelMotionOptions()
         {
-            ExtractMotion = true,
-            ExtractMorph = true,
-            ExtractProperty = true,
+            Motion = true,
+            Morph = true,
+            Property = true,
         };
 
-        if (options.ExtractMotion)
+        if (options.Motion)
         {
             foreach (var frame in modelVmd.MotionFrames)
             {
@@ -61,7 +61,7 @@ public static class ApplyVmd
             }
         }
 
-        if (options.ExtractMorph)
+        if (options.Morph)
         {
             foreach (var frame in modelVmd.MorphFrames)
             {
@@ -70,7 +70,7 @@ public static class ApplyVmd
             }
         }
 
-        if (options.ExtractProperty)
+        if (options.Property)
         {
             foreach (var frame in modelVmd.PropertyFrames)
             {

@@ -14,9 +14,9 @@ public class UnitTestConverterPmmVmd
         var pmm = new PolygonMovieMaker(TestData.GetPath("ConvertSource.pmm"));
         VocaloidMotionData vmd = pmm.ExtractCameraMotion(new()
         {
-            ExtractCamera = true,
-            ExtractLight = true,
-            ExtractShadow = true,
+            Camera = true,
+            Light = true,
+            Shadow = true,
         });
 
         AssertCameraFrame(0);
