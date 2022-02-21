@@ -214,7 +214,7 @@ public static class PmmFileWriter
         writer.Write(accessory.Name, 100, Encoding.ShiftJIS);
         writer.Write(accessory.Path, 256, Encoding.ShiftJIS);
 
-        writer.Write((byte)((pmm.GetRenderOrder(accessory) ?? -1) + 1));
+        writer.Write(pmm.GetRenderOrder(accessory) ?? 0);
 
         WriteFrames(
             writer,
