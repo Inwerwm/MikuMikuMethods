@@ -15,4 +15,7 @@ public sealed record ExtractCameraMotionOptions(uint StartFrame = 0, uint? EndFr
 /// </summary>
 /// <param name="StartFrame">抽出開始フレーム</param>
 /// <param name="EndFrame">抽出終了フレーム nullなら全フレーム</param>
-public sealed record ExtractModelMotionOptions(uint StartFrame = 0, uint? EndFrame = null);
+/// <param name="ExtractMotion">モーションフレームを抽出する</param>
+/// <param name="ExtractMorph">モーフフレームを抽出する</param>
+/// <param name="ExtractProperty">表示・IKフレームを抽出する</param>
+public sealed record ExtractModelMotionOptions(uint StartFrame = 0, uint? EndFrame = null, bool ExtractMotion = true, bool ExtractMorph = true, bool ExtractProperty = true);
