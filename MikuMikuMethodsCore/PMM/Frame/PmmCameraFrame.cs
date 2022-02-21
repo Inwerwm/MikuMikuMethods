@@ -15,7 +15,7 @@ public class PmmCameraFrame : PmmCameraState, IPmmFrame
     /// <summary>
     /// 補間曲線
     /// </summary>
-    public ReadOnlyDictionary<InterpolationItem, InterpolationCurve> InterpolationCurves { get; private init; } = InterpolationCurve.CreateCameraCurves();
+    public ReadOnlyDictionary<InterpolationItem, InterpolationCurve> InterpolationCurves { get; internal init; } = InterpolationCurve.CreateCameraCurves();
 
     public new PmmCameraFrame DeepCopy() => new()
     {
