@@ -80,9 +80,11 @@ public class UnitTestConverterPmmVmd
     }
 
     [TestMethod]
-    public void ApplyCameraVmdTest()
+    public void ApplyVmdTest()
     {
         var pmm = new PolygonMovieMaker(TestData.GetPath("ApplyTarget.pmm"));
-        Console.WriteLine(string.Join(Environment.NewLine, pmm.Models.Select(x => x.Name)));
+        var miku = pmm.Models[3];
+
+
     }
 }
