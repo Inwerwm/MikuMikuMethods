@@ -16,6 +16,8 @@ public static class VmdToPmm
         if (cameraVmd.Kind != VmdKind.Camera) throw new ArgumentException("The Model VMD was passed as the argument where the Camera VMD was expected.");
 
         pmm.Camera.Frames.AddRange(cameraVmd.CameraFrames.Select(ToPmmFrame));
+        pmm.Light.Frames.AddRange(cameraVmd.LightFrames.Select(ToPmmFrame));
+        pmm.SelfShadow.Frames.AddRange(cameraVmd.ShadowFrames.Select(ToPmmFrame));
     }
 
     public static void ApplyModelVmd(this PmmModel model, VocaloidMotionData modelVmd)
