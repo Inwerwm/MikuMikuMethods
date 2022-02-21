@@ -301,7 +301,7 @@ public static class PmmFileWriter
                 writer.Write(frame.InterpolationCurves[InterpolationItem.Distance].ToBytes());
                 writer.Write(frame.InterpolationCurves[InterpolationItem.ViewAngle].ToBytes());
 
-                writer.Write(frame.EnablePerspective);
+                writer.Write(frame.DisablePerspective);
                 writer.Write(frame.ViewAngle);
 
                 writer.Write(frame.IsSelected);
@@ -311,7 +311,7 @@ public static class PmmFileWriter
         writer.Write(camera.Current.EyePosition);
         writer.Write(camera.Current.TargetPosition);
         writer.Write(camera.Current.Rotation);
-        writer.Write(camera.Current.EnablePerspective);
+        writer.Write(camera.Current.DisablePerspective);
     }
 
     /// <summary>

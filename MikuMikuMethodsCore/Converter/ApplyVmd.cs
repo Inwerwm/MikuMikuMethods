@@ -43,7 +43,7 @@ public static class ApplyVmd
         EyePosition = frame.Position,
         Rotation = frame.Rotation,
         ViewAngle = (int)frame.ViewAngle,
-        EnablePerspective = !frame.IsPerspectiveOff,
+        DisablePerspective = frame.IsPerspectiveOff,
         InterpolationCurves = frame.InterpolationCurves,
     };
 
@@ -79,11 +79,9 @@ public static class ApplyVmd
     {
         Frame = (int)frame.Frame,
         Visible = frame.IsVisible,
-        EnableIK = frame.IKEnabled.Select(p => 
-            (
-                Key: bones.FirstOrDefault(b => b.Name == p.Key),
-                p.Value
-            )
-        ).Where(p => p.Key is not null).ToDictionary(p => p.Key!, p => p.Value),
+        EnableIK = bones.Where(bone => bone.IsIK).ToDictionary(
+            ikBone => ikBone,
+            ikBone => frame.IKEnabled.ContainsKey(ikBone.Name) ? frame.IKEnabled[ikBone.Name] : true
+        ),
     };
 }

@@ -19,7 +19,7 @@ public class PmmCameraState
     /// <summary>
     /// パースのOn/Off
     /// </summary>
-    public bool EnablePerspective { get; set; }
+    public bool DisablePerspective { get; set; }
     /// <summary>
     /// 視点追従先モデル
     /// </summary>
@@ -38,7 +38,7 @@ public class PmmCameraState
         EyePosition = EyePosition,
         TargetPosition = TargetPosition,
         Rotation = Rotation,
-        EnablePerspective = EnablePerspective,
+        DisablePerspective = DisablePerspective,
         FollowingBone = FollowingBone,
         FollowingModel = FollowingModel,
         ViewAngle = ViewAngle

@@ -251,7 +251,7 @@ public static class PmmFileReader
         camera.Current.EyePosition = reader.ReadVector3();
         camera.Current.TargetPosition = reader.ReadVector3();
         camera.Current.Rotation = reader.ReadVector3();
-        camera.Current.EnablePerspective = reader.ReadBoolean();
+        camera.Current.DisablePerspective = reader.ReadBoolean();
     }
     private static PmmCameraFrame ReadCameraFrame(BinaryReader reader, PolygonMovieMaker pmm, bool isInitial = false)
     {
@@ -283,7 +283,7 @@ public static class PmmFileReader
         frame.InterpolationCurves[InterpolationItem.Distance].FromBytes(reader.ReadBytes(4));
         frame.InterpolationCurves[InterpolationItem.ViewAngle].FromBytes(reader.ReadBytes(4));
 
-        frame.EnablePerspective = reader.ReadBoolean();
+        frame.DisablePerspective = reader.ReadBoolean();
         frame.ViewAngle = reader.ReadInt32();
 
         frame.IsSelected = reader.ReadBoolean();

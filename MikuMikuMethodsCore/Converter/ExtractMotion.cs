@@ -68,7 +68,7 @@ public static class ExtractMotion
         Position = frame.EyePosition,
         Rotation = frame.Rotation,
         ViewAngle = (uint)frame.ViewAngle,
-        IsPerspectiveOff = !frame.EnablePerspective,
+        IsPerspectiveOff = frame.DisablePerspective,
         InterpolationCurves = new(frame.InterpolationCurves),
     };
 

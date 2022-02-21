@@ -22,7 +22,7 @@ public class PmmCameraFrame : PmmCameraState, IPmmFrame
         Frame = Frame,
         IsSelected = IsSelected,
         Distance = Distance,
-        EnablePerspective = EnablePerspective,
+        DisablePerspective = DisablePerspective,
         EyePosition = EyePosition,
         FollowingBone = FollowingBone,
         FollowingModel = FollowingModel,

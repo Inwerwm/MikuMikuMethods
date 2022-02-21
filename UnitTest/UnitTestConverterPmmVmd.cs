@@ -85,6 +85,12 @@ public class UnitTestConverterPmmVmd
         var pmm = new PolygonMovieMaker(TestData.GetPath("ApplyTarget.pmm"));
         var miku = pmm.Models[3];
 
+        var cameraVmd = new VocaloidMotionData(TestData.GetPath("ApplySource_Camera.vmd"));
+        var motionVmd = new VocaloidMotionData(TestData.GetPath("ApplySource_Motion.vmd"));
 
+        pmm.ApplyCameraVmd(cameraVmd);
+        miku.ApplyModelVmd(motionVmd);
+
+        pmm.Write(TestData.GetPath("ApplyResult.pmm"));
     }
 }
