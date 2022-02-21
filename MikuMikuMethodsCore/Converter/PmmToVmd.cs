@@ -56,9 +56,9 @@ public static class PmmToVmd
         return new()
         {
             ModelName = model.Name,
-            MotionFrames = model.Bones.SelectMany(bone => bone.Frames.Where(isFrameInRange).Select(f => ((PmmBoneFrame)f).ToVmdFrame(bone.Name))).ToList(),
-            MorphFrames = model.Morphs.SelectMany(morph => morph.Frames.Where(isFrameInRange).Select(f => ((PmmMorphFrame)f).ToVmdFrame(morph.Name))).ToList(),
-            PropertyFrames = model.ConfigFrames.Where(isFrameInRange).Select(f => ((PmmModelConfigFrame)f).ToVmdFrame()).ToList(),
+            MotionFrames = options.ExtractMotion ? model.Bones.SelectMany(bone => bone.Frames.Where(isFrameInRange).Select(f => ((PmmBoneFrame)f).ToVmdFrame(bone.Name))).ToList() : new(),
+            MorphFrames = options.ExtractMorph ? model.Morphs.SelectMany(morph => morph.Frames.Where(isFrameInRange).Select(f => ((PmmMorphFrame)f).ToVmdFrame(morph.Name))).ToList() : new(),
+            PropertyFrames = options.ExtractProperty ? model.ConfigFrames.Where(isFrameInRange).Select(f => ((PmmModelConfigFrame)f).ToVmdFrame()).ToList() : new(),
         };
     }
 
