@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace UnitTest;
+﻿namespace UnitTest;
 
 internal static class TestData
 {

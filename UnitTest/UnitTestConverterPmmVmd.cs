@@ -2,7 +2,6 @@
 using MikuMikuMethods.Converter;
 using MikuMikuMethods.Pmm;
 using MikuMikuMethods.Vmd;
-using System.Numerics;
 
 namespace UnitTest;
 

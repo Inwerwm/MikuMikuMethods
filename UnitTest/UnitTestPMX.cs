@@ -1,7 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MikuMikuMethods.Pmx;
-using System.IO;
-using System.Linq;
 
 namespace UnitTest;
 
