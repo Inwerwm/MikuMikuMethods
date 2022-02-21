@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 namespace MikuMikuMethods.Converter;
 public static class VmdToPmm
 {
-    public static void ApplyVmd(this PolygonMovieMaker pmm, VocaloidMotionData cameraVmd)
+    public static void ApplyCameraVmd(this PolygonMovieMaker pmm, VocaloidMotionData cameraVmd)
     {
         if (cameraVmd.Kind != VmdKind.Camera) throw new ArgumentException("The Model VMD was passed as the argument where the Camera VMD was expected.");
 
 
     }
 
-    public static void ApplyVmd(this PmmModel model, VocaloidMotionData motionVmd)
+    public static void ApplyModelVmd(this PmmModel model, VocaloidMotionData modelVmd)
     {
-        if (motionVmd.Kind != VmdKind.Model) throw new ArgumentException("The Camera VMD was passed as the argument where the Model VMD was expected.");
+        if (modelVmd.Kind != VmdKind.Model) throw new ArgumentException("The Camera VMD was passed as the argument where the Model VMD was expected.");
 
 
     }
