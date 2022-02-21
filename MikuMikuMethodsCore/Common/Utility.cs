@@ -23,4 +23,18 @@ internal static class Utility
         first = second;
         second = tmp;
     }
+
+    public static void AddOrOverWrite<T>(this IList<T> ts, T item, Func<T, T, bool> equalityComparer)
+    {
+        if (ts.FirstOrDefault(t => equalityComparer(t, item)) is { } existingFrame)
+        {
+            var index = ts.IndexOf(existingFrame);
+            ts.Remove(existingFrame);
+            ts.Insert(index, item);
+        }
+        else
+        {
+            ts.Add(item);
+        }
+    }
 }
