@@ -1,4 +1,6 @@
-﻿namespace MikuMikuMethods.Vmd;
+﻿using MikuMikuMethods.Common;
+
+namespace MikuMikuMethods.Vmd;
 
 /// <summary>
 /// 影フレーム
@@ -13,7 +15,7 @@ public class VmdShadowFrame : VmdCameraTypeFrame
     /// <summary>
     /// セルフ影モード
     /// </summary>
-    public byte Mode { get; set; }
+    public SelfShadow Mode { get; set; }
 
     /// <summary>
     /// 影範囲
@@ -27,7 +29,7 @@ public class VmdShadowFrame : VmdCameraTypeFrame
     public VmdShadowFrame(uint frame = 0) : base("SelfShadow")
     {
         Frame = frame;
-        Mode = 1;
+        Mode = SelfShadow.Mode1;
         Range = 8875 * 0.00001f;
     }
 

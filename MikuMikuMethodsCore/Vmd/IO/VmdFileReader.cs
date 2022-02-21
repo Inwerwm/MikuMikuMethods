@@ -64,7 +64,7 @@ public static class VmdFileReader
     public static VmdShadowFrame ReadShadowFrame(BinaryReader reader) => new()
     {
         Frame = reader.ReadUInt32(),
-        Mode = reader.ReadByte(),
+        Mode = (Common.SelfShadow)reader.ReadByte(),
         Range = reader.ReadSingle()
     };
 

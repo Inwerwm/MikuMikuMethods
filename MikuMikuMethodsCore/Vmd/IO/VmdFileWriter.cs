@@ -69,7 +69,7 @@ public static class VmdFileWriter
     public static void WriteShadowFrame(BinaryWriter writer, VmdShadowFrame frame)
     {
         writer.Write(frame.Frame);
-        writer.Write(frame.Mode);
+        writer.Write((byte)frame.Mode);
         writer.Write(frame.Range);
     }
 

@@ -80,7 +80,7 @@ public static class PmmToVmd
 
     public static VmdShadowFrame ToVmdFrame(this PmmSelfShadowFrame frame) => new((uint)frame.Frame)
     {
-        Mode = (byte)frame.ShadowMode,
+        Mode = frame.ShadowMode,
         Range = frame.ShadowRange,
     };
 
