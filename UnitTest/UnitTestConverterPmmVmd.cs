@@ -78,4 +78,11 @@ public class UnitTestConverterPmmVmd
             }
         }
     }
+
+    [TestMethod]
+    public void ApplyCameraVmdTest()
+    {
+        var pmm = new PolygonMovieMaker(TestData.GetPath("ApplyTarget.pmm"));
+        Console.WriteLine(string.Join(Environment.NewLine, pmm.Models.Select(x => x.Name)));
+    }
 }
