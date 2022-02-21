@@ -27,11 +27,11 @@ public static class VmdToPmm
     private static PmmCameraFrame ToPmmFrame(VmdCameraFrame frame) => new()
     {
         Frame = (int)frame.Frame,
+        Distance = frame.Distance,
         EyePosition = frame.Position,
         Rotation = frame.Rotation,
-        Distance = frame.Distance,
         ViewAngle = (int)frame.ViewAngle,
-        InterpolationCurves = frame.InterpolationCurves,
         EnablePerspective = !frame.IsPerspectiveOff,
+        InterpolationCurves = frame.InterpolationCurves,
     };
 }
