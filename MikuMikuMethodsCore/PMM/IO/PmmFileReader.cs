@@ -538,12 +538,12 @@ public static class PmmFileReader
         model.SpecificEditorState.LastFrame = reader.ReadInt32();
 
         // 初期ボーンフレームの読込
-        var boneFrameDictionary = new Dictionary<string, int?>();
+        var boneFrameDictionary = new Dictionary<PmmBone, int?>();
         foreach (var bone in model.Bones)
         {
             (var frame, _, var nextId) = ReadBoneFrame(reader, true);
             bone.Frames.Add(frame);
-            boneFrameDictionary.Add(bone.Name, nextId);
+            boneFrameDictionary.Add(bone, nextId);
         }
 
         // ボーンフレームの読込
@@ -553,16 +553,16 @@ public static class PmmFileReader
             boneCount,
             static reader => ReadBoneFrame(reader),
             boneFrameDictionary,
-            static (element, frame) => (element as PmmBone)?.Frames.Add((PmmBoneFrame)frame)
+            static (element, frame) => element?.Frames.Add((PmmBoneFrame)frame)
         );
 
         // 初期モーフフレームの読込
-        var morphFrameDictionary = new Dictionary<string, int?>();
+        var morphFrameDictionary = new Dictionary<PmmMorph, int?>();
         foreach (var morph in model.Morphs)
         {
             (var frame, _, var nextId) = ReadMorphFrame(reader, true);
             morph.Frames.Add(frame);
-            morphFrameDictionary.Add(morph.Name, nextId);
+            morphFrameDictionary.Add(morph, nextId);
         }
 
         // モーフフレームの読込
@@ -572,7 +572,7 @@ public static class PmmFileReader
             morphCount,
             static reader => ReadMorphFrame(reader),
             morphFrameDictionary,
-            static (element, frame) => (element as PmmMorph)?.Frames.Add((PmmMorphFrame)frame)
+            static (element, frame) => element?.Frames.Add((PmmMorphFrame)frame)
         );
 
         model.ConfigFrames.Add(ReadConfigFrame(reader, model, ikIndices, parentableIndices, true));
@@ -708,8 +708,14 @@ public static class PmmFileReader
     /// <param name="readElementFrame">フレーム読込メソッドの呼び出し関数</param>
     /// <param name="elementNextFrameDictionary">要素名とそれに対応する次フレームIDの辞書</param>
     /// <param name="addFrame">所属要素にフレームを追加する関数</param>
-    private static void ReadFramesThatRequireResolving(BinaryReader reader, IEnumerable<IPmmModelElement> targetElements, int elementCount, Func<BinaryReader, (IPmmFrame Frame, int PreviousFrameIndex, int NextFrameIndex)> readElementFrame, Dictionary<string, int?> elementNextFrameDictionary, Action<IPmmModelElement, IPmmFrame> addFrame)
-    {
+    private static void ReadFramesThatRequireResolving<T>(
+        BinaryReader reader,
+        IEnumerable<T> targetElements,
+        int elementCount,
+        Func<BinaryReader, (IPmmFrame Frame, int PreviousFrameIndex, int NextFrameIndex)> readElementFrame,
+        Dictionary<T, int?> elementNextFrameDictionary,
+        Action<T, IPmmFrame> addFrame)
+     where T: IPmmModelElement{
         var elementFrameCount = reader.ReadInt32();
         var elementFrames = Enumerable.Range(0, elementFrameCount).Select(_ => readElementFrame(reader)).ToArray();
 
@@ -728,7 +734,7 @@ public static class PmmFileReader
 
             foreach (var element in targetElements)
             {
-                var nextIndex = elementNextFrameDictionary[element.Name];
+                var nextIndex = elementNextFrameDictionary[element];
                 if (nextIndex is null) continue;
 
                 // 読み込んだインデックスは初期フレームの数だけ先に進んでいるので
@@ -739,11 +745,11 @@ public static class PmmFileReader
 
                 // この要素の次のフレームのインデックスを更新する
                 // 次のインデックスが 0 なら次の要素は無いので null を入れる
-                elementNextFrameDictionary[element.Name] = nextFrame.NextFrameIndex == 0 ? null : nextFrame.NextFrameIndex;
+                elementNextFrameDictionary[element] = nextFrame.NextFrameIndex == 0 ? null : nextFrame.NextFrameIndex;
 
                 // 一つでも次のフレーム探索が必要なボーンがあればループを続ける
                 // 次のインデックスに null が入っていればフレーム探索は不要の意味になる
-                AreThereElementLeftThatRequiredFrameSearch |= elementNextFrameDictionary[element.Name].HasValue;
+                AreThereElementLeftThatRequiredFrameSearch |= elementNextFrameDictionary[element].HasValue;
             }
         }
     }
