@@ -1,4 +1,5 @@
-﻿using MikuMikuMethods.Pmm;
+﻿using MikuMikuMethods.Common;
+using MikuMikuMethods.Pmm;
 using MikuMikuMethods.Pmm.Frame;
 using MikuMikuMethods.Vmd;
 using System;
@@ -45,7 +46,7 @@ public static class VmdToPmm
     public static PmmSelfShadowFrame ToPmmFrame(VmdShadowFrame frame) => new()
     {
         Frame = (int)frame.Frame,
-        ShadowMode = (PmmSelfShadowFrame.Shadow)frame.Mode,
+        ShadowMode = (SelfShadow)frame.Mode,
         ShadowRange = frame.Range,
     };
 }

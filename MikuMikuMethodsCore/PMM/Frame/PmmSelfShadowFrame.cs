@@ -1,32 +1,15 @@
-﻿namespace MikuMikuMethods.Pmm.Frame;
+﻿using MikuMikuMethods.Common;
 
-public class PmmSelfShadowFrame : IPmmFrame
+namespace MikuMikuMethods.Pmm.Frame;
+
+public partial class PmmSelfShadowFrame : IPmmFrame
 {
     public int Frame { get; set; }
     public bool IsSelected { get; set; }
-
-    /// <summary>
-    /// 影のモード
-    /// </summary>
-    public enum Shadow : byte
-    {
-        /// <summary>
-        /// 影なし
-        /// </summary>
-        None,
-        /// <summary>
-        /// モード1
-        /// </summary>
-        Mode1,
-        /// <summary>
-        /// モード2
-        /// </summary>
-        Mode2,
-    }
     /// <summary>
     /// 影モード
     /// </summary>
-    public Shadow ShadowMode { get; set; }
+    public SelfShadow ShadowMode { get; set; }
 
     /// <summary>
     /// 影範囲

@@ -351,7 +351,7 @@ public static class PmmFileReader
         _ = reader.ReadInt32();
         _ = reader.ReadInt32();
 
-        frame.ShadowMode = (PmmSelfShadowFrame.Shadow)reader.ReadByte();
+        frame.ShadowMode = (SelfShadow)reader.ReadByte();
         frame.ShadowRange = reader.ReadSingle();
 
         frame.IsSelected = reader.ReadBoolean();
