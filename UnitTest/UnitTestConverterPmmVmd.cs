@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MikuMikuMethods.Converter;
+using MikuMikuMethods.Mme;
 using MikuMikuMethods.Pmm;
 using MikuMikuMethods.Vmd;
 
@@ -82,18 +83,50 @@ public class UnitTestConverterPmmVmd
     [TestMethod]
     public void ApplyVmdTest()
     {
-        var pmm = new PolygonMovieMaker(TestData.GetPath("ApplyTarget.pmm"));
-        var miku = pmm.Models[3];
-
-        var cameraVmd = new VocaloidMotionData(TestData.GetPath("ApplySource_Camera.vmd"));
-        var motionVmd = new VocaloidMotionData(TestData.GetPath("ApplySource_Motion.vmd"));
-
-        pmm.ApplyCameraVmd(cameraVmd);
-        miku.ApplyModelVmd(motionVmd);
-
+        // 期待データのフレーム順をソートしておくことで後々比較できるようにする
         var expected = new PolygonMovieMaker(TestData.GetPath("ApplyExpected.pmm"));
+        var expectedMiku = expected.Models[3];
+        SortMotionFrames(expectedMiku.Bones);
+        expected.Write(TestData.GetPath("ApplyExpected.pmm"));
 
+        var pmm = new PolygonMovieMaker(TestData.GetPath("ApplyTarget.pmm"));
+        Apply(pmm);
         pmm.Write(TestData.GetPath("ApplyResult.pmm"));
-        var result = new PolygonMovieMaker(TestData.GetPath("ApplyResult.pmm"));
+
+        var pmmOverWrite = new PolygonMovieMaker(TestData.GetPath("ApplyExpected.pmm"));
+        Apply(pmmOverWrite);
+        pmmOverWrite.Write(TestData.GetPath("ApplyOverwrite.pmm"));
+
+        // EMM ファイルをコピーしてテスト後の確認をしやすくしておく
+        var emm = new EmmData(TestData.GetPath("ApplyTarget.emm"));
+        emm.Write(TestData.GetPath("ApplyResult.emm"));
+        emm.Write(TestData.GetPath("ApplyOverwrite.emm"));
+
+
+        static void Apply(PolygonMovieMaker pmm)
+        {
+            var miku = pmm.Models[3];
+            pmm.Camera.Frames.Clear();
+            foreach (var bone in miku.Bones)
+            {
+                bone.Frames.Clear();
+            }
+
+            var cameraVmd = new VocaloidMotionData(TestData.GetPath("ApplySource_Camera.vmd"));
+            var motionVmd = new VocaloidMotionData(TestData.GetPath("ApplySource_Motion.vmd"));
+
+            pmm.ApplyCameraVmd(cameraVmd);
+            miku.ApplyModelVmd(motionVmd);
+
+            SortMotionFrames(miku.Bones);
+        }
+
+        static void SortMotionFrames(IEnumerable<PmmBone> bones)
+        {
+            foreach (var bone in bones)
+            {
+                bone.Frames.Sort((left, right) => left.Frame.CompareTo(right.Frame));
+            }
+        }
     }
 }
