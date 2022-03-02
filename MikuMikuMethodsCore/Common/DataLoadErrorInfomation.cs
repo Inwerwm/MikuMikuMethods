@@ -10,4 +10,9 @@ public record DataLoadErrorInfomation(string Section, int? Index, string Descrip
         int num when num % 10 is 3 => $"{number}rd",
         _ => $"{number}th"
     };
+
+    public override string? ToString()
+    {
+        return $"## {Section}{(Index is null ? "" : ":")}{Index} - {Description}";
+    }
 }
