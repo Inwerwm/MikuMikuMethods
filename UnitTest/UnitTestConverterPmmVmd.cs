@@ -132,24 +132,6 @@ public class UnitTestConverterPmmVmd
             Assert.AreEqual(frame.Expected.Weight, frame.Over.Weight, makeMsg("Over.Weight is not equal."));
         });
 
-        static PmmModel Apply(PolygonMovieMaker pmm)
-        {
-            var miku = pmm.Models[3];
-            pmm.Camera.Frames.Clear();
-            foreach (var bone in miku.Bones)
-            {
-                bone.Frames.Clear();
-            }
-
-            var cameraVmd = new VocaloidMotionData(TestData.GetPath("ApplySource_Camera.vmd"));
-            var motionVmd = new VocaloidMotionData(TestData.GetPath("ApplySource_Motion.vmd"));
-
-            pmm.ApplyCameraVmd(cameraVmd);
-            miku.ApplyModelVmd(motionVmd);
-
-            return miku;
-        }
-
         static void SortMotionFrames<T>(List<T> frames) where T : IPmmFrame
         {
             frames.Sort((left, right) => left.Frame.CompareTo(right.Frame));
@@ -179,5 +161,34 @@ public class UnitTestConverterPmmVmd
                 comparer(frame, makeMsg);
             }
         }
+    }
+
+    [TestMethod]
+    public void ReReadAppliedPmmTest()
+    {
+        var pmm = new PolygonMovieMaker(TestData.GetPath("ApplyTarget.pmm"));
+        Apply(pmm);
+        pmm.Write(TestData.GetPath("ApplyReRead.pmm"));
+
+        var reread = new PolygonMovieMaker(TestData.GetPath("ApplyReRead.pmm"));
+
+    }
+
+    private static PmmModel Apply(PolygonMovieMaker pmm)
+    {
+        var miku = pmm.Models[3];
+        pmm.Camera.Frames.Clear();
+        foreach (var bone in miku.Bones)
+        {
+            bone.Frames.Clear();
+        }
+
+        var cameraVmd = new VocaloidMotionData(TestData.GetPath("ApplySource_Camera.vmd"));
+        var motionVmd = new VocaloidMotionData(TestData.GetPath("ApplySource_Motion.vmd"));
+
+        pmm.ApplyCameraVmd(cameraVmd);
+        miku.ApplyModelVmd(motionVmd);
+
+        return miku;
     }
 }
