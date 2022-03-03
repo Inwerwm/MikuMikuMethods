@@ -751,6 +751,7 @@ public static class PmmFileReader
             return readElementFrame(reader);
         }).ToArray();
 
+        Current = new("ResolveFrames", null, $"This section resolves which {typeof(T).Name} the frame belongs to; the PMM file stores this information by frame ID before and after.");
         // 最初から next が 0 である場合 null に変えておく
         foreach (var elmNext in elementNextFrameDictionary)
         {
