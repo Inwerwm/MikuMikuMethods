@@ -7,7 +7,8 @@ namespace MikuMikuMethods.Pmm.IO;
 
 public static class PmmFileReader
 {
-    public static event EventHandler? OnChangeSection;
+    public delegate void OnSectionChangeEventHandler(DataSection section);
+    public static event OnSectionChangeEventHandler? OnChangeSection;
 
     private static Dictionary<PmmModelConfigFrame, Dictionary<PmmBone, (int ModelID, int BoneID)>> OuterParentRelation { get; set; } = new();
     private static Dictionary<PmmModelConfigState, Dictionary<PmmBone, (int ModelID, int BoneID)>> OuterParentRelationCurrent { get; set; } = new();
@@ -16,7 +17,7 @@ public static class PmmFileReader
         get => current; set
         {
             current = value;
-            OnChangeSection?.Invoke(value, new EventArgs());
+            OnChangeSection?.Invoke(value);
         }
     }
 
