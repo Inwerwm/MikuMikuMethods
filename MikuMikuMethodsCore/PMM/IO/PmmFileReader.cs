@@ -231,7 +231,7 @@ public static class PmmFileReader
         }
         catch (Exception ex)
         {
-            IOException exception = new($"Failed to read PMM file. This exception occurred in {Current.Name}. See Data[\"Section\"] property, that type is DataLoadErrorInfomation, of this exception for details on where exceptions are occurred.", ex);
+            IOException exception = new($"Failed to read PMM file. This exception occurred in {Current.Name}. See Data[\"Section\"] property, that type is {Current.GetType().Name}, of this exception for details on where exceptions are occurred.", ex);
             exception.Data.Add("Section", Current);
             throw exception;
         }
