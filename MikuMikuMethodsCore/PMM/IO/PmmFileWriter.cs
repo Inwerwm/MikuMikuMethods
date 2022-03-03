@@ -486,6 +486,7 @@ public static class PmmFileWriter
             frames.Sort((left, right) => left.Frame - right.Frame);
         }
 
+        // 初期フレームとそれ以外のフレームに分割
         var initialFrames = frameContainer.Select(frames =>
         {
             var firstFrame = frames.FirstOrDefault();
