@@ -170,8 +170,21 @@ public class UnitTestConverterPmmVmd
     [TestMethod]
     public void readAndOutput()
     {
-        Read("ApplyResult");
-        Read("ApplyResult_CP");
+        // PmmWriter がフレーム順に並び替えて書き込むので
+        // 出力ファイルを比較しやすくするため一度読んでから再書き込みする
+        var expectedPath = TestData.GetPath("ApplyExpected_Short.pmm");
+        var expected = new PolygonMovieMaker(expectedPath);
+        expected.Write(expectedPath);
+
+        Read("ApplyExpected_Short");
+
+        const string resultName = "ApplyResult_Short";
+        var pmm = new PolygonMovieMaker(TestData.GetPath("ApplyTarget_Short.pmm"));
+        pmm.Models[0].ApplyModelVmd(new VocaloidMotionData(TestData.GetPath("ApplySource_Short.vmd")));
+        pmm.Write(TestData.GetPath(resultName + ".pmm"));
+        Read(resultName);
+
+        Read("ApplyResult_Short_CopyPaste");
 
         void Read(string filenameStem)
         {
@@ -179,6 +192,7 @@ public class UnitTestConverterPmmVmd
             string logPath = TestData.GetPath(filenameStem + "_Readlog.txt");
             File.Delete(logPath);
             using var log = File.AppendText(logPath);
+            var sections = new List<DataSection>();
 
             var output = (string message) =>
             {
@@ -186,10 +200,11 @@ public class UnitTestConverterPmmVmd
                 // switch 式を使うために値を返すようにしてる
                 return message;
             };
-            void onChangeSection(object section, EventArgs _)
+            void onChangeSection(DataSection section)
             {
                 output("");
                 output(section.ToString());
+                sections.Add(section);
             }
             PmmFileReader.OnChangeSection += onChangeSection;
 
@@ -203,16 +218,25 @@ public class UnitTestConverterPmmVmd
                 var indent = "    ";
                 var _ = value switch
                 {
-                    string str => output($"{prefix, -9}{mid}{str}"),
-                    IEnumerable values => output($"{prefix}{{{Environment.NewLine, -9}{indent}{string.Join($",{Environment.NewLine, -9}{indent}", values.Cast<object>().ToArray())}{Environment.NewLine}}}"),
-                    _ => output($"{prefix, -9}{mid}{value}"),
+                    string str => output($"{prefix,-9}{mid}{str}"),
+                    IEnumerable values => output($"{prefix}{{{Environment.NewLine,-9}{indent}{string.Join($",{Environment.NewLine,-9}{indent}", values.Cast<object>().ToArray())}{Environment.NewLine}}}"),
+                    _ => output($"{prefix,-9}{mid}{value}"),
                 };
             };
 
             // 読み込み
             output($"# {filenameStem}");
             var pmm = new PolygonMovieMaker();
-            PmmFileReader.Read(reader, pmm);
+
+            try
+            {
+                PmmFileReader.Read(reader, pmm);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine(string.Join(Environment.NewLine, sections));
+                throw;
+            }
 
             // 終了
             PmmFileReader.OnChangeSection -= onChangeSection;
