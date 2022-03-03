@@ -767,12 +767,20 @@ public static class PmmFileReader
 
             foreach (var element in targetElements)
             {
-                var nextIndex = elementNextFrameDictionary[element];
-                if (nextIndex is null) continue;
-
                 // 読み込んだインデックスは初期フレームの数だけ先に進んでいるので
                 // 初期フレーム数(= 要素数)の分だけ引いたのがモデル内フレームコレクションでのインデックスになる
-                var nextFrame = elementFrames.ElementAt(nextIndex.Value - elementCount);
+                var nextIndex = elementNextFrameDictionary[element] - elementCount;
+                
+                if (nextIndex is null) continue;
+                
+                // nextIndex が全フレーム数より大きい場合、削除されたフレームを指している
+                if (nextIndex >= elementFrames.Length)
+                {
+                    elementNextFrameDictionary[element] = null;
+                    continue;
+                }
+
+                var nextFrame = elementFrames.ElementAt(nextIndex.Value);
 
                 addFrame(element, nextFrame.Frame);
 
