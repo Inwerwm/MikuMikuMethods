@@ -215,11 +215,10 @@ public class UnitTestConverterPmmVmd
             {
                 var prefix = $"{type.Name}";
                 var mid = "| ";
-                var indent = "    ";
                 var _ = value switch
                 {
                     string str => output($"{prefix,-9}{mid}{str}"),
-                    IEnumerable values => output($"{prefix}{{{Environment.NewLine,-9}{indent}{string.Join($",{Environment.NewLine,-9}{indent}", values.Cast<object>().ToArray())}{Environment.NewLine}}}"),
+                    IEnumerable values => output($"{prefix,-9}{mid}{{{string.Join($", ", values.Cast<object>().ToArray())}}}"),
                     _ => output($"{prefix,-9}{mid}{value}"),
                 };
             };
