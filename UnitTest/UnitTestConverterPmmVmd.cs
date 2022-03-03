@@ -1,9 +1,13 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MikuMikuMethods;
+using MikuMikuMethods.Common;
 using MikuMikuMethods.Converter;
 using MikuMikuMethods.Mme;
 using MikuMikuMethods.Pmm;
 using MikuMikuMethods.Pmm.Frame;
+using MikuMikuMethods.Pmm.IO;
 using MikuMikuMethods.Vmd;
+using System.Collections;
 
 namespace UnitTest;
 
@@ -160,6 +164,58 @@ public class UnitTestConverterPmmVmd
 
                 comparer(frame, makeMsg);
             }
+        }
+    }
+
+    [TestMethod]
+    public void readAndOutput()
+    {
+        Read("ApplyResult");
+        Read("ApplyResult_CP");
+
+        void Read(string filenameStem)
+        {
+            // 読み込み履歴出力の準備
+            string logPath = TestData.GetPath(filenameStem + "_Readlog.txt");
+            File.Delete(logPath);
+            using var log = File.AppendText(logPath);
+
+            var output = (string message) =>
+            {
+                log.WriteLine(message);
+                // switch 式を使うために値を返すようにしてる
+                return message;
+            };
+            void onChangeSection(object section, EventArgs _)
+            {
+                output("");
+                output(section.ToString());
+            }
+            PmmFileReader.OnChangeSection += onChangeSection;
+
+            // 履歴出力付きファイル読み込みオブジェクトを作成
+            using var file = new FileStream(TestData.GetPath(filenameStem + ".pmm"), FileMode.Open);
+            using var reader = new BinaryReaderWithEvent(file, Encoding.ShiftJIS);
+            reader.OnRead += (value, type) =>
+            {
+                var prefix = $"{type.Name}";
+                var mid = "| ";
+                var indent = "    ";
+                var _ = value switch
+                {
+                    string str => output($"{prefix, -9}{mid}{str}"),
+                    IEnumerable values => output($"{prefix}{{{Environment.NewLine, -9}{indent}{string.Join($",{Environment.NewLine, -9}{indent}", values.Cast<object>().ToArray())}{Environment.NewLine}}}"),
+                    _ => output($"{prefix, -9}{mid}{value}"),
+                };
+            };
+
+            // 読み込み
+            output($"# {filenameStem}");
+            var pmm = new PolygonMovieMaker();
+            PmmFileReader.Read(reader, pmm);
+
+            // 終了
+            PmmFileReader.OnChangeSection -= onChangeSection;
         }
     }
 
