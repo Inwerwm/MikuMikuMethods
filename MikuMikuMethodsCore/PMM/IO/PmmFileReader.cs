@@ -11,7 +11,7 @@ public static class PmmFileReader
 
     private static Dictionary<PmmModelConfigFrame, Dictionary<PmmBone, (int ModelID, int BoneID)>> OuterParentRelation { get; set; } = new();
     private static Dictionary<PmmModelConfigState, Dictionary<PmmBone, (int ModelID, int BoneID)>> OuterParentRelationCurrent { get; set; } = new();
-    public static DataLoadErrorInfomation Current
+    public static DataSection Current
     {
         get => current; set
         {
@@ -20,7 +20,7 @@ public static class PmmFileReader
         }
     }
 
-    private static DataLoadErrorInfomation current = new("", null, "");
+    private static DataSection current = new("", null, "");
 
     public static void Read(string filePath, PolygonMovieMaker pmm)
     {
@@ -66,7 +66,7 @@ public static class PmmFileReader
             var modelOrderDictionary = new Dictionary<PmmModel, (byte RenderOrder, byte CalculateOrder)>();
             for (int i = 0; i < modelCount; i++)
             {
-                Current = new("Model", i, $"Section of {DataLoadErrorInfomation.GetOrdinal(i)} model data.");
+                Current = new("Model", i, $"Section of {DataSection.GetOrdinal(i)} model data.");
                 (var model, var renderOrder, var calculateOrder) = ReadModel(reader);
                 pmm.Models.Add(model);
                 modelOrderDictionary.Add(model, ((byte RenderOrder, byte CalculateOrder))(renderOrder - 1, calculateOrder - 1));
@@ -122,7 +122,7 @@ public static class PmmFileReader
             _ = reader.ReadBytes(accessoryCount * 100);
             for (int i = 0; i < accessoryCount; i++)
             {
-                Current = new($"Accessory", i, $"The section of {DataLoadErrorInfomation.GetOrdinal(i)} accessory data.");
+                Current = new($"Accessory", i, $"The section of {DataSection.GetOrdinal(i)} accessory data.");
                 (PmmAccessory accessory, byte renderOrder) = ReadAccessory(reader, pmm);
                 pmm.Accessories.Add(accessory);
                 accessoryOrderDictionary.Add(accessory, renderOrder);
@@ -218,7 +218,7 @@ public static class PmmFileReader
                     // 範囲選択セレクタの読込
                     for (int i = 0; i < modelCount; i++)
                     {
-                        Current = new("RangeSelector", i, $"The section of {DataLoadErrorInfomation.GetOrdinal(i)} range selection target.");
+                        Current = new("RangeSelector", i, $"The section of {DataSection.GetOrdinal(i)} range selection target.");
                         pmm.Models[reader.ReadByte()].SpecificEditorState.RangeSelector = new(reader.ReadInt32());
                     }
                 }
@@ -231,7 +231,7 @@ public static class PmmFileReader
         }
         catch (Exception ex)
         {
-            IOException exception = new($"Failed to read PMM file. This exception occurred in {Current.Section}. See Data[\"Section\"] property, that type is DataLoadErrorInfomation, of this exception for details on where exceptions are occurred.", ex);
+            IOException exception = new($"Failed to read PMM file. This exception occurred in {Current.Name}. See Data[\"Section\"] property, that type is DataLoadErrorInfomation, of this exception for details on where exceptions are occurred.", ex);
             exception.Data.Add("Section", Current);
             throw exception;
         }
@@ -253,7 +253,7 @@ public static class PmmFileReader
         var cameraFrameCount = reader.ReadInt32();
         for (int i = 0; i < cameraFrameCount; i++)
         {
-            Current = Current with { Index = i, Description = $"The section of {DataLoadErrorInfomation.GetOrdinal(i)} camera frame data." };
+            Current = Current with { Index = i, Description = $"The section of {DataSection.GetOrdinal(i)} camera frame data." };
             camera.Frames.Add(ReadCameraFrame(reader, pmm));
         }
 
@@ -309,7 +309,7 @@ public static class PmmFileReader
         var frameCount = reader.ReadInt32();
         for (int i = 0; i < frameCount; i++)
         {
-            Current = Current with { Index = i, Description = $"The section of {DataLoadErrorInfomation.GetOrdinal(i)} light frame data." };
+            Current = Current with { Index = i, Description = $"The section of {DataSection.GetOrdinal(i)} light frame data." };
             light.Frames.Add(ReadLightFrame(reader));
         }
 
@@ -494,14 +494,14 @@ public static class PmmFileReader
         var boneCount = reader.ReadInt32();
         for (int i = 0; i < boneCount; i++)
         {
-            Current = new("Bone", i, $"The section of {DataLoadErrorInfomation.GetOrdinal(i)} bone data in {model.Name}.");
+            Current = new("Bone", i, $"The section of {DataSection.GetOrdinal(i)} bone data in {model.Name}.");
             model.Bones.Add(new PmmBone(reader.ReadString()));
         }
 
         var morphCount = reader.ReadInt32();
         for (int i = 0; i < morphCount; i++)
         {
-            Current = new("Morph", i, $"The section of {DataLoadErrorInfomation.GetOrdinal(i)} morph data in {model.Name}.");
+            Current = new("Morph", i, $"The section of {DataSection.GetOrdinal(i)} morph data in {model.Name}.");
             model.Morphs.Add(new PmmMorph(reader.ReadString()));
         }
 
@@ -547,7 +547,7 @@ public static class PmmFileReader
         var nodeCount = reader.ReadByte();
         for (int i = 0; i < nodeCount; i++)
         {
-            Current = new("Morph", i, $"The section of {DataLoadErrorInfomation.GetOrdinal(i)} node.");
+            Current = new("Morph", i, $"The section of {DataSection.GetOrdinal(i)} node.");
             model.Nodes.Add(new() { DoesOpen = reader.ReadBoolean() });
         }
 
@@ -559,7 +559,7 @@ public static class PmmFileReader
         var boneFrameDictionary = new Dictionary<PmmBone, int?>();
         foreach (var (bone, i) in model.Bones.Select((b, i) => (b,i)))
         {
-            Current = new("InitialBoneFrame", i, $"The section of {DataLoadErrorInfomation.GetOrdinal(i)} initial bone frame data in {bone.Name}.");
+            Current = new("InitialBoneFrame", i, $"The section of {DataSection.GetOrdinal(i)} initial bone frame data in {bone.Name}.");
             (var frame, _, var nextId) = ReadBoneFrame(reader, true);
             bone.Frames.Add(frame);
             boneFrameDictionary.Add(bone, nextId);
@@ -579,7 +579,7 @@ public static class PmmFileReader
         var morphFrameDictionary = new Dictionary<PmmMorph, int?>();
         foreach (var (morph, i) in model.Morphs.Select((m, i) => (m, i)))
         {
-            Current = new("InitialMorphFrame", i, $"The section of {DataLoadErrorInfomation.GetOrdinal(i)} initial morph frame data in {morph.Name}.");
+            Current = new("InitialMorphFrame", i, $"The section of {DataSection.GetOrdinal(i)} initial morph frame data in {morph.Name}.");
             (var frame, _, var nextId) = ReadMorphFrame(reader, true);
             morph.Frames.Add(frame);
             morphFrameDictionary.Add(morph, nextId);
@@ -601,13 +601,13 @@ public static class PmmFileReader
         var configFrameCount = reader.ReadInt32();
         for (int i = 0; i < configFrameCount; i++)
         {
-            Current = new("ConfigFrame", i, $"The section of {DataLoadErrorInfomation.GetOrdinal(i)} initial config frame data in {model.Name}.");
+            Current = new("ConfigFrame", i, $"The section of {DataSection.GetOrdinal(i)} initial config frame data in {model.Name}.");
             model.ConfigFrames.Add(ReadConfigFrame(reader, model, ikIndices, parentableIndices));
         }
 
         foreach (var (bone, i) in model.Bones.Select((b, i) => (b, i)))
         {
-            Current = new("CurrentBone", i, $"The section of {DataLoadErrorInfomation.GetOrdinal(i)} current {bone.Name} bone state");
+            Current = new("CurrentBone", i, $"The section of {DataSection.GetOrdinal(i)} current {bone.Name} bone state");
             bone.Current.Movement = reader.ReadVector3();
             bone.Current.Rotation = reader.ReadQuaternion();
             bone.IsCommitted = reader.ReadBoolean();
@@ -617,20 +617,20 @@ public static class PmmFileReader
 
         foreach (var (morph, i) in model.Morphs.Select((m, i) => (m, i)))
         {
-            Current = new("CurrentMorph", i, $"The section of {DataLoadErrorInfomation.GetOrdinal(i)} current {morph.Name} morph state");
+            Current = new("CurrentMorph", i, $"The section of {DataSection.GetOrdinal(i)} current {morph.Name} morph state");
             morph.Current.Weight = reader.ReadSingle();
         }
 
         foreach (var i in ikIndices)
         {
-            Current = new("CurrentConfig", i, $"The section of {DataLoadErrorInfomation.GetOrdinal(i)} current config state (IK state of {model.Bones[i].Name}).");
+            Current = new("CurrentConfig", i, $"The section of {DataSection.GetOrdinal(i)} current config state (IK state of {model.Bones[i].Name}).");
             model.CurrentConfig.EnableIK.Add(model.Bones[i], reader.ReadBoolean());
         }
 
         OuterParentRelationCurrent.Add(model.CurrentConfig, new());
         foreach (var i in parentableIndices)
         {
-            Current = new("OuterParentState", i, $"The section of {DataLoadErrorInfomation.GetOrdinal(i)} outer parent state");
+            Current = new("OuterParentState", i, $"The section of {DataSection.GetOrdinal(i)} outer parent state");
             var op = new PmmOuterParentState();
             op.StartFrame = reader.ReadInt32();
             op.EndFrame = reader.ReadInt32();
@@ -746,7 +746,7 @@ public static class PmmFileReader
         var elementFrameCount = reader.ReadInt32();
         var elementFrames = Enumerable.Range(0, elementFrameCount).Select(i =>
         {
-            Current = new("Frame", i, $"The section of {DataLoadErrorInfomation.GetOrdinal(i)} {typeof(T).Name} frame data.");
+            Current = new("Frame", i, $"The section of {DataSection.GetOrdinal(i)} {typeof(T).Name} frame data.");
             return readElementFrame(reader);
         }).ToArray();
 

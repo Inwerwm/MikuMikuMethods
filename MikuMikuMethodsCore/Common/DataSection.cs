@@ -1,6 +1,6 @@
 ﻿namespace MikuMikuMethods.Common;
 
-public record DataLoadErrorInfomation(string Section, int? Index, string Description)
+public record DataSection(string Name, int? Index, string Description)
 {
     internal static string GetOrdinal(int number) => number switch
     {
@@ -13,6 +13,6 @@ public record DataLoadErrorInfomation(string Section, int? Index, string Descrip
 
     public override string? ToString()
     {
-        return $"## {Section}{(Index is null ? "" : ":")}{Index} - {Description}";
+        return $"## {Name}{(Index is null ? "" : ":")}{Index} - {Description}";
     }
 }
