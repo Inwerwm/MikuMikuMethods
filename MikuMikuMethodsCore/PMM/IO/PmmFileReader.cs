@@ -7,10 +7,20 @@ namespace MikuMikuMethods.Pmm.IO;
 
 public static class PmmFileReader
 {
+    public static event EventHandler? OnChangeSection;
+
     private static Dictionary<PmmModelConfigFrame, Dictionary<PmmBone, (int ModelID, int BoneID)>> OuterParentRelation { get; set; } = new();
     private static Dictionary<PmmModelConfigState, Dictionary<PmmBone, (int ModelID, int BoneID)>> OuterParentRelationCurrent { get; set; } = new();
+    public static DataLoadErrorInfomation Current
+    {
+        get => current; set
+        {
+            current = value;
+            OnChangeSection?.Invoke(value, new EventArgs());
+        }
+    }
 
-    private static DataLoadErrorInfomation Current = new("", null, "");
+    private static DataLoadErrorInfomation current = new("", null, "");
 
     public static void Read(string filePath, PolygonMovieMaker pmm)
     {
