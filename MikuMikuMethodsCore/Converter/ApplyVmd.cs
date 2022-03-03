@@ -110,6 +110,7 @@ public static class ApplyVmd
         Movement = frame.Position,
         Rotation = frame.Rotation,
         InterpolationCurves = new(frame.InterpolationCurves),
+        EnablePhysic = true
     };
 
     public static PmmMorphFrame ToPmmFrame(this VmdMorphFrame frame) => new()
