@@ -569,8 +569,6 @@ public static class PmmFileReader
         // ボーンフレームの読込
         ReadFramesThatRequireResolving(
             reader,
-            model.Bones,
-            boneCount,
             static reader => ReadBoneFrame(reader),
             boneFrameDictionary,
             static (element, frame) => element?.Frames.Add((PmmBoneFrame)frame)
@@ -589,8 +587,6 @@ public static class PmmFileReader
         // モーフフレームの読込
         ReadFramesThatRequireResolving(
             reader,
-            model.Morphs,
-            morphCount,
             static reader => ReadMorphFrame(reader),
             morphFrameDictionary,
             static (element, frame) => element?.Frames.Add((PmmMorphFrame)frame)
@@ -729,15 +725,11 @@ public static class PmmFileReader
     /// <para>フレームの属する要素が前後フレームIDによって管理されているので、各要素内のフレームコレクションに投入するための解決処理を実施する</para>
     /// </summary>
     /// <param name="reader">バイナリ読込クラス</param>
-    /// <param name="targetElements">フレーム追加対象になるPMM要素のコレクション</param>
-    /// <param name="elementCount">targetElements の要素数</param>
     /// <param name="readElementFrame">フレーム読込メソッドの呼び出し関数</param>
     /// <param name="elementNextFrameDictionary">要素名とそれに対応する次フレームIDの辞書</param>
     /// <param name="addFrame">所属要素にフレームを追加する関数</param>
     private static void ReadFramesThatRequireResolving<T>(
         BinaryReader reader,
-        IEnumerable<T> targetElements,
-        int elementCount,
         Func<BinaryReader, (IPmmFrame? Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex)> readElementFrame,
         Dictionary<T, int?> elementNextFrameDictionary,
         Action<T, IPmmFrame> addFrame)
@@ -752,13 +744,10 @@ public static class PmmFileReader
 
         Current = new("ResolveFrames", null, $"This section resolves which {typeof(T).Name} the frame belongs to; the PMM file stores this information by frame ID before and after.");
 
-        // 最初から next が 0 である場合 null に変えておく
-        var nextFramesOfElements = elementNextFrameDictionary.Select(p => (Element: p.Key, NextFrameIndex: p.Value == 0 ? null : p.Value));
-
         ResolveNextFrames(
             addFrame,
             elementFrames,
-            nextFramesOfElements
+            elementNextFrameDictionary.Select(p => (Element: p.Key, NextFrameIndex: p.Value == 0 ? null : p.Value))
         );
         
         static void ResolveNextFrames(Action<T, IPmmFrame> addFrame, (IPmmFrame? Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex)[] elementFrames, IEnumerable<(T Element, int? NextFrameIndex)> nextFramesOfElements)
@@ -780,8 +769,8 @@ public static class PmmFileReader
             ResolveNextFrames(
                 addFrame,
                 elementFrames,
-                nextFrames.Select<(T Element, (IPmmFrame? Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex) NextFrame), (T Element, int? NextFrameIndex)>(
-                            p => (
+                nextFrames.Select<(T Element, (IPmmFrame? Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex) NextFrame), (T Element, int? NextFrameIndex)>
+                                 (p => (
                                     p.Element,
                                     p.NextFrame switch
                                     {
@@ -789,10 +778,9 @@ public static class PmmFileReader
                                         { NextFrameIndex: 0 } => null,
                                         _ => p.NextFrame.NextFrameIndex
                                     }
-                                )
+                                 )
                           ).Where(p => p.NextFrameIndex.HasValue)
             );
         }
     }
-
 }
