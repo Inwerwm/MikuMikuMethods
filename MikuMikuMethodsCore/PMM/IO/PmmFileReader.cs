@@ -561,7 +561,7 @@ public static class PmmFileReader
         foreach (var (bone, i) in model.Bones.Select((b, i) => (b,i)))
         {
             Current = new("InitialBoneFrame", i, $"The section of {DataSection.GetOrdinal(i)} initial bone frame data in {bone.Name}.");
-            (var frame, _, var nextId) = ReadBoneFrame(reader, true);
+            (var frame, _, var nextId, _) = ReadBoneFrame(reader, true);
             bone.Frames.Add(frame);
             boneFrameDictionary.Add(bone, nextId);
         }
@@ -581,7 +581,7 @@ public static class PmmFileReader
         foreach (var (morph, i) in model.Morphs.Select((m, i) => (m, i)))
         {
             Current = new("InitialMorphFrame", i, $"The section of {DataSection.GetOrdinal(i)} initial morph frame data in {morph.Name}.");
-            (var frame, _, var nextId) = ReadMorphFrame(reader, true);
+            (var frame, _, var nextId, _) = ReadMorphFrame(reader, true);
             morph.Frames.Add(frame);
             morphFrameDictionary.Add(morph, nextId);
         }
@@ -685,10 +685,9 @@ public static class PmmFileReader
 
         return frame;
     }
-    private static (PmmMorphFrame Frame, int PreviousFrameIndex, int NextFrameIndex) ReadMorphFrame(BinaryReader reader, bool isInitial = false)
+    private static (PmmMorphFrame Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex) ReadMorphFrame(BinaryReader reader, bool isInitial = false)
     {
-        // リストの添え字で管理できるため不要なフレームインデックスを破棄
-        if (!isInitial) _ = reader.ReadInt32();
+        int? id = isInitial ? null : reader.ReadInt32();
 
         var frame = new PmmMorphFrame();
 
@@ -700,12 +699,11 @@ public static class PmmFileReader
         frame.Weight = reader.ReadSingle();
         frame.IsSelected = reader.ReadBoolean();
 
-        return (frame, preID, nextId);
+        return (frame, preID, nextId, id);
     }
-    private static (PmmBoneFrame Frame, int PreviousFrameIndex, int NextFrameIndex) ReadBoneFrame(BinaryReader reader, bool isInitial = false)
+    private static (PmmBoneFrame Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex) ReadBoneFrame(BinaryReader reader, bool isInitial = false)
     {
-        // リストの添え字で管理できるため不要なフレームインデックスを破棄
-        if (!isInitial) _ = reader.ReadInt32();
+        int? id = isInitial ? null : reader.ReadInt32();
 
         var frame = new PmmBoneFrame();
 
@@ -723,7 +721,7 @@ public static class PmmFileReader
         frame.IsSelected = reader.ReadBoolean();
         frame.EnablePhysic = !reader.ReadBoolean();
 
-        return (frame, previousFrameIndex, nextFrameIndex);
+        return (frame, previousFrameIndex, nextFrameIndex, id);
     }
 
     /// <summary>
@@ -740,7 +738,7 @@ public static class PmmFileReader
         BinaryReader reader,
         IEnumerable<T> targetElements,
         int elementCount,
-        Func<BinaryReader, (IPmmFrame Frame, int PreviousFrameIndex, int NextFrameIndex)> readElementFrame,
+        Func<BinaryReader, (IPmmFrame Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex)> readElementFrame,
         Dictionary<T, int?> elementNextFrameDictionary,
         Action<T, IPmmFrame> addFrame)
      where T: IPmmModelElement{
