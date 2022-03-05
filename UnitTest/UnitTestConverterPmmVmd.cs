@@ -170,12 +170,6 @@ public class UnitTestConverterPmmVmd
     [TestMethod]
     public void ReadAndOutput()
     {
-        // PMM ファイルのロード時に各フレームは時間順に格納される
-        // 出力ファイルを比較しやすくするため一度読んでから再書き込みする
-        var expectedPath = TestData.GetPath("ApplyExpected_Short.pmm");
-        var expected = new PolygonMovieMaker(expectedPath);
-        expected.Write(expectedPath);
-
         TestData.PmmLoggingRead("ApplyExpected_Short");
 
         const string resultName = "ApplyResult_Short";
