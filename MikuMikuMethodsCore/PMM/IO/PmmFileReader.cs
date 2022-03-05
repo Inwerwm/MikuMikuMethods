@@ -759,7 +759,8 @@ public static class PmmFileReader
                                                  .Select(p => (
                                                     Element: p.Element,
                                                     NextFrame: elementFrames.FirstOrDefault(f => f.FrameIndex == p.NextFrameIndex, (null, -1, -1, null))
-                                                 ));
+                                                 ))
+                                                 .ToArray();
 
             foreach (var (element, nextFrame) in nextFrames.Where(f => f.NextFrame.Frame is not null))
             {
