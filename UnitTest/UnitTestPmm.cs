@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MikuMikuMethods.Pmm;
 using MikuMikuMethods.Pmm.ElementState;
 using MikuMikuMethods.Pmm.Frame;
@@ -8,11 +8,10 @@ namespace UnitTest;
 [TestClass]
 public class UnitTestPmm
 {
-    private readonly string PmmName = "PragmaticTestData";
-
     [TestMethod]
     public void IOTest()
     {
+        var PmmName = "PragmaticTestData";
         var pmm = new PolygonMovieMaker(TestData.GetPath(PmmName + ".pmm"));
         pmm.Write(TestData.GetPath(PmmName + "_out.pmm"));
         var reloaded = new PolygonMovieMaker(TestData.GetPath(PmmName + "_out.pmm"));
