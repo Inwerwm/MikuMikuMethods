@@ -755,8 +755,17 @@ public static class PmmFileReader
         // 最初から next が 0 である場合 null に変えておく
         var nextFramesOfElements = elementNextFrameDictionary.Select(p => (Element: p.Key, NextFrameIndex: p.Value == 0 ? null : p.Value));
 
-        while (nextFramesOfElements.Any(p => p.NextFrameIndex.HasValue))
+        ResolveNextFrames(
+            addFrame,
+            elementFrames,
+            nextFramesOfElements
+        );
+        
+        static void ResolveNextFrames(Action<T, IPmmFrame> addFrame, (IPmmFrame? Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex)[] elementFrames, IEnumerable<(T Element, int? NextFrameIndex)> nextFramesOfElements)
         {
+            if (!nextFramesOfElements.Any())
+                return;
+
             var nextFrames = nextFramesOfElements.Where(p => p.NextFrameIndex.HasValue)
                                                  .Select(p => (
                                                     Element: p.Element,
@@ -768,15 +777,22 @@ public static class PmmFileReader
                 addFrame(element, nextFrame.Frame);
             }
 
-            nextFramesOfElements = nextFrames.Select<(T Element, (IPmmFrame? Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex) NextFrame), (T, int?)>(p => (
-                p.Element,
-                p.NextFrame switch
-                {
-                    { Frame: null } => null,
-                    { NextFrameIndex: 0 } => null,
-                    _ => p.NextFrame.NextFrameIndex
-                }
-            ));
+            ResolveNextFrames(
+                addFrame,
+                elementFrames,
+                nextFrames.Select<(T Element, (IPmmFrame? Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex) NextFrame), (T Element, int? NextFrameIndex)>(
+                            p => (
+                                    p.Element,
+                                    p.NextFrame switch
+                                    {
+                                        { Frame: null } => null,
+                                        { NextFrameIndex: 0 } => null,
+                                        _ => p.NextFrame.NextFrameIndex
+                                    }
+                                )
+                          ).Where(p => p.NextFrameIndex.HasValue)
+            );
         }
     }
+
 }
