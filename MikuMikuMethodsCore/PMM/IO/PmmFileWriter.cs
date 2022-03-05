@@ -480,26 +480,11 @@ public static class PmmFileWriter
 
     private static void WriteFrames(BinaryWriter writer, IEnumerable<List<IPmmFrame>> frameContainer, Func<IPmmFrame> constructor, Action<BinaryWriter, IPmmFrame> stateWriter)
     {
-        // フレーム順に整列
-        foreach (var frames in frameContainer)
-        {
-            frames.Sort((left, right) => left.Frame - right.Frame);
-        }
-
         // 初期フレームとそれ以外のフレームに分割
-        var initialFrames = frameContainer.Select(frames =>
-        {
-            var firstFrame = frames.FirstOrDefault();
+        var initialFrames = frameContainer.Select(frames => frames.FirstOrDefault(f => f.Frame == 0) ?? CreateZeroFrame(frames.MinBy(f => f.Frame)) ?? constructor())
+                                          .Select(f => new InitFrameContainer(f) { NextIndex = 0 }).ToArray();
 
-            return firstFrame switch
-            {
-                null => constructor(),
-                { Frame: 0 } => firstFrame,
-                _ => CreateZeroFrame(firstFrame)
-            };
-        }).Select(f => new InitFrameContainer(f) { NextIndex = 0 }).ToArray();
-
-        IPmmFrame[][] otherFramesContainer = frameContainer.Select(frames => frames.FirstOrDefault() is { Frame: 0 } ? frames.Skip(1).ToArray() : frames.ToArray()).ToArray();
+        IPmmFrame[][] otherFramesContainer = frameContainer.Select(frames => frames.Where(f => f.Frame != 0).ToArray()).ToArray();
 
         // 各フレームに非初期な全フレーム内におけるインデックスを付与
         int id = initialFrames.Length;
@@ -544,8 +529,10 @@ public static class PmmFileWriter
             stateWriter(writer, frame.Frame);
         }
 
-        static IPmmFrame CreateZeroFrame(IPmmFrame frame)
+        static IPmmFrame? CreateZeroFrame(IPmmFrame? frame)
         {
+            if (frame is null) return null;
+
             var f = frame.DeepCopy();
             f.Frame = 0;
             return f;
