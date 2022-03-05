@@ -180,39 +180,4 @@ public class UnitTestPmm
         Assert.AreEqual(6, PmmRangeSelector.Create(morph1, model).Index);
         Assert.AreEqual(7, PmmRangeSelector.Create(bone1, model).Index);
     }
-
-    private enum LineKind
-    {
-        Value,
-        Array,
-        Section,
-    }
-
-    [TestMethod]
-    public void FrameResolvingTest()
-    {
-        var pmm = TestData.PmmLoggingRead("FrameTest");
-        pmm.Write(TestData.GetPath("FrameTest_Rewrite.pmm"));
-        TestData.PmmLoggingRead("FrameTest_Rewrite");
-
-        var originLog = File.ReadAllLines(TestData.GetPath("FrameTest_Readlog.txt"));
-        var rewriteLog = File.ReadAllLines(TestData.GetPath("FrameTest_Rewrite_Readlog.txt"));
-
-        Assert.AreEqual(originLog.Length, rewriteLog.Length);
-        IEnumerable<(string Origin, string Rewrite)> log = originLog.Zip(rewriteLog);
-        var compareResult = log.Select((l, i) =>
-        {
-            var kind = l.Origin.FirstOrDefault() == '#' ? LineKind.Section
-                     : l.Origin.Split('|')[0].IndexOf('[') != -1 ? LineKind.Array
-                     : LineKind.Value;
-
-            return kind == LineKind.Value ? (Log: l, Count: i, IsEqual: l.Origin == l.Rewrite, Kind: kind) : (Log: l, Count: i, IsEqual: true, Kind: kind);
-        });
-
-        var notEquals = compareResult.Where(r => !r.IsEqual).ToArray();
-        Assert.IsFalse(notEquals.Any(), $"異なる行数: {notEquals.Length}{Environment.NewLine}{string.Join(Environment.NewLine, notEquals.Select(r => $"{r.Count, 5}:{getType(r.Log.Origin), -9}| {getValue(r.Log.Origin)} <> {getValue(r.Log.Rewrite)}"))}");
-
-        static string getType(string logStr) => logStr.Split('|')[0].Trim();
-        static string getValue(string logStr) => logStr.Split('|')[1].Trim();
-    }
 }
