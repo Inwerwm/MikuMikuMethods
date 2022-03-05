@@ -17,7 +17,7 @@ public class PmmBoneState
     /// <summary>
     /// 物理が有効か
     /// </summary>
-    public bool EnablePhysic { get; set; }
+    public bool EnablePhysic { get; set; } = true;
 
     public PmmBoneState DeepCopy() => new()
     {
