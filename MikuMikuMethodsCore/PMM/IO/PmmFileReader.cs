@@ -751,40 +751,34 @@ public static class PmmFileReader
         }).ToArray();
 
         Current = new("ResolveFrames", null, $"This section resolves which {typeof(T).Name} the frame belongs to; the PMM file stores this information by frame ID before and after.");
-        
+
         // 最初から next が 0 である場合 null に変えておく
         var nextFrameIndexOf = elementNextFrameDictionary.ToDictionary(p => p.Key, p => p.Value == 0 ? null : p.Value);
 
         var AreThereElementLeftThatRequiredFrameSearch = true;
         while (AreThereElementLeftThatRequiredFrameSearch)
         {
-            // 論理和代入演算子でループ継続判定をしたいのでまず false にしておく
-            AreThereElementLeftThatRequiredFrameSearch = false;
+            var nextFrames = nextFrameIndexOf.Where(p => p.Value.HasValue).Select(p => (Element: p.Key, Frame: elementFrames.FirstOrDefault(f => f.FrameIndex == p.Value)));
 
-            foreach (var element in targetElements)
+            foreach (var (element, nextFrame) in nextFrames)
             {
-                var nextIndex = nextFrameIndexOf[element];
-                if (nextIndex is null) continue;
-
-                var nextFrame = elementFrames.FirstOrDefault(f => f.FrameIndex == nextIndex);
                 if (nextFrame.Frame is null)
                 {
                     // 次のフレームが見つからないということは削除されたと思われる
                     // なので次フレームに null を入れる
                     nextFrameIndexOf[element] = null;
-                    continue;
                 }
+                else
+                {
+                    addFrame(element, nextFrame.Frame);
 
-                addFrame(element, nextFrame.Frame);
-
-                // この要素の次のフレームのインデックスを更新する
-                // 次のインデックスが 0 なら次の要素は無いので null を入れる
-                nextFrameIndexOf[element] = nextFrame.NextFrameIndex == 0 ? null : nextFrame.NextFrameIndex;
-
-                // 一つでも次のフレーム探索が必要なボーンがあればループを続ける
-                // 次のインデックスに null が入っていればフレーム探索は不要の意味になる
-                AreThereElementLeftThatRequiredFrameSearch |= nextFrameIndexOf[element].HasValue;
+                    // この要素の次のフレームのインデックスを更新する
+                    // 次のインデックスが 0 なら次の要素は無いので null を入れる
+                    nextFrameIndexOf[element] = nextFrame.NextFrameIndex == 0 ? null : nextFrame.NextFrameIndex;
+                }
             }
+
+            AreThereElementLeftThatRequiredFrameSearch = nextFrameIndexOf.Any(p => p.Value.HasValue);
         }
     }
 }
