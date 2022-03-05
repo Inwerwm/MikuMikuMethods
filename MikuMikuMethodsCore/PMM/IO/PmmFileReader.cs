@@ -753,32 +753,23 @@ public static class PmmFileReader
         Current = new("ResolveFrames", null, $"This section resolves which {typeof(T).Name} the frame belongs to; the PMM file stores this information by frame ID before and after.");
 
         // 最初から next が 0 である場合 null に変えておく
-        var nextFramesOfElements = elementNextFrameDictionary.Select(p => (Element: p.Key, nextFrameIndex: p.Value == 0 ? null : p.Value));
+        var nextFramesOfElements = elementNextFrameDictionary.Select(p => (Element: p.Key, NextFrameIndex: p.Value == 0 ? null : p.Value));
 
-        var AreThereElementLeftThatRequiredFrameSearch = true;
-        while (AreThereElementLeftThatRequiredFrameSearch)
+        while (nextFramesOfElements.Any(p => p.NextFrameIndex.HasValue))
         {
-            var nextFrames = nextFramesOfElements.Where(p => p.nextFrameIndex.HasValue).Select(p => (Element: p.Element, Frame: elementFrames.FirstOrDefault(f => f.FrameIndex == p.nextFrameIndex)));
+            var nextFrames = nextFramesOfElements.Where(p => p.NextFrameIndex.HasValue).Select(p => (Element: p.Element, Frame: elementFrames.FirstOrDefault(f => f.FrameIndex == p.NextFrameIndex)));
 
-            foreach (var (element, nextFrame) in nextFrames)
+            foreach (var (element, nextFrame) in nextFrames.Where(f => f.Frame.Frame is not null))
             {
-                if (nextFrame.Frame is null)
-                {
-                    // 次のフレームが見つからないということは削除されたと思われる
-                    // なので次フレームに null を入れる
-                    nextFramesOfElements[element] = null;
-                }
-                else
-                {
-                    addFrame(element, nextFrame.Frame);
-
-                    // この要素の次のフレームのインデックスを更新する
-                    // 次のインデックスが 0 なら次の要素は無いので null を入れる
-                    nextFramesOfElements[element] = nextFrame.NextFrameIndex == 0 ? null : nextFrame.NextFrameIndex;
-                }
+                addFrame(element, nextFrame.Frame);
             }
 
-            AreThereElementLeftThatRequiredFrameSearch = nextFramesOfElements.Any(p => p.nextFrameIndex.HasValue);
+            nextFramesOfElements = nextFrames.Select<(T Element, (IPmmFrame Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex) Frame), (T, int?)>(p => (p.Element, p.Frame switch
+            {
+                { Frame: null } => null,
+                { NextFrameIndex: 0 } => null,
+                _ => p.Frame.NextFrameIndex
+            }));
         }
     }
 }
