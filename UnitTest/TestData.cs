@@ -40,11 +40,12 @@ internal static class TestData
         {
             var prefix = $"{type.Name}";
             var mid = "| ";
+            var makeString = (string value) => $"{prefix,-9}{mid}{value}";
             var _ = value switch
             {
-                string str => output($"{prefix,-9}{mid}{str}"),
-                System.Collections.IEnumerable values => output($"{prefix,-9}{mid}{{{string.Join($", ", values.Cast<object>().ToArray())}}}"),
-                _ => output($"{prefix,-9}{mid}{value}"),
+                byte[] values => output(makeString(string.Join($", ", values))),
+                char[] values => output(makeString(string.Join($", ", values))),
+                _ => output(makeString(value.ToString())),
             };
         };
 
