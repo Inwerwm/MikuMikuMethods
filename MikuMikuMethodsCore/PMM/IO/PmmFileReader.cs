@@ -738,7 +738,7 @@ public static class PmmFileReader
         BinaryReader reader,
         IEnumerable<T> targetElements,
         int elementCount,
-        Func<BinaryReader, (IPmmFrame Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex)> readElementFrame,
+        Func<BinaryReader, (IPmmFrame? Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex)> readElementFrame,
         Dictionary<T, int?> elementNextFrameDictionary,
         Action<T, IPmmFrame> addFrame)
      where T : IPmmModelElement
@@ -757,19 +757,26 @@ public static class PmmFileReader
 
         while (nextFramesOfElements.Any(p => p.NextFrameIndex.HasValue))
         {
-            var nextFrames = nextFramesOfElements.Where(p => p.NextFrameIndex.HasValue).Select(p => (Element: p.Element, Frame: elementFrames.FirstOrDefault(f => f.FrameIndex == p.NextFrameIndex)));
+            var nextFrames = nextFramesOfElements.Where(p => p.NextFrameIndex.HasValue)
+                                                 .Select(p => (
+                                                    Element: p.Element,
+                                                    NextFrame: elementFrames.FirstOrDefault(f => f.FrameIndex == p.NextFrameIndex, (null, -1, -1, null))
+                                                 ));
 
-            foreach (var (element, nextFrame) in nextFrames.Where(f => f.Frame.Frame is not null))
+            foreach (var (element, nextFrame) in nextFrames.Where(f => f.NextFrame.Frame is not null))
             {
                 addFrame(element, nextFrame.Frame);
             }
 
-            nextFramesOfElements = nextFrames.Select<(T Element, (IPmmFrame Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex) Frame), (T, int?)>(p => (p.Element, p.Frame switch
-            {
-                { Frame: null } => null,
-                { NextFrameIndex: 0 } => null,
-                _ => p.Frame.NextFrameIndex
-            }));
+            nextFramesOfElements = nextFrames.Select<(T Element, (IPmmFrame? Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex) NextFrame), (T, int?)>(p => (
+                p.Element,
+                p.NextFrame switch
+                {
+                    { Frame: null } => null,
+                    { NextFrameIndex: 0 } => null,
+                    _ => p.NextFrame.NextFrameIndex
+                }
+            ));
         }
     }
 }
