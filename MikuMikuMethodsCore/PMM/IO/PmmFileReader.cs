@@ -558,7 +558,7 @@ public static class PmmFileReader
 
         // 初期ボーンフレームの読込
         var boneFrameDictionary = new Dictionary<PmmBone, int?>();
-        foreach (var (bone, i) in model.Bones.Select((b, i) => (b,i)))
+        foreach (var (bone, i) in model.Bones.Select((b, i) => (b, i)))
         {
             Current = new("InitialBoneFrame", i, $"The section of {DataSection.GetOrdinal(i)} initial bone frame data in {bone.Name}.");
             (var frame, _, var nextId, _) = ReadBoneFrame(reader, true);
@@ -741,7 +741,8 @@ public static class PmmFileReader
         Func<BinaryReader, (IPmmFrame Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex)> readElementFrame,
         Dictionary<T, int?> elementNextFrameDictionary,
         Action<T, IPmmFrame> addFrame)
-     where T: IPmmModelElement{
+     where T : IPmmModelElement
+    {
         var elementFrameCount = reader.ReadInt32();
         var elementFrames = Enumerable.Range(0, elementFrameCount).Select(i =>
         {
