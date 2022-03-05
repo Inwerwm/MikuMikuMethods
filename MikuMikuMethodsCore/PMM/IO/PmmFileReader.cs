@@ -751,10 +751,9 @@ public static class PmmFileReader
 
         Current = new("ResolveFrames", null, $"This section resolves which {typeof(T).Name} the frame belongs to; the PMM file stores this information by frame ID before and after.");
         // 最初から next が 0 である場合 null に変えておく
-        foreach (var elmNext in elementNextFrameDictionary)
+        foreach (var elmNext in elementNextFrameDictionary.Where(elmNext => elmNext.Value == 0))
         {
-            if (elmNext.Value.HasValue && elmNext.Value.Value == 0)
-                elementNextFrameDictionary[elmNext.Key] = null;
+            elementNextFrameDictionary[elmNext.Key] = null;
         }
 
         var AreThereElementLeftThatRequiredFrameSearch = true;
