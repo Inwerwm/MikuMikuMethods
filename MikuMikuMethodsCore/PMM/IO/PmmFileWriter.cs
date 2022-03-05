@@ -488,7 +488,7 @@ public static class PmmFileWriter
 
         // 各フレームに非初期な全フレーム内におけるインデックスを付与
         int id = initialFrames.Length;
-        (IPmmFrame Frame, int Index)[][] IndexedOtherFrameContainer = otherFramesContainer.Select(frames => frames.Select(frame => (Frame: frame, Index: id++)).ToArray()).ToArray();
+        (IPmmFrame Frame, int Index)[][] IndexedOtherFrameContainer = otherFramesContainer.Select(frames => frames.Select(frame => (Frame: frame, Index: id++)).OrderBy(p => p.Frame.Frame).ToArray()).ToArray();
 
         // 各フレームについて前後フレーム番号を得る
         (IPmmFrame Frame, int Index, int PreIndex, int NextIndex)[] IndexedFrames = IndexedOtherFrameContainer.SelectMany((frames, i) => frames.Select((p, j) =>
