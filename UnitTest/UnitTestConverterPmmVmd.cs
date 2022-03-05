@@ -168,7 +168,7 @@ public class UnitTestConverterPmmVmd
     }
 
     [TestMethod]
-    public void readAndOutput()
+    public void ReadAndOutput()
     {
         // PmmWriter がフレーム順に並び替えて書き込むので
         // 出力ファイルを比較しやすくするため一度読んでから再書き込みする
