@@ -11,4 +11,13 @@ internal static class ListControl
         if (list.Remove(item))
             list.Insert(index, item);
     }
+
+    public static IEnumerable<TResult> Select<TSource, TResult>(this IEnumerable<TSource> source, Action<TSource> onSelected, Func<TSource, TResult> selector)
+    {
+        return source.Select(s =>
+        {
+            onSelected(s);
+            return selector(s);
+        });
+    }
 }
