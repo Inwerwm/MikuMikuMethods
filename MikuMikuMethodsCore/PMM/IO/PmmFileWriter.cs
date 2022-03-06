@@ -348,7 +348,7 @@ public static class PmmFileWriter
             writer.Write(ikBoneIndex);
         }
 
-        var parentableBoneIndices = model.Bones.Select((Bone, Index) => (Bone, Index)).Where(p => p.Bone.CanBecomeOuterParent).Select(p => p.Index).ToArray();
+        var parentableBoneIndices = model.Bones.Select((Bone, Index) => (Bone, Index)).Where(p => p.Bone.CanSetOuterParent).Select(p => p.Index).ToArray();
         // 内部表現では無視されているが、実際のPMMの外部親可能インデックスには最初に -1 が入っている
         writer.Write(parentableBoneIndices.Length + 1);
         writer.Write(-1);

@@ -521,7 +521,7 @@ public static class PmmFileReader
         // なぜか最初に -1 が入っているのでそれは飛ばす
         foreach (var i in parentableIndices.Skip(1))
         {
-            model.Bones[i].CanBecomeOuterParent = true;
+            model.Bones[i].CanSetOuterParent = true;
         }
 
         Current = new("RenderOrder", null, $"The section of render order.");
