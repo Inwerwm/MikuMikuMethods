@@ -5,7 +5,7 @@ C#向けMMD関連データ読込ライブラリ
 ### /MikuMikuMethod
 .NET Framework 4.8 (*Legacy*)
 ### /MikuMikuMethodCore
-.NET 5 (*Recommended*)
+.NET 6 (*Recommended*)
 ### /Test
 Framework版のテスト用プロジェクト
 ### /UnitTest
