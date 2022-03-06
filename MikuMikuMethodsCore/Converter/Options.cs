@@ -1,7 +1,7 @@
 ﻿namespace MikuMikuMethods.Converter;
 
 /// <summary>
-/// PMMデータからカメラ情報を抽出する際のオプション
+/// PMMからカメラモーションを抽出する際のオプション
 /// </summary>
 /// <param name="StartFrame">開始フレーム</param>
 /// <param name="EndFrame">終了フレーム nullなら全フレーム</param>
@@ -11,7 +11,7 @@
 public sealed record CameraMotionExtractionOptions(uint StartFrame = 0, uint? EndFrame = null, bool Camera = true, bool Light = false, bool Shadow = false);
 
 /// <summary>
-/// PMMデータからモデルモーション情報を抽出する際のオプション
+/// PMMからモデルモーションを抽出する際のオプション
 /// </summary>
 /// <param name="StartFrame">開始フレーム</param>
 /// <param name="EndFrame">終了フレーム nullなら全フレーム</param>
