@@ -299,7 +299,7 @@ public static class PmxFileWriter
                 (bone.IsFixedAxis, PmxBone.BoneFlag.FixAxis),
                 (bone.IsLocalAxis, PmxBone.BoneFlag.LocalAxis),
                 (bone.IsAfterPhysic, PmxBone.BoneFlag.TrAfterPhysic),
-                (bone.UseOuterParent, PmxBone.BoneFlag.TrOuterParent)
+                (bone.UseOutsideParent, PmxBone.BoneFlag.TrOutsideParent)
             };
         var acmFlag = flags.Aggregate((ushort)0, (acm, elm) => (ushort)(elm.Value ? acm + (ushort)elm.Enum : acm));
         writer.Write(acmFlag);
@@ -324,8 +324,8 @@ public static class PmxFileWriter
             writer.Write(bone.LocalAxisZ);
         }
 
-        if (bone.UseOuterParent)
-            writer.Write(bone.OuterParentKey);
+        if (bone.UseOutsideParent)
+            writer.Write(bone.OutsideParentKey);
 
         if (bone.IsIK)
         {

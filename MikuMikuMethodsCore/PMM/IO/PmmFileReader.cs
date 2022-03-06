@@ -10,8 +10,8 @@ public static class PmmFileReader
     public delegate void OnSectionChangeEventHandler(DataSection section);
     public static event OnSectionChangeEventHandler? OnChangeSection;
 
-    private static Dictionary<PmmModelConfigFrame, Dictionary<PmmBone, (int ModelID, int BoneID)>> OuterParentRelation { get; set; } = new();
-    private static Dictionary<PmmModelConfigState, Dictionary<PmmBone, (int ModelID, int BoneID)>> OuterParentRelationCurrent { get; set; } = new();
+    private static Dictionary<PmmModelConfigFrame, Dictionary<PmmBone, (int ModelID, int BoneID)>> OutsideParentRelation { get; set; } = new();
+    private static Dictionary<PmmModelConfigState, Dictionary<PmmBone, (int ModelID, int BoneID)>> OutsideParentRelationCurrent { get; set; } = new();
     public static DataSection Current
     {
         get => current; 
@@ -85,13 +85,13 @@ public static class PmmFileReader
             }
 
             // 外部親の関係解決
-            Current = new("OuterParentSolving", null, $"The section that resolves the outer parent relation. In this section, no reading is done, only calculation.");
-            foreach (var frame in OuterParentRelation)
+            Current = new("OutsideParentSolving", null, $"The section that resolves the outside parent relation. In this section, no reading is done, only calculation.");
+            foreach (var frame in OutsideParentRelation)
             {
                 foreach (var relation in frame.Value)
                 {
                     var opModel = relation.Value.ModelID < 0 ? null : pmm.Models[relation.Value.ModelID];
-                    frame.Key.OuterParent.Add(relation.Key, new()
+                    frame.Key.OutsideParent.Add(relation.Key, new()
                     {
                         ParentModel = opModel,
                         ParentBone = opModel?.Bones[relation.Value.BoneID]
@@ -99,13 +99,13 @@ public static class PmmFileReader
                 }
             }
 
-            foreach (var state in OuterParentRelationCurrent)
+            foreach (var state in OutsideParentRelationCurrent)
             {
                 foreach (var relation in state.Value)
                 {
                     var opModel = relation.Value.ModelID < 0 ? null : pmm.Models[relation.Value.ModelID];
-                    state.Key.OuterParent[relation.Key].ParentModel = opModel;
-                    state.Key.OuterParent[relation.Key].ParentBone = opModel?.Bones[relation.Value.BoneID];
+                    state.Key.OutsideParent[relation.Key].ParentModel = opModel;
+                    state.Key.OutsideParent[relation.Key].ParentBone = opModel?.Bones[relation.Value.BoneID];
                 }
             }
 
@@ -239,8 +239,8 @@ public static class PmmFileReader
         }
         finally
         {
-            OuterParentRelation = new();
-            OuterParentRelationCurrent = new();
+            OutsideParentRelation = new();
+            OutsideParentRelationCurrent = new();
         }
     }
 
@@ -515,13 +515,13 @@ public static class PmmFileReader
             model.Bones[i].IsIK = true;
         }
 
-        Current = new("ParentableBone", null, $"The section of outer parentable bone indices.");
+        Current = new("ParentableBone", null, $"The section of outside parentable bone indices.");
         var parentableBoneCount = reader.ReadInt32();
         var parentableIndices = Enumerable.Range(0, parentableBoneCount).Select(_ => reader.ReadInt32()).ToArray();
         // なぜか最初に -1 が入っているのでそれは飛ばす
         foreach (var i in parentableIndices.Skip(1))
         {
-            model.Bones[i].CanSetOuterParent = true;
+            model.Bones[i].CanSetOutsideParent = true;
         }
 
         Current = new("RenderOrder", null, $"The section of render order.");
@@ -625,18 +625,18 @@ public static class PmmFileReader
             model.CurrentConfig.EnableIK.Add(model.Bones[i], reader.ReadBoolean());
         }
 
-        OuterParentRelationCurrent.Add(model.CurrentConfig, new());
+        OutsideParentRelationCurrent.Add(model.CurrentConfig, new());
         foreach (var i in parentableIndices)
         {
-            Current = new("OuterParentState", i, $"The section of {DataSection.GetOrdinal(i)} outer parent state");
-            var op = new PmmOuterParentState();
+            Current = new("OutsideParentState", i, $"The section of {DataSection.GetOrdinal(i)} outside parent state");
+            var op = new PmmOutsideParentState();
             op.StartFrame = reader.ReadInt32();
             op.EndFrame = reader.ReadInt32();
             (int, int) relation = (reader.ReadInt32(), reader.ReadInt32());
             if (i >= 0)
             {
-                OuterParentRelationCurrent[model.CurrentConfig].Add(model.Bones[i], relation);
-                model.CurrentConfig.OuterParent.Add(model.Bones[i], op);
+                OutsideParentRelationCurrent[model.CurrentConfig].Add(model.Bones[i], relation);
+                model.CurrentConfig.OutsideParent.Add(model.Bones[i], op);
             }
         }
 
@@ -654,7 +654,7 @@ public static class PmmFileReader
         if (!isInitial) _ = reader.ReadInt32();
 
         var frame = new PmmModelConfigFrame();
-        OuterParentRelation.Add(frame, new());
+        OutsideParentRelation.Add(frame, new());
 
         frame.Frame = reader.ReadInt32();
 
@@ -675,7 +675,7 @@ public static class PmmFileReader
             (int, int) relation = (reader.ReadInt32(), reader.ReadInt32());
             // parentableIndices 最初の要素は -1 なので飛ばす
             if (i >= 0)
-                OuterParentRelation[frame].Add(model.Bones[i], relation);
+                OutsideParentRelation[frame].Add(model.Bones[i], relation);
         }
 
         frame.IsSelected = reader.ReadBoolean();

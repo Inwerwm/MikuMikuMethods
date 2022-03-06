@@ -1,6 +1,6 @@
 ﻿namespace MikuMikuMethods.Pmm.ElementState;
 
-public record PmmOuterParentState
+public record PmmOutsideParentState
 {
     /// <summary>
     /// 外部親が設定されたフレーム
@@ -14,7 +14,7 @@ public record PmmOuterParentState
     public PmmModel? ParentModel { get; set; }
     public PmmBone? ParentBone { get; set; }
 
-    public PmmOuterParentState DeepCopy() => new()
+    public PmmOutsideParentState DeepCopy() => new()
     {
         StartFrame = StartFrame,
         EndFrame = EndFrame,

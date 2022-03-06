@@ -14,7 +14,7 @@ public class PmmBone : IPmmModelElement
     /// <summary>
     /// 外部親を設定できるか
     /// </summary>
-    public bool CanSetOuterParent { get; set; }
+    public bool CanSetOutsideParent { get; set; }
 
     /// <summary>
     /// 現在の変形状態

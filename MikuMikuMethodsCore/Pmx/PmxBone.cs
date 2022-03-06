@@ -123,12 +123,12 @@ public class PmxBone : IPmxData
     /// 外部親を使用するか
     /// MMM用らしい
     /// </summary>
-    public bool UseOuterParent { get; set; }
+    public bool UseOutsideParent { get; set; }
     /// <summary>
     /// 外部親番号
     /// MMM用らしい
     /// </summary>
-    public int OuterParentKey { get; set; }
+    public int OutsideParentKey { get; set; }
 
     /// <summary>
     /// ボーンの接続先指定の方法
@@ -160,7 +160,7 @@ public class PmxBone : IPmxData
         FixAxis = 0x0400,
         LocalAxis = 0x0800,
         TrAfterPhysic = 0x1000,
-        TrOuterParent = 0x2000
+        TrOutsideParent = 0x2000
     }
 
     public override string ToString() => $"{Name} - {Position}";

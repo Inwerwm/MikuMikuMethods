@@ -356,10 +356,10 @@ public static class PmxFileReader
             bone.LocalAxisZ = reader.ReadVector3();
         }
 
-        if (boneFlag.HasFlag(PmxBone.BoneFlag.TrOuterParent))
+        if (boneFlag.HasFlag(PmxBone.BoneFlag.TrOutsideParent))
         {
-            bone.UseOuterParent = true;
-            bone.OuterParentKey = reader.ReadInt32();
+            bone.UseOutsideParent = true;
+            bone.OutsideParentKey = reader.ReadInt32();
         }
 
         if (boneFlag.HasFlag(PmxBone.BoneFlag.IsIK))
