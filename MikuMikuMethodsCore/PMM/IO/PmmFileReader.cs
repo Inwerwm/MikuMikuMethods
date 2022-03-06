@@ -736,11 +736,11 @@ public static class PmmFileReader
      where T : IPmmModelElement
     {
         var elementFrameCount = reader.ReadInt32();
-        var elementFrames = Enumerable.Range(0, elementFrameCount).Select(i =>
-        {
-            Current = new("Frame", i, $"The section of {DataSection.GetOrdinal(i)} {typeof(T).Name} frame data.");
-            return readElementFrame(reader);
-        }).ToArray();
+        // 自前定義 Select の1つ目のラムダ式は各ループにおける通常の Select 処理の直前にやる処理
+        var elementFrames = Enumerable.Range(0, elementFrameCount).Select(
+            i => Current = new("Frame", i, $"The section of {DataSection.GetOrdinal(i)} {typeof(T).Name} frame data."),
+            i => readElementFrame(reader)
+        ).ToArray();
 
         Current = new("ResolveFrames", null, $"This section resolves which {typeof(T).Name} the frame belongs to; the PMM file stores this information by frame ID before and after.");
 
