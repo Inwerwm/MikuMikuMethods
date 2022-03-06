@@ -12,7 +12,7 @@ public class PmmBoneState
     /// <summary>
     /// 回転量
     /// </summary>
-    public Quaternion Rotation { get; set; }
+    public Quaternion Rotation { get; set; } = Quaternion.Identity;
 
     /// <summary>
     /// 物理が有効か
