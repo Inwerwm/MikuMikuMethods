@@ -26,14 +26,9 @@ public static class ModelConverter
 
     private static PmmMorph ToPmmMorph(PmxMorph pmxMorph) => new PmmMorph(pmxMorph.Name);
 
-    private static PmmBone ToPmmBone(PmxBone pmxBone)
+    private static PmmBone ToPmmBone(PmxBone pmxBone) => new PmmBone(pmxBone.Name)
     {
-        var pmmBone = new PmmBone(pmxBone.Name)
-        {
-            CanSetOutsideParent = pmxBone.Movable,
-            IsIK = pmxBone.IsIK,
-        };
-
-        return pmmBone;
-    }
+        CanSetOutsideParent = pmxBone.Movable,
+        IsIK = pmxBone.IsIK,
+    };
 }
