@@ -1,4 +1,4 @@
-﻿using MikuMikuMethods.Pmm;
+using MikuMikuMethods.Pmm;
 using MikuMikuMethods.Pmx;
 using System.Collections.Immutable;
 
@@ -7,11 +7,17 @@ public static class ModelConverter
 {
     public static PmmModel ToPmmModel(this PmxModel pmxModel, string pmxPath)
     {
+        string pmxFullPath = Path.GetFullPath(pmxPath);
+        if(!File.Exists(pmxFullPath))
+        {
+            throw new FileNotFoundException($"指定されたモデルが見つかりませんでした: {pmxFullPath}");
+        }
+
         var pmmModel = new PmmModel()
         {
             Name = pmxModel.ModelInfo.Name,
             NameEn = pmxModel.ModelInfo.NameEn,
-            Path = pmxPath
+            Path = pmxFullPath
         };
 
         pmmModel.Bones.AddRange(pmxModel.Bones.Select(ToPmmBone));
