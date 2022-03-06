@@ -2,6 +2,7 @@
 using MikuMikuMethods.Common;
 using MikuMikuMethods.Pmm;
 using MikuMikuMethods.Pmm.IO;
+using System.Diagnostics;
 
 namespace UnitTest;
 
@@ -11,27 +12,9 @@ internal static class TestData
 
     public static string GetPath(string filename) => Path.Combine(TestDataDirectory, filename);
 
-    public static PolygonMovieMaker PmmLoggingRead(string filenameStem)
+    private static PolygonMovieMaker PmmReadWithCallback(string filenameStem, Func<string, string> valueOutput, PmmFileReader.OnSectionChangeEventHandler sectionOutput)
     {
-        // 読み込み履歴出力の準備
-        string logPath = GetPath(filenameStem + "_Readlog.txt");
-        File.Delete(logPath);
-        using var log = File.AppendText(logPath);
-        var sections = new List<DataSection>();
-
-        var output = (string message) =>
-        {
-            log.WriteLine(message);
-            // switch 式を使うために値を返すようにしてる
-            return message;
-        };
-        void onChangeSection(DataSection section)
-        {
-            output("");
-            output(section.ToString());
-            sections.Add(section);
-        }
-        PmmFileReader.OnChangeSection += onChangeSection;
+        PmmFileReader.OnChangeSection += sectionOutput;
 
         // 履歴出力付きファイル読み込みオブジェクトを作成
         using var file = new FileStream(GetPath(filenameStem + ".pmm"), FileMode.Open);
@@ -43,14 +26,14 @@ internal static class TestData
             var makeString = (string value) => $"{prefix,-9}{mid}{value}";
             var _ = value switch
             {
-                byte[] values => output(makeString(string.Join($", ", values))),
-                char[] values => output(makeString(string.Join($", ", values))),
-                _ => output(makeString(value.ToString())),
+                byte[] values => valueOutput(makeString(string.Join($", ", values))),
+                char[] values => valueOutput(makeString(string.Join($", ", values))),
+                _ => valueOutput(makeString(value.ToString())),
             };
         };
 
         // 読み込み
-        output($"# {filenameStem}");
+        valueOutput($"# {filenameStem}");
         var pmm = new PolygonMovieMaker();
 
         try
@@ -59,13 +42,77 @@ internal static class TestData
         }
         catch (Exception)
         {
-            Console.WriteLine(string.Join(Environment.NewLine, sections));
             throw;
         }
-
-        // 終了
-        PmmFileReader.OnChangeSection -= onChangeSection;
+        finally
+        {
+            // 終了
+            PmmFileReader.OnChangeSection -= sectionOutput;
+        }
 
         return pmm;
+    }
+
+    public static PolygonMovieMaker PmmLoggingRead(string filenameStem)
+    {
+        // 読み込み履歴出力の準備
+        string logPath = GetPath(filenameStem + "_Readlog.txt");
+        File.Delete(logPath);
+        using var log = File.AppendText(logPath);
+
+        var output = (string message) =>
+        {
+            log.WriteLine(message);
+            // switch 式を使うために値を返すようにしてる
+            return message;
+        };
+
+        var sections = new List<(DataSection, TimeSpan)>();
+
+        var watch = new Stopwatch();
+        var previousTime = new TimeSpan(0);
+        DataSection previousSection = null;
+        try
+        {
+            watch.Start();
+            var pmm = PmmReadWithCallback(
+                filenameStem,
+                output,
+                (section) =>
+                {
+                    var (current, dif) = getTime(sections, watch, previousTime, previousSection);
+                    outTime(output, current, dif);
+
+                    output("");
+                    output($"{section}");
+
+                    previousSection = section;
+                    previousTime = current;
+                }
+            );
+
+            var (current, dif) = getTime(sections, watch, previousTime, previousSection);
+            outTime(output, current, dif);
+
+            return pmm;
+        }
+        finally
+        {
+            watch?.Stop();
+            Console.WriteLine(string.Join(Environment.NewLine, sections));
+        }
+
+        static (TimeSpan current, TimeSpan dif) getTime(List<(DataSection, TimeSpan)> sections, Stopwatch watch, TimeSpan previousTime, DataSection previousSection)
+        {
+            var current = watch.Elapsed;
+            var dif = current - previousTime;
+            sections.Add((previousSection, dif));
+            return (current, dif);
+        }
+
+        static void outTime(Func<string, string> output, TimeSpan current, TimeSpan dif)
+        {
+            output($"{"Time",-9}: {current} : {dif}");
+        }
     }
 }

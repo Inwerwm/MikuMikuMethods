@@ -12,9 +12,9 @@ public class UnitTestPmm
     public void IOTest()
     {
         var PmmName = "PragmaticTestData";
-        var pmm = new PolygonMovieMaker(TestData.GetPath(PmmName + ".pmm"));
+        var pmm = TestData.PmmLoggingRead(PmmName);
         pmm.Write(TestData.GetPath(PmmName + "_out.pmm"));
-        var reloaded = new PolygonMovieMaker(TestData.GetPath(PmmName + "_out.pmm"));
+        var reloaded = TestData.PmmLoggingRead(PmmName + "_out");
     }
 
     [TestMethod]
