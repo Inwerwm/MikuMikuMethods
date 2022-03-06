@@ -348,7 +348,7 @@ public static class PmmFileWriter
             writer.Write(ikBoneIndex);
         }
 
-        var parentableBoneIndices = model.Bones.Select((Bone, Index) => (Bone, Index)).Where(p => p.Bone.CanBecomeOuterParent).Select(p => p.Index).ToArray();
+        var parentableBoneIndices = model.Bones.Select((Bone, Index) => (Bone, Index)).Where(p => p.Bone.CanSetOutsideParent).Select(p => p.Index).ToArray();
         // 内部表現では無視されているが、実際のPMMの外部親可能インデックスには最初に -1 が入っている
         writer.Write(parentableBoneIndices.Length + 1);
         writer.Write(-1);
@@ -425,10 +425,10 @@ public static class PmmFileWriter
 
                 // 最初に入っている -1
                 writer.Write(-1);
-                writer.Write(-1);
+                writer.Write(0);
                 foreach (var parentableId in parentableBoneIndices)
                 {
-                    frame.OuterParent.TryGetValue(model.Bones[parentableId], out ElementState.PmmOuterParentState? op);
+                    frame.OutsideParent.TryGetValue(model.Bones[parentableId], out ElementState.PmmOutsideParentState? op);
                     writer.Write(pmm.Models.IndexOf(op?.ParentModel!));
                     writer.Write(op?.ParentModel?.Bones.IndexOf(op?.ParentBone!) ?? 0);
                 }
@@ -465,7 +465,7 @@ public static class PmmFileWriter
         writer.Write(0);
         foreach (var i in parentableBoneIndices)
         {
-            var op = model.CurrentConfig.OuterParent[model.Bones[i]];
+            var op = model.CurrentConfig.OutsideParent[model.Bones[i]];
             writer.Write(op.StartFrame ?? 0);
             writer.Write(op.EndFrame ?? 0);
             writer.Write(pmm.Models.IndexOf(op.ParentModel!));

@@ -24,12 +24,12 @@ public class PmmModelConfigState
     ///     </item>
     /// </list>
     /// </summary>
-    public Dictionary<PmmBone, PmmOuterParentState> OuterParent { get; protected init; } = new();
+    public Dictionary<PmmBone, PmmOutsideParentState> OutsideParent { get; protected init; } = new();
 
     public PmmModelConfigState DeepCopy() => new()
     {
         Visible = Visible,
         EnableIK = new(EnableIK),
-        OuterParent = OuterParent.ToDictionary(p => p.Key, p => p.Value.DeepCopy()),
+        OutsideParent = OutsideParent.ToDictionary(p => p.Key, p => p.Value.DeepCopy()),
     };
 }

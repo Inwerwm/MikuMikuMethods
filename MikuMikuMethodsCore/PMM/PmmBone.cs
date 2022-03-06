@@ -12,9 +12,9 @@ public class PmmBone : IPmmModelElement
     /// </summary>
     public bool IsIK { get; set; }
     /// <summary>
-    /// 外部親になれるか
+    /// 外部親を設定できるか
     /// </summary>
-    public bool CanBecomeOuterParent { get; set; }
+    public bool CanSetOutsideParent { get; set; }
 
     /// <summary>
     /// 現在の変形状態

@@ -12,7 +12,7 @@ public class PmmModelConfigFrame : PmmModelConfigState, IPmmFrame
         Frame = Frame,
         IsSelected = IsSelected,
         EnableIK = new(EnableIK),
-        OuterParent = OuterParent.ToDictionary(p => p.Key, p => p.Value.DeepCopy()),
+        OutsideParent = OutsideParent.ToDictionary(p => p.Key, p => p.Value.DeepCopy()),
         Visible = Visible
     };
 
