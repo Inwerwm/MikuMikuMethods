@@ -425,7 +425,7 @@ public static class PmmFileWriter
 
                 // 最初に入っている -1
                 writer.Write(-1);
-                writer.Write(-1);
+                writer.Write(0);
                 foreach (var parentableId in parentableBoneIndices)
                 {
                     frame.OutsideParent.TryGetValue(model.Bones[parentableId], out ElementState.PmmOutsideParentState? op);
