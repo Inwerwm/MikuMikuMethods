@@ -24,6 +24,25 @@ public static class ModelConverter
         pmmModel.Morphs.AddRange(pmxModel.Morphs.Select(ToPmmMorph));
         pmmModel.Nodes.AddRange(pmxModel.Nodes.Select(ToPmmNode));
 
+        // IK と外部親はコンフィグ情報を作っておかないと PMM の書き込みに失敗する
+        Pmm.Frame.PmmModelConfigFrame configFrame = new();
+        pmmModel.ConfigFrames.Add(configFrame);
+
+        foreach (var bone in pmmModel.Bones)
+        {
+            if(bone.IsIK)
+            {
+                pmmModel.CurrentConfig.EnableIK.Add(bone, true);
+                configFrame.EnableIK.Add(bone, true);
+            }
+
+            if (bone.CanSetOutsideParent)
+            {
+                pmmModel.CurrentConfig.OutsideParent.Add(bone, new());
+                configFrame.OutsideParent.Add(bone, new());
+            }
+        }
+
         return pmmModel;
     }
 
