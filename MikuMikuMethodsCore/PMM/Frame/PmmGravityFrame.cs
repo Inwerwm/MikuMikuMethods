@@ -1,39 +1,22 @@
-﻿using System.Numerics;
+﻿using MikuMikuMethods.Pmm.ElementState;
 
-namespace MikuMikuMethods.PMM.Frame
+namespace MikuMikuMethods.Pmm.Frame;
+
+public class PmmGravityFrame : PmmGravityState, IPmmFrame
 {
-    /// <summary>
-    /// 重力フレーム情報
-    /// </summary>
-    public class PmmGravityFrame : PmmFrame
+    public int Frame { get; set; } = 0;
+    public bool IsSelected { get; set; } = false;
+
+    public new PmmGravityFrame DeepCopy() => new()
     {
+        Frame = Frame,
+        IsSelected = IsSelected,
+        Acceleration = Acceleration,
+        Direction = Direction,
+        Noize = Noize
+    };
 
-        /// <summary>
-        /// ノイズ不可On/Off
-        /// </summary>
-        public bool EnableNoize { get; set; }
-        /// <summary>
-        /// ノイズ量
-        /// </summary>
-        public int NoizeAmount { get; set; }
-        /// <summary>
-        /// 加速度
-        /// </summary>
-        public float Acceleration { get; set; }
-        /// <summary>
-        /// 方向
-        /// </summary>
-        public Vector3 Direction { get; set; }
+    IPmmFrame IPmmFrame.DeepCopy() => DeepCopy();
 
-        /// <summary>
-        /// デフォルトコンストラクタ
-        /// </summary>
-        public PmmGravityFrame()
-        {
-            EnableNoize = false;
-            NoizeAmount = 10;
-            Acceleration = 9.8f;
-            Direction = new(0, -1, 0);
-        }
-    }
+    public override string ToString() => Frame.ToString();
 }

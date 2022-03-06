@@ -1,46 +1,29 @@
-﻿using System.Collections.Generic;
+﻿using MikuMikuMethods.Pmm.ElementState;
 using System.Collections.ObjectModel;
-using System.Numerics;
 
-namespace MikuMikuMethods.PMM.Frame
+namespace MikuMikuMethods.Pmm.Frame;
+
+public class PmmBoneFrame : PmmBoneState, IPmmFrame
 {
+    public int Frame { get; set; } = 0;
+    public bool IsSelected { get; set; } = false;
+
     /// <summary>
-    /// ボーンフレーム情報
+    /// 補間曲線
     /// </summary>
-    public class PmmBoneFrame : PmmFrame
+    public ReadOnlyDictionary<InterpolationItem, InterpolationCurve> InterpolationCurves { get; internal init; } = InterpolationCurve.CreateBoneCurves();
+
+    public new PmmBoneFrame DeepCopy() => new()
     {
-        /// <summary>
-        /// 移動量
-        /// </summary>
-        public Vector3 Offset { get; set; }
+        Frame = Frame,
+        IsSelected = IsSelected,
+        EnablePhysic = EnablePhysic,
+        Rotation = Rotation,
+        Movement = Movement,
+        InterpolationCurves = InterpolationCurve.Clone(InterpolationCurves),
+    };
 
-        /// <summary>
-        /// 回転量
-        /// </summary>
-        public Quaternion Rotation { get; set; }
+    IPmmFrame IPmmFrame.DeepCopy() => DeepCopy();
 
-        /// <summary>
-        /// 補間曲線
-        /// </summary>
-        public ReadOnlyDictionary<InterpolationItem, InterpolationCurve> InterpolationCurces { get; init; }
-
-        /// <summary>
-        /// 物理が有効か
-        /// </summary>
-        public bool EnablePhysic { get; set; }
-
-        /// <summary>
-        /// コンストラクタ
-        /// </summary>
-        public PmmBoneFrame()
-        {
-            Dictionary<InterpolationItem, InterpolationCurve> curveDic = new(4);
-            curveDic.Add(InterpolationItem.XPosition, new());
-            curveDic.Add(InterpolationItem.YPosition, new());
-            curveDic.Add(InterpolationItem.ZPosition, new());
-            curveDic.Add(InterpolationItem.Rotation, new());
-
-            InterpolationCurces = new(curveDic);
-        }
-    }
+    public override string ToString() => Frame.ToString();
 }

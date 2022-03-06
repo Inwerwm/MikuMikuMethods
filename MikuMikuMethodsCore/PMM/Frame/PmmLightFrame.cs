@@ -1,27 +1,21 @@
-﻿using System.Numerics;
+﻿using MikuMikuMethods.Pmm.ElementState;
 
-namespace MikuMikuMethods.PMM.Frame
+namespace MikuMikuMethods.Pmm.Frame;
+
+public class PmmLightFrame : PmmLightState, IPmmFrame
 {
-    /// <summary>
-    /// 照明フレーム情報
-    /// </summary>
-    public class PmmLightFrame : PmmFrame
-    {
-        /// <summary>
-        /// 色(RGBのみ使用)
-        /// </summary>
-        public ColorF Color { get; set; }
-        /// <summary>
-        /// 位置
-        /// </summary>
-        public Vector3 Position { get; set; }
+    public int Frame { get; set; }
+    public bool IsSelected { get; set; }
 
-        /// <summary>
-        /// コンストラクタ
-        /// </summary>
-        public PmmLightFrame()
-        {
-            Color = ColorF.FromARGB(154, 154, 154);
-        }
-    }
+    public new PmmLightFrame DeepCopy() => new()
+    {
+        Frame = Frame,
+        IsSelected = IsSelected,
+        Color = Color,
+        Position = Position,
+    };
+
+    IPmmFrame IPmmFrame.DeepCopy() => DeepCopy();
+
+    public override string ToString() => Frame.ToString();
 }

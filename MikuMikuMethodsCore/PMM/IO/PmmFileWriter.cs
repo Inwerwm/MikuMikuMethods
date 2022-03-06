@@ -1,522 +1,552 @@
 ﻿using MikuMikuMethods.Extension;
-using MikuMikuMethods.PMM.Frame;
-using System.IO;
-using System.Linq;
+using MikuMikuMethods.Pmm.Frame;
 
-namespace MikuMikuMethods.PMM.IO
+namespace MikuMikuMethods.Pmm.IO;
+
+public static class PmmFileWriter
 {
-    internal static class PmmFileWriter
+    public static void Write(string filePath, PolygonMovieMaker pmm)
     {
-        public static void Write(string filePath, PolygonMovieMaker pmm)
+        try
         {
-            using (FileStream file = new(filePath, FileMode.Create))
-            using (BinaryWriter writer = new(file, Encoding.ShiftJIS))
+            using FileStream file = new(filePath, FileMode.Create);
+            using BinaryWriter writer = new(file, Encoding.ShiftJIS);
+            Write(writer, pmm);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    public static void Write(BinaryWriter writer, PolygonMovieMaker pmm)
+    {
+        writer.Write(pmm.Version, 30, Encoding.ShiftJIS);
+        writer.Write(pmm.OutputResolution.Width);
+        writer.Write(pmm.OutputResolution.Height);
+
+
+        writer.Write(pmm.EditorState.Width);
+
+        writer.Write((float)pmm.Camera.Current.ViewAngle);
+
+        writer.Write(pmm.EditorState.IsCameraMode);
+
+        writer.Write(pmm.PanelPane.DoesOpenCameraPanel);
+        writer.Write(pmm.PanelPane.DoesOpenLightPanel);
+        writer.Write(pmm.PanelPane.DoesOpenAccessaryPanel);
+        writer.Write(pmm.PanelPane.DoesOpenBonePanel);
+        writer.Write(pmm.PanelPane.DoesOpenMorphPanel);
+        writer.Write(pmm.PanelPane.DoesOpenSelfShadowPanel);
+
+        writer.Write((byte)(pmm.EditorState.SelectedModel is null ? 0 : pmm.Models.IndexOf(pmm.EditorState.SelectedModel)));
+        writer.Write((byte)pmm.Models.Count);
+        foreach (var item in pmm.Models.Select((Model, Index) => (Model, Index)))
+        {
+            WriteModel(writer, pmm, item.Model, item.Index);
+        }
+
+        WriteCamera(writer, pmm.Camera, pmm);
+        WriteLight(writer, pmm.Light);
+
+        writer.Write((byte)(pmm.EditorState.SelectedAccessory is null ? 0 : pmm.Accessories.IndexOf(pmm.EditorState.SelectedAccessory)));
+        writer.Write(pmm.EditorState.VerticalScrollOfAccessory);
+
+        writer.Write((byte)pmm.Accessories.Count);
+        foreach (var acs in pmm.Accessories)
+        {
+            writer.Write(acs.Name, 100, Encoding.ShiftJIS);
+        }
+        foreach (var (acs, i) in pmm.Accessories.Select((acs, i) => (acs, i)))
+        {
+            WriteAccessory(writer, acs, i, pmm);
+        }
+
+        writer.Write(pmm.EditorState.CurrentFrame);
+        writer.Write(pmm.EditorState.HorizontalScroll);
+        writer.Write(pmm.EditorState.HorizontalScrollLength);
+        writer.Write((int)pmm.EditorState.SelectedBoneOperation);
+
+        writer.Write((byte)pmm.PlayConfig.CameraTrackingTarget);
+        writer.Write(pmm.PlayConfig.EnableRepeat);
+        writer.Write(pmm.PlayConfig.EnableMoveCurrentFrameToPlayStopping);
+        writer.Write(pmm.PlayConfig.EnableStartFromCurrentFrame);
+        writer.Write(pmm.PlayConfig.PlayStartFrame);
+        writer.Write(pmm.PlayConfig.PlayStopFrame);
+
+        writer.Write(pmm.BackGround.Audio is not null);
+        writer.Write(pmm.BackGround.Audio ?? "", 256, Encoding.ShiftJIS);
+
+        writer.Write(pmm.BackGround.VideoOffset.X);
+        writer.Write(pmm.BackGround.VideoOffset.Y);
+        writer.Write(pmm.BackGround.VideoScale);
+        writer.Write(pmm.BackGround.Video ?? "", 256, Encoding.ShiftJIS);
+        writer.Write(pmm.BackGround.Video is not null ? 0b01000000 : 0b01000001);
+
+        writer.Write(pmm.BackGround.ImageOffset.X);
+        writer.Write(pmm.BackGround.ImageOffset.Y);
+        writer.Write(pmm.BackGround.ImageScale);
+        writer.Write(pmm.BackGround.Image ?? "", 256, Encoding.ShiftJIS);
+        writer.Write(pmm.BackGround.Image is not null);
+
+        writer.Write(pmm.RenderConfig.InfomationVisible);
+        writer.Write(pmm.RenderConfig.AxisVisible);
+        writer.Write(pmm.RenderConfig.EnableGrandShadow);
+
+        writer.Write((float)pmm.RenderConfig.FPSLimit);
+        writer.Write((int)pmm.RenderConfig.ScreenCaptureMode);
+
+        writer.Write(pmm.RenderConfig.PostDrawingAccessoryStartIndex);
+        writer.Write(pmm.RenderConfig.GroundShadowBrightness);
+        writer.Write(pmm.RenderConfig.EnableTransparentGroundShadow);
+
+        WritePhysics(writer, pmm.Physics);
+        WriteSelfShadow(writer, pmm.SelfShadow);
+
+        writer.Write(pmm.RenderConfig.EdgeColor, false);
+        writer.Write(pmm.BackGround.IsBlack);
+
+        writer.Write(pmm.Models.IndexOf(pmm.Camera.Current.FollowingModel!));
+        writer.Write(pmm.Camera.Current.FollowingModel?.Bones.IndexOf(pmm.Camera.Current.FollowingBone!) ?? 0);
+
+        // 意図不明な謎の行列
+        writer.Write(new byte[]
+        {
+                0x00,0x00,0x80,0x3F,
+                0x00,0x00,0x00,0x00,
+                0x00,0x00,0x00,0x00,
+                0x00,0x00,0x00,0x00,
+
+                0x00,0x00,0x00,0x00,
+                0x00,0x00,0x80,0x3F,
+                0x00,0x00,0x00,0x00,
+                0x00,0x00,0x00,0x00,
+
+                0x00,0x00,0x00,0x00,
+                0x00,0x00,0x00,0x00,
+                0x00,0x00,0x80,0x3F,
+                0x00,0x00,0x00,0x00,
+
+                0x00,0x00,0x00,0x00,
+                0x00,0x00,0x00,0x00,
+                0x00,0x00,0x00,0x00,
+                0x00,0x00,0x80,0x3F
+        });
+
+        writer.Write(pmm.PlayConfig.EnableFollowCamera);
+
+        // 意図不明な謎の値
+        writer.Write(false);
+
+        writer.Write(pmm.Physics.EnableGroundPhysics);
+        writer.Write(pmm.RenderConfig.JumpFrameLocation);
+
+        // Ver 9.24 以降である
+        writer.Write(true);
+
+        foreach (var (model, i) in pmm.Models.Select((m, i) => (m, i)))
+        {
+            writer.Write((byte)i);
+            writer.Write(model.SpecificEditorState.RangeSelector.Index);
+        }
+    }
+
+    /// <summary>
+    /// セルフ影書込み
+    /// </summary>
+    private static void WriteSelfShadow(BinaryWriter writer, PmmSelfShadow selfShadow)
+    {
+        writer.Write(selfShadow.EnableSelfShadow);
+        writer.Write(selfShadow.ShadowRange);
+
+        WriteFrames(
+            writer,
+            new[] { selfShadow.Frames.ToList<IPmmFrame>() },
+            () => new PmmSelfShadowFrame(),
+            (writer, f) =>
             {
-                writer.Write(pmm.Version, 30, Encoding.ShiftJIS);
-                writer.Write(pmm.Output.Width);
-                writer.Write(pmm.Output.Height);
+                var frame = (PmmSelfShadowFrame)f;
 
-                pmm.EditorState.WriteViewState(writer);
+                writer.Write((byte)frame.ShadowMode);
+                writer.Write(frame.ShadowRange);
 
-                writer.Write((byte)pmm.Models.Count);
-                foreach (var model in pmm.Models)
-                    model.Write(writer);
+                writer.Write(frame.IsSelected);
+            }
+        );
+    }
 
-                pmm.Camera.Write(writer);
-                pmm.Light.Write(writer);
+    /// <summary>
+    /// 物理書込み
+    /// </summary>
+    private static void WritePhysics(BinaryWriter writer, PmmPhysics physics)
+    {
+        writer.Write((byte)physics.CalculationMode);
+        writer.Write(physics.CurrentGravity.Acceleration);
+        writer.Write(physics.CurrentGravity.Noize ?? 0);
+        writer.Write(physics.CurrentGravity.Direction);
+        writer.Write(physics.CurrentGravity.Noize is not null);
 
-                pmm.EditorState.WriteAccessoryState(writer);
-                writer.Write((byte)pmm.Accessories.Count);
-                foreach (var acs in pmm.Accessories)
-                    writer.Write(acs.Name, 100, Encoding.ShiftJIS);
-                foreach (var acs in pmm.Accessories)
-                    acs.Write(writer);
+        WriteFrames(
+            writer,
+            new[] { physics.GravityFrames.ToList<IPmmFrame>() },
+            () => new PmmGravityFrame(),
+            (writer, f) =>
+            {
+                var frame = (PmmGravityFrame)f;
 
-                pmm.EditorState.WriteFrameState(writer);
-                pmm.PlayConfig.Write(writer);
-                pmm.MediaConfig.Write(writer);
-                pmm.ViewConfig.Write(writer);
-                pmm.Gravity.Write(writer);
-                pmm.SelfShadow.Write(writer);
-                pmm.ViewConfig.WriteColorConfig(writer);
-                pmm.Camera.UncomittedFollowing.Write(writer);
-                writer.Write(PmmUnknown.Matrix);
-                pmm.ViewConfig.WriteViewFollowing(writer);
-                writer.Write(pmm.Unknown.TruthValue);
-                pmm.ViewConfig.WriteGroundPhysics(writer);
-                pmm.ViewConfig.WriteFrameLocation(writer);
+                writer.Write(frame.Noize is not null);
+                writer.Write(frame.Noize ?? 0);
+                writer.Write(frame.Acceleration);
+                writer.Write(frame.Direction);
 
-                // 範囲選択対象セクションがないバージョンなら終了
-                if (!pmm.EditorState.ExistRangeSelectionTargetSection)
-                    return;
+                writer.Write(frame.IsSelected);
+            }
+        );
+    }
 
-                writer.Write(pmm.EditorState.ExistRangeSelectionTargetSection);
-                var modelIdMap = pmm.Models.Select((Model, Index) => (Model, Index)).ToDictionary(p => p.Model, p => (byte)p.Index);
-                foreach (var index in pmm.EditorState.RangeSelectionTargetIndices)
+    /// <summary>
+    /// アクセサリー書込み
+    /// </summary>
+    private static void WriteAccessory(BinaryWriter writer, PmmAccessory accessory, int index, PolygonMovieMaker pmm)
+    {
+        writer.Write((byte)index);
+
+        writer.Write(accessory.Name, 100, Encoding.ShiftJIS);
+        writer.Write(accessory.Path, 256, Encoding.ShiftJIS);
+
+        writer.Write(pmm.GetRenderOrder(accessory) ?? 0);
+
+        WriteFrames(
+            writer,
+            new[] { accessory.Frames.ToList<IPmmFrame>() },
+            () => new PmmAccessoryFrame(),
+            (writer, f) =>
+            {
+                var frame = (PmmAccessoryFrame)f;
+
+                writer.Write(frame.TransAndVisible);
+
+                writer.Write(pmm.Models.IndexOf(frame.ParentModel!));
+                writer.Write(frame.ParentModel?.Bones.IndexOf(frame.ParentBone!) ?? 0);
+
+                writer.Write(frame.Position);
+                writer.Write(frame.Rotation);
+                writer.Write(frame.Scale);
+
+                writer.Write(frame.EnableShadow);
+
+                writer.Write(frame.IsSelected);
+            }
+        );
+
+        writer.Write(accessory.Current.TransAndVisible);
+        writer.Write(pmm.Models.IndexOf(accessory.Current.ParentModel!));
+        writer.Write(accessory.Current.ParentModel?.Bones.IndexOf(accessory.Current.ParentBone!) ?? 0);
+        writer.Write(accessory.Current.Position);
+        writer.Write(accessory.Current.Rotation);
+        writer.Write(accessory.Current.Scale);
+        writer.Write(accessory.Current.EnableShadow);
+
+        writer.Write(accessory.EnableAlphaBlend);
+    }
+
+    /// <summary>
+    /// ライト書込み
+    /// </summary>
+    private static void WriteLight(BinaryWriter writer, PmmLight light)
+    {
+        WriteFrames(
+            writer,
+            new[] { light.Frames.ToList<IPmmFrame>() },
+            () => new PmmLightFrame(),
+            (writer, f) =>
+            {
+                var frame = (PmmLightFrame)f;
+
+                writer.Write(frame.Color, false);
+                writer.Write(frame.Position);
+
+                writer.Write(frame.IsSelected);
+            }
+        );
+
+        writer.Write(light.Current.Color, false);
+        writer.Write(light.Current.Position);
+    }
+
+    /// <summary>
+    /// カメラ書込み
+    /// </summary>
+    private static void WriteCamera(BinaryWriter writer, PmmCamera camera, PolygonMovieMaker pmm)
+    {
+        WriteFrames(
+            writer,
+            new[] { camera.Frames.ToList<IPmmFrame>() },
+            () => new PmmCameraFrame(),
+            (writer, f) =>
+            {
+                var frame = (PmmCameraFrame)f;
+
+                writer.Write(frame.Distance);
+                writer.Write(frame.EyePosition);
+                writer.Write(frame.Rotation);
+
+                writer.Write(pmm.Models.IndexOf(frame.FollowingModel!));
+                writer.Write(frame.FollowingModel?.Bones.IndexOf(frame.FollowingBone!) ?? 0);
+
+                writer.Write(frame.InterpolationCurves[InterpolationItem.XPosition].ToBytes());
+                writer.Write(frame.InterpolationCurves[InterpolationItem.YPosition].ToBytes());
+                writer.Write(frame.InterpolationCurves[InterpolationItem.ZPosition].ToBytes());
+                writer.Write(frame.InterpolationCurves[InterpolationItem.Rotation].ToBytes());
+                writer.Write(frame.InterpolationCurves[InterpolationItem.Distance].ToBytes());
+                writer.Write(frame.InterpolationCurves[InterpolationItem.ViewAngle].ToBytes());
+
+                writer.Write(frame.DisablePerspective);
+                writer.Write(frame.ViewAngle);
+
+                writer.Write(frame.IsSelected);
+            }
+        );
+
+        writer.Write(camera.Current.EyePosition);
+        writer.Write(camera.Current.TargetPosition);
+        writer.Write(camera.Current.Rotation);
+        writer.Write(camera.Current.DisablePerspective);
+    }
+
+    /// <summary>
+    /// モデル書込み
+    /// </summary>
+    private static void WriteModel(BinaryWriter writer, PolygonMovieMaker pmm, PmmModel model, int index)
+    {
+        writer.Write((byte)index);
+
+        writer.Write(model.Name);
+        writer.Write(model.NameEn);
+        writer.Write(model.Path, 256, Encoding.ShiftJIS);
+
+        // キーフレームエディタの行数
+        writer.Write((byte)model.Nodes.Count);
+
+        writer.Write(model.Bones.Count);
+        foreach (var bone in model.Bones)
+        {
+            writer.Write(bone.Name);
+        }
+
+        writer.Write(model.Morphs.Count);
+        foreach (var morph in model.Morphs)
+        {
+            writer.Write(morph.Name);
+        }
+
+
+        var ikBoneIndices = model.Bones.Select((Bone, Index) => (Bone, Index)).Where(p => p.Bone.IsIK).Select(p => p.Index).ToArray();
+        writer.Write(ikBoneIndices.Length);
+        foreach (var ikBoneIndex in ikBoneIndices)
+        {
+            writer.Write(ikBoneIndex);
+        }
+
+        var parentableBoneIndices = model.Bones.Select((Bone, Index) => (Bone, Index)).Where(p => p.Bone.CanBecomeOuterParent).Select(p => p.Index).ToArray();
+        // 内部表現では無視されているが、実際のPMMの外部親可能インデックスには最初に -1 が入っている
+        writer.Write(parentableBoneIndices.Length + 1);
+        writer.Write(-1);
+        foreach (var parentableBoneIndex in parentableBoneIndices)
+        {
+            writer.Write(parentableBoneIndex);
+        }
+
+        writer.Write((byte)((pmm.GetRenderOrder(model) ?? -1) + 1));
+        writer.Write(model.CurrentConfig.Visible);
+
+        writer.Write(model.Bones.IndexOf(model.SelectedBone!));
+        writer.Write(model.Morphs.IndexOf(model.SelectedBrowMorph!));
+        writer.Write(model.Morphs.IndexOf(model.SelectedEyeMorph!));
+        writer.Write(model.Morphs.IndexOf(model.SelectedLipMorph!));
+        writer.Write(model.Morphs.IndexOf(model.SelectedOtherMorph!));
+
+        writer.Write((byte)model.Nodes.Count);
+        foreach (var node in model.Nodes)
+        {
+            writer.Write(node.DoesOpen);
+        }
+
+        writer.Write(model.SpecificEditorState.VerticalScrollState);
+        writer.Write(model.SpecificEditorState.LastFrame);
+
+        WriteFrames(
+            writer,
+            model.Bones.Select(b => b.Frames.ToList<IPmmFrame>()),
+            () => new PmmBoneFrame(),
+            (writer, f) =>
+            {
+                var frame = (PmmBoneFrame)f;
+
+                writer.Write(frame.InterpolationCurves[InterpolationItem.XPosition].ToBytes());
+                writer.Write(frame.InterpolationCurves[InterpolationItem.YPosition].ToBytes());
+                writer.Write(frame.InterpolationCurves[InterpolationItem.ZPosition].ToBytes());
+                writer.Write(frame.InterpolationCurves[InterpolationItem.Rotation].ToBytes());
+
+                writer.Write(frame.Movement);
+                writer.Write(frame.Rotation);
+                writer.Write(frame.IsSelected);
+                writer.Write(!frame.EnablePhysic);
+            }
+        );
+
+        WriteFrames(
+            writer,
+            model.Morphs.Select(m => m.Frames.ToList<IPmmFrame>()),
+            () => new PmmMorphFrame(),
+            (writer, f) =>
+            {
+                var frame = (PmmMorphFrame)f;
+
+                writer.Write(frame.Weight);
+                writer.Write(frame.IsSelected);
+            }
+        );
+
+        WriteFrames(
+            writer,
+            new[] { model.ConfigFrames.ToList<IPmmFrame>() },
+            () => new PmmModelConfigFrame(),
+            (writer, f) =>
+            {
+                var frame = (PmmModelConfigFrame)f;
+
+                writer.Write(frame.Visible);
+
+                foreach (var ikBoneId in ikBoneIndices)
                 {
-                    writer.Write(modelIdMap[index.Model]);
-                    writer.Write(index.Target);
+                    writer.Write(frame.EnableIK[model.Bones[ikBoneId]]);
                 }
+
+                // 最初に入っている -1
+                writer.Write(-1);
+                writer.Write(-1);
+                foreach (var parentableId in parentableBoneIndices)
+                {
+                    frame.OuterParent.TryGetValue(model.Bones[parentableId], out ElementState.PmmOuterParentState? op);
+                    writer.Write(pmm.Models.IndexOf(op?.ParentModel!));
+                    writer.Write(op?.ParentModel?.Bones.IndexOf(op?.ParentBone!) ?? 0);
+                }
+
+                writer.Write(frame.IsSelected);
             }
+        );
+
+        foreach (var boneState in model.Bones)
+        {
+            var bc = boneState.Current;
+
+            writer.Write(bc.Movement);
+            writer.Write(bc.Rotation);
+            writer.Write(boneState.IsCommitted);
+            writer.Write(bc.EnablePhysic);
+            writer.Write(boneState.IsSelected);
         }
 
-        private static void WriteViewState(this PmmEditorState editorState, BinaryWriter writer)
+        foreach (var morph in model.Morphs)
         {
-            writer.Write(editorState.KeyframeEditorWidth);
-
-            writer.Write(editorState.CurrentViewAngle);
-
-            writer.Write(editorState.IsCameraMode);
-
-            writer.Write(editorState.DoesOpenCameraPanel);
-            writer.Write(editorState.DoesOpenLightPanel);
-            writer.Write(editorState.DoesOpenAccessaryPanel);
-            writer.Write(editorState.DoesOpenBonePanel);
-            writer.Write(editorState.DoesOpenMorphPanel);
-            writer.Write(editorState.DoesOpenSelfShadowPanel);
-
-            writer.Write(editorState.SelectedModelIndex);
+            writer.Write(morph.Current.Weight);
         }
 
-        private static void WriteAccessoryState(this PmmEditorState editorState, BinaryWriter writer)
+        foreach (var i in ikBoneIndices)
         {
-            writer.Write(editorState.SelectedAccessoryIndex);
-            writer.Write(editorState.VerticalScrollOfAccessoryRow);
+            writer.Write(model.CurrentConfig.EnableIK[model.Bones[i]]);
         }
 
-        private static void WriteFrameState(this PmmEditorState editorState, BinaryWriter writer)
+        // 最初の -1 が入っている外部親情報
+        writer.Write(0);
+        writer.Write(0);
+        writer.Write(-1);
+        writer.Write(0);
+        foreach (var i in parentableBoneIndices)
         {
-            writer.Write(editorState.CurrentFrame);
-            writer.Write(editorState.HorizontalScroll);
-            writer.Write(editorState.HorizontalScrollLength);
-            writer.Write((int)editorState.SelectedBoneOperation);
+            var op = model.CurrentConfig.OuterParent[model.Bones[i]];
+            writer.Write(op.StartFrame ?? 0);
+            writer.Write(op.EndFrame ?? 0);
+            writer.Write(pmm.Models.IndexOf(op.ParentModel!));
+            writer.Write(op.ParentModel is null ? 0 : model.Bones.IndexOf(op.ParentBone!));
         }
 
-        private static void WriteFrameLocation(this PmmViewConfig viewConfig, BinaryWriter writer)
+        writer.Write(model.EnableAlphaBlend);
+        writer.Write(model.EdgeWidth);
+        writer.Write(model.EnableSelfShadow);
+        writer.Write((byte)((pmm.GetCalculateOrder(model) ?? -1) + 1));
+    }
+
+    private static void WriteFrames(BinaryWriter writer, IEnumerable<List<IPmmFrame>> frameContainer, Func<IPmmFrame> constructor, Action<BinaryWriter, IPmmFrame> stateWriter)
+    {
+        // 初期フレームとそれ以外のフレームに分割
+        var initialFrames = frameContainer.Select(frames => frames.FirstOrDefault(f => f.Frame == 0) ?? CreateZeroFrame(frames.MinBy(f => f.Frame)) ?? constructor())
+                                          .Select(f => new InitFrameContainer(f) { NextIndex = 0 }).ToArray();
+
+        IPmmFrame[][] otherFramesContainer = frameContainer.Select(frames => frames.Where(f => f.Frame != 0).ToArray()).ToArray();
+
+        // 各フレームに非初期な全フレーム内におけるインデックスを付与
+        int id = initialFrames.Length;
+        (IPmmFrame Frame, int Index)[][] IndexedOtherFrameContainer = otherFramesContainer.Select(frames => frames.Select(frame => (Frame: frame, Index: id++)).OrderBy(p => p.Frame.Frame).ToArray()).ToArray();
+
+        // 各フレームについて前後フレーム番号を得る
+        (IPmmFrame Frame, int Index, int PreIndex, int NextIndex)[] IndexedFrames = IndexedOtherFrameContainer.SelectMany((frames, i) => frames.Select((p, j) =>
         {
-            writer.Write(viewConfig.FrameLocation);
+            // i は行のインデックス
+            // j は行内でのインデックス
+            // Index は全フレーム内でのインデックス
+            var (frame, currentIndex) = p;
+
+            // 行頭フレームなら前フレームはなし
+            var pre = j == 0 ? i : frames[j - 1].Index;
+            // 行末フレームなら次フレームはなし
+            var next = j == frames.Length - 1 ? 0 : frames[j + 1].Index;
+
+            if (j == 0) initialFrames[i].NextIndex = currentIndex;
+
+            return (Frame: frame, Index: currentIndex, PreIndex: pre, NextIndex: next);
+        })).ToArray();
+
+        // フレームを書込み
+        foreach (var frame in initialFrames)
+        {
+            writer.Write(frame.Frame.Frame);
+            writer.Write(0);
+            writer.Write(frame.NextIndex);
+
+            stateWriter(writer, frame.Frame);
+        }
+        writer.Write(IndexedFrames.Length);
+        foreach (var frame in IndexedFrames)
+        {
+            writer.Write(frame.Index);
+
+            writer.Write(frame.Frame.Frame);
+            writer.Write(frame.PreIndex);
+            writer.Write(frame.NextIndex);
+
+            stateWriter(writer, frame.Frame);
         }
 
-        private static void WriteViewFollowing(this PmmViewConfig viewConfig, BinaryWriter writer)
+        static IPmmFrame? CreateZeroFrame(IPmmFrame? frame)
         {
-            writer.Write(viewConfig.IsViewFollowCamera);
+            if (frame is null) return null;
+
+            var f = frame.DeepCopy();
+            f.Frame = 0;
+            return f;
         }
+    }
 
-        private static void Write(this PmmAccessory accessory, BinaryWriter writer)
+    private record InitFrameContainer
+    {
+        public IPmmFrame Frame { get; init; }
+        public int NextIndex { get; set; }
+
+        public InitFrameContainer(IPmmFrame frame)
         {
-            writer.Write(accessory.Index);
-
-            writer.Write(accessory.Name, 100, Encoding.ShiftJIS);
-            writer.Write(accessory.Path, 256, Encoding.ShiftJIS);
-
-            writer.Write(accessory.RenderOrder);
-
-            accessory.InitialFrame.Write(writer);
-
-            writer.Write(accessory.Frames.Count);
-            foreach (var frame in accessory.Frames)
-                frame.Write(writer);
-
-            accessory.Uncomitted.Write(writer);
-
-            writer.Write(accessory.EnableAlphaBlend);
-        }
-
-        private static void Write(this TemporaryAccessoryEditState tmp, BinaryWriter writer)
-        {
-            writer.Write(tmp.OpacityAndVisible);
-
-            writer.Write(tmp.ParentModelIndex);
-            writer.Write(tmp.ParentBoneIndex);
-
-            writer.Write(tmp.Position);
-            writer.Write(tmp.Rotation);
-            writer.Write(tmp.Scale);
-
-            writer.Write(tmp.EnableShadow);
-        }
-
-        private static void Write(this PmmCamera camera,BinaryWriter writer)
-        {
-            camera.InitialFrame.Write(writer);
-
-            writer.Write(camera.Frames.Count);
-            foreach (var frame in camera.Frames)
-                frame.Write(writer);
-
-            writer.Write(camera.Uncomitted.EyePosition);
-            writer.Write(camera.Uncomitted.TargetPosition);
-            writer.Write(camera.Uncomitted.Rotation);
-            writer.Write(camera.Uncomitted.EnablePerspective);
-        }
-
-        private static void Write(this TemporaryCameraFollowingState tmp, BinaryWriter writer)
-        {
-            writer.Write(tmp.ModelIndex);
-            writer.Write(tmp.BoneIndex);
-        }
-
-        private static void Write(this PmmViewConfig drawConfig, BinaryWriter writer)
-        {
-            writer.Write(drawConfig.IsShowInfomation);
-            writer.Write(drawConfig.IsShowAxis);
-            writer.Write(drawConfig.IsShowGrandShadow);
-
-            writer.Write(drawConfig.FPSLimit);
-            writer.Write((int)drawConfig.ScreenCaptureSetting);
-            writer.Write(drawConfig.AccessoryModelThreshold);
-
-            writer.Write(drawConfig.GroundShadowBrightness);
-            writer.Write(drawConfig.EnableTransparentGroundShadow);
-
-            writer.Write((byte)drawConfig.PhysicsSetting);
-        }
-
-        private static void WriteColorConfig(this PmmViewConfig drawConfig, BinaryWriter writer)
-        {
-            writer.Write((int)drawConfig.EdgeColor.R);
-            writer.Write((int)drawConfig.EdgeColor.G);
-            writer.Write((int)drawConfig.EdgeColor.B);
-
-            writer.Write(drawConfig.IsBackgroundBlack);
-        }
-
-        private static void WriteGroundPhysics(this PmmViewConfig drawConfig, BinaryWriter writer)
-        {
-            writer.Write(drawConfig.EnableGroundPhysics);
-        }
-
-        private static void Write(this PmmGravity gravity,BinaryWriter writer)
-        {
-            writer.Write(gravity.Acceleration);
-            writer.Write(gravity.NoizeAmount);
-            writer.Write(gravity.Direction);
-            writer.Write(gravity.EnableNoize);
-
-            gravity.InitialFrame.Write(writer);
-
-            writer.Write(gravity.Frames.Count);
-            foreach (var frame in gravity.Frames)
-                frame.Write(writer);
-        }
-
-        private static void Write(this PmmLight light, BinaryWriter writer)
-        {
-            light.InitialFrame.Write(writer);
-
-            writer.Write(light.Frames.Count);
-            foreach (var frame in light.Frames)
-                frame.Write(writer);
-
-            writer.Write(light.Uncomitted.Color, false);
-            writer.Write(light.Uncomitted.Position);
-        }
-
-        private static void Write(this PmmMediaConfig mediaConfig, BinaryWriter writer)
-        {
-            writer.Write(mediaConfig.EnableAudio);
-            writer.Write(mediaConfig.AudioPath, 256, Encoding.ShiftJIS);
-
-            writer.Write(mediaConfig.BackgroundVideoOffset.X);
-            writer.Write(mediaConfig.BackgroundVideoOffset.Y);
-            writer.Write(mediaConfig.BackgroundVideoScale);
-            writer.Write(mediaConfig.BackgroundVideoPath, 256, Encoding.ShiftJIS);
-            writer.Write(mediaConfig.EnableBackgroundVideo ? 0b01000000 : 0b01000001);
-
-            writer.Write(mediaConfig.BackgroundImageOffset.X);
-            writer.Write(mediaConfig.BackgroundImageOffset.Y);
-            writer.Write(mediaConfig.BackgroundImageScale);
-            writer.Write(mediaConfig.BackgroundImagePath, 256, Encoding.ShiftJIS);
-            writer.Write(mediaConfig.EnableBackgroundImage);
-        }
-
-        private static void Write(this PmmModel model, BinaryWriter writer)
-        {
-            writer.Write(model.Index);
-
-            writer.Write(model.Name);
-            writer.Write(model.NameEn);
-            writer.Write(model.Path, 256, Encoding.ShiftJIS);
-
-            // キーフレームエディタの行数
-            // 3([root]、表示・IK・外観、表情) + 表示枠の数
-            writer.Write(model.NodeCount);
-
-            // ボーン数
-            writer.Write(model.BoneNames.Count);
-            foreach (var item in model.BoneNames)
-            {
-                writer.Write(item);
-            }
-
-            // モーフ数
-            writer.Write(model.MorphNames.Count);
-            foreach (var item in model.MorphNames)
-            {
-                writer.Write(item);
-            }
-
-            // IK数
-            writer.Write(model.IKBoneIndices.Count);
-            foreach (var item in model.IKBoneIndices)
-            {
-                writer.Write(item);
-            }
-
-            // 外部親設定可能なボーン数
-            writer.Write(model.ParentableBoneIndices.Count);
-            foreach (var item in model.ParentableBoneIndices)
-            {
-                writer.Write(item);
-            }
-
-            writer.Write(model.RenderConfig.RenderOrder);
-
-            writer.Write(model.Uncomitted.Visible);
-            writer.Write(model.SelectedBoneIndex);
-            writer.Write(model.SelectedMorphIndices.Brow);
-            writer.Write(model.SelectedMorphIndices.Eye);
-            writer.Write(model.SelectedMorphIndices.Lip);
-            writer.Write(model.SelectedMorphIndices.Other);
-
-            // 表情枠数
-            writer.Write(model.NodeCount);
-            foreach (var item in model.FrameEditor.DoesOpenNode)
-            {
-                writer.Write(item);
-            }
-
-            writer.Write(model.FrameEditor.VerticalScrollState);
-            writer.Write(model.FrameEditor.LastFrame);
-
-            foreach (var item in model.InitialBoneFrames)
-                item.Write(writer);
-
-            writer.Write(model.BoneFrames.Count);
-            foreach (var item in model.BoneFrames)
-                item.Write(writer);
-
-            foreach (var item in model.InitialMorphFrames)
-                item.Write(writer);
-
-            writer.Write(model.MorphFrames.Count);
-            foreach (var item in model.MorphFrames)
-                item.Write(writer);
-
-            model.InitialConfigFrame.Write(writer);
-
-            writer.Write(model.ConfigFrames.Count);
-            foreach (var item in model.ConfigFrames)
-                item.Write(writer);
-
-            foreach (var item in model.Uncomitted.Bones)
-            {
-                writer.Write(item.Offset);
-                writer.Write(item.Rotate);
-                writer.Write(item.IsThis);
-                writer.Write(item.EnablePhysic);
-                writer.Write(item.RowIsSelected);
-            }
-
-            foreach (var item in model.Uncomitted.MorphWeights)
-                writer.Write(item);
-
-            foreach (var item in model.Uncomitted.IKEnable)
-                writer.Write(item);
-
-            foreach (var item in model.Uncomitted.ParentSettings)
-            {
-                writer.Write(item.StartFrame);
-                writer.Write(item.EndFrame);
-                writer.Write(item.ModelIndex);
-                writer.Write(item.BoneIndex);
-            }
-
-            writer.Write(model.RenderConfig.EnableAlphaBlend);
-            writer.Write(model.RenderConfig.EdgeWidth);
-            writer.Write(model.RenderConfig.EnableSelfShadow);
-            writer.Write(model.RenderConfig.CalculateOrder);
-        }
-
-        private static void Write(this PmmPlayConfig playConfig, BinaryWriter writer)
-        {
-            writer.Write((byte)playConfig.CameraTrackingTarget);
-
-            writer.Write(playConfig.IsRepeat);
-            writer.Write(playConfig.IsMoveCurrentFrameToStopFrame);
-            writer.Write(playConfig.IsStartFromCurrentFrame);
-
-            writer.Write(playConfig.PlayStartFrame);
-            writer.Write(playConfig.PlayStopFrame);
-        }
-
-        private static void Write(this PmmSelfShadow selfShadow, BinaryWriter writer)
-        {
-            writer.Write(selfShadow.EnableSelfShadow);
-            writer.Write(selfShadow.ShadowLimit);
-
-            selfShadow.InitialFrame.Write(writer);
-
-            writer.Write(selfShadow.Frames.Count);
-            foreach (var frame in selfShadow.Frames)
-                frame.Write(writer);
-        }
-
-        private static void Write(this PmmAccessoryFrame frame, BinaryWriter writer)
-        {
-            if (frame.Index.HasValue)
-                writer.Write(frame.Index.Value);
-
-            writer.Write(frame.Frame);
-            writer.Write(frame.PreviousFrameIndex);
-            writer.Write(frame.NextFrameIndex);
-
-            writer.Write(frame.OpacityAndVisible);
-
-            writer.Write(frame.ParentModelIndex);
-            writer.Write(frame.ParentBoneIndex);
-
-            writer.Write(frame.Position);
-            writer.Write(frame.Rotation);
-            writer.Write(frame.Scale);
-
-            writer.Write(frame.EnableShadow);
-
-            writer.Write(frame.IsSelected);
-        }
-
-        private static void Write(this PmmBoneFrame frame, BinaryWriter writer)
-        {
-            if (frame.Index.HasValue)
-                writer.Write(frame.Index.Value);
-
-            writer.Write(frame.Frame);
-            writer.Write(frame.PreviousFrameIndex);
-            writer.Write(frame.NextFrameIndex);
-
-            writer.Write(frame.InterpolationCurces[InterpolationItem.XPosition].ToBytes());
-            writer.Write(frame.InterpolationCurces[InterpolationItem.YPosition].ToBytes());
-            writer.Write(frame.InterpolationCurces[InterpolationItem.ZPosition].ToBytes());
-            writer.Write(frame.InterpolationCurces[InterpolationItem.Rotation].ToBytes());
-
-            writer.Write(frame.Offset);
-            writer.Write(frame.Rotation);
-            writer.Write(frame.IsSelected);
-            writer.Write(!frame.EnablePhysic);
-        }
-
-        private static void Write(this PmmCameraFrame frame, BinaryWriter writer)
-        {
-            if (frame.Index.HasValue)
-                writer.Write(frame.Index.Value);
-
-            writer.Write(frame.Frame);
-            writer.Write(frame.PreviousFrameIndex);
-            writer.Write(frame.NextFrameIndex);
-
-            writer.Write(frame.Distance);
-            writer.Write(frame.EyePosition);
-            writer.Write(frame.Rotation);
-
-            writer.Write(frame.FollowingModelIndex);
-            writer.Write(frame.FollowingBoneIndex);
-
-            writer.Write(frame.InterpolationCurces[InterpolationItem.XPosition].ToBytes());
-            writer.Write(frame.InterpolationCurces[InterpolationItem.YPosition].ToBytes());
-            writer.Write(frame.InterpolationCurces[InterpolationItem.ZPosition].ToBytes());
-            writer.Write(frame.InterpolationCurces[InterpolationItem.Rotation].ToBytes());
-            writer.Write(frame.InterpolationCurces[InterpolationItem.Distance].ToBytes());
-            writer.Write(frame.InterpolationCurces[InterpolationItem.ViewAngle].ToBytes());
-
-            writer.Write(frame.EnablePerspective);
-            writer.Write(frame.ViewAngle);
-
-            writer.Write(frame.IsSelected);
-        }
-
-        private static void Write(this PmmConfigFrame frame, BinaryWriter writer)
-        {
-            if (frame.Index.HasValue)
-                writer.Write(frame.Index.Value);
-
-            writer.Write(frame.Frame);
-            writer.Write(frame.PreviousFrameIndex);
-            writer.Write(frame.NextFrameIndex);
-            writer.Write(frame.Visible);
-
-            foreach (var f in frame.EnableIK)
-            {
-                writer.Write(f);
-            }
-
-            foreach (var f in frame.ParentSettings)
-            {
-                writer.Write(f.ModelId);
-                writer.Write(f.BoneId);
-            }
-
-            writer.Write(frame.IsSelected);
-        }
-
-        private static void Write(this PmmGravityFrame frame, BinaryWriter writer)
-        {
-            if (frame.Index.HasValue)
-                writer.Write(frame.Index.Value);
-
-            writer.Write(frame.Frame);
-            writer.Write(frame.PreviousFrameIndex);
-            writer.Write(frame.NextFrameIndex);
-
-            writer.Write(frame.EnableNoize);
-            writer.Write(frame.NoizeAmount);
-            writer.Write(frame.Acceleration);
-            writer.Write(frame.Direction);
-
-            writer.Write(frame.IsSelected);
-        }
-
-        private static void Write(this PmmLightFrame frame, BinaryWriter writer)
-        {
-            if (frame.Index.HasValue)
-                writer.Write(frame.Index.Value);
-
-            writer.Write(frame.Frame);
-            writer.Write(frame.PreviousFrameIndex);
-            writer.Write(frame.NextFrameIndex);
-
-            writer.Write(frame.Color, false);
-            writer.Write(frame.Position);
-
-            writer.Write(frame.IsSelected);
-        }
-
-        private static void Write(this PmmMorphFrame frame, BinaryWriter writer)
-        {
-            if (frame.Index.HasValue)
-                writer.Write(frame.Index.Value);
-
-            writer.Write(frame.Frame);
-            writer.Write(frame.PreviousFrameIndex);
-            writer.Write(frame.NextFrameIndex);
-
-            writer.Write(frame.Ratio);
-
-            writer.Write(frame.IsSelected);
-        }
-
-        private static void Write(this PmmSelfShadowFrame frame, BinaryWriter writer)
-        {
-            if (frame.Index.HasValue)
-                writer.Write(frame.Index.Value);
-
-            writer.Write(frame.Frame);
-            writer.Write(frame.PreviousFrameIndex);
-            writer.Write(frame.NextFrameIndex);
-
-            writer.Write((byte)frame.ShadowMode);
-            writer.Write(frame.ShadowRange);
-
-            writer.Write(frame.IsSelected);
+            Frame = frame;
         }
     }
 }

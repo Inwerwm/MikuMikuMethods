@@ -1,37 +1,36 @@
-﻿namespace MikuMikuMethods.PMX
+﻿namespace MikuMikuMethods.Pmx;
+
+/// <summary>
+/// ウェイト変形方式
+/// </summary>
+public enum PmxWeightType : byte
+{
+    BDEF1,
+    BDEF2,
+    BDEF4,
+    SDEF,
+    QDEF
+}
+
+/// <summary>
+/// ウェイト値
+/// </summary>
+public class PmxWeight : IPmxData
 {
     /// <summary>
-    /// ウェイト変形方式
+    /// ボーン
     /// </summary>
-    public enum PmxWeightType : byte
-    {
-        BDEF1,
-        BDEF2,
-        BDEF4,
-        SDEF,
-        QDEF
-    }
-
+    public PmxBone? Bone { get; set; }
     /// <summary>
     /// ウェイト値
     /// </summary>
-    public class PmxWeight : IPmxData
+    public float Value { get; set; }
+
+    public PmxWeight(PmxBone? bone, float value)
     {
-        /// <summary>
-        /// ボーン
-        /// </summary>
-        public PmxBone Bone { get; set; }
-        /// <summary>
-        /// ウェイト値
-        /// </summary>
-        public float Value { get; set; }
-
-        public PmxWeight(PmxBone bone, float value)
-        {
-            Bone = bone;
-            Value = value;
-        }
-
-        public override string ToString() => $"{Bone.Name} : {Value}";
+        Bone = bone;
+        Value = value;
     }
+
+    public override string ToString() => $"{Bone?.Name ?? ""} : {Value}";
 }

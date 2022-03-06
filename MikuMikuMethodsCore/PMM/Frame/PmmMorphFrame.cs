@@ -1,13 +1,20 @@
-﻿namespace MikuMikuMethods.PMM.Frame
+﻿using MikuMikuMethods.Pmm.ElementState;
+
+namespace MikuMikuMethods.Pmm.Frame;
+
+public class PmmMorphFrame : PmmMorphState, IPmmFrame
 {
-    /// <summary>
-    /// モーフフレーム情報
-    /// </summary>
-    public class PmmMorphFrame : PmmFrame
+    public int Frame { get; set; } = 0;
+    public bool IsSelected { get; set; } = false;
+
+    public new PmmMorphFrame DeepCopy() => new()
     {
-        /// <summary>
-        /// モーフ適用係数
-        /// </summary>
-        public float Ratio { get; set; }
-    }
+        Frame = Frame,
+        IsSelected = IsSelected,
+        Weight = Weight
+    };
+
+    IPmmFrame IPmmFrame.DeepCopy() => DeepCopy();
+
+    public override string ToString() => Frame.ToString();
 }
