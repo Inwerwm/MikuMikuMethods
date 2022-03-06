@@ -46,7 +46,16 @@ public class PmmModel
     /// 選択中ボーンの取得/設定
     /// <para>モデルに含まれない要素を設定しようとすると <c>ArgumentOutOfRangeException</c> を投げる</para>
     /// </summary>
-    public PmmBone? SelectedBone { get => _selectedBone; set => _selectedBone = GetIfContains(Bones, value, "bone"); }
+    public PmmBone? SelectedBone
+    {
+        get => _selectedBone;
+        set
+        {
+            _selectedBone = GetIfContains(Bones, value, "bone");
+            if(_selectedBone != null)
+                _selectedBone.IsSelected = true;
+        }
+    }
     /// <summary>
     /// 選択中眉モーフの取得/設定
     /// <para>モデルに含まれない要素を設定しようとすると <c>ArgumentOutOfRangeException</c> を投げる</para>
