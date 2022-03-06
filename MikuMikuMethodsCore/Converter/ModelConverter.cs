@@ -19,8 +19,12 @@ public static class ModelConverter
         };
 
         pmmModel.Bones.AddRange(pmxModel.Bones.Select(ToPmmBone));
+        pmmModel.Morphs.AddRange(pmxModel.Morphs.Select(ToPmmMorph));
+
         return pmmModel;
     }
+
+    private static PmmMorph ToPmmMorph(PmxMorph pmxMorph) => new PmmMorph(pmxMorph.Name);
 
     private static PmmBone ToPmmBone(PmxBone pmxBone)
     {
