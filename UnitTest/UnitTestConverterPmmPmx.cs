@@ -17,8 +17,9 @@ public class UnitTestConverterPmmPmx
 
         pmm.Models.Add(model.ToPmmModel(modelPath));
 
-        PolygonMovieMaker pmm2 = new(TestData.GetPath("OneModel.pmm"));
-
         pmm.Write(TestData.GetPath("AddModelByProgram.pmm"));
+
+        TestData.PmmLoggingRead("AddModelByProgram", false);
+        TestData.PmmLoggingRead("OneModel", false);
     }
 }
