@@ -747,10 +747,10 @@ public static class PmmFileReader
         ResolveNextFrames(
             addFrame,
             elementFrames,
-            elementNextFrameDictionary.Select(p => (Element: p.Key, NextFrameIndex: p.Value == 0 ? null : p.Value))
+            elementNextFrameDictionary.Select(p => (Element: p.Key, NextFrameIndex: p.Value == 0 ? null : p.Value)).ToArray()
         );
         
-        static void ResolveNextFrames(Action<T, IPmmFrame> addFrame, (IPmmFrame? Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex)[] elementFrames, IEnumerable<(T Element, int? NextFrameIndex)> nextFramesOfElements)
+        static void ResolveNextFrames(Action<T, IPmmFrame> addFrame, (IPmmFrame? Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex)[] elementFrames, (T Element, int? NextFrameIndex)[] nextFramesOfElements)
         {
             if (!nextFramesOfElements.Any())
                 return;
@@ -780,7 +780,7 @@ public static class PmmFileReader
                                         _ => p.NextFrame.NextFrameIndex
                                     }
                                  )
-                          ).Where(p => p.NextFrameIndex.HasValue)
+                          ).Where(p => p.NextFrameIndex.HasValue).ToArray()
             );
         }
     }
