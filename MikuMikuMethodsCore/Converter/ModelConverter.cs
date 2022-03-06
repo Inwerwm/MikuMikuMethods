@@ -2,6 +2,7 @@
 using MikuMikuMethods.Pmx;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,9 +21,24 @@ public static class ModelConverter
 
         pmmModel.Bones.AddRange(pmxModel.Bones.Select(ToPmmBone));
         pmmModel.Morphs.AddRange(pmxModel.Morphs.Select(ToPmmMorph));
+        pmmModel.Nodes.AddRange(pmxModel.Nodes.Select(ToPmmNode));
 
         return pmmModel;
     }
+
+    private static PmmNode ToPmmNode(PmxNode pmxNode) => new()
+    {
+        Name = pmxNode.Name,
+        Elements = pmxNode.Elements.Select(ToPmmModelElement).ToImmutableArray(),
+        DoesOpen = false
+    };
+
+    private static IPmmModelElement ToPmmModelElement(IPmxNodeElement pmxNodeElement) => pmxNodeElement.Entity switch
+    {
+        PmxBone bone => ToPmmBone(bone),
+        PmxMorph morph => ToPmmMorph(morph),
+        _ => throw new ArgumentException("The Entity of IPmxNodeElement has invalid type instance.")
+    };
 
     private static PmmMorph ToPmmMorph(PmxMorph pmxMorph) => new(pmxMorph.Name);
 
