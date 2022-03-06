@@ -17,7 +17,8 @@ public static class ModelConverter
         {
             Name = pmxModel.ModelInfo.Name,
             NameEn = pmxModel.ModelInfo.NameEn,
-            Path = pmxFullPath
+            Path = pmxFullPath,
+            EdgeWidth = 1
         };
 
         var isPhysics = pmxModel.Bodies.Select(body => (body.RelationBone, body.PhysicsMode != PmxBody.PhysicsModeType.Static))
