@@ -99,6 +99,12 @@ public class InterpolationCurve : ICloneable
         }
     }
 
+    public InterpolationCurve()
+    {
+        earlyControlePoint = (20, 20);
+        lateControlePoint = (107, 107);
+    }
+
     /// <summary>
     /// バイト配列から値を指定する
     /// </summary>
