@@ -26,7 +26,8 @@ public static class ModelConverter
     {
         var pmmBone = new PmmBone(pmxBone.Name)
         {
-            CanSetOutsideParent = pmxBone.Movable
+            CanSetOutsideParent = pmxBone.Movable,
+            IsIK = pmxBone.IsIK,
         };
 
         return pmmBone;
