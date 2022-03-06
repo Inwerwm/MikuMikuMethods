@@ -8,7 +8,7 @@ public static class ModelConverter
     public static PmmModel ToPmmModel(this PmxModel pmxModel, string pmxPath)
     {
         string pmxFullPath = Path.GetFullPath(pmxPath);
-        if(!File.Exists(pmxFullPath))
+        if (!File.Exists(pmxFullPath))
         {
             throw new FileNotFoundException($"指定されたモデルが見つかりませんでした: {pmxFullPath}");
         }
@@ -21,9 +21,9 @@ public static class ModelConverter
             EdgeWidth = 1
         };
 
-        var isPhysics = pmxModel.Bodies.Select(body => (body.RelationBone, body.PhysicsMode != PmxBody.PhysicsModeType.Static))
-                                       .Where(p => p.RelationBone is not null)
-                                       .ToDictionary(p=>p.RelationBone, p=> p.Item2);
+        var isPhysics = pmxModel.Bodies.Select(body => (body.RelationBone, isPhysicsBone: body.PhysicsMode != PmxBody.PhysicsModeType.Static))
+                                       .Where(p => p.RelationBone is not null).Cast<(PmxBone RelationBone, bool isPhysicsBone)>()
+                                       .GroupBy(p => p.RelationBone).ToDictionary(g => g.Key, g => g.Any(p => p.isPhysicsBone));
 
         pmmModel.Bones.AddRange(pmxModel.Bones.Select(ToPmmBone));
         pmmModel.Morphs.AddRange(pmxModel.Morphs.Select(ToPmmMorph));
@@ -35,7 +35,7 @@ public static class ModelConverter
 
         foreach (var bone in pmmModel.Bones)
         {
-            if(bone.IsIK)
+            if (bone.IsIK)
             {
                 pmmModel.CurrentConfig.EnableIK.Add(bone, true);
                 configFrame.EnableIK.Add(bone, true);
