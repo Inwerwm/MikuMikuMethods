@@ -1,4 +1,4 @@
-using MikuMikuMethods.Pmm;
+﻿using MikuMikuMethods.Pmm;
 using MikuMikuMethods.Pmx;
 using System.Collections.Immutable;
 
@@ -66,5 +66,6 @@ public static class ModelConverter
     {
         CanSetOutsideParent = pmxBone.Movable,
         IsIK = pmxBone.IsIK,
+        IsCommitted = true,
     };
 }
