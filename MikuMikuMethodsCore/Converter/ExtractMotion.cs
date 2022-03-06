@@ -12,7 +12,7 @@ public static class ExtractMotion
     /// <param name="pmm">もととなる PMM</param>
     /// <param name="options">抽出設定</param>
     /// <returns>カメラモーション VMD</returns>
-    public static VocaloidMotionData ExtractCameraMotion(this PolygonMovieMaker pmm, CameraMotionOptions? options = default)
+    public static VocaloidMotionData ExtractCameraMotion(this PolygonMovieMaker pmm, CameraMotionExtractionOptions? options = default)
     {
         // 引数の既定値ではコンパイル時定数しか無理なのでここで null 時の規定値を入れる
         if (options is null) options = new();
@@ -45,7 +45,7 @@ public static class ExtractMotion
     /// <param name="model">もととなるモデル</param>
     /// <param name="options">抽出設定</param>
     /// <returns>モデルモーション VMD</returns>
-    public static VocaloidMotionData ExtractModelMotion(this PmmModel model, ModelMotionOptions? options = default)
+    public static VocaloidMotionData ExtractModelMotion(this PmmModel model, ModelMotionExtractionOptions? options = default)
     {
         // 引数の既定値ではコンパイル時定数しか無理なのでここで null 時の規定値を入れる
         if (options is null) options = new();

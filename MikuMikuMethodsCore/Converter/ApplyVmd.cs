@@ -5,11 +5,11 @@ using MikuMikuMethods.Vmd;
 namespace MikuMikuMethods.Converter;
 public static class ApplyVmd
 {
-    public static void ApplyCameraVmd(this PolygonMovieMaker pmm, VocaloidMotionData cameraVmd, CameraMotionOptions? options = default)
+    public static void ApplyCameraVmd(this PolygonMovieMaker pmm, VocaloidMotionData cameraVmd, CameraMotionExtractionOptions? options = default)
     {
         if (cameraVmd.Kind != VmdKind.Camera) throw new ArgumentException("The Model VMD was passed as the argument where the Camera VMD was expected.");
 
-        if (options is null) options = new CameraMotionOptions()
+        if (options is null) options = new CameraMotionExtractionOptions()
         {
             Camera = true,
             Light = true,
@@ -41,11 +41,11 @@ public static class ApplyVmd
         }
     }
 
-    public static void ApplyModelVmd(this PmmModel model, VocaloidMotionData modelVmd, ModelMotionOptions? options = default)
+    public static void ApplyModelVmd(this PmmModel model, VocaloidMotionData modelVmd, ModelMotionExtractionOptions? options = default)
     {
         if (modelVmd.Kind != VmdKind.Model) throw new ArgumentException("The Camera VMD was passed as the argument where the Model VMD was expected.");
 
-        if (options is null) options = new ModelMotionOptions()
+        if (options is null) options = new ModelMotionExtractionOptions()
         {
             Motion = true,
             Morph = true,
