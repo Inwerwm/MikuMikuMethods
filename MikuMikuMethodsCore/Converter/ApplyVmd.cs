@@ -15,7 +15,7 @@ public static class ApplyVmd
         {
             foreach (var frame in cameraVmd.CameraFrames)
             {
-                pmm.Camera.Frames.AddOrOverWrite(frame.ToPmmFrame(), (left, right) => left.Frame == right.Frame);
+                pmm.Camera.Frames.AddOrOverWrite(frame.ToPmmFrame(options.Offset), (left, right) => left.Frame == right.Frame);
             }
         }
 
@@ -23,7 +23,7 @@ public static class ApplyVmd
         {
             foreach (var frame in cameraVmd.LightFrames)
             {
-                pmm.Light.Frames.AddOrOverWrite(frame.ToPmmFrame(), (left, right) => left.Frame == right.Frame);
+                pmm.Light.Frames.AddOrOverWrite(frame.ToPmmFrame(options.Offset), (left, right) => left.Frame == right.Frame);
             }
         }
 
@@ -31,7 +31,7 @@ public static class ApplyVmd
         {
             foreach (var frame in cameraVmd.ShadowFrames)
             {
-                pmm.SelfShadow.Frames.AddOrOverWrite(frame.ToPmmFrame(), (left, right) => left.Frame == right.Frame);
+                pmm.SelfShadow.Frames.AddOrOverWrite(frame.ToPmmFrame(options.Offset), (left, right) => left.Frame == right.Frame);
             }
         }
     }
@@ -47,7 +47,7 @@ public static class ApplyVmd
             foreach (var frame in modelVmd.MotionFrames)
             {
                 var targetBone = model.Bones.FirstOrDefault(bone => bone.Name == frame.Name);
-                targetBone?.Frames.AddOrOverWrite(frame.ToPmmFrame(), (left, right) => left.Frame == right.Frame);
+                targetBone?.Frames.AddOrOverWrite(frame.ToPmmFrame(options.Offset), (left, right) => left.Frame == right.Frame);
             }
         }
 
@@ -56,7 +56,7 @@ public static class ApplyVmd
             foreach (var frame in modelVmd.MorphFrames)
             {
                 var targetMorph = model.Morphs.FirstOrDefault(morph => morph.Name == frame.Name);
-                targetMorph?.Frames.AddOrOverWrite(frame.ToPmmFrame(), (left, right) => left.Frame == right.Frame);
+                targetMorph?.Frames.AddOrOverWrite(frame.ToPmmFrame(options.Offset), (left, right) => left.Frame == right.Frame);
             }
         }
 
@@ -64,14 +64,14 @@ public static class ApplyVmd
         {
             foreach (var frame in modelVmd.PropertyFrames)
             {
-                model.ConfigFrames.AddOrOverWrite(frame.ToPmmFrame(model.Bones), (left, right) => left.Frame == right.Frame);
+                model.ConfigFrames.AddOrOverWrite(frame.ToPmmFrame(model.Bones, options.Offset), (left, right) => left.Frame == right.Frame);
             }
         }
     }
 
-    private static PmmCameraFrame ToPmmFrame(this VmdCameraFrame frame) => new()
+    private static PmmCameraFrame ToPmmFrame(this VmdCameraFrame frame, uint offset) => new()
     {
-        Frame = (int)frame.Frame,
+        Frame = (int)(frame.Frame + offset),
         Distance = frame.Distance,
         EyePosition = frame.Position,
         Rotation = frame.Rotation,
@@ -80,38 +80,38 @@ public static class ApplyVmd
         InterpolationCurves = frame.InterpolationCurves,
     };
 
-    public static PmmLightFrame ToPmmFrame(this VmdLightFrame frame) => new()
+    public static PmmLightFrame ToPmmFrame(this VmdLightFrame frame, uint offset) => new()
     {
-        Frame = (int)frame.Frame,
+        Frame = (int)(frame.Frame + offset),
         Color = frame.Color,
         Position = frame.Position,
     };
 
-    public static PmmSelfShadowFrame ToPmmFrame(this VmdShadowFrame frame) => new()
+    public static PmmSelfShadowFrame ToPmmFrame(this VmdShadowFrame frame, uint offset) => new()
     {
-        Frame = (int)frame.Frame,
+        Frame = (int)(frame.Frame + offset),
         ShadowMode = frame.Mode,
         ShadowRange = frame.Range,
     };
 
-    public static PmmBoneFrame ToPmmFrame(this VmdMotionFrame frame) => new()
+    public static PmmBoneFrame ToPmmFrame(this VmdMotionFrame frame, uint offset) => new()
     {
-        Frame = (int)frame.Frame,
+        Frame = (int)(frame.Frame + offset),
         Movement = frame.Position,
         Rotation = frame.Rotation,
         InterpolationCurves = new(frame.InterpolationCurves),
         EnablePhysic = true
     };
 
-    public static PmmMorphFrame ToPmmFrame(this VmdMorphFrame frame) => new()
+    public static PmmMorphFrame ToPmmFrame(this VmdMorphFrame frame, uint offset) => new()
     {
-        Frame = (int)frame.Frame,
+        Frame = (int)(frame.Frame + offset),
         Weight = frame.Weight,
     };
 
-    public static PmmModelConfigFrame ToPmmFrame(this VmdPropertyFrame frame, IEnumerable<PmmBone> bones) => new()
+    public static PmmModelConfigFrame ToPmmFrame(this VmdPropertyFrame frame, IEnumerable<PmmBone> bones, uint offset) => new()
     {
-        Frame = (int)frame.Frame,
+        Frame = (int)(frame.Frame + offset),
         Visible = frame.IsVisible,
         EnableIK = bones.Where(bone => bone.IsIK).ToDictionary(
             ikBone => ikBone,
