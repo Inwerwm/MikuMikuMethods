@@ -14,7 +14,8 @@ public static class PmmFileReader
     private static Dictionary<PmmModelConfigState, Dictionary<PmmBone, (int ModelID, int BoneID)>> OuterParentRelationCurrent { get; set; } = new();
     public static DataSection Current
     {
-        get => current; set
+        get => current; 
+        private set
         {
             current = value;
             OnChangeSection?.Invoke(value);
