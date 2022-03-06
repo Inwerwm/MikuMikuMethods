@@ -73,7 +73,6 @@ public static class ModelConverter
             {
                 CanSetOutsideParent = pmxBone.Movable,
                 IsIK = pmxBone.IsIK,
-                IsCommitted = true,
             };
 
             var gotValue = isPhysics.TryGetValue(pmxBone, out var physics);
