@@ -1,4 +1,4 @@
-﻿using MikuMikuMethods.Pmm;
+using MikuMikuMethods.Pmm;
 using MikuMikuMethods.Pmx;
 using System.Collections.Immutable;
 
@@ -19,6 +19,10 @@ public static class ModelConverter
             NameEn = pmxModel.ModelInfo.NameEn,
             Path = pmxFullPath
         };
+
+        var isPhysics = pmxModel.Bodies.Select(body => (body.RelationBone, body.PhysicsMode != PmxBody.PhysicsModeType.Static))
+                                       .Where(p => p.RelationBone is not null)
+                                       .ToDictionary(p=>p.RelationBone, p=> p.Item2);
 
         pmmModel.Bones.AddRange(pmxModel.Bones.Select(ToPmmBone));
         pmmModel.Morphs.AddRange(pmxModel.Morphs.Select(ToPmmMorph));
@@ -44,28 +48,36 @@ public static class ModelConverter
         }
 
         return pmmModel;
+
+        PmmNode ToPmmNode(PmxNode pmxNode) => new()
+        {
+            Name = pmxNode.Name,
+            Elements = pmxNode.Elements.Select(ToPmmModelElement).ToImmutableArray(),
+            DoesOpen = false
+        };
+
+        IPmmModelElement ToPmmModelElement(IPmxNodeElement pmxNodeElement) => pmxNodeElement.Entity switch
+        {
+            PmxBone bone => ToPmmBone(bone),
+            PmxMorph morph => ToPmmMorph(morph),
+            _ => throw new ArgumentException("The Entity of IPmxNodeElement has invalid type instance.")
+        };
+
+        static PmmMorph ToPmmMorph(PmxMorph pmxMorph) => new(pmxMorph.Name);
+
+        PmmBone ToPmmBone(PmxBone pmxBone)
+        {
+            PmmBone pmmBone = new(pmxBone.Name)
+            {
+                CanSetOutsideParent = pmxBone.Movable,
+                IsIK = pmxBone.IsIK,
+                IsCommitted = true,
+            };
+
+            var gotValue = isPhysics.TryGetValue(pmxBone, out var physics);
+            pmmBone.Current.EnablePhysic = gotValue ? physics : false;
+
+            return pmmBone;
+        }
     }
-
-    private static PmmNode ToPmmNode(PmxNode pmxNode) => new()
-    {
-        Name = pmxNode.Name,
-        Elements = pmxNode.Elements.Select(ToPmmModelElement).ToImmutableArray(),
-        DoesOpen = false
-    };
-
-    private static IPmmModelElement ToPmmModelElement(IPmxNodeElement pmxNodeElement) => pmxNodeElement.Entity switch
-    {
-        PmxBone bone => ToPmmBone(bone),
-        PmxMorph morph => ToPmmMorph(morph),
-        _ => throw new ArgumentException("The Entity of IPmxNodeElement has invalid type instance.")
-    };
-
-    private static PmmMorph ToPmmMorph(PmxMorph pmxMorph) => new(pmxMorph.Name);
-
-    private static PmmBone ToPmmBone(PmxBone pmxBone) => new(pmxBone.Name)
-    {
-        CanSetOutsideParent = pmxBone.Movable,
-        IsIK = pmxBone.IsIK,
-        IsCommitted = true,
-    };
 }
