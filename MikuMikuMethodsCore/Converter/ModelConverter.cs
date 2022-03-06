@@ -1,4 +1,4 @@
-using MikuMikuMethods.Pmm;
+﻿using MikuMikuMethods.Pmm;
 using MikuMikuMethods.Pmx;
 using System.Collections.Immutable;
 
@@ -46,6 +46,8 @@ public static class ModelConverter
                 configFrame.OutsideParent.Add(bone, new());
             }
         }
+
+        pmmModel.SelectedBone = pmmModel.Bones.FirstOrDefault();
 
         return pmmModel;
 
