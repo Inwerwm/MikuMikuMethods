@@ -2,7 +2,7 @@
 public class BinaryReaderWithEvent : BinaryReader
 {
     public delegate void ReadValueEventHandler(object value, Type type);
-    public event ReadValueEventHandler OnRead;
+    public event ReadValueEventHandler? OnRead;
 
     public BinaryReaderWithEvent(Stream input, System.Text.Encoding encoding) : base(input, encoding)
     {
