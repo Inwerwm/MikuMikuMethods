@@ -21,15 +21,15 @@ public class PmxMaterial : IPmxData
     /// <summary>
     /// 拡散色
     /// </summary>
-    public ColorF Diffuse { get; set; }
+    public ColorF Diffuse { get; set; } = ColorF.FromARGB(1, 1, 1);
     /// <summary>
     /// 反射色
     /// </summary>
-    public ColorF Specular { get; set; }
+    public ColorF Specular { get; set; } = ColorF.FromARGB(0, 0, 0);
     /// <summary>
     /// 環境色
     /// </summary>
-    public ColorF Ambient { get; set; }
+    public ColorF Ambient { get; set; } = ColorF.FromARGB(0.4f, 0.4f, 0.4f);
     /// <summary>
     /// 反射強度
     /// </summary>
@@ -67,7 +67,7 @@ public class PmxMaterial : IPmxData
     /// <summary>
     /// エッジ色
     /// </summary>
-    public ColorF EdgeColor { get; set; }
+    public ColorF EdgeColor { get; set; } = ColorF.FromARGB(0, 0, 0);
 
     /// <summary>
     /// 面
