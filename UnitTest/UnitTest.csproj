@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MikuMikuMethodsCore\MikuMikuMethods.csproj" />
+    <ProjectReference Include="..\MikuMikuMethods\MikuMikuMethods.csproj" />
   </ItemGroup>
 
 </Project>
