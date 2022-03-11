@@ -5,7 +5,7 @@ namespace TestWithConsole;
 
 class Program
 {
-    const string dataDir = "../../Data/";
+    const string dataDir = "../../TestData/";
 
     private static string Path(string filename) => dataDir + filename;
 
