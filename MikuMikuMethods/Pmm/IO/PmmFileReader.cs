@@ -359,7 +359,7 @@ public static class PmmFileReader
                 for (int i = 0; i < pmm.Models.Count; i++)
                 {
                     Current = new("RangeSelector", i, $"The section of {DataSection.GetOrdinal(i)} range selection target.");
-                    pmm.Models[reader.ReadByte()].SpecificEditorState.RangeSelector = new(reader.ReadInt32());
+                    ModelIdMap[reader.ReadByte()].SpecificEditorState.RangeSelector = new(reader.ReadInt32());
                 }
             }
         }
