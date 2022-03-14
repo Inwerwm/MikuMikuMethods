@@ -143,7 +143,7 @@ public static class PmmFileReader
                 frame.Key.OutsideParent.Add(relation.Key, new()
                 {
                     ParentModel = opModel,
-                    ParentBone = opModel?.Bones[relation.Value.BoneID]
+                    ParentBone = relation.Value.BoneID < 0 ? null : opModel?.Bones[relation.Value.BoneID]
                 });
             }
         }
@@ -154,7 +154,7 @@ public static class PmmFileReader
             {
                 var opModel = relation.Value.ModelID < 0 ? null : ModelIdMap[relation.Value.ModelID];
                 state.Key.OutsideParent[relation.Key].ParentModel = opModel;
-                state.Key.OutsideParent[relation.Key].ParentBone = opModel?.Bones[relation.Value.BoneID];
+                state.Key.OutsideParent[relation.Key].ParentBone = relation.Value.BoneID < 0 ? null : opModel?.Bones[relation.Value.BoneID];
             }
         }
     }
