@@ -12,6 +12,8 @@ public static class PmmFileReader
 
     private static Dictionary<PmmModelConfigFrame, Dictionary<PmmBone, (int ModelID, int BoneID)>> OutsideParentRelation { get; set; } = new();
     private static Dictionary<PmmModelConfigState, Dictionary<PmmBone, (int ModelID, int BoneID)>> OutsideParentRelationCurrent { get; set; } = new();
+
+    private static DataSection current = new("", null, "");
     public static DataSection Current
     {
         get => current; 
@@ -21,8 +23,6 @@ public static class PmmFileReader
             OnChangeSection?.Invoke(value);
         }
     }
-
-    private static DataSection current = new("", null, "");
 
     public static void Read(string filePath, PolygonMovieMaker pmm)
     {
@@ -38,198 +38,35 @@ public static class PmmFileReader
         }
     }
 
-
     public static void Read(BinaryReader reader, PolygonMovieMaker pmm)
     {
         try
         {
-            Current = new("Header", null, "Header section of the PMM file.");
-            pmm.Version = reader.ReadString(30, Encoding.ShiftJIS, '\0');
-            if (pmm.Version != "Polygon Movie maker 0002") throw new InvalidDataException("This is not PMM file.");
-            pmm.OutputResolution = new(reader.ReadInt32(), reader.ReadInt32());
+            ReadHeader(reader, pmm);
 
-            pmm.EditorState.Width = reader.ReadInt32();
-            pmm.Camera.Current.ViewAngle = (int)reader.ReadSingle();
-            pmm.EditorState.IsCameraMode = reader.ReadBoolean();
+            ReadPanelOpeningStatus(reader, pmm);
 
-            Current = new("PanelOpeningStatus", null, "Section of the opening status of various operation panels.");
-            // パネル開閉状態の読み込み
-            pmm.PanelPane.DoesOpenCameraPanel = reader.ReadBoolean();
-            pmm.PanelPane.DoesOpenLightPanel = reader.ReadBoolean();
-            pmm.PanelPane.DoesOpenAccessaryPanel = reader.ReadBoolean();
-            pmm.PanelPane.DoesOpenBonePanel = reader.ReadBoolean();
-            pmm.PanelPane.DoesOpenMorphPanel = reader.ReadBoolean();
-            pmm.PanelPane.DoesOpenSelfShadowPanel = reader.ReadBoolean();
-
-            Current = new("HeaderOfModels", null, "Section of selected model index and total number of models.");
-            // モデル読み込み
-            var selectedModelIndex = reader.ReadByte();
-            var modelCount = reader.ReadByte();
-            var modelOrderDictionary = new Dictionary<PmmModel, (byte RenderOrder, byte CalculateOrder)>();
-            for (int i = 0; i < modelCount; i++)
-            {
-                Current = new("Model", i, $"Section of {DataSection.GetOrdinal(i)} model data.");
-                (var model, var renderOrder, var calculateOrder) = ReadModel(reader);
-                pmm.Models.Add(model);
-                modelOrderDictionary.Add(model, ((byte RenderOrder, byte CalculateOrder))(renderOrder - 1, calculateOrder - 1));
-            }
-
-            Current = new($"ModelRelationSolving", null, $"The section that resolves the relations of the selected model and the render/calculate order. In this section, no reading is done, only calculation.");
-            pmm.EditorState.SelectedModel = selectedModelIndex < pmm.Models.Count ? pmm.Models[selectedModelIndex] : null;
-            foreach (var model in pmm.Models)
-            {
-                // 順序系プロパティはモデルの追加後に設定する
-                var (renderOrder, calculateOrder) = modelOrderDictionary[model];
-                pmm.SetRenderOrder(model, renderOrder);
-                pmm.SetCalculateOrder(model, calculateOrder);
-            }
-
-            // 外部親の関係解決
-            Current = new("OutsideParentSolving", null, $"The section that resolves the outside parent relation. In this section, no reading is done, only calculation.");
-            foreach (var frame in OutsideParentRelation)
-            {
-                foreach (var relation in frame.Value)
-                {
-                    var opModel = relation.Value.ModelID < 0 ? null : pmm.Models[relation.Value.ModelID];
-                    frame.Key.OutsideParent.Add(relation.Key, new()
-                    {
-                        ParentModel = opModel,
-                        ParentBone = opModel?.Bones[relation.Value.BoneID]
-                    });
-                }
-            }
-
-            foreach (var state in OutsideParentRelationCurrent)
-            {
-                foreach (var relation in state.Value)
-                {
-                    var opModel = relation.Value.ModelID < 0 ? null : pmm.Models[relation.Value.ModelID];
-                    state.Key.OutsideParent[relation.Key].ParentModel = opModel;
-                    state.Key.OutsideParent[relation.Key].ParentBone = opModel?.Bones[relation.Value.BoneID];
-                }
-            }
+            ReadModels(reader, pmm);
 
             ReadCamera(reader, pmm);
+
             ReadLight(reader, pmm.Light);
 
-            Current = new("HeaderOfAccessories", null, "Section of selected accessory index and total number of accessories.");
-            var selectedAccessoryIndex = reader.ReadByte();
-            pmm.EditorState.VerticalScrollOfAccessory = reader.ReadInt32();
+            ReadAccessories(reader, pmm);
 
-            // アクセサリ読み込み
-            var accessoryOrderDictionary = new Dictionary<PmmAccessory, byte>();
-            var accessoryCount = reader.ReadByte();
-            // アクセサリ名一覧
-            // 名前は各アクセサリ領域にも書いてあり、齟齬が出ることは基本無いらしいので読み飛ばす
-            _ = reader.ReadBytes(accessoryCount * 100);
-            for (int i = 0; i < accessoryCount; i++)
-            {
-                Current = new($"Accessory", i, $"The section of {DataSection.GetOrdinal(i)} accessory data.");
-                (PmmAccessory accessory, byte renderOrder) = ReadAccessory(reader, pmm);
-                pmm.Accessories.Add(accessory);
-                accessoryOrderDictionary.Add(accessory, renderOrder);
-            }
+            ReadKeyFrameEditorCurrentTarget(reader, pmm);
 
-            Current = new($"AccessoryRelationSolving", null, $"The section that resolves the relations of the selected accessory and the render order. In this section, no reading is done, only calculation.");
-            pmm.EditorState.SelectedAccessory = selectedAccessoryIndex < pmm.Accessories.Count ? pmm.Accessories[selectedAccessoryIndex] : null;
-            foreach (var acs in pmm.Accessories)
-            {
-                pmm.SetRenderOrder(acs, accessoryOrderDictionary[acs]);
-            }
-
-            Current = new($"KeyFrameEditorCurrentTarget", null, $"Sections for the current keyframe editor editing target and scroll amount.");
-            // フレーム編集画面の状態読み込み
-            pmm.EditorState.CurrentFrame = reader.ReadInt32();
-            pmm.EditorState.HorizontalScroll = reader.ReadInt32();
-            pmm.EditorState.HorizontalScrollLength = reader.ReadInt32();
-            pmm.EditorState.SelectedBoneOperation = (PmmEditorState.BoneOperation)reader.ReadInt32();
-
-            Current = new($"Media", null, $"The sections of play config ,background media, render config.");
-            // 再生関連設定の読込
-            pmm.PlayConfig.CameraTrackingTarget = (PmmPlayConfig.TrackingTarget)reader.ReadByte();
-
-            pmm.PlayConfig.EnableRepeat = reader.ReadBoolean();
-            pmm.PlayConfig.EnableMoveCurrentFrameToPlayStopping = reader.ReadBoolean();
-            pmm.PlayConfig.EnableStartFromCurrentFrame = reader.ReadBoolean();
-
-            pmm.PlayConfig.PlayStartFrame = reader.ReadInt32();
-            pmm.PlayConfig.PlayStopFrame = reader.ReadInt32();
-
-            // 背景メディア設定の読込
-            var existsBgm = reader.ReadBoolean();
-            var bgmPath = reader.ReadString(256, Encoding.ShiftJIS, '\0');
-            pmm.BackGround.Audio = existsBgm ? bgmPath : null;
-
-            pmm.BackGround.VideoOffset = new(reader.ReadInt32(), reader.ReadInt32());
-            pmm.BackGround.VideoScale = reader.ReadSingle();
-            var bgvPath = reader.ReadString(256, Encoding.ShiftJIS, '\0');
-            var existsBgv = reader.ReadInt32() == 0b01000000;
-            pmm.BackGround.Video = existsBgv ? bgvPath : null;
-
-            pmm.BackGround.ImageOffset = new(reader.ReadInt32(), reader.ReadInt32());
-            pmm.BackGround.ImageScale = reader.ReadSingle();
-            var bgiPath = reader.ReadString(256, Encoding.ShiftJIS, '\0');
-            var existsBgi = reader.ReadBoolean();
-            pmm.BackGround.Image = existsBgi ? bgiPath : null;
-
-            // 描画設定の読込
-            pmm.RenderConfig.InfomationVisible = reader.ReadBoolean();
-            pmm.RenderConfig.AxisVisible = reader.ReadBoolean();
-            pmm.RenderConfig.EnableGrandShadow = reader.ReadBoolean();
-
-            pmm.RenderConfig.FPSLimit = (PmmRenderConfig.FPSLimitValue)(int)reader.ReadSingle();
-            pmm.RenderConfig.ScreenCaptureMode = (PmmRenderConfig.ScreenCaptureModeType)reader.ReadInt32();
-
-            pmm.RenderConfig.PostDrawingAccessoryStartIndex = reader.ReadInt32();
-            pmm.RenderConfig.GroundShadowBrightness = reader.ReadSingle();
-            pmm.RenderConfig.EnableTransparentGroundShadow = reader.ReadBoolean();
+            ReadMedia(reader, pmm);
 
             ReadPhysics(reader, pmm.Physics);
+
             ReadSelfShadow(reader, pmm.SelfShadow);
 
-            Current = new("FollowingSettings", null, "Camera following settings and more");
-            pmm.RenderConfig.EdgeColor = System.Drawing.Color.FromArgb(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32());
-            pmm.BackGround.IsBlack = reader.ReadBoolean();
+            ReadRenderingColorSettings(reader, pmm);
 
-            int currentCameraFollowingModelIndex = reader.ReadInt32();
-            int currentCameraFollowingBoneIndex = reader.ReadInt32();
-            pmm.Camera.Current.FollowingModel = currentCameraFollowingModelIndex > 0 ? pmm.Models[currentCameraFollowingModelIndex] : null;
-            pmm.Camera.Current.FollowingBone = pmm.Camera.Current.FollowingModel?.Bones[currentCameraFollowingBoneIndex];
+            ReadFollowingSettings(reader, pmm);
 
-            // 意図不明な謎の行列
-            _ = reader.ReadBytes(64);
-
-            pmm.PlayConfig.EnableFollowCamera = reader.ReadBoolean();
-
-            // 意図不明な謎の値
-            _ = reader.ReadByte();
-
-            pmm.Physics.EnableGroundPhysics = reader.ReadBoolean();
-            pmm.RenderConfig.JumpFrameLocation = reader.ReadInt32();
-
-            try
-            {
-                // バージョン 9.24 より前ならここで終了のため、 EndOfStreamException が投げられる
-                // 9.24 なら後続要素が存在するかの Boolean 値が読める
-                var existSelectorChoiseSection = reader.ReadBoolean();
-
-                // 存在しなければここ以降の情報は無意味なので読み飛ばす
-                // が MMD はそんな値は吐かないと思われる
-                if (existSelectorChoiseSection)
-                {
-                    // 範囲選択セレクタの読込
-                    for (int i = 0; i < modelCount; i++)
-                    {
-                        Current = new("RangeSelector", i, $"The section of {DataSection.GetOrdinal(i)} range selection target.");
-                        pmm.Models[reader.ReadByte()].SpecificEditorState.RangeSelector = new(reader.ReadInt32());
-                    }
-                }
-            }
-            catch (EndOfStreamException)
-            {
-                // このセクションは途中でファイルが終わってても構わないので
-                // ストリームの終わり例外なら来ても何もしなくてよい
-            }
+            ReadExtendedData(reader, pmm);
         }
         catch (Exception ex)
         {
@@ -241,6 +78,81 @@ public static class PmmFileReader
         {
             OutsideParentRelation = new();
             OutsideParentRelationCurrent = new();
+        }
+    }
+
+    private static void ReadHeader(BinaryReader reader, PolygonMovieMaker pmm)
+    {
+        Current = new("Header", null, "Header section of the PMM file.");
+        pmm.Version = reader.ReadString(30, Encoding.ShiftJIS, '\0');
+        if (pmm.Version != "Polygon Movie maker 0002") throw new InvalidDataException("This is not PMM file.");
+        pmm.OutputResolution = new(reader.ReadInt32(), reader.ReadInt32());
+
+        pmm.EditorState.Width = reader.ReadInt32();
+        pmm.Camera.Current.ViewAngle = (int)reader.ReadSingle();
+        pmm.EditorState.IsCameraMode = reader.ReadBoolean();
+    }
+
+    private static void ReadPanelOpeningStatus(BinaryReader reader, PolygonMovieMaker pmm)
+    {
+        Current = new("PanelOpeningStatus", null, "Section of the opening status of various operation panels.");
+        // パネル開閉状態の読み込み
+        pmm.PanelPane.DoesOpenCameraPanel = reader.ReadBoolean();
+        pmm.PanelPane.DoesOpenLightPanel = reader.ReadBoolean();
+        pmm.PanelPane.DoesOpenAccessaryPanel = reader.ReadBoolean();
+        pmm.PanelPane.DoesOpenBonePanel = reader.ReadBoolean();
+        pmm.PanelPane.DoesOpenMorphPanel = reader.ReadBoolean();
+        pmm.PanelPane.DoesOpenSelfShadowPanel = reader.ReadBoolean();
+    }
+
+    private static void ReadModels(BinaryReader reader, PolygonMovieMaker pmm)
+    {
+        Current = new("HeaderOfModels", null, "Section of selected model index and total number of models.");
+        // モデル読み込み
+        var selectedModelIndex = reader.ReadByte();
+        var modelCount = reader.ReadByte();
+        var modelOrderDictionary = new Dictionary<PmmModel, (byte RenderOrder, byte CalculateOrder)>();
+        for (int i = 0; i < modelCount; i++)
+        {
+            Current = new("Model", i, $"Section of {DataSection.GetOrdinal(i)} model data.");
+            (var model, var renderOrder, var calculateOrder) = ReadModel(reader);
+            pmm.Models.Add(model);
+            modelOrderDictionary.Add(model, ((byte RenderOrder, byte CalculateOrder))(renderOrder - 1, calculateOrder - 1));
+        }
+
+        Current = new($"ModelRelationSolving", null, $"The section that resolves the relations of the selected model and the render/calculate order. In this section, no reading is done, only calculation.");
+        pmm.EditorState.SelectedModel = selectedModelIndex < pmm.Models.Count ? pmm.Models[selectedModelIndex] : null;
+        foreach (var model in pmm.Models)
+        {
+            // 順序系プロパティはモデルの追加後に設定する
+            var (renderOrder, calculateOrder) = modelOrderDictionary[model];
+            pmm.SetRenderOrder(model, renderOrder);
+            pmm.SetCalculateOrder(model, calculateOrder);
+        }
+
+        // 外部親の関係解決
+        Current = new("OutsideParentSolving", null, $"The section that resolves the outside parent relation. In this section, no reading is done, only calculation.");
+        foreach (var frame in OutsideParentRelation)
+        {
+            foreach (var relation in frame.Value)
+            {
+                var opModel = relation.Value.ModelID < 0 ? null : pmm.Models[relation.Value.ModelID];
+                frame.Key.OutsideParent.Add(relation.Key, new()
+                {
+                    ParentModel = opModel,
+                    ParentBone = opModel?.Bones[relation.Value.BoneID]
+                });
+            }
+        }
+
+        foreach (var state in OutsideParentRelationCurrent)
+        {
+            foreach (var relation in state.Value)
+            {
+                var opModel = relation.Value.ModelID < 0 ? null : pmm.Models[relation.Value.ModelID];
+                state.Key.OutsideParent[relation.Key].ParentModel = opModel;
+                state.Key.OutsideParent[relation.Key].ParentBone = opModel?.Bones[relation.Value.BoneID];
+            }
         }
     }
 
@@ -265,43 +177,6 @@ public static class PmmFileReader
         camera.Current.Rotation = reader.ReadVector3();
         camera.Current.DisablePerspective = reader.ReadBoolean();
     }
-    private static PmmCameraFrame ReadCameraFrame(BinaryReader reader, PolygonMovieMaker pmm, bool isInitial = false)
-    {
-        // リストの添え字で管理できるため不要なフレームインデックスを破棄
-        if (!isInitial) _ = reader.ReadInt32();
-
-        var frame = new PmmCameraFrame();
-
-        frame.Frame = reader.ReadInt32();
-
-        // 所属が確実にわかるので pre/next ID から探索してやる必要性がないため破棄
-        _ = reader.ReadInt32();
-        _ = reader.ReadInt32();
-
-        frame.Distance = reader.ReadSingle();
-        frame.EyePosition = reader.ReadVector3();
-        frame.Rotation = reader.ReadVector3();
-
-        int followingModelIndex = reader.ReadInt32();
-        int followingBoneIndex = reader.ReadInt32();
-
-        frame.FollowingModel = followingModelIndex < 0 ? null : pmm.Models[followingModelIndex];
-        frame.FollowingBone = frame.FollowingModel?.Bones[followingBoneIndex];
-
-        frame.InterpolationCurves[InterpolationItem.XPosition].FromBytes(reader.ReadBytes(4));
-        frame.InterpolationCurves[InterpolationItem.YPosition].FromBytes(reader.ReadBytes(4));
-        frame.InterpolationCurves[InterpolationItem.ZPosition].FromBytes(reader.ReadBytes(4));
-        frame.InterpolationCurves[InterpolationItem.Rotation].FromBytes(reader.ReadBytes(4));
-        frame.InterpolationCurves[InterpolationItem.Distance].FromBytes(reader.ReadBytes(4));
-        frame.InterpolationCurves[InterpolationItem.ViewAngle].FromBytes(reader.ReadBytes(4));
-
-        frame.DisablePerspective = reader.ReadBoolean();
-        frame.ViewAngle = reader.ReadInt32();
-
-        frame.IsSelected = reader.ReadBoolean();
-
-        return frame;
-    }
 
     private static void ReadLight(BinaryReader reader, PmmLight light)
     {
@@ -319,56 +194,86 @@ public static class PmmFileReader
         light.Current.Color = reader.ReadSingleRGB();
         light.Current.Position = reader.ReadVector3();
     }
-    private static PmmLightFrame ReadLightFrame(BinaryReader reader, bool isInitial = false)
+
+    private static void ReadAccessories(BinaryReader reader, PolygonMovieMaker pmm)
     {
-        // リストの添え字で管理できるため不要なフレームインデックスを破棄
-        if (!isInitial) _ = reader.ReadInt32();
+        Current = new("HeaderOfAccessories", null, "Section of selected accessory index and total number of accessories.");
+        var selectedAccessoryIndex = reader.ReadByte();
+        pmm.EditorState.VerticalScrollOfAccessory = reader.ReadInt32();
 
-        var frame = new PmmLightFrame();
-
-        frame.Frame = reader.ReadInt32();
-        // 所属が確実にわかるので pre/next ID から探索してやる必要性がないため破棄
-        _ = reader.ReadInt32();
-        _ = reader.ReadInt32();
-
-        frame.Color = reader.ReadSingleRGB();
-        frame.Position = reader.ReadVector3();
-
-        frame.IsSelected = reader.ReadBoolean();
-
-        return frame;
-    }
-
-    private static void ReadSelfShadow(BinaryReader reader, PmmSelfShadow selfShadow)
-    {
-        Current = new("SelfShadow", null, $"The section of self shadow config and frames");
-        selfShadow.EnableSelfShadow = reader.ReadBoolean();
-        selfShadow.ShadowRange = reader.ReadSingle();
-
-        selfShadow.Frames.Add(ReadSelfShadowFrame(reader, true));
-        var frameCount = reader.ReadInt32();
-        for (int i = 0; i < frameCount; i++)
+        // アクセサリ読み込み
+        var accessoryOrderDictionary = new Dictionary<PmmAccessory, byte>();
+        var accessoryCount = reader.ReadByte();
+        // アクセサリ名一覧
+        // 名前は各アクセサリ領域にも書いてあり、齟齬が出ることは基本無いらしいので読み飛ばす
+        _ = reader.ReadBytes(accessoryCount * 100);
+        for (int i = 0; i < accessoryCount; i++)
         {
-            selfShadow.Frames.Add(ReadSelfShadowFrame(reader));
+            Current = new($"Accessory", i, $"The section of {DataSection.GetOrdinal(i)} accessory data.");
+            (PmmAccessory accessory, byte renderOrder) = ReadAccessory(reader, pmm);
+            pmm.Accessories.Add(accessory);
+            accessoryOrderDictionary.Add(accessory, renderOrder);
+        }
+
+        Current = new($"AccessoryRelationSolving", null, $"The section that resolves the relations of the selected accessory and the render order. In this section, no reading is done, only calculation.");
+        pmm.EditorState.SelectedAccessory = selectedAccessoryIndex < pmm.Accessories.Count ? pmm.Accessories[selectedAccessoryIndex] : null;
+        foreach (var acs in pmm.Accessories)
+        {
+            pmm.SetRenderOrder(acs, accessoryOrderDictionary[acs]);
         }
     }
-    private static PmmSelfShadowFrame ReadSelfShadowFrame(BinaryReader reader, bool isInitial = false)
+
+    private static void ReadKeyFrameEditorCurrentTarget(BinaryReader reader, PolygonMovieMaker pmm)
     {
-        // リストの添え字で管理できるため不要なフレームインデックスを破棄
-        if (!isInitial) _ = reader.ReadInt32();
+        Current = new($"KeyFrameEditorCurrentTarget", null, $"Sections for the current keyframe editor editing target and scroll amount.");
+        // フレーム編集画面の状態読み込み
+        pmm.EditorState.CurrentFrame = reader.ReadInt32();
+        pmm.EditorState.HorizontalScroll = reader.ReadInt32();
+        pmm.EditorState.HorizontalScrollLength = reader.ReadInt32();
+        pmm.EditorState.SelectedBoneOperation = (PmmEditorState.BoneOperation)reader.ReadInt32();
+    }
 
-        var frame = new PmmSelfShadowFrame();
-        frame.Frame = reader.ReadInt32();
-        // 所属が確実にわかるので pre/next ID から探索してやる必要性がないため破棄
-        _ = reader.ReadInt32();
-        _ = reader.ReadInt32();
+    private static void ReadMedia(BinaryReader reader, PolygonMovieMaker pmm)
+    {
+        Current = new($"Media", null, $"The sections of play config ,background media, render config.");
+        // 再生関連設定の読込
+        pmm.PlayConfig.CameraTrackingTarget = (PmmPlayConfig.TrackingTarget)reader.ReadByte();
 
-        frame.ShadowMode = (SelfShadow)reader.ReadByte();
-        frame.ShadowRange = reader.ReadSingle();
+        pmm.PlayConfig.EnableRepeat = reader.ReadBoolean();
+        pmm.PlayConfig.EnableMoveCurrentFrameToPlayStopping = reader.ReadBoolean();
+        pmm.PlayConfig.EnableStartFromCurrentFrame = reader.ReadBoolean();
 
-        frame.IsSelected = reader.ReadBoolean();
+        pmm.PlayConfig.PlayStartFrame = reader.ReadInt32();
+        pmm.PlayConfig.PlayStopFrame = reader.ReadInt32();
 
-        return frame;
+        // 背景メディア設定の読込
+        var existsBgm = reader.ReadBoolean();
+        var bgmPath = reader.ReadString(256, Encoding.ShiftJIS, '\0');
+        pmm.BackGround.Audio = existsBgm ? bgmPath : null;
+
+        pmm.BackGround.VideoOffset = new(reader.ReadInt32(), reader.ReadInt32());
+        pmm.BackGround.VideoScale = reader.ReadSingle();
+        var bgvPath = reader.ReadString(256, Encoding.ShiftJIS, '\0');
+        var existsBgv = reader.ReadInt32() == 0b01000000;
+        pmm.BackGround.Video = existsBgv ? bgvPath : null;
+
+        pmm.BackGround.ImageOffset = new(reader.ReadInt32(), reader.ReadInt32());
+        pmm.BackGround.ImageScale = reader.ReadSingle();
+        var bgiPath = reader.ReadString(256, Encoding.ShiftJIS, '\0');
+        var existsBgi = reader.ReadBoolean();
+        pmm.BackGround.Image = existsBgi ? bgiPath : null;
+
+        // 描画設定の読込
+        pmm.RenderConfig.InfomationVisible = reader.ReadBoolean();
+        pmm.RenderConfig.AxisVisible = reader.ReadBoolean();
+        pmm.RenderConfig.EnableGrandShadow = reader.ReadBoolean();
+
+        pmm.RenderConfig.FPSLimit = (PmmRenderConfig.FPSLimitValue)(int)reader.ReadSingle();
+        pmm.RenderConfig.ScreenCaptureMode = (PmmRenderConfig.ScreenCaptureModeType)reader.ReadInt32();
+
+        pmm.RenderConfig.PostDrawingAccessoryStartIndex = reader.ReadInt32();
+        pmm.RenderConfig.GroundShadowBrightness = reader.ReadSingle();
+        pmm.RenderConfig.EnableTransparentGroundShadow = reader.ReadBoolean();
     }
 
     private static void ReadPhysics(BinaryReader reader, PmmPhysics physics)
@@ -388,92 +293,74 @@ public static class PmmFileReader
             physics.GravityFrames.Add(ReadGravityFrame(reader));
         }
     }
-    private static PmmGravityFrame ReadGravityFrame(BinaryReader reader, bool isInitial = false)
+
+    private static void ReadSelfShadow(BinaryReader reader, PmmSelfShadow selfShadow)
     {
-        // リストの添え字で管理できるため不要なフレームインデックスを破棄
-        if (!isInitial) _ = reader.ReadInt32();
+        Current = new("SelfShadow", null, $"The section of self shadow config and frames");
+        selfShadow.EnableSelfShadow = reader.ReadBoolean();
+        selfShadow.ShadowRange = reader.ReadSingle();
 
-        var frame = new PmmGravityFrame();
-        frame.Frame = reader.ReadInt32();
-        // 所属が確実にわかるので pre/next ID から探索してやる必要性がないため破棄
-        _ = reader.ReadInt32();
-        _ = reader.ReadInt32();
-
-        var enableNoise = reader.ReadBoolean();
-        var noiseAmount = reader.ReadInt32();
-        frame.Noize = enableNoise ? noiseAmount : null;
-        frame.Acceleration = reader.ReadSingle();
-        frame.Direction = reader.ReadVector3();
-
-        frame.IsSelected = reader.ReadBoolean();
-
-        return frame;
-    }
-
-    private static (PmmAccessory Accessory, byte RenderOrder) ReadAccessory(BinaryReader reader, PolygonMovieMaker pmm)
-    {
-        byte renderOrder;
-
-        // リストの添字で管理するため Index は破棄
-        _ = reader.ReadByte();
-        var name = reader.ReadString(100, Encoding.ShiftJIS, '\0');
-        var path = reader.ReadString(256, Encoding.ShiftJIS, '\0');
-        var acs = new PmmAccessory(name, path);
-
-        renderOrder = reader.ReadByte();
-
-        acs.Frames.Add(ReadAccessoryFrame(reader, pmm, true));
-
-        var accessoryCount = reader.ReadInt32();
-        for (int i = 0; i < accessoryCount; i++)
+        selfShadow.Frames.Add(ReadSelfShadowFrame(reader, true));
+        var frameCount = reader.ReadInt32();
+        for (int i = 0; i < frameCount; i++)
         {
-            acs.Frames.Add(ReadAccessoryFrame(reader, pmm));
+            selfShadow.Frames.Add(ReadSelfShadowFrame(reader));
         }
-
-        acs.Current.TransAndVisible = reader.ReadByte();
-        int parentModelIndex = reader.ReadInt32();
-        int parentBoneIndex = reader.ReadInt32();
-        acs.Current.ParentModel = parentModelIndex < 0 ? null : pmm.Models[parentModelIndex];
-        acs.Current.ParentBone = acs.Current.ParentModel?.Bones[parentBoneIndex];
-
-        acs.Current.Position = reader.ReadVector3();
-        acs.Current.Rotation = reader.ReadVector3();
-        acs.Current.Scale = reader.ReadSingle();
-
-        acs.Current.EnableShadow = reader.ReadBoolean();
-
-        acs.EnableAlphaBlend = reader.ReadBoolean();
-
-        return (acs, renderOrder);
     }
-    private static PmmAccessoryFrame ReadAccessoryFrame(BinaryReader reader, PolygonMovieMaker pmm, bool isInitial = false)
+
+    private static void ReadRenderingColorSettings(BinaryReader reader, PolygonMovieMaker pmm)
     {
-        // リストの添え字で管理できるため不要なフレームインデックスを破棄
-        if (!isInitial) _ = reader.ReadInt32();
+        Current = new("RenderingColorSettings", null, "Read edge color and background color settings");
+        pmm.RenderConfig.EdgeColor = System.Drawing.Color.FromArgb(reader.ReadInt32(), reader.ReadInt32(), reader.ReadInt32());
+        pmm.BackGround.IsBlack = reader.ReadBoolean();
+    }
 
-        var frame = new PmmAccessoryFrame();
+    private static void ReadFollowingSettings(BinaryReader reader, PolygonMovieMaker pmm)
+    {
+        Current = new("FollowingSettings", null, "Camera following settings, and information following with the tail of the data");
+        int currentCameraFollowingModelIndex = reader.ReadInt32();
+        int currentCameraFollowingBoneIndex = reader.ReadInt32();
+        pmm.Camera.Current.FollowingModel = currentCameraFollowingModelIndex > 0 ? pmm.Models[currentCameraFollowingModelIndex] : null;
+        pmm.Camera.Current.FollowingBone = pmm.Camera.Current.FollowingModel?.Bones[currentCameraFollowingBoneIndex];
 
-        frame.Frame = reader.ReadInt32();
-        // 所属が確実にわかるので pre/next ID から探索してやる必要性がないため破棄
-        _ = reader.ReadInt32();
-        _ = reader.ReadInt32();
+        // 意図不明な謎の行列
+        _ = reader.ReadBytes(64);
 
-        frame.TransAndVisible = reader.ReadByte();
+        pmm.PlayConfig.EnableFollowCamera = reader.ReadBoolean();
 
-        int parentModelIndex = reader.ReadInt32();
-        int parentBoneIndex = reader.ReadInt32();
+        // 意図不明な謎の値
+        _ = reader.ReadByte();
 
-        frame.ParentModel = parentModelIndex < 0 ? null : pmm.Models[parentModelIndex];
-        frame.ParentBone = frame.ParentModel?.Bones[parentBoneIndex];
+        pmm.Physics.EnableGroundPhysics = reader.ReadBoolean();
+        pmm.RenderConfig.JumpFrameLocation = reader.ReadInt32();
+    }
 
-        frame.Position = reader.ReadVector3();
-        frame.Rotation = reader.ReadVector3();
-        frame.Scale = reader.ReadSingle();
+    private static void ReadExtendedData(BinaryReader reader, PolygonMovieMaker pmm)
+    {
+        Current = new("ExtendedData", null, "Sections of data extended to version 9.24");
+        try
+        {
+            // バージョン 9.24 より前ならここで終了のため、 EndOfStreamException が投げられる
+            // 9.24 なら後続要素が存在するかの Boolean 値が読める
+            var existSelectorChoiseSection = reader.ReadBoolean();
 
-        frame.EnableShadow = reader.ReadBoolean();
-        frame.IsSelected = reader.ReadBoolean();
-
-        return frame;
+            // 存在しなければここ以降の情報は無意味なので読み飛ばす
+            // が MMD はそんな値は吐かないと思われる
+            if (existSelectorChoiseSection)
+            {
+                // 範囲選択セレクタの読込
+                for (int i = 0; i < pmm.Models.Count; i++)
+                {
+                    Current = new("RangeSelector", i, $"The section of {DataSection.GetOrdinal(i)} range selection target.");
+                    pmm.Models[reader.ReadByte()].SpecificEditorState.RangeSelector = new(reader.ReadInt32());
+                }
+            }
+        }
+        catch (EndOfStreamException)
+        {
+            // このセクションは途中でファイルが終わってても構わないので
+            // ストリームの終わり例外なら来ても何もしなくてよい
+        }
     }
 
     private static (PmmModel Model, byte RenderOrder, byte CalculateOrder) ReadModel(BinaryReader reader)
@@ -648,6 +535,82 @@ public static class PmmFileReader
 
         return (model, renderOrder, calculateOrder);
     }
+
+    private static (PmmAccessory Accessory, byte RenderOrder) ReadAccessory(BinaryReader reader, PolygonMovieMaker pmm)
+    {
+        byte renderOrder;
+
+        // リストの添字で管理するため Index は破棄
+        _ = reader.ReadByte();
+        var name = reader.ReadString(100, Encoding.ShiftJIS, '\0');
+        var path = reader.ReadString(256, Encoding.ShiftJIS, '\0');
+        var acs = new PmmAccessory(name, path);
+
+        renderOrder = reader.ReadByte();
+
+        acs.Frames.Add(ReadAccessoryFrame(reader, pmm, true));
+
+        var accessoryCount = reader.ReadInt32();
+        for (int i = 0; i < accessoryCount; i++)
+        {
+            acs.Frames.Add(ReadAccessoryFrame(reader, pmm));
+        }
+
+        acs.Current.TransAndVisible = reader.ReadByte();
+        int parentModelIndex = reader.ReadInt32();
+        int parentBoneIndex = reader.ReadInt32();
+        acs.Current.ParentModel = parentModelIndex < 0 ? null : pmm.Models[parentModelIndex];
+        acs.Current.ParentBone = acs.Current.ParentModel?.Bones[parentBoneIndex];
+
+        acs.Current.Position = reader.ReadVector3();
+        acs.Current.Rotation = reader.ReadVector3();
+        acs.Current.Scale = reader.ReadSingle();
+
+        acs.Current.EnableShadow = reader.ReadBoolean();
+
+        acs.EnableAlphaBlend = reader.ReadBoolean();
+
+        return (acs, renderOrder);
+    }
+    
+    private static PmmCameraFrame ReadCameraFrame(BinaryReader reader, PolygonMovieMaker pmm, bool isInitial = false)
+    {
+        // リストの添え字で管理できるため不要なフレームインデックスを破棄
+        if (!isInitial) _ = reader.ReadInt32();
+
+        var frame = new PmmCameraFrame();
+
+        frame.Frame = reader.ReadInt32();
+
+        // 所属が確実にわかるので pre/next ID から探索してやる必要性がないため破棄
+        _ = reader.ReadInt32();
+        _ = reader.ReadInt32();
+
+        frame.Distance = reader.ReadSingle();
+        frame.EyePosition = reader.ReadVector3();
+        frame.Rotation = reader.ReadVector3();
+
+        int followingModelIndex = reader.ReadInt32();
+        int followingBoneIndex = reader.ReadInt32();
+
+        frame.FollowingModel = followingModelIndex < 0 ? null : pmm.Models[followingModelIndex];
+        frame.FollowingBone = frame.FollowingModel?.Bones[followingBoneIndex];
+
+        frame.InterpolationCurves[InterpolationItem.XPosition].FromBytes(reader.ReadBytes(4));
+        frame.InterpolationCurves[InterpolationItem.YPosition].FromBytes(reader.ReadBytes(4));
+        frame.InterpolationCurves[InterpolationItem.ZPosition].FromBytes(reader.ReadBytes(4));
+        frame.InterpolationCurves[InterpolationItem.Rotation].FromBytes(reader.ReadBytes(4));
+        frame.InterpolationCurves[InterpolationItem.Distance].FromBytes(reader.ReadBytes(4));
+        frame.InterpolationCurves[InterpolationItem.ViewAngle].FromBytes(reader.ReadBytes(4));
+
+        frame.DisablePerspective = reader.ReadBoolean();
+        frame.ViewAngle = reader.ReadInt32();
+
+        frame.IsSelected = reader.ReadBoolean();
+
+        return frame;
+    }
+    
     private static PmmModelConfigFrame ReadConfigFrame(BinaryReader reader, PmmModel model, IEnumerable<int> ikIndices, IEnumerable<int> parentableIndices, bool isInitial = false)
     {
         // リストの添え字で管理できるため不要なフレームインデックスを破棄
@@ -682,6 +645,7 @@ public static class PmmFileReader
 
         return frame;
     }
+    
     private static (PmmMorphFrame Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex) ReadMorphFrame(BinaryReader reader, bool isInitial = false)
     {
         int? id = isInitial ? null : reader.ReadInt32();
@@ -698,6 +662,7 @@ public static class PmmFileReader
 
         return (frame, preID, nextId, id);
     }
+    
     private static (PmmBoneFrame Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex) ReadBoneFrame(BinaryReader reader, bool isInitial = false)
     {
         int? id = isInitial ? null : reader.ReadInt32();
@@ -719,6 +684,97 @@ public static class PmmFileReader
         frame.EnablePhysic = !reader.ReadBoolean();
 
         return (frame, previousFrameIndex, nextFrameIndex, id);
+    }
+    
+    private static PmmLightFrame ReadLightFrame(BinaryReader reader, bool isInitial = false)
+    {
+        // リストの添え字で管理できるため不要なフレームインデックスを破棄
+        if (!isInitial) _ = reader.ReadInt32();
+
+        var frame = new PmmLightFrame();
+
+        frame.Frame = reader.ReadInt32();
+        // 所属が確実にわかるので pre/next ID から探索してやる必要性がないため破棄
+        _ = reader.ReadInt32();
+        _ = reader.ReadInt32();
+
+        frame.Color = reader.ReadSingleRGB();
+        frame.Position = reader.ReadVector3();
+
+        frame.IsSelected = reader.ReadBoolean();
+
+        return frame;
+    }
+    
+    private static PmmAccessoryFrame ReadAccessoryFrame(BinaryReader reader, PolygonMovieMaker pmm, bool isInitial = false)
+    {
+        // リストの添え字で管理できるため不要なフレームインデックスを破棄
+        if (!isInitial) _ = reader.ReadInt32();
+
+        var frame = new PmmAccessoryFrame();
+
+        frame.Frame = reader.ReadInt32();
+        // 所属が確実にわかるので pre/next ID から探索してやる必要性がないため破棄
+        _ = reader.ReadInt32();
+        _ = reader.ReadInt32();
+
+        frame.TransAndVisible = reader.ReadByte();
+
+        int parentModelIndex = reader.ReadInt32();
+        int parentBoneIndex = reader.ReadInt32();
+
+        frame.ParentModel = parentModelIndex < 0 ? null : pmm.Models[parentModelIndex];
+        frame.ParentBone = frame.ParentModel?.Bones[parentBoneIndex];
+
+        frame.Position = reader.ReadVector3();
+        frame.Rotation = reader.ReadVector3();
+        frame.Scale = reader.ReadSingle();
+
+        frame.EnableShadow = reader.ReadBoolean();
+        frame.IsSelected = reader.ReadBoolean();
+
+        return frame;
+    }
+    
+    private static PmmGravityFrame ReadGravityFrame(BinaryReader reader, bool isInitial = false)
+    {
+        // リストの添え字で管理できるため不要なフレームインデックスを破棄
+        if (!isInitial) _ = reader.ReadInt32();
+
+        var frame = new PmmGravityFrame();
+        frame.Frame = reader.ReadInt32();
+        // 所属が確実にわかるので pre/next ID から探索してやる必要性がないため破棄
+        _ = reader.ReadInt32();
+        _ = reader.ReadInt32();
+
+        var enableNoise = reader.ReadBoolean();
+        var noiseAmount = reader.ReadInt32();
+        frame.Noize = enableNoise ? noiseAmount : null;
+        frame.Acceleration = reader.ReadSingle();
+        frame.Direction = reader.ReadVector3();
+
+        frame.IsSelected = reader.ReadBoolean();
+
+        return frame;
+    }
+    
+    private static PmmSelfShadowFrame ReadSelfShadowFrame(BinaryReader reader, bool isInitial = false)
+    {
+        // リストの添え字で管理できるため不要なフレームインデックスを破棄
+        if (!isInitial) _ = reader.ReadInt32();
+
+        var frame = new PmmSelfShadowFrame();
+        frame.Frame = reader.ReadInt32();
+        // 所属が確実にわかるので pre/next ID から探索してやる必要性がないため破棄
+        _ = reader.ReadInt32();
+        _ = reader.ReadInt32();
+
+        frame.ShadowMode = (SelfShadow)reader.ReadByte();
+        frame.ShadowRange = reader.ReadSingle();
+
+        frame.IsSelected = reader.ReadBoolean();
+
+        return frame;
     }
 
     /// <summary>
