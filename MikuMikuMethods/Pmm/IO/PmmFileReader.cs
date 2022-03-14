@@ -12,6 +12,7 @@ public static class PmmFileReader
 
     private static Dictionary<PmmModelConfigFrame, Dictionary<PmmBone, (int ModelID, int BoneID)>> OutsideParentRelation { get; set; } = new();
     private static Dictionary<PmmModelConfigState, Dictionary<PmmBone, (int ModelID, int BoneID)>> OutsideParentRelationCurrent { get; set; } = new();
+    private static Dictionary<int, PmmModel> ModelIdMap { get; set; } = new();
 
     private static DataSection current = new("", null, "");
     public static DataSection Current
@@ -78,6 +79,7 @@ public static class PmmFileReader
         {
             OutsideParentRelation = new();
             OutsideParentRelationCurrent = new();
+            ModelIdMap = new();
         }
     }
 
@@ -115,8 +117,9 @@ public static class PmmFileReader
         for (int i = 0; i < modelCount; i++)
         {
             Current = new("Model", i, $"Section of {DataSection.GetOrdinal(i)} model data.");
-            (var model, var renderOrder, var calculateOrder) = ReadModel(reader);
+            (var model, var modelId, var renderOrder, var calculateOrder) = ReadModel(reader);
             pmm.Models.Add(model);
+            ModelIdMap.Add(modelId, model);
             modelOrderDictionary.Add(model, ((byte RenderOrder, byte CalculateOrder))(renderOrder - 1, calculateOrder - 1));
         }
 
@@ -136,7 +139,7 @@ public static class PmmFileReader
         {
             foreach (var relation in frame.Value)
             {
-                var opModel = relation.Value.ModelID < 0 ? null : pmm.Models[relation.Value.ModelID];
+                var opModel = relation.Value.ModelID < 0 ? null : ModelIdMap[relation.Value.ModelID];
                 frame.Key.OutsideParent.Add(relation.Key, new()
                 {
                     ParentModel = opModel,
@@ -149,7 +152,7 @@ public static class PmmFileReader
         {
             foreach (var relation in state.Value)
             {
-                var opModel = relation.Value.ModelID < 0 ? null : pmm.Models[relation.Value.ModelID];
+                var opModel = relation.Value.ModelID < 0 ? null : ModelIdMap[relation.Value.ModelID];
                 state.Key.OutsideParent[relation.Key].ParentModel = opModel;
                 state.Key.OutsideParent[relation.Key].ParentBone = opModel?.Bones[relation.Value.BoneID];
             }
@@ -367,14 +370,12 @@ public static class PmmFileReader
         }
     }
 
-    private static (PmmModel Model, byte RenderOrder, byte CalculateOrder) ReadModel(BinaryReader reader)
+    private static (PmmModel Model, byte modelId, byte RenderOrder, byte CalculateOrder) ReadModel(BinaryReader reader)
     {
         var model = new PmmModel();
         byte renderOrder;
 
-        // モデルのインデックス
-        // 手動で書き換える理由はなく、書込時に自動計算できるので破棄
-        _ = reader.ReadByte();
+        var modelId = reader.ReadByte();
 
         model.Name = reader.ReadString();
         model.NameEn = reader.ReadString();
@@ -541,7 +542,7 @@ public static class PmmFileReader
         model.EnableSelfShadow = reader.ReadBoolean();
         var calculateOrder = reader.ReadByte();
 
-        return (model, renderOrder, calculateOrder);
+        return (model, modelId, renderOrder, calculateOrder);
     }
 
     private static (PmmAccessory Accessory, byte RenderOrder) ReadAccessory(BinaryReader reader, PolygonMovieMaker pmm)
