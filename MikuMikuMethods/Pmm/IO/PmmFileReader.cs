@@ -124,10 +124,10 @@ public static class PmmFileReader
         pmm.EditorState.SelectedModel = selectedModelIndex < pmm.Models.Count ? pmm.Models[selectedModelIndex] : null;
         foreach (var model in pmm.Models)
         {
-            // 順序系プロパティはモデルの追加後に設定する
-            var (renderOrder, calculateOrder) = modelOrderDictionary[model];
-            pmm.SetRenderOrder(model, renderOrder);
-            pmm.SetCalculateOrder(model, calculateOrder);
+            byte maxOrder = (byte)(pmm.Models.Count - 1);
+            var (renderOrder, calculateOrder) = modelOrderDictionary.TryGetValue(model, out var orders) ? orders : (maxOrder, maxOrder);
+            pmm.SetRenderOrder(model, Math.Min(renderOrder, maxOrder));
+            pmm.SetCalculateOrder(model, Math.Min(calculateOrder, maxOrder));
         }
 
         // 外部親の関係解決
