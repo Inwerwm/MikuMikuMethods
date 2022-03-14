@@ -11,9 +11,6 @@ class Program
 
     static void Main(string[] args)
     {
-        PolygonMovieMaker pmm = new(Path("RangeSelectorTest.pmm"));
-
-        Console.WriteLine(pmm.Models[0].SpecificEditorState.RangeSelector);
-        Console.WriteLine(pmm.Models[1].SpecificEditorState.RangeSelector);
+        PolygonMovieMaker pmm = new(Path("pmm.pmm"));
     }
 }
