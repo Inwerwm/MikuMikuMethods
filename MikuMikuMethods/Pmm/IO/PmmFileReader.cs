@@ -161,13 +161,14 @@ public static class PmmFileReader
 
         var camera = pmm.Camera;
 
-        Current = new("CameraFrame", null, $"The section of initial camera frame data.");
+        Current = new("InitialCameraFrame", null, $"The section of initial camera frame data.");
         camera.Frames.Add(ReadCameraFrame(reader, pmm, true));
 
+        Current = new("CameraFrameCount", null, $"The section of count of camera frames.");
         var cameraFrameCount = reader.ReadInt32();
         for (int i = 0; i < cameraFrameCount; i++)
         {
-            Current = Current with { Index = i, Description = $"The section of {DataSection.GetOrdinal(i)} camera frame data." };
+            Current = new("CameraFrame", i, $"The section of {DataSection.GetOrdinal(i)} camera frame data.");
             camera.Frames.Add(ReadCameraFrame(reader, pmm));
         }
 
@@ -183,6 +184,7 @@ public static class PmmFileReader
         Current = new("LightFrame", null, $"The section of initial light frame data.");
         light.Frames.Add(ReadLightFrame(reader, true));
 
+        Current = new("LightFrameCount", null, $"The section of count of light frames.");
         var frameCount = reader.ReadInt32();
         for (int i = 0; i < frameCount; i++)
         {
@@ -278,7 +280,7 @@ public static class PmmFileReader
 
     private static void ReadPhysics(BinaryReader reader, PmmPhysics physics)
     {
-        Current = new("Physics", null, $"The section of physics config and gravity frames");
+        Current = new("Physics", null, $"The section of physics config");
         physics.CalculationMode = (PmmPhysics.PhysicsMode)reader.ReadByte();
         physics.CurrentGravity.Acceleration = reader.ReadSingle();
         var currentNoiseAmount = reader.ReadInt32();
@@ -290,6 +292,7 @@ public static class PmmFileReader
         var gravityFrameCount = reader.ReadInt32();
         for (int i = 0; i < gravityFrameCount; i++)
         {
+            Current = new("GravityFrame", i, $"The section of {DataSection.GetOrdinal(i)} gravity frame data.");
             physics.GravityFrames.Add(ReadGravityFrame(reader));
         }
     }
@@ -304,6 +307,7 @@ public static class PmmFileReader
         var frameCount = reader.ReadInt32();
         for (int i = 0; i < frameCount; i++)
         {
+            Current = new("SelfShadowFrame", i, $"The section of {DataSection.GetOrdinal(i)} self shadow frame data.");
             selfShadow.Frames.Add(ReadSelfShadowFrame(reader));
         }
     }
@@ -380,6 +384,7 @@ public static class PmmFileReader
         // 表示枠数から求まるので破棄
         _ = reader.ReadByte();
 
+        Current = new("BoneCount", null, $"The section of count of bones.");
         var boneCount = reader.ReadInt32();
         for (int i = 0; i < boneCount; i++)
         {
@@ -387,6 +392,7 @@ public static class PmmFileReader
             model.Bones.Add(new PmmBone(reader.ReadString()));
         }
 
+        Current = new("MorphCount", null, $"The section of count of morphs.");
         var morphCount = reader.ReadInt32();
         for (int i = 0; i < morphCount; i++)
         {
@@ -433,10 +439,11 @@ public static class PmmFileReader
         if (selectedOtherMorphIndex >= 0)
             model.SelectedOtherMorph = model.Morphs[selectedOtherMorphIndex];
 
+        Current = new("NodeCount", null, $"The section of count of nodes.");
         var nodeCount = reader.ReadByte();
         for (int i = 0; i < nodeCount; i++)
         {
-            Current = new("Morph", i, $"The section of {DataSection.GetOrdinal(i)} node.");
+            Current = new("Node", i, $"The section of {DataSection.GetOrdinal(i)} node.");
             model.Nodes.Add(new() { DoesOpen = reader.ReadBoolean() });
         }
 
@@ -483,6 +490,7 @@ public static class PmmFileReader
         Current = new("InitialConfigFrame", null, $"The section of initial config frame in {model.Name}.");
         model.ConfigFrames.Add(ReadConfigFrame(reader, model, ikIndices, parentableIndices, true));
 
+        Current = new("ConfigFrameCount", null, $"The section of count of config frames.");
         var configFrameCount = reader.ReadInt32();
         for (int i = 0; i < configFrameCount; i++)
         {
@@ -792,15 +800,15 @@ public static class PmmFileReader
         Action<T, IPmmFrame> addFrame)
      where T : IPmmModelElement
     {
+        Current = new($"{typeof(T).Name.Replace("Pmm", "")}FrameCount", null, $"The section of count of {typeof(T).Name.Replace("Pmm", "").ToLower()} frames.");
         var elementFrameCount = reader.ReadInt32();
         // 自前定義 Select の1つ目のラムダ式は各ループにおける通常の Select 処理の直前にやる処理
         var elementFrames = Enumerable.Range(0, elementFrameCount).Select(
-            i => Current = new("Frame", i, $"The section of {DataSection.GetOrdinal(i)} {typeof(T).Name} frame data."),
+            i => Current = new($"{typeof(T).Name.Replace("Pmm", "")}Frame", i, $"The section of {DataSection.GetOrdinal(i)} {typeof(T).Name.Replace("Pmm", "").ToLower()} frame data."),
             i => readElementFrame(reader)
         ).ToArray();
 
         Current = new("ResolveFrames", null, $"This section resolves which {typeof(T).Name} the frame belongs to; the PMM file stores this information by frame ID before and after.");
-
         ResolveNextFrames(
             addFrame,
             elementFrames,
