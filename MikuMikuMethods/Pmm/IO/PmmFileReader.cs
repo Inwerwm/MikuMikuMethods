@@ -44,7 +44,7 @@ public static class PmmFileReader
         {
             ReadHeader(reader, pmm);
 
-            ReadPanelOpeningStatus(reader, pmm);
+            ReadPanelOpeningStatus(reader, pmm.PanelPane);
 
             ReadModels(reader, pmm);
 
@@ -54,7 +54,7 @@ public static class PmmFileReader
 
             ReadAccessories(reader, pmm);
 
-            ReadKeyFrameEditorCurrentTarget(reader, pmm);
+            ReadKeyFrameEditorCurrentTarget(reader, pmm.EditorState);
 
             ReadMedia(reader, pmm);
 
@@ -93,16 +93,16 @@ public static class PmmFileReader
         pmm.EditorState.IsCameraMode = reader.ReadBoolean();
     }
 
-    private static void ReadPanelOpeningStatus(BinaryReader reader, PolygonMovieMaker pmm)
+    private static void ReadPanelOpeningStatus(BinaryReader reader, PmmPanelPane panelPane)
     {
         Current = new("PanelOpeningStatus", null, "Section of the opening status of various operation panels.");
         // パネル開閉状態の読み込み
-        pmm.PanelPane.DoesOpenCameraPanel = reader.ReadBoolean();
-        pmm.PanelPane.DoesOpenLightPanel = reader.ReadBoolean();
-        pmm.PanelPane.DoesOpenAccessaryPanel = reader.ReadBoolean();
-        pmm.PanelPane.DoesOpenBonePanel = reader.ReadBoolean();
-        pmm.PanelPane.DoesOpenMorphPanel = reader.ReadBoolean();
-        pmm.PanelPane.DoesOpenSelfShadowPanel = reader.ReadBoolean();
+        panelPane.DoesOpenCameraPanel = reader.ReadBoolean();
+        panelPane.DoesOpenLightPanel = reader.ReadBoolean();
+        panelPane.DoesOpenAccessaryPanel = reader.ReadBoolean();
+        panelPane.DoesOpenBonePanel = reader.ReadBoolean();
+        panelPane.DoesOpenMorphPanel = reader.ReadBoolean();
+        panelPane.DoesOpenSelfShadowPanel = reader.ReadBoolean();
     }
 
     private static void ReadModels(BinaryReader reader, PolygonMovieMaker pmm)
@@ -223,14 +223,14 @@ public static class PmmFileReader
         }
     }
 
-    private static void ReadKeyFrameEditorCurrentTarget(BinaryReader reader, PolygonMovieMaker pmm)
+    private static void ReadKeyFrameEditorCurrentTarget(BinaryReader reader, PmmEditorState editorState)
     {
         Current = new($"KeyFrameEditorCurrentTarget", null, $"Sections for the current keyframe editor editing target and scroll amount.");
         // フレーム編集画面の状態読み込み
-        pmm.EditorState.CurrentFrame = reader.ReadInt32();
-        pmm.EditorState.HorizontalScroll = reader.ReadInt32();
-        pmm.EditorState.HorizontalScrollLength = reader.ReadInt32();
-        pmm.EditorState.SelectedBoneOperation = (PmmEditorState.BoneOperation)reader.ReadInt32();
+        editorState.CurrentFrame = reader.ReadInt32();
+        editorState.HorizontalScroll = reader.ReadInt32();
+        editorState.HorizontalScrollLength = reader.ReadInt32();
+        editorState.SelectedBoneOperation = (PmmEditorState.BoneOperation)reader.ReadInt32();
     }
 
     private static void ReadMedia(BinaryReader reader, PolygonMovieMaker pmm)
