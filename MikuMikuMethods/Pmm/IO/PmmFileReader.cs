@@ -811,11 +811,11 @@ public static class PmmFileReader
         Current = new("ResolveFrames", null, $"This section resolves which {typeof(T).Name} the frame belongs to; the PMM file stores this information by frame ID before and after.");
         ResolveNextFrames(
             addFrame,
-            elementFrames,
+            elementFrames.Where(f => f.FrameIndex.HasValue).ToDictionary(f => f.FrameIndex!.Value),
             elementNextFrameDictionary.Select(p => (Element: p.Key, NextFrameIndex: p.Value == 0 ? null : p.Value)).ToArray()
         );
         
-        static void ResolveNextFrames(Action<T, IPmmFrame> addFrame, (IPmmFrame? Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex)[] elementFrames, (T Element, int? NextFrameIndex)[] nextFramesOfElements)
+        static void ResolveNextFrames(Action<T, IPmmFrame> addFrame, Dictionary<int, (IPmmFrame? Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex)> frameDictionary, (T Element, int? NextFrameIndex)[] nextFramesOfElements)
         {
             if (!nextFramesOfElements.Any())
                 return;
@@ -823,9 +823,8 @@ public static class PmmFileReader
             var nextFrames = nextFramesOfElements.Where(p => p.NextFrameIndex.HasValue)
                                                  .Select(p => (
                                                     Element: p.Element,
-                                                    NextFrame: elementFrames.FirstOrDefault(f => f.FrameIndex == p.NextFrameIndex, (null, -1, -1, null))
-                                                 ))
-                                                 .ToArray();
+                                                    NextFrame: frameDictionary.TryGetValue(p.NextFrameIndex!.Value, out var frame) ? frame : (null, -1, -1, null))
+                                                 ).ToArray();
 
             foreach (var (element, nextFrame) in nextFrames.Where(f => f.NextFrame.Frame is not null))
             {
@@ -834,7 +833,7 @@ public static class PmmFileReader
 
             ResolveNextFrames(
                 addFrame,
-                elementFrames,
+                frameDictionary,
                 nextFrames.Select<(T Element, (IPmmFrame? Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex) NextFrame), (T Element, int? NextFrameIndex)>
                                  (p => (
                                     p.Element,
