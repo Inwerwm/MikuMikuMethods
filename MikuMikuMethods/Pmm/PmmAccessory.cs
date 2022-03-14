@@ -15,7 +15,7 @@ public class PmmAccessory
     /// <summary>
     /// ファイルパス
     /// </summary>
-    public string Path { get; }
+    public string Path { get; set; }
 
     /// <summary>
     /// 加算合成のOn/Off
