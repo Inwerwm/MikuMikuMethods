@@ -124,13 +124,16 @@ public static class PmmFileReader
         }
 
         Current = new($"ModelRelationSolving", null, $"The section that resolves the relations of the selected model and the render/calculate order. In this section, no reading is done, only calculation.");
-        pmm.EditorState.SelectedModel = selectedModelIndex < pmm.Models.Count ? pmm.Models[selectedModelIndex] : null;
+        pmm.EditorState.SelectedModel = ModelIdMap[selectedModelIndex];
+
+        // PMM 内の順序数値上限は必ずしもモデル数と一致しているわけではないので連番を振り直す
+        var sortedRenderOrders = modelOrderDictionary.OrderBy(p => p.Value.RenderOrder).Select((p, i) => (p.Key, (byte)i)).ToDictionary(p => p.Key, p => p.Item2);
+        var sortedCalculateOrders = modelOrderDictionary.OrderBy(p => p.Value.CalculateOrder).Select((p, i) => (p.Key, (byte)i)).ToDictionary(p => p.Key, p => p.Item2);
+
         foreach (var model in pmm.Models)
         {
-            byte maxOrder = (byte)(pmm.Models.Count - 1);
-            var (renderOrder, calculateOrder) = modelOrderDictionary.TryGetValue(model, out var orders) ? orders : (maxOrder, maxOrder);
-            pmm.SetRenderOrder(model, Math.Min(renderOrder, maxOrder));
-            pmm.SetCalculateOrder(model, Math.Min(calculateOrder, maxOrder));
+            pmm.SetRenderOrder(model, sortedRenderOrders[model]);
+            pmm.SetCalculateOrder(model, sortedCalculateOrders[model]);
         }
 
         // 外部親の関係解決
