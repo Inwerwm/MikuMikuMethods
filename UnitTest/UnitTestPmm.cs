@@ -180,4 +180,11 @@ public class UnitTestPmm
         Assert.AreEqual(6, PmmRangeSelector.Create(morph1, model).Index);
         Assert.AreEqual(7, PmmRangeSelector.Create(bone1, model).Index);
     }
+
+    [TestMethod]
+    public void RenderOrderResolveTest()
+    {
+        _ = new PolygonMovieMaker(TestData.GetPath("RenderOrder.pmm"));
+        _ = new PolygonMovieMaker(TestData.GetPath("RenderOrder2.pmm"));
+    }
 }
