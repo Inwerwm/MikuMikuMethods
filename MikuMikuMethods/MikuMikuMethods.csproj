@@ -10,6 +10,7 @@
     <PackageProjectUrl>https://github.com/Inwerwm/MikuMikuMethods</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Inwerwm/MikuMikuMethods</RepositoryUrl>
     <NeutralLanguage>ja</NeutralLanguage>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
