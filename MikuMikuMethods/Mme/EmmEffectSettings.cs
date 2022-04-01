@@ -44,4 +44,10 @@ public class EmmEffectSettings
         IsMain = name == "Main";
         Name = name;
     }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return IsMain ? "Effect Main" : $"Effect@{Name}";
+    }
 }

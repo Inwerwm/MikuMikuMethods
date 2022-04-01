@@ -32,4 +32,10 @@ public class EmmObjectSetting
         Subsets = new();
         Object = obj;
     }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return $"Subset[{Subsets.Count}] - {Object} - {Material}";
+    }
 }

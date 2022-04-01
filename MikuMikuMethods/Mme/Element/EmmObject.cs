@@ -29,4 +29,10 @@ public abstract class EmmObject
         Index = index;
         Path = path;
     }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return $"{Name}: {Path}";
+    }
 }

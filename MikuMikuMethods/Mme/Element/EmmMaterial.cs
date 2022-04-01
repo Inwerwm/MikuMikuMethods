@@ -15,4 +15,10 @@ public class EmmMaterial
     /// <para>出力時、nullなら書き込まれず、 "none" なら書き込まれる</para>
     /// </summary>
     public string? Path { get; set; }
+
+    /// <inheritdoc/>
+    public override string ToString()
+    {
+        return $"{Path} - {((Show ?? true) ? "Visible" : "Hidden")}";
+    }
 }
