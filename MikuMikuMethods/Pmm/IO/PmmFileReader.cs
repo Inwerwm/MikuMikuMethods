@@ -124,7 +124,8 @@ public static class PmmFileReader
         }
 
         Current = new($"ModelRelationSolving", null, $"The section that resolves the relations of the selected model and the render/calculate order. In this section, no reading is done, only calculation.");
-        pmm.EditorState.SelectedModel = ModelIdMap[selectedModelIndex];
+        ModelIdMap.TryGetValue(selectedModelIndex, out var selectedModel);
+        pmm.EditorState.SelectedModel = selectedModel;
 
         // PMM 内の順序数値上限は必ずしもモデル数と一致しているわけではないので連番を振り直す
         var sortedRenderOrders = modelOrderDictionary.OrderBy(p => p.Value.RenderOrder).Select((p, i) => (p.Key, (byte)i)).ToDictionary(p => p.Key, p => p.Item2);
@@ -164,7 +165,6 @@ public static class PmmFileReader
 
     private static void ReadCamera(BinaryReader reader, PolygonMovieMaker pmm)
     {
-
         var camera = pmm.Camera;
 
         Current = new("InitialCameraFrame", null, $"The section of initial camera frame data.");
