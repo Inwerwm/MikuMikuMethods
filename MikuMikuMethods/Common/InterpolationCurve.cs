@@ -36,7 +36,7 @@ public enum InterpolationItem
 /// <summary>
 /// 補間曲線
 /// </summary>
-public class InterpolationCurve : ICloneable
+public class InterpolationCurve : ICloneable, IEquatable<InterpolationCurve>
 {
     private (byte X, byte Y) earlyControlePoint;
     private (byte X, byte Y) lateControlePoint;
@@ -270,9 +270,28 @@ public class InterpolationCurve : ICloneable
             { InterpolationItem.Rotation, new() },
         });
 
+    /// <inheritdoc/>
     public object Clone() => new InterpolationCurve()
     {
         earlyControlePoint = earlyControlePoint,
         lateControlePoint = lateControlePoint
     };
+
+    /// <inheritdoc/>
+    public static bool operator ==(InterpolationCurve left, InterpolationCurve right) => left.Equals(right);
+    /// <inheritdoc/>
+    public static bool operator !=(InterpolationCurve left, InterpolationCurve right) => !left.Equals(right);
+
+    /// <inheritdoc/>
+    public override bool Equals(object? obj) => Equals(obj as InterpolationCurve);
+    /// <inheritdoc/>
+    public override int GetHashCode() => HashCode.Combine(EarlyControlePoint.X, EarlyControlePoint.Y, LateControlePoint.X, LateControlePoint.Y);
+
+    /// <inheritdoc/>
+    public bool Equals(InterpolationCurve? other) =>
+        other is not null &&
+        earlyControlePoint.X == other.earlyControlePoint.X &&
+        earlyControlePoint.Y == other.earlyControlePoint.Y &&
+        lateControlePoint.X == other.lateControlePoint.X &&
+        lateControlePoint.Y == other.lateControlePoint.Y;
 }
