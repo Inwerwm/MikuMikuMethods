@@ -2,6 +2,7 @@
 using MikuMikuMethods.Pmm;
 using MikuMikuMethods.Pmm.ElementState;
 using MikuMikuMethods.Pmm.Frame;
+using System.Text;
 
 namespace UnitTest;
 
@@ -15,6 +16,100 @@ public class UnitTestPmm
         var pmm = TestData.PmmLoggingRead(PmmName);
         pmm.Write(TestData.GetPath(PmmName + "_out.pmm"));
         var reloaded = TestData.PmmLoggingRead(PmmName + "_out");
+
+        var interpolationCurvesComparer = new EqualityComparer<MikuMikuMethods.InterpolationCurve>((o, r) => o == r);
+
+        var modelComparer = new EqualityComparer<PmmModel>((o, r) =>
+            o?.Name == r?.Name &&
+            o?.NameEn == r?.NameEn &&
+            o?.Path == r?.Path &&
+            o?.EnableSelfShadow == r?.EnableSelfShadow &&
+            o?.EnableAlphaBlend == r?.EnableAlphaBlend
+        );
+        var boneComparer = new EqualityComparer<PmmBone>((o, r) =>
+            o?.IsIK == r?.IsIK &&
+            o?.CanSetOutsideParent == r?.CanSetOutsideParent &&
+            o?.Name == r?.Name
+        );
+        var boneFrameComparer = new EqualityComparer<PmmBoneFrame>((o, r) =>
+            o?.Frame == r?.Frame &&
+            o?.EnablePhysic == r?.EnablePhysic &&
+            o?.Movement == r?.Movement &&
+            o?.Rotation == r?.Rotation
+        );
+        var morphComparer = new EqualityComparer<PmmMorph>((o, r) =>
+            o?.Name == r?.Name
+        );
+        var morphFrameComparer = new EqualityComparer<PmmMorphFrame>((o, r) =>
+            o?.Frame == r?.Frame &&
+            o?.Weight == r?.Weight
+        );
+        var modelConfigFrameComparer = new EqualityComparer<PmmModelConfigFrame>((o, r) =>
+            o?.Frame == r?.Frame &&
+            o?.Visible == r?.Visible
+        );
+        var outsideParentComparer = new EqualityComparer<KeyValuePair<PmmBone, PmmOutsideParentState>>((o, r) =>
+            boneComparer.Equals(o.Key, r.Key) &&
+            o.Value?.StartFrame == r.Value?.StartFrame &&
+            o.Value?.EndFrame == r.Value?.EndFrame &&
+            modelComparer.Equals(o.Value?.ParentModel, o.Value?.ParentModel) &&
+            boneComparer.Equals(o.Value?.ParentBone, r.Value?.ParentBone)
+        );
+        var enableIKComparer = new EqualityComparer<KeyValuePair<PmmBone, bool>>((o, r) =>
+            boneComparer.Equals(o.Key, r.Key) &&
+            o.Value == r.Value
+        );
+
+        var accessoryComparer = new EqualityComparer<PmmAccessory>((o, r) =>
+            o.Name == r.Name &&
+            o.Path == r.Path
+        );
+        var accessoryFrameComparer = new EqualityComparer<PmmAccessoryFrame>((o, r) =>
+            o.Frame == r.Frame &&
+            modelComparer.Equals(o.ParentModel, r.ParentModel) &&
+            boneComparer.Equals(o.ParentBone, r.ParentBone) &&
+            o.Position == r.Position &&
+            o.Rotation == r.Rotation &&
+            o.Scale == r.Scale &&
+            o.Transparency == r.Transparency &&
+            o.Visible == r.Visible
+        );
+
+        var cameraFrameComparer = new EqualityComparer<PmmCameraFrame>((o, r) =>
+            o.Frame == r.Frame &&
+            o.Distance == r.Distance &&
+            o.DisablePerspective == r.DisablePerspective &&
+            o.EyePosition == r.EyePosition &&
+            o.TargetPosition == r.TargetPosition &&
+            o.Rotation == r.Rotation &&
+            o.ViewAngle == r.ViewAngle &&
+            modelComparer.Equals(o.FollowingModel, r.FollowingModel) &&
+            boneComparer.Equals(o.FollowingBone, r.FollowingBone)
+        );
+
+        var lightFrameComparer = new EqualityComparer<PmmLightFrame>((o, r) =>
+            o.Frame == r.Frame &&
+            o.Position == r.Position &&
+            o.Color == r.Color
+        );
+
+        MacroAssert.AreElementsSame(pmm.Models, reloaded.Models, modelComparer,
+            (oModel, rModel) => MacroAssert.AreElementsSame(oModel.Bones, rModel.Bones, boneComparer,
+                (oBone, rBone) => MacroAssert.AreElementsSame(oBone.Frames, rBone.Frames, boneFrameComparer,
+                    (oFrame, rFrame) => MacroAssert.AreElementsSame(oFrame.InterpolationCurves, rFrame.InterpolationCurves, interpolationCurvesComparer))),
+            (oModel, rModel) => MacroAssert.AreElementsSame(oModel.Morphs, rModel.Morphs, morphComparer,
+                (oMorph, rMorph) => MacroAssert.AreElementsSame(oMorph.Frames, rMorph.Frames, morphFrameComparer)),
+            (oModel, rModel) => MacroAssert.AreElementsSame(oModel.ConfigFrames, rModel.ConfigFrames, modelConfigFrameComparer,
+                (oConfig, rConfig) => MacroAssert.AreElementsSame(oConfig.OutsideParent, rConfig.OutsideParent, outsideParentComparer),
+                (oConfig, rConfig) => MacroAssert.AreElementsSame(oConfig.EnableIK, rConfig.EnableIK, enableIKComparer)));
+
+        MacroAssert.AreElementsSame(pmm.Accessories, reloaded.Accessories, accessoryComparer,
+            (oAcs, rAcs) => MacroAssert.AreElementsSame(oAcs.Frames, rAcs.Frames, accessoryFrameComparer));
+
+        MacroAssert.AreElementsSame(pmm.Camera.Frames.OrderBy(f => f.Frame), reloaded.Camera.Frames.OrderBy(f => f.Frame), cameraFrameComparer,
+            (oCameraFrame, rCameraFrame) => MacroAssert.AreElementsSame(oCameraFrame.InterpolationCurves, rCameraFrame.InterpolationCurves, interpolationCurvesComparer));
+
+        MacroAssert.AreElementsSame(pmm.Light.Frames.OrderBy(f => f.Frame), reloaded.Light.Frames.OrderBy(f => f.Frame), lightFrameComparer);
     }
 
     [TestMethod]
