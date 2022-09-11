@@ -38,35 +38,35 @@ public enum InterpolationItem
 /// </summary>
 public class InterpolationCurve : ICloneable, IEquatable<InterpolationCurve>
 {
-    private (byte X, byte Y) earlyControlePoint;
-    private (byte X, byte Y) lateControlePoint;
+    private BytePoint _earlyControlePoint;
+    private BytePoint _lateControlePoint;
 
     /// <summary>
     /// 始点側制御点
     /// [0,127]
     /// </summary>
-    public (byte X, byte Y) EarlyControlePoint
+    public BytePoint EarlyControlePoint
     {
-        get => earlyControlePoint;
+        get => _earlyControlePoint;
         set
         {
             if (value.X is < 0 or > 127 || value.Y is < 0 or > 127)
                 throw new ArgumentOutOfRangeException("InterpolationCurve.EarlyControlePoint has seted to out of range value.");
-            earlyControlePoint = value;
+            _earlyControlePoint = value;
         }
     }
     /// <summary>
     /// 終点側制御点
     /// [0,127]
     /// </summary>
-    public (byte X, byte Y) LateControlePoint
+    public BytePoint LateControlePoint
     {
-        get => lateControlePoint;
+        get => _lateControlePoint;
         set
         {
             if (value.X is < 0 or > 127 || value.Y is < 0 or > 127)
                 throw new ArgumentOutOfRangeException("InterpolationCurve.LateControlePoint has seted to out of range value.");
-            lateControlePoint = value;
+            _lateControlePoint = value;
         }
     }
 
@@ -74,7 +74,7 @@ public class InterpolationCurve : ICloneable, IEquatable<InterpolationCurve>
     /// 始点側制御点
     /// [0.0,1.0]
     /// </summary>
-    public (float X, float Y) EarlyControlePointFloat
+    public FloatPoint EarlyControlePointFloat
     {
         get => (EarlyControlePoint.X / 127.0f, EarlyControlePoint.Y / 127.0f);
         set
@@ -101,8 +101,8 @@ public class InterpolationCurve : ICloneable, IEquatable<InterpolationCurve>
 
     public InterpolationCurve()
     {
-        earlyControlePoint = (20, 20);
-        lateControlePoint = (107, 107);
+        _earlyControlePoint = (20, 20);
+        _lateControlePoint = (107, 107);
     }
 
     /// <summary>
@@ -113,10 +113,8 @@ public class InterpolationCurve : ICloneable, IEquatable<InterpolationCurve>
     {
         try
         {
-            earlyControlePoint.X = bytes.ElementAt(0);
-            earlyControlePoint.Y = bytes.ElementAt(1);
-            lateControlePoint.X = bytes.ElementAt(2);
-            lateControlePoint.Y = bytes.ElementAt(3);
+            _earlyControlePoint = (bytes.ElementAt(0), bytes.ElementAt(1));
+            _lateControlePoint = (bytes.ElementAt(2), bytes.ElementAt(3));
         }
         catch (ArgumentOutOfRangeException ex)
         {
@@ -273,8 +271,8 @@ public class InterpolationCurve : ICloneable, IEquatable<InterpolationCurve>
     /// <inheritdoc/>
     public object Clone() => new InterpolationCurve()
     {
-        earlyControlePoint = earlyControlePoint,
-        lateControlePoint = lateControlePoint
+        _earlyControlePoint = _earlyControlePoint,
+        _lateControlePoint = _lateControlePoint
     };
 
     /// <inheritdoc/>
@@ -290,8 +288,6 @@ public class InterpolationCurve : ICloneable, IEquatable<InterpolationCurve>
     /// <inheritdoc/>
     public bool Equals(InterpolationCurve? other) =>
         other is not null &&
-        earlyControlePoint.X == other.earlyControlePoint.X &&
-        earlyControlePoint.Y == other.earlyControlePoint.Y &&
-        lateControlePoint.X == other.lateControlePoint.X &&
-        lateControlePoint.Y == other.lateControlePoint.Y;
+        _earlyControlePoint == other._earlyControlePoint &&
+        _lateControlePoint == other._lateControlePoint;
 }
