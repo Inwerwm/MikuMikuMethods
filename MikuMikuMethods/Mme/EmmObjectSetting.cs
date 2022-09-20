@@ -37,7 +37,7 @@ public class EmmObjectSetting
     /// EMDファイルに変換する
     /// </summary>
     /// <returns>変換結果Emd</returns>
-    public EmdData ToEmd() => new EmdData(Material) { Subsets = Subsets };
+    public EmdData ToEmd() => new(Material) { Subsets = Subsets };
 
     /// <inheritdoc/>
     public override string ToString()
