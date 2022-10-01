@@ -1,5 +1,6 @@
 ﻿using MikuMikuMethods.Common;
 using MikuMikuMethods.Extension;
+using MikuMikuMethods.Pmm.Frame;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 
@@ -95,6 +96,33 @@ public class PolygonMovieMaker
     public void Write(string filePath)
     {
         IO.PmmFileWriter.Write(filePath, this);
+    }
+
+    /// <summary>
+    /// 最終フレームの位置を求める
+    /// <para>
+    /// 全フレームのソートを含むため、フレーム数が多いと重いので注意
+    /// </para>
+    /// </summary>
+    /// <returns></returns>
+    public int CalculateLastFrame()
+    {
+        static int lastFrameOf(IEnumerable<IPmmFrame> frames) => frames.OrderByDescending(f => f.Frame).FirstOrDefault()?.Frame ?? -1;
+
+        return new Func<int>[]{
+            () => lastFrameOf(Camera.Frames.Cast<IPmmFrame>()),
+            () => lastFrameOf(Light.Frames.Cast<IPmmFrame>()),
+            () => lastFrameOf(SelfShadow.Frames.Cast<IPmmFrame>()),
+            () => lastFrameOf(Physics.GravityFrames.Cast<IPmmFrame>()),
+            () => Accessories.Any() ? Accessories.Max(acs => lastFrameOf(acs.Frames)) : -1,
+            () => Models.Any() ? Models.Max(model =>
+                Math.Max(Math.Max(
+                    model.Bones.Any() ? model.Bones.Max(bone => lastFrameOf(bone.Frames)) : -1,
+                    model.Morphs.Any() ? model.Morphs.Max(morph => lastFrameOf(morph.Frames)) : -1),
+                    lastFrameOf(model.ConfigFrames)
+                )
+            ) : -1,
+        }.AsParallel().Select(f => f.Invoke()).Max();
     }
 
     public void SetRenderOrder(PmmAccessory accessory, byte renderOrder)
