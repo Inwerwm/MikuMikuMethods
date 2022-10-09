@@ -48,7 +48,7 @@ public static class ExtractMotion
     public static VocaloidMotionData ExtractModelMotion(this PmmModel model, ModelMotionExtractionOptions? options = default)
     {
         // 引数の既定値ではコンパイル時定数しか無理なのでここで null 時の規定値を入れる
-        if (options is null) options = new();
+        options ??= new();
 
         // ラムダ式でキャプチャしないと options が not null であることがフロー解析で確定できない
         Func<IPmmFrame, bool> isFrameInRange = frame => options.StartFrame <= frame.Frame && frame.Frame <= (options.EndFrame ?? uint.MaxValue);

@@ -11,7 +11,7 @@ public class EmmEffectSettings
     /// <summary>
     /// 設定種別
     /// </summary>
-    public bool IsMain { get; init; }
+    public bool IsMain => Name == "Main";
 
     /// <summary>
     /// <para>設定名</para>
@@ -41,7 +41,6 @@ public class EmmEffectSettings
     public EmmEffectSettings(string name)
     {
         ObjectSettings = new();
-        IsMain = name == "Main";
         Name = name;
     }
 
