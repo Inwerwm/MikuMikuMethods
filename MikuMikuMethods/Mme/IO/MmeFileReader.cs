@@ -160,7 +160,9 @@ public static class MmeFileReader
 
             if (objectKey == "Owner")
             {
-                effect.Owner = objects.FirstOrDefault(o => o.Name == data);
+                effect.Owner = data.Contains('@') ?
+                    new EmmObjectReference(objects.First(o => o.Name == data.Split('@')[0]), data.Split('@')[1]) :
+                    objects.First(o => o.Name == data);
                 continue;
             }
             if (objectKey == "Default")
