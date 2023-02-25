@@ -52,7 +52,7 @@ public class PmmModel
         set
         {
             _selectedBone = GetIfContains(Bones, value, "bone");
-            if(_selectedBone != null)
+            if (_selectedBone != null)
                 _selectedBone.IsSelected = true;
         }
     }
@@ -103,5 +103,6 @@ public class PmmModel
 
     public PmmModelConfigState CurrentConfig { get; } = new();
 
+    /// <inheritdoc/>
     public override string ToString() => $"{Name} - {Path}";
 }
