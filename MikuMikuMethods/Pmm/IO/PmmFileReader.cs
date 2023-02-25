@@ -139,15 +139,17 @@ public static class PmmFileReader
 
         // 外部親の関係解決
         Current = new("OutsideParentSolving", null, $"The section that resolves the outside parent relation. In this section, no reading is done, only calculation.");
+
         foreach (var frame in OutsideParentRelation)
         {
             foreach (var relation in frame.Value)
             {
-                var opModel = relation.Value.ModelID < 0 ? null : ModelIdMap[relation.Value.ModelID];
+                var (opModel, opBone) = resolveOutsideParent(relation);
+
                 frame.Key.OutsideParent.Add(relation.Key, new()
                 {
                     ParentModel = opModel,
-                    ParentBone = relation.Value.BoneID < 0 ? null : opModel?.Bones[relation.Value.BoneID]
+                    ParentBone = opBone
                 });
             }
         }
@@ -156,10 +158,24 @@ public static class PmmFileReader
         {
             foreach (var relation in state.Value)
             {
-                var opModel = relation.Value.ModelID < 0 ? null : ModelIdMap[relation.Value.ModelID];
+                var (opModel, opBone) = resolveOutsideParent(relation);
+
                 state.Key.OutsideParent[relation.Key].ParentModel = opModel;
-                state.Key.OutsideParent[relation.Key].ParentBone = relation.Value.BoneID < 0 ? null : opModel?.Bones[relation.Value.BoneID];
+                state.Key.OutsideParent[relation.Key].ParentBone = opBone;
             }
+        }
+
+        static (PmmModel? opModel, PmmBone? opBone) resolveOutsideParent(KeyValuePair<PmmBone, (int ModelID, int BoneID)> relation)
+        {
+            var opModel = relation.Value.ModelID switch
+            {
+                -2 => new PmmGroundAsParent(),
+                < 0 => null,
+                int id => ModelIdMap[id]
+            };
+            var opBone = (relation.Value.BoneID < 0 || opModel is PmmGroundAsParent) ? null : opModel?.Bones[relation.Value.BoneID];
+
+            return (opModel, opBone);
         }
     }
 

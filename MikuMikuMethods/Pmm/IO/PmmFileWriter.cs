@@ -429,8 +429,10 @@ public static class PmmFileWriter
                 foreach (var parentableId in parentableBoneIndices)
                 {
                     frame.OutsideParent.TryGetValue(model.Bones[parentableId], out ElementState.PmmOutsideParentState? op);
-                    writer.Write(pmm.Models.IndexOf(op?.ParentModel!));
-                    writer.Write(op?.ParentModel?.Bones.IndexOf(op?.ParentBone!) ?? 0);
+
+                    var (opModelId, opBoneId) = solveOutsideParentIndex(op);
+                    writer.Write(opModelId);
+                    writer.Write(opBoneId);
                 }
 
                 writer.Write(frame.IsSelected);
@@ -468,14 +470,21 @@ public static class PmmFileWriter
             var op = model.CurrentConfig.OutsideParent[model.Bones[i]];
             writer.Write(op.StartFrame ?? 0);
             writer.Write(op.EndFrame ?? 0);
-            writer.Write(pmm.Models.IndexOf(op.ParentModel!));
-            writer.Write(op.ParentModel is null ? 0 : model.Bones.IndexOf(op.ParentBone!));
+
+            var (opModelId, opBoneId) = solveOutsideParentIndex(op);
+            writer.Write(opModelId);
+            writer.Write(opBoneId);
         }
 
         writer.Write(model.EnableAlphaBlend);
         writer.Write(model.EdgeWidth);
         writer.Write(model.EnableSelfShadow);
         writer.Write((byte)((pmm.GetCalculateOrder(model) ?? -1) + 1));
+
+        (int modelId, int boneId) solveOutsideParentIndex(ElementState.PmmOutsideParentState? op) => (
+            op?.ParentModel is PmmGroundAsParent ? -2 : pmm.Models.IndexOf(op?.ParentModel!),
+            op?.ParentModel is PmmGroundAsParent ? 0 : op?.ParentModel?.Bones.IndexOf(op?.ParentBone!) ?? 0
+        );
     }
 
     private static void WriteFrames(BinaryWriter writer, IEnumerable<List<IPmmFrame>> frameContainer, Func<IPmmFrame> constructor, Action<BinaryWriter, IPmmFrame> stateWriter)

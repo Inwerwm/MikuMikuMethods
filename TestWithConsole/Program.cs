@@ -11,6 +11,7 @@ class Program
 
     static void Main(string[] args)
     {
-        PolygonMovieMaker pmm = new(Path("pmm.pmm"));
+        PolygonMovieMaker pmm = new(Path("GroundParent.pmm"));
+        pmm.Write(Path("out_GroundParent.pmm"));
     }
 }

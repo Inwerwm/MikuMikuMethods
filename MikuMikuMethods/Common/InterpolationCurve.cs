@@ -51,7 +51,7 @@ public class InterpolationCurve : ICloneable, IEquatable<InterpolationCurve>
         set
         {
             if (value.X is < 0 or > 127 || value.Y is < 0 or > 127)
-                throw new ArgumentOutOfRangeException("InterpolationCurve.EarlyControlePoint has seted to out of range value.");
+                throw new ArgumentOutOfRangeException("InterpolationCurve.EarlyControlePoint", "InterpolationCurve.EarlyControlePoint has seted to out of range value.");
             _earlyControlePoint = value;
         }
     }
@@ -65,7 +65,7 @@ public class InterpolationCurve : ICloneable, IEquatable<InterpolationCurve>
         set
         {
             if (value.X is < 0 or > 127 || value.Y is < 0 or > 127)
-                throw new ArgumentOutOfRangeException("InterpolationCurve.LateControlePoint has seted to out of range value.");
+                throw new ArgumentOutOfRangeException("InterpolationCurve.LateControlePoint", "InterpolationCurve.LateControlePoint has seted to out of range value.");
             _lateControlePoint = value;
         }
     }
@@ -80,7 +80,7 @@ public class InterpolationCurve : ICloneable, IEquatable<InterpolationCurve>
         set
         {
             if (value.X is < 0 or > 1 || value.Y is < 0 or > 1)
-                throw new ArgumentOutOfRangeException("InterpolationCurve.EarlyControlePointFloat has seted to out of range value.");
+                throw new ArgumentOutOfRangeException("InterpolationCurve.EarlyControlePointFloat", "InterpolationCurve.EarlyControlePointFloat has seted to out of range value.");
             EarlyControlePoint = ((byte)(value.X * 127), (byte)(value.Y * 127));
         }
     }
@@ -94,7 +94,7 @@ public class InterpolationCurve : ICloneable, IEquatable<InterpolationCurve>
         set
         {
             if (value.X is < 0 or > 1 || value.Y is < 0 or > 1)
-                throw new ArgumentOutOfRangeException("InterpolationCurve.LateControlePointFloat has seted to out of range value.");
+                throw new ArgumentOutOfRangeException("InterpolationCurve.LateControlePointFloat", "InterpolationCurve.LateControlePointFloat has seted to out of range value.");
             LateControlePoint = ((byte)(value.X * 127), (byte)(value.Y * 127));
         }
     }
@@ -103,6 +103,16 @@ public class InterpolationCurve : ICloneable, IEquatable<InterpolationCurve>
     {
         _earlyControlePoint = (20, 20);
         _lateControlePoint = (107, 107);
+    }
+
+    /// <summary>
+    /// 他の補間曲線からパラメータをコピー
+    /// </summary>
+    /// <param name="curve"></param>
+    public void CopyFrom(InterpolationCurve curve)
+    {
+        EarlyControlePoint = curve.EarlyControlePoint;
+        LateControlePoint = curve.LateControlePoint;
     }
 
     /// <summary>
@@ -267,6 +277,19 @@ public class InterpolationCurve : ICloneable, IEquatable<InterpolationCurve>
             { InterpolationItem.ZPosition, new() },
             { InterpolationItem.Rotation, new() },
         });
+
+    /// <summary>
+    /// 全補間曲線をコピーする
+    /// </summary>
+    /// <param name="from">コピー元辞書</param>
+    /// <param name="to">コピー先辞書(<b>破壊的</b>)</param>
+    public static void CopyCurves(IDictionary<InterpolationItem, InterpolationCurve> from, IDictionary<InterpolationItem, InterpolationCurve> to)
+    {
+        foreach (var item in from.Keys.Where(item => to.ContainsKey(item)))
+        {
+            to[item].CopyFrom(from[item]);
+        }
+    }
 
     /// <inheritdoc/>
     public object Clone() => new InterpolationCurve()
