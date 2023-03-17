@@ -822,11 +822,10 @@ public static class PmmFileReader
     {
         Current = new($"{typeof(T).Name.Replace("Pmm", "")}FrameCount", null, $"The section of count of {typeof(T).Name.Replace("Pmm", "").ToLower()} frames.");
         var elementFrameCount = reader.ReadInt32();
-        // 自前定義 Select の1つ目のラムダ式は各ループにおける通常の Select 処理の直前にやる処理
-        var elementFrames = Enumerable.Range(0, elementFrameCount).Select(
-            i => Current = new($"{typeof(T).Name.Replace("Pmm", "")}Frame", i, $"The section of {DataSection.GetOrdinal(i)} {typeof(T).Name.Replace("Pmm", "").ToLower()} frame data."),
-            i => readElementFrame(reader)
-        ).ToArray();
+        var elementFrames = Enumerable.Range(0, elementFrameCount).Select(i => {
+            Current = new($"{typeof(T).Name.Replace("Pmm", "")}Frame", i, $"The section of {DataSection.GetOrdinal(i)} {typeof(T).Name.Replace("Pmm", "").ToLower()} frame data.");
+            return readElementFrame(reader);
+        }).ToArray();
 
         Current = new("ResolveFrames", null, $"This section resolves which {typeof(T).Name} the frame belongs to; the PMM file stores this information by frame ID before and after.");
         ResolveNextFrames(
