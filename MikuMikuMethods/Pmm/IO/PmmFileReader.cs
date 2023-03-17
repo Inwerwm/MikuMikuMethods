@@ -815,7 +815,7 @@ public static class PmmFileReader
     /// <param name="addFrame">所属要素にフレームを追加する関数</param>
     private static void ReadFramesThatRequireResolving<T>(
         BinaryReader reader,
-        Func<BinaryReader, (IPmmFrame? Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex)> readElementFrame,
+        Func<BinaryReader, FrameInfo> readElementFrame,
         Dictionary<T, int?> elementNextFrameDictionary,
         Action<T, IPmmFrame> addFrame)
      where T : IPmmModelElement
@@ -836,16 +836,16 @@ public static class PmmFileReader
         {
             var nextFrames = nextFramesOfElements.Where(p => p.NextFrameIndex.HasValue)
                                                  .Select(p => (
-                                                    Element: p.Element,
+                                                    p.Element,
                                                     NextFrame: frameDictionary.TryGetValue(p.NextFrameIndex!.Value, out var frame) ? frame : (null, -1, -1, null))
                                                  ).ToArray();
 
             foreach (var (element, nextFrame) in nextFrames.Where(f => f.NextFrame.Frame is not null))
             {
-                addFrame(element, nextFrame.Frame);
+                addFrame(element, nextFrame.Frame!);
             }
 
-            nextFramesOfElements = nextFrames.Select<(T Element, (IPmmFrame? Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex) NextFrame), (T Element, int? NextFrameIndex)> (p => (
+            nextFramesOfElements = nextFrames.Select<(T Element, FrameInfo NextFrame), (T Element, int? NextFrameIndex)> (p => (
                 p.Element,
                 p.NextFrame switch
                 {
@@ -853,6 +853,20 @@ public static class PmmFileReader
                     _ => p.NextFrame.NextFrameIndex
                 }
             )).Where(p => p.NextFrameIndex.HasValue).ToArray();
+        }
+
+    }
+
+    private record struct FrameInfo(IPmmFrame? Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex)
+    {
+        public static implicit operator (IPmmFrame? Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex)(FrameInfo value)
+        {
+            return (value.Frame, value.PreviousFrameIndex, value.NextFrameIndex, value.FrameIndex);
+        }
+
+        public static implicit operator FrameInfo((IPmmFrame? Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex) value)
+        {
+            return new FrameInfo(value.Frame, value.PreviousFrameIndex, value.NextFrameIndex, value.FrameIndex);
         }
     }
 }
