@@ -17,7 +17,7 @@ public static class PmmFileReader
     private static DataSection current = new("", null, "");
     public static DataSection Current
     {
-        get => current; 
+        get => current;
         private set
         {
             current = value;
@@ -600,7 +600,7 @@ public static class PmmFileReader
 
         return (acs, renderOrder);
     }
-    
+
     private static PmmCameraFrame ReadCameraFrame(BinaryReader reader, PolygonMovieMaker pmm, bool isInitial = false)
     {
         // リストの添え字で管理できるため不要なフレームインデックスを破棄
@@ -638,7 +638,7 @@ public static class PmmFileReader
 
         return frame;
     }
-    
+
     private static PmmModelConfigFrame ReadConfigFrame(BinaryReader reader, PmmModel model, IEnumerable<int> ikIndices, IEnumerable<int> parentableIndices, bool isInitial = false)
     {
         // リストの添え字で管理できるため不要なフレームインデックスを破棄
@@ -673,7 +673,7 @@ public static class PmmFileReader
 
         return frame;
     }
-    
+
     private static (PmmMorphFrame Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex) ReadMorphFrame(BinaryReader reader, bool isInitial = false)
     {
         int? id = isInitial ? null : reader.ReadInt32();
@@ -690,7 +690,7 @@ public static class PmmFileReader
 
         return (frame, preID, nextId, id);
     }
-    
+
     private static (PmmBoneFrame Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex) ReadBoneFrame(BinaryReader reader, bool isInitial = false)
     {
         int? id = isInitial ? null : reader.ReadInt32();
@@ -713,7 +713,7 @@ public static class PmmFileReader
 
         return (frame, previousFrameIndex, nextFrameIndex, id);
     }
-    
+
     private static PmmLightFrame ReadLightFrame(BinaryReader reader, bool isInitial = false)
     {
         // リストの添え字で管理できるため不要なフレームインデックスを破棄
@@ -733,7 +733,7 @@ public static class PmmFileReader
 
         return frame;
     }
-    
+
     private static PmmAccessoryFrame ReadAccessoryFrame(BinaryReader reader, PolygonMovieMaker pmm, bool isInitial = false)
     {
         // リストの添え字で管理できるため不要なフレームインデックスを破棄
@@ -763,7 +763,7 @@ public static class PmmFileReader
 
         return frame;
     }
-    
+
     private static PmmGravityFrame ReadGravityFrame(BinaryReader reader, bool isInitial = false)
     {
         // リストの添え字で管理できるため不要なフレームインデックスを破棄
@@ -785,7 +785,7 @@ public static class PmmFileReader
 
         return frame;
     }
-    
+
     private static PmmSelfShadowFrame ReadSelfShadowFrame(BinaryReader reader, bool isInitial = false)
     {
         // リストの添え字で管理できるため不要なフレームインデックスを破棄
@@ -822,23 +822,18 @@ public static class PmmFileReader
     {
         Current = new($"{typeof(T).Name.Replace("Pmm", "")}FrameCount", null, $"The section of count of {typeof(T).Name.Replace("Pmm", "").ToLower()} frames.");
         var elementFrameCount = reader.ReadInt32();
-        var elementFrames = Enumerable.Range(0, elementFrameCount).Select(i => {
+        var elementFrames = Enumerable.Range(0, elementFrameCount).Select(i =>
+        {
             Current = new($"{typeof(T).Name.Replace("Pmm", "")}Frame", i, $"The section of {DataSection.GetOrdinal(i)} {typeof(T).Name.Replace("Pmm", "").ToLower()} frame data.");
             return readElementFrame(reader);
         }).ToArray();
 
         Current = new("ResolveFrames", null, $"This section resolves which {typeof(T).Name} the frame belongs to; the PMM file stores this information by frame ID before and after.");
-        ResolveNextFrames(
-            addFrame,
-            elementFrames.Where(f => f.FrameIndex.HasValue).ToDictionary(f => f.FrameIndex!.Value),
-            elementNextFrameDictionary.Select(p => (Element: p.Key, NextFrameIndex: p.Value == 0 ? null : p.Value)).ToArray()
-        );
-        
-        static void ResolveNextFrames(Action<T, IPmmFrame> addFrame, Dictionary<int, (IPmmFrame? Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex)> frameDictionary, (T Element, int? NextFrameIndex)[] nextFramesOfElements)
-        {
-            if (!nextFramesOfElements.Any())
-                return;
+        var frameDictionary = elementFrames.Where(f => f.FrameIndex.HasValue).ToDictionary(f => f.FrameIndex!.Value);
+        var nextFramesOfElements = elementNextFrameDictionary.Select(p => (Element: p.Key, NextFrameIndex: p.Value == 0 ? null : p.Value)).ToArray();
 
+        while (nextFramesOfElements.Any())
+        {
             var nextFrames = nextFramesOfElements.Where(p => p.NextFrameIndex.HasValue)
                                                  .Select(p => (
                                                     Element: p.Element,
@@ -850,21 +845,14 @@ public static class PmmFileReader
                 addFrame(element, nextFrame.Frame);
             }
 
-            ResolveNextFrames(
-                addFrame,
-                frameDictionary,
-                nextFrames.Select<(T Element, (IPmmFrame? Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex) NextFrame), (T Element, int? NextFrameIndex)>
-                                 (p => (
-                                    p.Element,
-                                    p.NextFrame switch
-                                    {
-                                        { Frame: null } => null,
-                                        { NextFrameIndex: 0 } => null,
-                                        _ => p.NextFrame.NextFrameIndex
-                                    }
-                                 )
-                          ).Where(p => p.NextFrameIndex.HasValue).ToArray()
-            );
+            nextFramesOfElements = nextFrames.Select<(T Element, (IPmmFrame? Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex) NextFrame), (T Element, int? NextFrameIndex)> (p => (
+                p.Element,
+                p.NextFrame switch
+                {
+                    { Frame: null } or { NextFrameIndex: 0 } => null,
+                    _ => p.NextFrame.NextFrameIndex
+                }
+            )).Where(p => p.NextFrameIndex.HasValue).ToArray();
         }
     }
 }
