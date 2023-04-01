@@ -482,7 +482,7 @@ public static class PmmFileReader
         }
 
         // ボーンフレームの読込
-        ReadFramesThatRequireResolving(
+        AssignFramesToModelElements(
             reader,
             static reader => ReadBoneFrame(reader),
             boneFrameDictionary,
@@ -500,7 +500,7 @@ public static class PmmFileReader
         }
 
         // モーフフレームの読込
-        ReadFramesThatRequireResolving(
+        AssignFramesToModelElements(
             reader,
             static reader => ReadMorphFrame(reader),
             morphFrameDictionary,
@@ -813,7 +813,7 @@ public static class PmmFileReader
     /// <param name="readElementFrame">フレーム読込メソッドの呼び出し関数</param>
     /// <param name="elementNextFrameDictionary">要素名とそれに対応する次フレームIDの辞書</param>
     /// <param name="addFrame">所属要素にフレームを追加する関数</param>
-    private static void ReadFramesThatRequireResolving<T>(
+    private static void AssignFramesToModelElements<T>(
         BinaryReader reader,
         Func<BinaryReader, FrameInfo> readElementFrame,
         Dictionary<T, int?> elementNextFrameDictionary,
@@ -821,6 +821,7 @@ public static class PmmFileReader
      where T : IPmmModelElement
     {
         Current = new($"{typeof(T).Name.Replace("Pmm", "")}FrameCount", null, $"The section of count of {typeof(T).Name.Replace("Pmm", "").ToLower()} frames.");
+        // フレーム情報を読み込む
         var elementFrameCount = reader.ReadInt32();
         var elementFrames = Enumerable.Range(0, elementFrameCount).Select(i =>
         {
@@ -829,22 +830,26 @@ public static class PmmFileReader
         }).ToArray();
 
         Current = new("ResolveFrames", null, $"This section resolves which {typeof(T).Name} the frame belongs to; the PMM file stores this information by frame ID before and after.");
+        // フレームのインデックス関係のディクショナリを作成
         var frameDictionary = elementFrames.Where(f => f.FrameIndex.HasValue).ToDictionary(f => f.FrameIndex!.Value);
         var nextFramesOfElements = elementNextFrameDictionary.Select(p => (Element: p.Key, NextFrameIndex: p.Value == 0 ? null : p.Value)).ToArray();
 
         while (nextFramesOfElements.Any())
         {
+            // 次のフレームインデックスが存在するモデル要素とそのフレーム情報を取得
             var nextFrames = nextFramesOfElements.Where(p => p.NextFrameIndex.HasValue)
                                                  .Select(p => (
                                                     p.Element,
                                                     NextFrame: frameDictionary.TryGetValue(p.NextFrameIndex!.Value, out var frame) ? frame : (null, -1, -1, null))
                                                  ).ToArray();
 
+            // 各フレームをモデル要素に追加
             foreach (var (element, nextFrame) in nextFrames.Where(f => f.NextFrame.Frame is not null))
             {
                 addFrame(element, nextFrame.Frame!);
             }
 
+            // 各要素の次のフレームインデックスを更新
             nextFramesOfElements = nextFrames.Select<(T Element, FrameInfo NextFrame), (T Element, int? NextFrameIndex)> (p => (
                 p.Element,
                 p.NextFrame switch
@@ -854,7 +859,6 @@ public static class PmmFileReader
                 }
             )).Where(p => p.NextFrameIndex.HasValue).ToArray();
         }
-
     }
 
     private record struct FrameInfo(IPmmFrame? Frame, int PreviousFrameIndex, int NextFrameIndex, int? FrameIndex)
