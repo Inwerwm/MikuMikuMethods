@@ -5,7 +5,7 @@
 /// <para>静的メソッドで生成ができるのでそれを使うことを推奨</para>
 /// </summary>
 /// <param name="Index">範囲選択対象の内部インデックス</param>
-public record PmmRangeSelector(int Index)
+public record PmmRangeSelector(int Index) : ICloneable
 {
     /// <summary>
     /// 全フレーム
@@ -59,5 +59,7 @@ public record PmmRangeSelector(int Index)
         };
     }
 
-    public PmmRangeSelector DeepCopy() => new(Index);
+    public PmmRangeSelector DeepCopy() => this with { };
+
+    object ICloneable.Clone() => DeepCopy();
 }

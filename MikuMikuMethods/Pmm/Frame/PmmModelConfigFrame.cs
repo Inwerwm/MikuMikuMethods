@@ -16,6 +16,15 @@ public class PmmModelConfigFrame : PmmModelConfigState, IPmmFrame
         Visible = Visible
     };
 
+    public new PmmModelConfigFrame DeepCopy(Dictionary<PmmBone, bool> enableIK, Dictionary<PmmBone, PmmOutsideParentState> outsideParent) => new()
+    {
+        Frame = Frame,
+        IsSelected = IsSelected,
+        EnableIK = enableIK,
+        OutsideParent = outsideParent,
+        Visible = Visible
+    };
+
     IPmmFrame IPmmFrame.DeepCopy() => DeepCopy();
 
     public override string ToString() => Frame.ToString();

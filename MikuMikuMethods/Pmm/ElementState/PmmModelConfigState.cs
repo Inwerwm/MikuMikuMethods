@@ -1,6 +1,6 @@
 ﻿namespace MikuMikuMethods.Pmm.ElementState;
 
-public class PmmModelConfigState
+public class PmmModelConfigState : ICloneable
 {
     /// <summary>
     /// 表示
@@ -32,4 +32,14 @@ public class PmmModelConfigState
         EnableIK = new(EnableIK),
         OutsideParent = OutsideParent.ToDictionary(p => p.Key, p => p.Value.DeepCopy()),
     };
+
+    public PmmModelConfigState DeepCopy(Dictionary<PmmBone, bool> enableIK, Dictionary<PmmBone, PmmOutsideParentState> outsideParent) => new()
+    {
+        Visible = Visible,
+        EnableIK = enableIK,
+        OutsideParent = outsideParent,
+    };
+
+    /// <inheritdoc/>
+    public object Clone() => DeepCopy();
 }

@@ -1,6 +1,6 @@
 ﻿namespace MikuMikuMethods.Pmm.ElementState;
 
-public record PmmOutsideParentState
+public record PmmOutsideParentState : ICloneable
 {
     /// <summary>
     /// 外部親が設定されたフレーム
@@ -14,11 +14,8 @@ public record PmmOutsideParentState
     public PmmModel? ParentModel { get; set; }
     public PmmBone? ParentBone { get; set; }
 
-    public PmmOutsideParentState DeepCopy() => new()
-    {
-        StartFrame = StartFrame,
-        EndFrame = EndFrame,
-        ParentModel = ParentModel,
-        ParentBone = ParentBone
-    };
+    public PmmOutsideParentState DeepCopy() => this with { };
+    public PmmOutsideParentState DeepCopy(PmmModel? parentModel, PmmBone? parentBone) => this with { ParentModel = parentModel, ParentBone = parentBone };
+
+    object ICloneable.Clone() => DeepCopy();
 }

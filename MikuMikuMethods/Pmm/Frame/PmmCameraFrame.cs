@@ -32,6 +32,21 @@ public class PmmCameraFrame : PmmCameraState, IPmmFrame
         InterpolationCurves = InterpolationCurve.Clone(InterpolationCurves),
     };
 
+    public new PmmCameraFrame DeepCopy(PmmModel? followingModel, PmmBone? followingBone) => new()
+    {
+        Frame = Frame,
+        IsSelected = IsSelected,
+        Distance = Distance,
+        DisablePerspective = DisablePerspective,
+        EyePosition = EyePosition,
+        FollowingBone = followingBone,
+        FollowingModel = followingModel,
+        Rotation = Rotation,
+        TargetPosition = TargetPosition,
+        ViewAngle = ViewAngle,
+        InterpolationCurves = InterpolationCurve.Clone(InterpolationCurves),
+    };
+
     IPmmFrame IPmmFrame.DeepCopy() => DeepCopy();
 
     public override string ToString() => Frame.ToString();

@@ -2,7 +2,7 @@
 
 namespace MikuMikuMethods.Pmm.ElementState;
 
-public class PmmGravityState
+public class PmmGravityState : ICloneable
 {
 
     /// <summary>
@@ -25,4 +25,7 @@ public class PmmGravityState
         Acceleration = Acceleration,
         Direction = Direction
     };
+
+    /// <inheritdoc/>
+    public object Clone() => DeepCopy();
 }

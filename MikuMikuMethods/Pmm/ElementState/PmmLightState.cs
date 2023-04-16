@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace MikuMikuMethods.Pmm.ElementState;
 
-public class PmmLightState
+public class PmmLightState : ICloneable
 {
     /// <summary>
     /// 色(RGBのみ使用)
@@ -16,7 +16,10 @@ public class PmmLightState
 
     public PmmLightState DeepCopy() => new()
     {
-        Color = Color,
+        Color = Color with { },
         Position = Position
     };
+
+    /// <inheritdoc/>
+    public object Clone() => DeepCopy();
 }

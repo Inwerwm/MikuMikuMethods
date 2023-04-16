@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace MikuMikuMethods.Pmm.ElementState;
 
-public class PmmAccessoryState
+public class PmmAccessoryState : ICloneable
 {
     private float transparency;
 
@@ -62,6 +62,17 @@ public class PmmAccessoryState
         Scale = Scale,
     };
 
+    public PmmAccessoryState DeepCopy(PmmModel? parentModel, PmmBone? parentBone) => new()
+    {
+        TransAndVisible = TransAndVisible,
+        EnableShadow = EnableShadow,
+        ParentModel = parentModel,
+        ParentBone = parentBone,
+        Position = Position,
+        Rotation = Rotation,
+        Scale = Scale,
+    };
+
     internal static (bool Visible, float Transparency) SeparateTransAndVisible(byte value) =>
         ((value & 0x1) == 0x1, (100 - (value >> 1)) / 100f);
     internal static byte CreateTransAndVisible(float transparency, bool visible)
@@ -69,4 +80,7 @@ public class PmmAccessoryState
         var tr = 100 - (byte)Math.Round(transparency * 100);
         return (byte)((tr << 1) | (visible ? 1 : 0));
     }
+
+    /// <inheritdoc/>
+    public object Clone() => DeepCopy();
 }

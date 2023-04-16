@@ -3,7 +3,7 @@
 /// <summary>
 /// 各モデルにおけるキーフレーム編集画面の状態
 /// </summary>
-public class PmmModelSpecificKeyFrameEditorState
+public class PmmModelSpecificKeyFrameEditorState : ICloneable
 {
     /// <summary>
     /// 垂直スクロール状態
@@ -26,4 +26,7 @@ public class PmmModelSpecificKeyFrameEditorState
         LastFrame = LastFrame,
         RangeSelector = RangeSelector.DeepCopy()
     };
+
+    /// <inheritdoc/>
+    public object Clone() => DeepCopy();
 }

@@ -2,7 +2,7 @@
 
 namespace MikuMikuMethods.Pmm.ElementState;
 
-public class PmmBoneState
+public class PmmBoneState : ICloneable
 {
     /// <summary>
     /// 移動量
@@ -25,4 +25,7 @@ public class PmmBoneState
         Rotation = Rotation,
         EnablePhysic = EnablePhysic
     };
+
+    /// <inheritdoc/>
+    public object Clone() => DeepCopy();
 }

@@ -20,6 +20,19 @@ public class PmmAccessoryFrame : PmmAccessoryState, IPmmFrame
         TransAndVisible = TransAndVisible,
     };
 
+    public new PmmAccessoryFrame DeepCopy(PmmModel? parentModel, PmmBone? parentBone) => new()
+    {
+        Frame = Frame,
+        IsSelected = IsSelected,
+        EnableShadow = EnableShadow,
+        ParentModel = parentModel,
+        ParentBone = parentBone,
+        Position = Position,
+        Rotation = Rotation,
+        Scale = Scale,
+        TransAndVisible = TransAndVisible,
+    };
+
     IPmmFrame IPmmFrame.DeepCopy() => DeepCopy();
 
     public override string ToString() => Frame.ToString();
