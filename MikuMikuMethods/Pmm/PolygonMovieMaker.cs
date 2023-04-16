@@ -9,14 +9,14 @@ namespace MikuMikuMethods.Pmm;
 /// <summary>
 /// MMDプロジェクトファイル
 /// </summary>
-public class PolygonMovieMaker
+public class PolygonMovieMaker : ICloneable
 {
-    internal ObservableCollection<PmmAccessory> AccessoriesSubstance { get; } = new();
-    internal List<PmmAccessory> AccessoryRenderOrder { get; } = new();
+    internal ObservableCollection<PmmAccessory> AccessoriesSubstance { get; private init; } = new();
+    internal List<PmmAccessory> AccessoryRenderOrder { get; private init; } = new();
 
-    internal ObservableCollection<PmmModel> ModelsSubstance { get; } = new();
-    internal List<PmmModel> ModelRenderOrder { get; } = new();
-    internal List<PmmModel> ModelCalculateOrder { get; } = new();
+    internal ObservableCollection<PmmModel> ModelsSubstance { get; private init; } = new();
+    internal List<PmmModel> ModelRenderOrder { get; private init; } = new();
+    internal List<PmmModel> ModelCalculateOrder { get; private init; } = new();
 
     /// <summary>
     /// PMMファイルバージョン
@@ -30,19 +30,19 @@ public class PolygonMovieMaker
     /// <summary>
     /// カメラ
     /// </summary>
-    public PmmCamera Camera { get; } = new();
+    public PmmCamera Camera { get; private init; } = new();
     /// <summary>
     /// 照明
     /// </summary>
-    public PmmLight Light { get; } = new();
+    public PmmLight Light { get; private init; } = new();
     /// <summary>
     /// セルフ影
     /// </summary>
-    public PmmSelfShadow SelfShadow { get; } = new();
+    public PmmSelfShadow SelfShadow { get; private init; } = new();
     /// <summary>
     /// 物理
     /// </summary>
-    public PmmPhysics Physics { get; } = new();
+    public PmmPhysics Physics { get; private init; } = new();
     /// <summary>
     /// アクセサリー
     /// </summary>
@@ -55,24 +55,24 @@ public class PolygonMovieMaker
     /// <summary>
     /// 背景と音声
     /// </summary>
-    public PmmBackGroundMedia BackGround { get; } = new();
+    public PmmBackGroundMedia BackGround { get; private init; } = new();
 
     /// <summary>
     /// 描画設定
     /// </summary>
-    public PmmRenderConfig RenderConfig { get; } = new();
+    public PmmRenderConfig RenderConfig { get; private init; } = new();
     /// <summary>
     /// 編集対象の状態
     /// </summary>
-    public PmmEditorState EditorState { get; } = new();
+    public PmmEditorState EditorState { get; private init; } = new();
     /// <summary>
     /// 各種操作パネル画面の状態
     /// </summary>
-    public PmmPanelPane PanelPane { get; } = new();
+    public PmmPanelPane PanelPane { get; private init; } = new();
     /// <summary>
     /// 再生関連設定
     /// </summary>
-    public PmmPlayConfig PlayConfig { get; } = new();
+    public PmmPlayConfig PlayConfig { get; private init; } = new();
 
     public PolygonMovieMaker()
     {
@@ -215,4 +215,41 @@ public class PolygonMovieMaker
                 }
             }
         };
+
+    public PolygonMovieMaker DeepCopy()
+    {
+        var cloneModels = Models.Select(model => (Origin: model, Clone: model.DeepCopy(out var bm), BoneMap: bm));
+        var modelMap = cloneModels.ToDictionary(t => t.Origin, t => t.Clone);
+        var boneMap = cloneModels.SelectMany(t => t.BoneMap).ToDictionary(t => t.Key, t => t.Value);
+        var acsMap = Accessories.Select(acs => (Origin: acs, Clone: acs.DeepCopy(modelMap, boneMap))).ToDictionary(t => t.Origin, t => t.Clone);
+
+        var clone = new PolygonMovieMaker()
+        {
+            BackGround = BackGround.DeepCopy(),
+            Camera = Camera.DeepCopy(modelMap, boneMap),
+            EditorState = EditorState.DeepCopy(modelMap, acsMap),
+            Light = Light.DeepCopy(),
+            OutputResolution = OutputResolution with { },
+            PanelPane = PanelPane.DeepCopy(),
+            Physics = Physics.DeepCopy(),
+            PlayConfig = PlayConfig.DeepCopy(),
+            RenderConfig = RenderConfig.DeepCopy(),
+            SelfShadow = SelfShadow.DeepCopy(),
+            Version = Version
+        };
+
+        foreach (var (o, c) in modelMap)
+        {
+            clone.Models.Add(c);
+        }
+
+        foreach (var (o, c) in acsMap)
+        {
+            clone.Accessories.Add(c);
+        }
+
+        return clone;
+    }
+
+    public object Clone() => DeepCopy();
 }
