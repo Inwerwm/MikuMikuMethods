@@ -28,4 +28,6 @@ internal static class Utility
             ts.Add(item);
         }
     }
+
+    public static TValue? GetOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey? key) => key is not null && dictionary.TryGetValue(key, out var value) ? value : default;
 }

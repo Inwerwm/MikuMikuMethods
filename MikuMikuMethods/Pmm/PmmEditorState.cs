@@ -64,4 +64,17 @@ public class PmmEditorState
         /// </summary>
         None
     }
+
+    public PmmEditorState DeepCopy(Dictionary<PmmModel, PmmModel> modelMap, Dictionary<PmmAccessory, PmmAccessory> accessoryMap) => new()
+    {
+        Width = this.Width,
+        VerticalScrollOfAccessory = this.VerticalScrollOfAccessory,
+        IsCameraMode = this.IsCameraMode,
+        SelectedModel = modelMap.GetOrDefault(this.SelectedModel),
+        SelectedAccessory = accessoryMap.GetOrDefault(this.SelectedAccessory),
+        SelectedBoneOperation = this.SelectedBoneOperation,
+        CurrentFrame = this.CurrentFrame,
+        HorizontalScroll = this.HorizontalScroll,
+        HorizontalScrollLength = this.HorizontalScrollLength,
+    };
 }

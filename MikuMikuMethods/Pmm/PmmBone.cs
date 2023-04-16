@@ -6,7 +6,7 @@ namespace MikuMikuMethods.Pmm;
 public class PmmBone : IPmmModelElement
 {
     public string Name { get; }
-    public List<PmmBoneFrame> Frames { get; } = new();
+    public List<PmmBoneFrame> Frames { get; private init; } = new();
     /// <summary>
     /// IKボーンか
     /// </summary>
@@ -19,7 +19,7 @@ public class PmmBone : IPmmModelElement
     /// <summary>
     /// 現在の変形状態
     /// </summary>
-    public PmmBoneState Current { get; } = new();
+    public PmmBoneState Current { get; private init; } = new();
     /// <summary>
     /// 編集画面で選択されているか
     /// </summary>
@@ -35,4 +35,16 @@ public class PmmBone : IPmmModelElement
     }
 
     public override string ToString() => Name;
+
+    public PmmBone DeepCopy() => new(this.Name)
+    {
+        Frames = this.Frames.Select(f => f.DeepCopy()).ToList(),
+        IsIK = this.IsIK,
+        CanSetOutsideParent = this.CanSetOutsideParent,
+        Current = this.Current.DeepCopy(),
+        IsSelected = this.IsSelected,
+        IsCommitted = this.IsCommitted
+    };
+
+    public object Clone() => DeepCopy();
 }

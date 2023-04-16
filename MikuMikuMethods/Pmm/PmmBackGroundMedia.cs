@@ -5,7 +5,7 @@ namespace MikuMikuMethods.Pmm;
 /// <summary>
 /// 背景メディア情報
 /// </summary>
-public class PmmBackGroundMedia
+public class PmmBackGroundMedia : ICloneable
 {
     /// <summary>
     /// 音声ファイルへのパス
@@ -45,4 +45,18 @@ public class PmmBackGroundMedia
     /// 背景画像の表示位置
     /// </summary>
     public Point2<int> ImageOffset { get; set; } = new(0, 0);
+
+    public object Clone() => DeepCopy();
+
+    public PmmBackGroundMedia DeepCopy() => new()
+    {
+        Audio = this.Audio,
+        IsBlack = this.IsBlack,
+        Video = this.Video,
+        VideoScale = this.VideoScale,
+        VideoOffset = this.VideoOffset with { },
+        Image = this.Image,
+        ImageScale = this.ImageScale,
+        ImageOffset = this.ImageOffset with { },
+    };
 }

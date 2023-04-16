@@ -2,7 +2,7 @@
 
 namespace MikuMikuMethods.Pmm;
 
-public class PmmSelfShadow
+public class PmmSelfShadow : ICloneable
 {
     /// <summary>
     /// セルフ影のOn/Off
@@ -13,5 +13,17 @@ public class PmmSelfShadow
     /// </summary>
     public float ShadowRange { get; set; } = 8875;
 
-    public List<PmmSelfShadowFrame> Frames { get; } = new();
+    public List<PmmSelfShadowFrame> Frames { get; private init; } = new();
+
+    public PmmSelfShadow DeepCopy() => new()
+    {
+        EnableSelfShadow = EnableSelfShadow,
+        ShadowRange = ShadowRange,
+        Frames = Frames.Select(f => f.DeepCopy()).ToList()
+    };
+
+    public object Clone()
+    {
+        throw new NotImplementedException();
+    }
 }

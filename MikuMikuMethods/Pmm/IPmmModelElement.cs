@@ -1,6 +1,6 @@
 ﻿namespace MikuMikuMethods.Pmm;
 
-public interface IPmmModelElement
+public interface IPmmModelElement : ICloneable
 {
     string Name { get; }
 }

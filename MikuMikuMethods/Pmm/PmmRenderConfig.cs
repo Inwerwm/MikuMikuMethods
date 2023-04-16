@@ -2,7 +2,7 @@
 
 namespace MikuMikuMethods.Pmm;
 
-public class PmmRenderConfig
+public class PmmRenderConfig : ICloneable
 {
     /// <summary>
     /// 描画情報の表示/非表示
@@ -75,4 +75,20 @@ public class PmmRenderConfig
     /// エッジの色
     /// </summary>
     public Color EdgeColor { get; set; }
+
+    public PmmRenderConfig DeepCopy() => new()
+    {
+        AxisVisible = AxisVisible,
+        JumpFrameLocation = JumpFrameLocation,
+        EdgeColor = EdgeColor,
+        EnableGrandShadow = EnableGrandShadow,
+        EnableTransparentGroundShadow = EnableTransparentGroundShadow,
+        FPSLimit = FPSLimit,
+        ScreenCaptureMode = ScreenCaptureMode,
+        GroundShadowBrightness = GroundShadowBrightness,
+        InfomationVisible = InfomationVisible,
+        PostDrawingAccessoryStartIndex = PostDrawingAccessoryStartIndex,
+    };
+
+    public object Clone() => DeepCopy();
 }

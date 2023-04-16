@@ -1,6 +1,6 @@
 ﻿namespace MikuMikuMethods.Pmm;
 
-public class PmmPanelPane
+public class PmmPanelPane : ICloneable
 {
     /// <summary>
     /// カメラ操作パネル開閉状態
@@ -26,4 +26,16 @@ public class PmmPanelPane
     /// セルフ影操作パネル開閉状態
     /// </summary>
     public bool DoesOpenSelfShadowPanel { get; set; } = true;
+
+    public object Clone() => DeepCopy();
+
+    public PmmPanelPane DeepCopy() => new()
+    {
+        DoesOpenAccessaryPanel = DoesOpenAccessaryPanel,
+        DoesOpenBonePanel = DoesOpenBonePanel,
+        DoesOpenCameraPanel = DoesOpenCameraPanel,
+        DoesOpenLightPanel = DoesOpenLightPanel,
+        DoesOpenMorphPanel = DoesOpenMorphPanel,
+        DoesOpenSelfShadowPanel = DoesOpenSelfShadowPanel,
+    };
 }

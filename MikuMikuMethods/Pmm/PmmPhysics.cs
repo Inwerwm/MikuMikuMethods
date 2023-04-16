@@ -3,9 +3,9 @@ using MikuMikuMethods.Pmm.Frame;
 
 namespace MikuMikuMethods.Pmm;
 
-public class PmmPhysics
+public class PmmPhysics : ICloneable
 {
-    public PmmGravityState CurrentGravity { get; } = new()
+    public PmmGravityState CurrentGravity { get; private init; } = new()
     {
         Noize = null,
         Acceleration = 9.8f,
@@ -15,7 +15,7 @@ public class PmmPhysics
     /// <summary>
     /// 重力フレーム
     /// </summary>
-    public List<PmmGravityFrame> GravityFrames { get; } = new();
+    public List<PmmGravityFrame> GravityFrames { get; private init; } = new();
 
     /// <summary>
     /// 物理演算モード
@@ -47,4 +47,14 @@ public class PmmPhysics
     /// 物理床のOn/Off
     /// </summary>
     public bool EnableGroundPhysics { get; set; } = true;
+
+    public PmmPhysics DeepCopy() => new()
+    {
+        CurrentGravity = CurrentGravity.DeepCopy(),
+        GravityFrames = GravityFrames.Select(f => f.DeepCopy()).ToList(),
+        CalculationMode = CalculationMode,
+        EnableGroundPhysics = EnableGroundPhysics,
+    };
+
+    public object Clone() => DeepCopy();
 }

@@ -1,7 +1,7 @@
 ﻿namespace MikuMikuMethods.Pmm;
 
 /// <summary>
-/// 外部親の地面用シングルトン
+/// 外部親の地面用
 /// </summary>
 public class PmmGroundAsParent : PmmModel
 {

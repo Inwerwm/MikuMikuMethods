@@ -1,6 +1,6 @@
 ﻿namespace MikuMikuMethods.Pmm;
 
-public class PmmPlayConfig
+public class PmmPlayConfig : ICloneable
 {
     /// <summary>
     /// 繰り返し再生を行うか
@@ -33,6 +33,18 @@ public class PmmPlayConfig
     /// </summary>
     public TrackingTarget CameraTrackingTarget { get; set; } = TrackingTarget.None;
 
+    public object Clone() => DeepCopy();
+
+    public PmmPlayConfig DeepCopy() => new()
+    {
+        CameraTrackingTarget = CameraTrackingTarget,
+        EnableFollowCamera = EnableFollowCamera,
+        EnableMoveCurrentFrameToPlayStopping = EnableMoveCurrentFrameToPlayStopping,
+        EnableRepeat = EnableRepeat,
+        EnableStartFromCurrentFrame = EnableStartFromCurrentFrame,
+        PlayStopFrame = PlayStopFrame,
+        PlayStartFrame = PlayStartFrame,
+    };
 
     /// <summary>
     /// 視点追従対象
