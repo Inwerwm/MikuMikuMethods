@@ -1,5 +1,6 @@
 ﻿using MikuMikuMethods.Mme.Element;
 using MikuMikuMethods.Mme.IO;
+using System.Linq;
 
 namespace MikuMikuMethods.Mme;
 
@@ -59,5 +60,33 @@ public class EmmData
     public void Write(string filePath)
     {
         MmeFileWriter.WriteEmmData(filePath, this);
+    }
+
+    public void RemoveObject(EmmObject targetObject)
+    {
+        Objects.Remove(targetObject);
+
+        // 削除対象オブジェクトに紐づいていたエフェクトタブを削除
+        foreach (var effectSetting in EffectSettings.Where(s => s.Owner == targetObject).ToArray())
+        {
+            EffectSettings.Remove(effectSetting);
+        }
+
+        // 削除対象オブジェクトについてのエフェクト設定を削除
+        foreach (var (effectSetting, objectSetting) in EffectSettings.SelectMany(setting => setting.ObjectSettings.Where(s => s.Object == targetObject).ToArray().Select(item => (setting, item))))
+        {
+            effectSetting.ObjectSettings.Remove(objectSetting);
+        }
+
+        RenumberObjects();
+    }
+
+    private void RenumberObjects()
+    {
+        Objects.Sort((a, b) => a.Index.CompareTo(b.Index));
+        foreach (var (obj, i) in Objects.Select((obj, i) => (obj, i)))
+        {
+            obj.Index = i;
+        }
     }
 }

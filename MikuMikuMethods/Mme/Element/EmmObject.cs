@@ -8,7 +8,7 @@ public abstract class EmmObject
     /// <summary>
     /// オブジェクトの番号
     /// </summary>
-    public int Index { get; init; }
+    public int Index { get; internal set; }
 
     /// <summary>
     /// オブジェクトのキーを表す文字列
