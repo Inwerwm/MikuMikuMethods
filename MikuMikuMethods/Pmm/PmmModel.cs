@@ -6,7 +6,7 @@ namespace MikuMikuMethods.Pmm;
 /// <summary>
 /// PMM用モデルクラス
 /// </summary>
-public class PmmModel
+public class PmmModel : ICloneable
 {
     private PmmBone? _selectedBone;
     private PmmMorph? _selectedBrowMorph;
@@ -32,15 +32,15 @@ public class PmmModel
     /// <summary>
     /// ボーン
     /// </summary>
-    public List<PmmBone> Bones { get; } = new();
+    public List<PmmBone> Bones { get; private init; } = new();
     /// <summary>
     /// モーフ
     /// </summary>
-    public List<PmmMorph> Morphs { get; } = new();
+    public List<PmmMorph> Morphs { get; private init; } = new();
     /// <summary>
     /// 表示枠
     /// </summary>
-    public List<PmmNode> Nodes { get; } = new();
+    public List<PmmNode> Nodes { get; private init; } = new();
 
     /// <summary>
     /// 選択中ボーンの取得/設定
@@ -83,7 +83,7 @@ public class PmmModel
     /// <summary>
     /// 表示・IK・外観のキーフレーム
     /// </summary>
-    public List<PmmModelConfigFrame> ConfigFrames { get; } = new();
+    public List<PmmModelConfigFrame> ConfigFrames { get; private init; } = new();
 
     /// <summary>
     /// エッジ幅
@@ -99,10 +99,45 @@ public class PmmModel
     /// </summary>
     public bool EnableSelfShadow { get; set; } = true;
 
-    public PmmModelSpecificKeyFrameEditorState SpecificEditorState { get; } = new();
+    public PmmModelSpecificKeyFrameEditorState SpecificEditorState { get; private init; } = new();
 
-    public PmmModelConfigState CurrentConfig { get; } = new();
+    public PmmModelConfigState CurrentConfig { get; private init; } = new();
 
     /// <inheritdoc/>
     public override string ToString() => $"{Name} - {Path}";
+
+    public PmmModel DeepCopy(out Dictionary<PmmBone, PmmBone> boneMap)
+    {
+        var _boneMap = Bones.ToDictionary(bone => bone, bone => bone.DeepCopy());
+        var morphMap = Morphs.ToDictionary(morph => morph, morph => morph.DeepCopy());
+        var modelElementMap = _boneMap.Select(bone => (Key: (IPmmModelElement)bone.Key, Value: (IPmmModelElement)bone.Value)).Concat(morphMap.Select(morph => (Key: (IPmmModelElement)morph.Key, Value: (IPmmModelElement)morph.Value))).ToDictionary(p => p.Key, p => p.Value);
+
+        var clone = new PmmModel
+        {
+            Bones = _boneMap.Values.ToList(),
+            Morphs = morphMap.Values.ToList(),
+            Nodes = Nodes.Select(n => n.DeepCopy(modelElementMap)).ToList(),
+            ConfigFrames = ConfigFrames.Select(frame => frame.DeepCopy(_boneMap)).ToList(),
+            CurrentConfig = CurrentConfig.DeepCopy(_boneMap),
+            EdgeWidth = EdgeWidth,
+            EnableAlphaBlend = EnableAlphaBlend,
+            EnableSelfShadow = EnableSelfShadow,
+            Name = Name,
+            NameEn = NameEn,
+            Path = Path,
+            SpecificEditorState = SpecificEditorState.DeepCopy(),
+            _selectedBone = _boneMap.GetOrDefault(SelectedBone),
+            _selectedBrowMorph = morphMap.GetOrDefault(SelectedBrowMorph),
+            _selectedEyeMorph = morphMap.GetOrDefault(SelectedEyeMorph),
+            _selectedLipMorph = morphMap.GetOrDefault(SelectedLipMorph),
+            _selectedOtherMorph = morphMap.GetOrDefault(SelectedOtherMorph)
+        };
+
+        boneMap = _boneMap;
+        return clone;
+    }
+
+    public PmmModel DeepCopy() => DeepCopy(out _);
+
+    public object Clone() => DeepCopy();
 }

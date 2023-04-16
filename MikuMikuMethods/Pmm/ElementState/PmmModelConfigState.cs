@@ -33,11 +33,11 @@ public class PmmModelConfigState : ICloneable
         OutsideParent = OutsideParent.ToDictionary(p => p.Key, p => p.Value.DeepCopy()),
     };
 
-    public PmmModelConfigState DeepCopy(Dictionary<PmmBone, bool> enableIK, Dictionary<PmmBone, PmmOutsideParentState> outsideParent) => new()
+    public PmmModelConfigState DeepCopy(Dictionary<PmmBone, PmmBone> boneMap) => new()
     {
         Visible = Visible,
-        EnableIK = enableIK,
-        OutsideParent = outsideParent,
+        EnableIK = EnableIK.Where(p => boneMap.ContainsKey(p.Key)).ToDictionary(p => boneMap[p.Key], p => p.Value),
+        OutsideParent = OutsideParent.SelectKeyValue(boneMap, null).ToDictionary(p => p.Key, p => p.Value.DeepCopy()),
     };
 
     /// <inheritdoc/>

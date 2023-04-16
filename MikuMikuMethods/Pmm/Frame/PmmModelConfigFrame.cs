@@ -16,12 +16,12 @@ public class PmmModelConfigFrame : PmmModelConfigState, IPmmFrame
         Visible = Visible
     };
 
-    public new PmmModelConfigFrame DeepCopy(Dictionary<PmmBone, bool> enableIK, Dictionary<PmmBone, PmmOutsideParentState> outsideParent) => new()
+    public new PmmModelConfigFrame DeepCopy(Dictionary<PmmBone, PmmBone> boneMap) => new()
     {
         Frame = Frame,
         IsSelected = IsSelected,
-        EnableIK = enableIK,
-        OutsideParent = outsideParent,
+        EnableIK = EnableIK.Where(p => boneMap.ContainsKey(p.Key)).ToDictionary(p => boneMap[p.Key], p => p.Value),
+        OutsideParent = OutsideParent.SelectKeyValue(boneMap, null).ToDictionary(p => p.Key, p => p.Value.DeepCopy()),
         Visible = Visible
     };
 

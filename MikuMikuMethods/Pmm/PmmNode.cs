@@ -3,7 +3,7 @@
 namespace MikuMikuMethods.Pmm;
 
 
-public class PmmNode : ICloneable
+public class PmmNode
 {
     public string Name { get; internal set; }
     public bool DoesOpen { get; set; } = false;
@@ -16,12 +16,10 @@ public class PmmNode : ICloneable
         Name = "";
     }
 
-    public PmmNode DeepCopy() => new()
+    public PmmNode DeepCopy(Dictionary<IPmmModelElement, IPmmModelElement> elementMap) => new()
     {
         Name = Name,
         DoesOpen = DoesOpen,
-        Elements = ImmutableArray.Create(this.Elements.Select(e => (IPmmModelElement)e.Clone()).ToArray())
+        Elements = ImmutableArray.Create(Elements.Select(e => elementMap.GetOrDefault(e)).Where(e => e is not null).Cast<IPmmModelElement>().ToArray())
     };
-
-    public object Clone() => DeepCopy();
 }

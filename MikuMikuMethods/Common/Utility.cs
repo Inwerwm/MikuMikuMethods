@@ -30,4 +30,11 @@ internal static class Utility
     }
 
     public static TValue? GetOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey? key) => key is not null && dictionary.TryGetValue(key, out var value) ? value : default;
+    public static Dictionary<TKey, TValue> SelectKeyValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, IDictionary<TKey, TKey>? keyMap, IDictionary<TValue, TValue>? valueMap) where TKey : notnull => dictionary
+            .Where(p => keyMap is null || keyMap.ContainsKey(p.Key))
+            .Where(p => valueMap is null || p.Value is not null && valueMap.ContainsKey(p.Value))
+            .ToDictionary(
+                p => keyMap is null ? p.Key : keyMap[p.Key],
+                p => valueMap is null ? p.Value : valueMap[p.Value]
+            );        
 }
