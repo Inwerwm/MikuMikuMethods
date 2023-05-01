@@ -26,6 +26,11 @@ public static class VmdFileReader
 
     private static void ReadFrames(BinaryReader reader, Action<BinaryReader> addToList)
     {
+        if (reader.BaseStream.Position >= reader.BaseStream.Length)
+        {
+            return;
+        }
+
         var elementNum = reader.ReadUInt32();
         for (int i = 0; i < elementNum; i++)
             addToList(reader);
