@@ -38,35 +38,35 @@ public enum InterpolationItem
 /// </summary>
 public class InterpolationCurve : ICloneable, IEquatable<InterpolationCurve>
 {
-    private BytePoint _earlyControlePoint;
-    private BytePoint _lateControlePoint;
+    private BytePoint _earlyControlPoint;
+    private BytePoint _lateControlPoint;
 
     /// <summary>
     /// 始点側制御点
     /// [0,127]
     /// </summary>
-    public BytePoint EarlyControlePoint
+    public BytePoint EarlyControlPoint
     {
-        get => _earlyControlePoint;
+        get => _earlyControlPoint;
         set
         {
             if (value.X is < 0 or > 127 || value.Y is < 0 or > 127)
-                throw new ArgumentOutOfRangeException("InterpolationCurve.EarlyControlePoint", "InterpolationCurve.EarlyControlePoint has seted to out of range value.");
-            _earlyControlePoint = value;
+                throw new ArgumentOutOfRangeException("InterpolationCurve.EarlyControlPoint", "The provided value for InterpolationCurve.EarlyControlPoint is out of the valid range [0-127].");
+            _earlyControlPoint = value;
         }
     }
     /// <summary>
     /// 終点側制御点
     /// [0,127]
     /// </summary>
-    public BytePoint LateControlePoint
+    public BytePoint LateControlPoint
     {
-        get => _lateControlePoint;
+        get => _lateControlPoint;
         set
         {
             if (value.X is < 0 or > 127 || value.Y is < 0 or > 127)
-                throw new ArgumentOutOfRangeException("InterpolationCurve.LateControlePoint", "InterpolationCurve.LateControlePoint has seted to out of range value.");
-            _lateControlePoint = value;
+                throw new ArgumentOutOfRangeException("InterpolationCurve.LateControlPoint", "The provided value for InterpolationCurve.LateControlPoint is out of the valid range [0-127].");
+            _lateControlPoint = value;
         }
     }
 
@@ -74,35 +74,41 @@ public class InterpolationCurve : ICloneable, IEquatable<InterpolationCurve>
     /// 始点側制御点
     /// [0.0,1.0]
     /// </summary>
-    public FloatPoint EarlyControlePointFloat
+    public FloatPoint EarlyControlPointFloat
     {
-        get => (EarlyControlePoint.X / 127.0f, EarlyControlePoint.Y / 127.0f);
+        get => (EarlyControlPoint.X / 127.0f, EarlyControlPoint.Y / 127.0f);
         set
         {
             if (value.X is < 0 or > 1 || value.Y is < 0 or > 1)
-                throw new ArgumentOutOfRangeException("InterpolationCurve.EarlyControlePointFloat", "InterpolationCurve.EarlyControlePointFloat has seted to out of range value.");
-            EarlyControlePoint = ((byte)(value.X * 127), (byte)(value.Y * 127));
+                throw new ArgumentOutOfRangeException("InterpolationCurve.EarlyControlPointFloat", "The provided value for InterpolationCurve.EarlyControlPointFloat is out of the valid range [0-1].");
+            EarlyControlPoint = ((byte)(value.X * 127), (byte)(value.Y * 127));
         }
     }
     /// <summary>
     /// 終点側制御点
     /// [0.0,1.0]
     /// </summary>
-    public (float X, float Y) LateControlePointFloat
+    public (float X, float Y) LateControlPointFloat
     {
-        get => (LateControlePoint.X / 127.0f, LateControlePoint.Y / 127.0f);
+        get => (LateControlPoint.X / 127.0f, LateControlPoint.Y / 127.0f);
         set
         {
             if (value.X is < 0 or > 1 || value.Y is < 0 or > 1)
-                throw new ArgumentOutOfRangeException("InterpolationCurve.LateControlePointFloat", "InterpolationCurve.LateControlePointFloat has seted to out of range value.");
-            LateControlePoint = ((byte)(value.X * 127), (byte)(value.Y * 127));
+                throw new ArgumentOutOfRangeException("InterpolationCurve.LateControlPointFloat", "The provided value for InterpolationCurve.LateControlPointFloat is out of the valid range [0-1].");
+            LateControlPoint = ((byte)(value.X * 127), (byte)(value.Y * 127));
         }
     }
 
+    /// <summary>
+    /// InterpolationCurveの新しいインスタンスを初期化します。
+    /// </summary>
+    /// <remarks>
+    /// このコンストラクタは、始点側制御点を(20, 20)、終点側制御点を(107, 107)に設定します。
+    /// </remarks>
     public InterpolationCurve()
     {
-        _earlyControlePoint = (20, 20);
-        _lateControlePoint = (107, 107);
+        _earlyControlPoint = (20, 20);
+        _lateControlPoint = (107, 107);
     }
 
     /// <summary>
@@ -111,20 +117,20 @@ public class InterpolationCurve : ICloneable, IEquatable<InterpolationCurve>
     /// <param name="curve"></param>
     public void CopyFrom(InterpolationCurve curve)
     {
-        EarlyControlePoint = curve.EarlyControlePoint;
-        LateControlePoint = curve.LateControlePoint;
+        EarlyControlPoint = curve.EarlyControlPoint;
+        LateControlPoint = curve.LateControlPoint;
     }
 
     /// <summary>
     /// バイト配列から値を指定する
     /// </summary>
-    /// <param name="bytes">{EarlyControlePoint.X, EarlyControlePoint.Y, LateControlePoint.X, LateControlePoint.Y}</param>
+    /// <param name="bytes">{EarlyControlPoint.X, EarlyControlPoint.Y, LateControlPoint.X, LateControlPoint.Y}</param>
     public void FromBytes(IEnumerable<byte> bytes)
     {
         try
         {
-            _earlyControlePoint = (bytes.ElementAt(0), bytes.ElementAt(1));
-            _lateControlePoint = (bytes.ElementAt(2), bytes.ElementAt(3));
+            _earlyControlPoint = (bytes.ElementAt(0), bytes.ElementAt(1));
+            _lateControlPoint = (bytes.ElementAt(2), bytes.ElementAt(3));
         }
         catch (ArgumentOutOfRangeException ex)
         {
@@ -136,7 +142,7 @@ public class InterpolationCurve : ICloneable, IEquatable<InterpolationCurve>
     /// バイト配列で返す
     /// {始点側制御点X, 始点側制御点Y, 終点側制御点X, 終点側制御点Y}
     /// </summary>
-    public byte[] ToBytes() => new byte[] { EarlyControlePoint.X, EarlyControlePoint.Y, LateControlePoint.X, LateControlePoint.Y };
+    public byte[] ToBytes() => new byte[] { EarlyControlPoint.X, EarlyControlPoint.Y, LateControlPoint.X, LateControlPoint.Y };
 
     /// <summary>
     /// VMD形式のバイト列から補間曲線クラスの連想配列を生成する。
@@ -214,7 +220,7 @@ public class InterpolationCurve : ICloneable, IEquatable<InterpolationCurve>
     private static byte[] CreateCameraBytes(ReadOnlyDictionary<InterpolationItem, InterpolationCurve> curves)
     {
         static byte[] CreateBytes(InterpolationCurve curve) =>
-            new byte[] { curve.EarlyControlePoint.X, curve.LateControlePoint.X, curve.EarlyControlePoint.Y, curve.LateControlePoint.Y };
+            new byte[] { curve.EarlyControlPoint.X, curve.LateControlPoint.X, curve.EarlyControlPoint.Y, curve.LateControlPoint.Y };
 
         return CreateBytes(curves[InterpolationItem.XPosition])
                .Concat(CreateBytes(curves[InterpolationItem.YPosition]))
@@ -227,7 +233,7 @@ public class InterpolationCurve : ICloneable, IEquatable<InterpolationCurve>
 
     private static byte[] CreateMotionBytes(ReadOnlyDictionary<InterpolationItem, InterpolationCurve> curves)
     {
-        // 補間曲線をbyte配列化
+        // 補間曲線を byte 配列化
         var xPositionPoints = curves[InterpolationItem.XPosition].ToBytes();
         var yPositionPoints = curves[InterpolationItem.YPosition].ToBytes();
         var zPositionPoints = curves[InterpolationItem.ZPosition].ToBytes();
@@ -247,7 +253,7 @@ public class InterpolationCurve : ICloneable, IEquatable<InterpolationCurve>
         List<byte> interpolateMatrix = new();
         for (int i = 0; i < 4; i++)
         {
-            // pointsRowから始めのi個を抜かしてrowへ転写
+            // pointsRowから始めのi個を抜かして row へ転写
             var row = new byte[16];
             pointsRow.Skip(i).ToArray().CopyTo(row, 0);
 
@@ -257,10 +263,21 @@ public class InterpolationCurve : ICloneable, IEquatable<InterpolationCurve>
         return interpolateMatrix.ToArray();
     }
 
+    /// <summary>
+    /// 与えられたReadOnlyDictionaryのクローンを作成します。
+    /// </summary>
+    /// <param name="curves">クローンを作成するための元となるInterpolationCurveのReadOnlyDictionary。</param>
+    /// <returns>元のReadOnlyDictionaryの深いコピーを含む新しいReadOnlyDictionary。</returns>
     public static ReadOnlyDictionary<InterpolationItem, InterpolationCurve> Clone(ReadOnlyDictionary<InterpolationItem, InterpolationCurve> curves) =>
         new(curves.ToDictionary(p => p.Key, p => (InterpolationCurve)p.Value.Clone()));
 
-    public static ReadOnlyDictionary<InterpolationItem, InterpolationCurve> CreateCameraCurves() => new(new Dictionary<InterpolationItem, InterpolationCurve>()
+    /// <summary>
+    /// 新しいカメラ用のInterpolationCurveのReadOnlyDictionaryを作成します。
+    /// </summary>
+    /// <returns>新しいカメラ用のInterpolationCurveのReadOnlyDictionary。</returns>
+    public static ReadOnlyDictionary<InterpolationItem, InterpolationCurve> CreateCameraCurves() => new(CreateMutableCameraCurves());
+
+    internal static Dictionary<InterpolationItem, InterpolationCurve> CreateMutableCameraCurves() => new()
         {
             { InterpolationItem.XPosition, new() },
             { InterpolationItem.YPosition, new() },
@@ -268,15 +285,21 @@ public class InterpolationCurve : ICloneable, IEquatable<InterpolationCurve>
             { InterpolationItem.Rotation, new() },
             { InterpolationItem.Distance, new() },
             { InterpolationItem.ViewAngle, new() },
-        });
+        };
 
-    public static ReadOnlyDictionary<InterpolationItem, InterpolationCurve> CreateBoneCurves() => new(new Dictionary<InterpolationItem, InterpolationCurve>()
+    /// <summary>
+    /// 新しいボーン用のInterpolationCurveのReadOnlyDictionaryを作成します。
+    /// </summary>
+    /// <returns>新しいボーン用のInterpolationCurveのReadOnlyDictionary。</returns>
+    public static ReadOnlyDictionary<InterpolationItem, InterpolationCurve> CreateBoneCurves() => new(CreateMutableBoneCurves());
+
+    internal static Dictionary<InterpolationItem, InterpolationCurve> CreateMutableBoneCurves() => new()
         {
             { InterpolationItem.XPosition, new() },
             { InterpolationItem.YPosition, new() },
             { InterpolationItem.ZPosition, new() },
             { InterpolationItem.Rotation, new() },
-        });
+        };
 
     /// <summary>
     /// 全補間曲線をコピーする
@@ -294,8 +317,8 @@ public class InterpolationCurve : ICloneable, IEquatable<InterpolationCurve>
     /// <inheritdoc/>
     public object Clone() => new InterpolationCurve()
     {
-        _earlyControlePoint = _earlyControlePoint,
-        _lateControlePoint = _lateControlePoint
+        _earlyControlPoint = _earlyControlPoint,
+        _lateControlPoint = _lateControlPoint
     };
 
     /// <inheritdoc/>
@@ -306,11 +329,11 @@ public class InterpolationCurve : ICloneable, IEquatable<InterpolationCurve>
     /// <inheritdoc/>
     public override bool Equals(object? obj) => Equals(obj as InterpolationCurve);
     /// <inheritdoc/>
-    public override int GetHashCode() => HashCode.Combine(EarlyControlePoint.X, EarlyControlePoint.Y, LateControlePoint.X, LateControlePoint.Y);
+    public override int GetHashCode() => HashCode.Combine(EarlyControlPoint.X, EarlyControlPoint.Y, LateControlPoint.X, LateControlPoint.Y);
 
     /// <inheritdoc/>
     public bool Equals(InterpolationCurve? other) =>
         other is not null &&
-        _earlyControlePoint == other._earlyControlePoint &&
-        _lateControlePoint == other._lateControlePoint;
+        _earlyControlPoint == other._earlyControlPoint &&
+        _lateControlPoint == other._lateControlPoint;
 }

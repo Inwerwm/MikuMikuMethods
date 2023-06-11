@@ -44,25 +44,25 @@ public class UnitTestVMD
             var zCurve = curves[InterpolationItem.ZPosition];
             var rCurve = curves[InterpolationItem.Rotation];
 
-            Assert.AreEqual(0x00, xCurve.EarlyControlePoint.X);
-            Assert.AreEqual(0x7F, xCurve.EarlyControlePoint.Y);
-            Assert.AreEqual(0x7F, xCurve.LateControlePoint.X);
-            Assert.AreEqual(0x7F, xCurve.LateControlePoint.Y);
+            Assert.AreEqual(0x00, xCurve.EarlyControlPoint.X);
+            Assert.AreEqual(0x7F, xCurve.EarlyControlPoint.Y);
+            Assert.AreEqual(0x7F, xCurve.LateControlPoint.X);
+            Assert.AreEqual(0x7F, xCurve.LateControlPoint.Y);
 
-            Assert.AreEqual(0x7F, yCurve.EarlyControlePoint.X);
-            Assert.AreEqual(0x7F, yCurve.EarlyControlePoint.Y);
-            Assert.AreEqual(0x00, yCurve.LateControlePoint.X);
-            Assert.AreEqual(0x7F, yCurve.LateControlePoint.Y);
+            Assert.AreEqual(0x7F, yCurve.EarlyControlPoint.X);
+            Assert.AreEqual(0x7F, yCurve.EarlyControlPoint.Y);
+            Assert.AreEqual(0x00, yCurve.LateControlPoint.X);
+            Assert.AreEqual(0x7F, yCurve.LateControlPoint.Y);
 
-            Assert.AreEqual(0x7F, zCurve.EarlyControlePoint.X);
-            Assert.AreEqual(0x7F, zCurve.EarlyControlePoint.Y);
-            Assert.AreEqual(0x7F, zCurve.LateControlePoint.X);
-            Assert.AreEqual(0x00, zCurve.LateControlePoint.Y);
+            Assert.AreEqual(0x7F, zCurve.EarlyControlPoint.X);
+            Assert.AreEqual(0x7F, zCurve.EarlyControlPoint.Y);
+            Assert.AreEqual(0x7F, zCurve.LateControlPoint.X);
+            Assert.AreEqual(0x00, zCurve.LateControlPoint.Y);
 
-            Assert.AreEqual(0x7F, rCurve.EarlyControlePoint.X);
-            Assert.AreEqual(0x00, rCurve.EarlyControlePoint.Y);
-            Assert.AreEqual(0x7F, rCurve.LateControlePoint.X);
-            Assert.AreEqual(0x7F, rCurve.LateControlePoint.Y);
+            Assert.AreEqual(0x7F, rCurve.EarlyControlPoint.X);
+            Assert.AreEqual(0x00, rCurve.EarlyControlPoint.Y);
+            Assert.AreEqual(0x7F, rCurve.LateControlPoint.X);
+            Assert.AreEqual(0x7F, rCurve.LateControlPoint.Y);
         }
 
         {
@@ -75,25 +75,25 @@ public class UnitTestVMD
             var zCurve = curves[InterpolationItem.ZPosition];
             var rCurve = curves[InterpolationItem.Rotation];
 
-            Assert.AreEqual(0x00, xCurve.EarlyControlePoint.X);
-            Assert.AreEqual(0x7F, xCurve.EarlyControlePoint.Y);
-            Assert.AreEqual(0x7F, xCurve.LateControlePoint.X);
-            Assert.AreEqual(0x7F, xCurve.LateControlePoint.Y);
+            Assert.AreEqual(0x00, xCurve.EarlyControlPoint.X);
+            Assert.AreEqual(0x7F, xCurve.EarlyControlPoint.Y);
+            Assert.AreEqual(0x7F, xCurve.LateControlPoint.X);
+            Assert.AreEqual(0x7F, xCurve.LateControlPoint.Y);
 
-            Assert.AreEqual(0x7F, yCurve.EarlyControlePoint.X);
-            Assert.AreEqual(0x7F, yCurve.EarlyControlePoint.Y);
-            Assert.AreEqual(0x00, yCurve.LateControlePoint.X);
-            Assert.AreEqual(0x7F, yCurve.LateControlePoint.Y);
+            Assert.AreEqual(0x7F, yCurve.EarlyControlPoint.X);
+            Assert.AreEqual(0x7F, yCurve.EarlyControlPoint.Y);
+            Assert.AreEqual(0x00, yCurve.LateControlPoint.X);
+            Assert.AreEqual(0x7F, yCurve.LateControlPoint.Y);
 
-            Assert.AreEqual(0x7F, zCurve.EarlyControlePoint.X);
-            Assert.AreEqual(0x7F, zCurve.EarlyControlePoint.Y);
-            Assert.AreEqual(0x7F, zCurve.LateControlePoint.X);
-            Assert.AreEqual(0x00, zCurve.LateControlePoint.Y);
+            Assert.AreEqual(0x7F, zCurve.EarlyControlPoint.X);
+            Assert.AreEqual(0x7F, zCurve.EarlyControlPoint.Y);
+            Assert.AreEqual(0x7F, zCurve.LateControlPoint.X);
+            Assert.AreEqual(0x00, zCurve.LateControlPoint.Y);
 
-            Assert.AreEqual(0x7F, rCurve.EarlyControlePoint.X);
-            Assert.AreEqual(0x00, rCurve.EarlyControlePoint.Y);
-            Assert.AreEqual(0x7F, rCurve.LateControlePoint.X);
-            Assert.AreEqual(0x7F, rCurve.LateControlePoint.Y);
+            Assert.AreEqual(0x7F, rCurve.EarlyControlPoint.X);
+            Assert.AreEqual(0x00, rCurve.EarlyControlPoint.Y);
+            Assert.AreEqual(0x7F, rCurve.LateControlPoint.X);
+            Assert.AreEqual(0x7F, rCurve.LateControlPoint.Y);
         }
     }
 
@@ -113,30 +113,30 @@ public class UnitTestVMD
             var dCurve = curves[InterpolationItem.Distance];
             var aCurve = curves[InterpolationItem.ViewAngle];
 
-            Assert.AreEqual(0x00, xCurve.EarlyControlePoint.X);
-            Assert.AreEqual(0x7F, xCurve.EarlyControlePoint.Y);
-            Assert.AreEqual(0x7F, xCurve.LateControlePoint.X);
-            Assert.AreEqual(0x7F, xCurve.LateControlePoint.Y);
+            Assert.AreEqual(0x00, xCurve.EarlyControlPoint.X);
+            Assert.AreEqual(0x7F, xCurve.EarlyControlPoint.Y);
+            Assert.AreEqual(0x7F, xCurve.LateControlPoint.X);
+            Assert.AreEqual(0x7F, xCurve.LateControlPoint.Y);
 
-            Assert.AreEqual(0x7F, yCurve.EarlyControlePoint.X);
-            Assert.AreEqual(0x7F, yCurve.EarlyControlePoint.Y);
-            Assert.AreEqual(0x00, yCurve.LateControlePoint.X);
-            Assert.AreEqual(0x7F, yCurve.LateControlePoint.Y);
+            Assert.AreEqual(0x7F, yCurve.EarlyControlPoint.X);
+            Assert.AreEqual(0x7F, yCurve.EarlyControlPoint.Y);
+            Assert.AreEqual(0x00, yCurve.LateControlPoint.X);
+            Assert.AreEqual(0x7F, yCurve.LateControlPoint.Y);
 
-            Assert.AreEqual(0x7F, zCurve.EarlyControlePoint.X);
-            Assert.AreEqual(0x7F, zCurve.EarlyControlePoint.Y);
-            Assert.AreEqual(0x7F, zCurve.LateControlePoint.X);
-            Assert.AreEqual(0x00, zCurve.LateControlePoint.Y);
+            Assert.AreEqual(0x7F, zCurve.EarlyControlPoint.X);
+            Assert.AreEqual(0x7F, zCurve.EarlyControlPoint.Y);
+            Assert.AreEqual(0x7F, zCurve.LateControlPoint.X);
+            Assert.AreEqual(0x00, zCurve.LateControlPoint.Y);
 
-            Assert.AreEqual(0x00, dCurve.EarlyControlePoint.X);
-            Assert.AreEqual(0x00, dCurve.EarlyControlePoint.Y);
-            Assert.AreEqual(0x7F, dCurve.LateControlePoint.X);
-            Assert.AreEqual(0x7F, dCurve.LateControlePoint.Y);
+            Assert.AreEqual(0x00, dCurve.EarlyControlPoint.X);
+            Assert.AreEqual(0x00, dCurve.EarlyControlPoint.Y);
+            Assert.AreEqual(0x7F, dCurve.LateControlPoint.X);
+            Assert.AreEqual(0x7F, dCurve.LateControlPoint.Y);
 
-            Assert.AreEqual(0x7F, aCurve.EarlyControlePoint.X);
-            Assert.AreEqual(0x7F, aCurve.EarlyControlePoint.Y);
-            Assert.AreEqual(0x00, aCurve.LateControlePoint.X);
-            Assert.AreEqual(0x00, aCurve.LateControlePoint.Y);
+            Assert.AreEqual(0x7F, aCurve.EarlyControlPoint.X);
+            Assert.AreEqual(0x7F, aCurve.EarlyControlPoint.Y);
+            Assert.AreEqual(0x00, aCurve.LateControlPoint.X);
+            Assert.AreEqual(0x00, aCurve.LateControlPoint.Y);
         }
 
         {
@@ -151,35 +151,35 @@ public class UnitTestVMD
             var dCurve = curves[InterpolationItem.Distance];
             var aCurve = curves[InterpolationItem.ViewAngle];
 
-            Assert.AreEqual(0x00, xCurve.EarlyControlePoint.X);
-            Assert.AreEqual(0x7F, xCurve.EarlyControlePoint.Y);
-            Assert.AreEqual(0x7F, xCurve.LateControlePoint.X);
-            Assert.AreEqual(0x7F, xCurve.LateControlePoint.Y);
+            Assert.AreEqual(0x00, xCurve.EarlyControlPoint.X);
+            Assert.AreEqual(0x7F, xCurve.EarlyControlPoint.Y);
+            Assert.AreEqual(0x7F, xCurve.LateControlPoint.X);
+            Assert.AreEqual(0x7F, xCurve.LateControlPoint.Y);
 
-            Assert.AreEqual(0x7F, yCurve.EarlyControlePoint.X);
-            Assert.AreEqual(0x7F, yCurve.EarlyControlePoint.Y);
-            Assert.AreEqual(0x00, yCurve.LateControlePoint.X);
-            Assert.AreEqual(0x7F, yCurve.LateControlePoint.Y);
+            Assert.AreEqual(0x7F, yCurve.EarlyControlPoint.X);
+            Assert.AreEqual(0x7F, yCurve.EarlyControlPoint.Y);
+            Assert.AreEqual(0x00, yCurve.LateControlPoint.X);
+            Assert.AreEqual(0x7F, yCurve.LateControlPoint.Y);
 
-            Assert.AreEqual(0x7F, zCurve.EarlyControlePoint.X);
-            Assert.AreEqual(0x7F, zCurve.EarlyControlePoint.Y);
-            Assert.AreEqual(0x7F, zCurve.LateControlePoint.X);
-            Assert.AreEqual(0x00, zCurve.LateControlePoint.Y);
+            Assert.AreEqual(0x7F, zCurve.EarlyControlPoint.X);
+            Assert.AreEqual(0x7F, zCurve.EarlyControlPoint.Y);
+            Assert.AreEqual(0x7F, zCurve.LateControlPoint.X);
+            Assert.AreEqual(0x00, zCurve.LateControlPoint.Y);
 
-            Assert.AreEqual(0x7F, rCurve.EarlyControlePoint.X);
-            Assert.AreEqual(0x00, rCurve.EarlyControlePoint.Y);
-            Assert.AreEqual(0x7F, rCurve.LateControlePoint.X);
-            Assert.AreEqual(0x7F, rCurve.LateControlePoint.Y);
+            Assert.AreEqual(0x7F, rCurve.EarlyControlPoint.X);
+            Assert.AreEqual(0x00, rCurve.EarlyControlPoint.Y);
+            Assert.AreEqual(0x7F, rCurve.LateControlPoint.X);
+            Assert.AreEqual(0x7F, rCurve.LateControlPoint.Y);
 
-            Assert.AreEqual(0x00, dCurve.EarlyControlePoint.X);
-            Assert.AreEqual(0x00, dCurve.EarlyControlePoint.Y);
-            Assert.AreEqual(0x7F, dCurve.LateControlePoint.X);
-            Assert.AreEqual(0x7F, dCurve.LateControlePoint.Y);
+            Assert.AreEqual(0x00, dCurve.EarlyControlPoint.X);
+            Assert.AreEqual(0x00, dCurve.EarlyControlPoint.Y);
+            Assert.AreEqual(0x7F, dCurve.LateControlPoint.X);
+            Assert.AreEqual(0x7F, dCurve.LateControlPoint.Y);
 
-            Assert.AreEqual(0x7F, aCurve.EarlyControlePoint.X);
-            Assert.AreEqual(0x7F, aCurve.EarlyControlePoint.Y);
-            Assert.AreEqual(0x00, aCurve.LateControlePoint.X);
-            Assert.AreEqual(0x00, aCurve.LateControlePoint.Y);
+            Assert.AreEqual(0x7F, aCurve.EarlyControlPoint.X);
+            Assert.AreEqual(0x7F, aCurve.EarlyControlPoint.Y);
+            Assert.AreEqual(0x00, aCurve.LateControlPoint.X);
+            Assert.AreEqual(0x00, aCurve.LateControlPoint.Y);
         }
     }
 }
