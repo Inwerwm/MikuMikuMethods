@@ -53,6 +53,14 @@ public class VmdCameraFrame : VmdCameraTypeFrame, IVmdInterpolatable
         ViewAngle = 30;
     }
 
+    public VmdCameraFrame(uint frame, IDictionary<InterpolationItem, InterpolationCurve> interpolationCurves) : this(frame)
+    {
+        var mutableCurves = InterpolationCurve.CreateMutableCameraCurves();
+        InterpolationCurve.CopyCurves(interpolationCurves, mutableCurves);
+
+        InterpolationCurves = new(mutableCurves);
+    }
+
     public override object Clone() => new VmdCameraFrame(Frame)
     {
         Distance = Distance,

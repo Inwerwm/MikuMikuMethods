@@ -37,6 +37,14 @@ public class VmdMotionFrame : VmdModelTypeFrame, IVmdInterpolatable
         Frame = frame;
     }
 
+    public VmdMotionFrame(string name, uint frame, IDictionary<InterpolationItem, InterpolationCurve> interpolationCurves) : this(name, frame)
+    {
+        var mutableCurves = InterpolationCurve.CreateMutableBoneCurves();
+        InterpolationCurve.CopyCurves(interpolationCurves, mutableCurves);
+
+        InterpolationCurves = new(mutableCurves);
+    }
+
     public override object Clone() => new VmdMotionFrame(Name, Frame)
     {
         Position = Position,
