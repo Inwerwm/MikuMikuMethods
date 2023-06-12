@@ -31,4 +31,27 @@ public static class NumericExtensions
 
         return Quaternion.Multiply(normalizedSource, scaledRotation);
     }
+
+    public static Vector3 ToEulerAngles(this Quaternion q)
+    {
+        var ysqr = q.Y * q.Y;
+
+        // pitch (x-axis rotation)
+        var t0 = 2.0f * (q.W * q.X + q.Y * q.Z);
+        var t1 = 1.0f - 2.0f * (q.X * q.X + ysqr);
+        var pitch = (float)Math.Atan2(t0, t1);
+
+        // yaw (y-axis rotation)
+        t0 = 2.0f * (q.W * q.Y - q.Z * q.X);
+        t0 = t0 > 1.0f ? 1.0f : t0;
+        t0 = t0 < -1.0f ? -1.0f : t0;
+        var yaw = (float)Math.Asin(t0);
+
+        // roll (z-axis rotation)
+        t0 = 2.0f * (q.W * q.Z + q.X * q.Y);
+        t1 = 1.0f - 2.0f * (ysqr + q.Z * q.Z);
+        var roll = (float)Math.Atan2(t0, t1);
+
+        return new Vector3(yaw, pitch, roll);
+    }
 }
