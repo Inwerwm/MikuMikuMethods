@@ -21,7 +21,10 @@ public class PmxFace : IPmxData
     /// <summary>
     /// 面を反転
     /// </summary>
-    public void Invert() => Utility.Swap(ref Vertices[1], ref Vertices[2]);
+    public void Invert()
+    {
+        (Vertices[1], Vertices[0]) = (Vertices[0], Vertices[1]);
+    }
 
     /// <summary>
     /// コンストラクタ

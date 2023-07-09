@@ -11,7 +11,7 @@ public static class PmxFileWriter
     // そういう情報は与えられないので宣言部のみ nullable を無効化してしまう
     // ついでにメソッド終了後の参照解放のための null 入力も無効化部に入れてしまう
 #nullable disable
-    private static StringEncoder Encoder;
+    private static StringEncoder _encoder;
 
     private static PmxModel Model { get; set; }
     private static List<PmxTexture> Textures { get; set; }
@@ -32,7 +32,7 @@ public static class PmxFileWriter
 
     private static void CleanUpProperties()
     {
-        Encoder = null;
+        _encoder = null;
         Model = null;
         Textures = null;
 
@@ -54,7 +54,7 @@ public static class PmxFileWriter
 
     private static void CreateProperties()
     {
-        Encoder = new(Model.Header.Encoding);
+        _encoder = new(Model.Header.Encoding);
         // 共有トゥーンでない全てのテクスチャ情報
         Textures = Model.Materials.SelectMany(m => new[] { m.Texture, m.SphereMap, m.ToonMap }.Where(t => t is not null && t.ToonIndex is null)).Distinct().ToList();
 
@@ -149,10 +149,10 @@ public static class PmxFileWriter
 
     private static void WriteInfo(BinaryWriter writer, PmxModelInfo modelInfo)
     {
-        Encoder.Write(writer, modelInfo.Name);
-        Encoder.Write(writer, modelInfo.NameEn);
-        Encoder.Write(writer, modelInfo.Comment);
-        Encoder.Write(writer, modelInfo.CommentEn);
+        _encoder.Write(writer, modelInfo.Name);
+        _encoder.Write(writer, modelInfo.NameEn);
+        _encoder.Write(writer, modelInfo.Comment);
+        _encoder.Write(writer, modelInfo.CommentEn);
     }
 
     private static void WriteVertex(BinaryWriter writer, PmxVertex vertex)
@@ -237,13 +237,13 @@ public static class PmxFileWriter
 
     private static void WriteTexture(BinaryWriter writer, PmxTexture texture)
     {
-        Encoder.Write(writer, texture.Path);
+        _encoder.Write(writer, texture.Path);
     }
 
     private static void WriteMaterial(BinaryWriter writer, PmxMaterial material)
     {
-        Encoder.Write(writer, material.Name);
-        Encoder.Write(writer, material.NameEn);
+        _encoder.Write(writer, material.Name);
+        _encoder.Write(writer, material.NameEn);
 
         writer.Write(material.Diffuse, true);
         writer.Write(material.Specular, false);
@@ -276,15 +276,15 @@ public static class PmxFileWriter
         else
             TexID.Write(writer, material.ToonMap == null ? -1 : TexMap[material.ToonMap]);
 
-        Encoder.Write(writer, material.Memo);
+        _encoder.Write(writer, material.Memo);
 
         writer.Write(material.Faces.Count * 3);
     }
 
     private static void WriteBone(BinaryWriter writer, PmxBone bone)
     {
-        Encoder.Write(writer, bone.Name);
-        Encoder.Write(writer, bone.NameEn);
+        _encoder.Write(writer, bone.Name);
+        _encoder.Write(writer, bone.NameEn);
 
         writer.Write(bone.Position);
         BoneID.Write(writer, bone.Parent != null ? BoneMap[bone.Parent] : -1);
@@ -356,8 +356,8 @@ public static class PmxFileWriter
 
     private static void WriteMorph(BinaryWriter writer, PmxMorph morph)
     {
-        Encoder.Write(writer, morph.Name);
-        Encoder.Write(writer, morph.NameEn);
+        _encoder.Write(writer, morph.Name);
+        _encoder.Write(writer, morph.NameEn);
 
         writer.Write((byte)morph.Panel);
         writer.Write((byte)morph.Type);
@@ -435,8 +435,8 @@ public static class PmxFileWriter
 
     private static void WriteNode(BinaryWriter writer, PmxNode node)
     {
-        Encoder.Write(writer, node.Name);
-        Encoder.Write(writer, node.NameEn);
+        _encoder.Write(writer, node.Name);
+        _encoder.Write(writer, node.NameEn);
         writer.Write(node.IsSpecific);
 
         writer.Write(node.Elements.Count);
@@ -459,8 +459,8 @@ public static class PmxFileWriter
 
     private static void WriteBody(BinaryWriter writer, PmxBody body)
     {
-        Encoder.Write(writer, body.Name);
-        Encoder.Write(writer, body.NameEn);
+        _encoder.Write(writer, body.Name);
+        _encoder.Write(writer, body.NameEn);
         BoneID.Write(writer, body.RelationBone == null ? -1 : BoneMap[body.RelationBone]);
         writer.Write(body.Group);
         writer.Write(body.NonCollisionFlag);
@@ -478,8 +478,8 @@ public static class PmxFileWriter
 
     private static void WriteJoint(BinaryWriter writer, PmxJoint joint)
     {
-        Encoder.Write(writer, joint.Name);
-        Encoder.Write(writer, joint.NameEn);
+        _encoder.Write(writer, joint.Name);
+        _encoder.Write(writer, joint.NameEn);
         writer.Write((byte)joint.Type);
 
         BodyID.Write(writer, joint.RelationBodyA == null ? -1 : BodyMap[joint.RelationBodyA]);
@@ -497,8 +497,8 @@ public static class PmxFileWriter
 
     private static void WriteSoftBody(BinaryWriter writer, PmxSoftBody softBody)
     {
-        Encoder.Write(writer, softBody.Name);
-        Encoder.Write(writer, softBody.NameEn);
+        _encoder.Write(writer, softBody.Name);
+        _encoder.Write(writer, softBody.NameEn);
 
         writer.Write((byte)softBody.Shape);
         MatID.Write(writer, softBody.RelationMaterial == null ? -1 : MatMap[softBody.RelationMaterial]);

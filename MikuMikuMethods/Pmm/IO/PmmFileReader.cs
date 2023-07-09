@@ -391,11 +391,11 @@ public static class PmmFileReader
         {
             // バージョン 9.24 より前ならここで終了のため、 EndOfStreamException が投げられる
             // 9.24 なら後続要素が存在するかの Boolean 値が読める
-            var existSelectorChoiseSection = reader.ReadBoolean();
+            var existSelectorChoiceSection = reader.ReadBoolean();
 
             // 存在しなければここ以降の情報は無意味なので読み飛ばす
             // が MMD はそんな値は吐かないと思われる
-            if (existSelectorChoiseSection)
+            if (existSelectorChoiceSection)
             {
                 // 範囲選択セレクタの読込
                 for (int i = 0; i < pmm.Models.Count; i++)
@@ -567,9 +567,11 @@ public static class PmmFileReader
         foreach (var i in parentableIndices)
         {
             Current = new("OutsideParentState", i, $"The section of {DataSection.GetOrdinal(i)} outside parent state");
-            var op = new PmmOutsideParentState();
-            op.StartFrame = reader.ReadInt32();
-            op.EndFrame = reader.ReadInt32();
+            var op = new PmmOutsideParentState
+            {
+                StartFrame = reader.ReadInt32(),
+                EndFrame = reader.ReadInt32()
+            };
             (int, int) relation = (reader.ReadInt32(), reader.ReadInt32());
             if (i >= 0)
             {
@@ -629,9 +631,10 @@ public static class PmmFileReader
         // リストの添え字で管理できるため不要なフレームインデックスを破棄
         if (!isInitial) _ = reader.ReadInt32();
 
-        var frame = new PmmCameraFrame();
-
-        frame.Frame = reader.ReadInt32();
+        var frame = new PmmCameraFrame
+        {
+            Frame = reader.ReadInt32()
+        };
 
         // 所属が確実にわかるので pre/next ID から探索してやる必要性がないため破棄
         _ = reader.ReadInt32();
@@ -701,9 +704,10 @@ public static class PmmFileReader
     {
         int? id = isInitial ? null : reader.ReadInt32();
 
-        var frame = new PmmMorphFrame();
-
-        frame.Frame = reader.ReadInt32();
+        var frame = new PmmMorphFrame
+        {
+            Frame = reader.ReadInt32()
+        };
 
         var preID = reader.ReadInt32();
         var nextId = reader.ReadInt32();
@@ -718,9 +722,10 @@ public static class PmmFileReader
     {
         int? id = isInitial ? null : reader.ReadInt32();
 
-        var frame = new PmmBoneFrame();
-
-        frame.Frame = reader.ReadInt32();
+        var frame = new PmmBoneFrame
+        {
+            Frame = reader.ReadInt32()
+        };
         var previousFrameIndex = reader.ReadInt32();
         var nextFrameIndex = reader.ReadInt32();
 
@@ -742,9 +747,10 @@ public static class PmmFileReader
         // リストの添え字で管理できるため不要なフレームインデックスを破棄
         if (!isInitial) _ = reader.ReadInt32();
 
-        var frame = new PmmLightFrame();
-
-        frame.Frame = reader.ReadInt32();
+        var frame = new PmmLightFrame
+        {
+            Frame = reader.ReadInt32()
+        };
         // 所属が確実にわかるので pre/next ID から探索してやる必要性がないため破棄
         _ = reader.ReadInt32();
         _ = reader.ReadInt32();
@@ -762,9 +768,10 @@ public static class PmmFileReader
         // リストの添え字で管理できるため不要なフレームインデックスを破棄
         if (!isInitial) _ = reader.ReadInt32();
 
-        var frame = new PmmAccessoryFrame();
-
-        frame.Frame = reader.ReadInt32();
+        var frame = new PmmAccessoryFrame
+        {
+            Frame = reader.ReadInt32()
+        };
         // 所属が確実にわかるので pre/next ID から探索してやる必要性がないため破棄
         _ = reader.ReadInt32();
         _ = reader.ReadInt32();
@@ -792,8 +799,10 @@ public static class PmmFileReader
         // リストの添え字で管理できるため不要なフレームインデックスを破棄
         if (!isInitial) _ = reader.ReadInt32();
 
-        var frame = new PmmGravityFrame();
-        frame.Frame = reader.ReadInt32();
+        var frame = new PmmGravityFrame
+        {
+            Frame = reader.ReadInt32()
+        };
         // 所属が確実にわかるので pre/next ID から探索してやる必要性がないため破棄
         _ = reader.ReadInt32();
         _ = reader.ReadInt32();
@@ -814,8 +823,10 @@ public static class PmmFileReader
         // リストの添え字で管理できるため不要なフレームインデックスを破棄
         if (!isInitial) _ = reader.ReadInt32();
 
-        var frame = new PmmSelfShadowFrame();
-        frame.Frame = reader.ReadInt32();
+        var frame = new PmmSelfShadowFrame
+        {
+            Frame = reader.ReadInt32()
+        };
         // 所属が確実にわかるので pre/next ID から探索してやる必要性がないため破棄
         _ = reader.ReadInt32();
         _ = reader.ReadInt32();

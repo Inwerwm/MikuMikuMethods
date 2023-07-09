@@ -17,7 +17,7 @@ public class PmxEdge
     /// </summary>
     public void Invert()
     {
-        Utility.Swap(ref Vertices[0], ref Vertices[1]);
+        (Vertices[1], Vertices[0]) = (Vertices[0], Vertices[1]);
     }
 
     /// <summary>

@@ -6,7 +6,7 @@ namespace MikuMikuMethods.Mme.IO;
 /// <summary>
 /// MME ファイル読込
 /// </summary>
-public static class MmeFileReader
+public static partial class MmeFileReader
 {
     /// <summary>
     /// EMD ファイルを読み込む
@@ -39,7 +39,7 @@ public static class MmeFileReader
         // Version
         line = reader.ReadLine();
         if (line is null) throw new InvalidOperationException("Invalid line reading occurred.");
-        emd.Version = int.Parse(Regex.Replace(line, @"[^0-9]", ""));
+        emd.Version = int.Parse(NotNumberRegex().Replace(line, ""));
         if (emd.Version < 3) throw new InvalidDataException("EMDファイルのバージョンが未対応の値です");
         // 改行
         reader.ReadLine();
@@ -127,7 +127,7 @@ public static class MmeFileReader
         // Version
         line = reader.ReadLine();
         if (line is null) throw new InvalidOperationException("Invalid line reading occurred.");
-        emm.Version = int.Parse(Regex.Replace(line, @"[^0-9]", ""));
+        emm.Version = int.Parse(NotNumberRegex().Replace(line, ""));
         if (emm.Version < 3) throw new FormatException("EMMファイルのバージョンが未対応の値です");
         // 改行
         reader.ReadLine();
@@ -159,8 +159,8 @@ public static class MmeFileReader
             if (objectKey is null || path is null)
                 throw new InvalidOperationException("Invalid line reading occurred.");
 
-            int objectIndex = int.Parse(Regex.Replace(objectKey, @"[^0-9]", ""));
-            EmmObject obj = Regex.Replace(objectKey, @"[0-9]", "") switch
+            int objectIndex = int.Parse(NotNumberRegex().Replace(objectKey, ""));
+            EmmObject obj = NumberRegex().Replace(objectKey, "") switch
             {
                 "Pmd" => new EmmModel(objectIndex, path),
                 "Acs" => new EmmAccessory(objectIndex, path),
@@ -243,4 +243,9 @@ public static class MmeFileReader
             }
         }
     }
+
+    [GeneratedRegex("[^0-9]")]
+    private static partial Regex NotNumberRegex();
+    [GeneratedRegex("[0-9]")]
+    private static partial Regex NumberRegex();
 }

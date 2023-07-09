@@ -3,7 +3,7 @@
 namespace UnitTest;
 internal class EqualityComparer<T> : IEqualityComparer<T>
 {
-    Func<T, T, bool> _comparer;
+    private readonly Func<T, T, bool> _comparer;
 
     public EqualityComparer(Func<T, T, bool> comparer)
     {
