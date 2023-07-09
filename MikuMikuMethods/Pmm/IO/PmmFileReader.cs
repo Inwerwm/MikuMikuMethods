@@ -873,7 +873,7 @@ public static class PmmFileReader
             }
 
             // 各要素の次のフレームインデックスを更新
-            nextFramesOfElements = nextFrames.Select<(T Element, FrameInfo NextFrame), (T Element, int? NextFrameIndex)> (p => (
+            nextFramesOfElements = nextFrames.Select<(T Element, FrameInfo NextFrame), (T Element, int? NextFrameIndex)>(p => (
                 p.Element,
                 p.NextFrame switch
                 {

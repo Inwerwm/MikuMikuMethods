@@ -1,5 +1,4 @@
 ﻿using MikuMikuMethods.Pmm;
-using System;
 
 namespace TestWithConsole;
 

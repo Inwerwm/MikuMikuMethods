@@ -36,5 +36,5 @@ internal static class Utility
             .ToDictionary(
                 p => keyMap is null ? p.Key : keyMap[p.Key],
                 p => valueMap is null ? p.Value : valueMap[p.Value]
-            );        
+            );
 }

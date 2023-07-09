@@ -1,6 +1,5 @@
 ﻿using MikuMikuMethods.Mme.Element;
 using MikuMikuMethods.Mme.IO;
-using System.Linq;
 
 namespace MikuMikuMethods.Mme;
 

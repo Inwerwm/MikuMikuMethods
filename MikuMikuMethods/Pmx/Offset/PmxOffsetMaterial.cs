@@ -79,7 +79,7 @@ public class PmxOffsetMaterial : IPmxOffset
                 ReflectionIntensity = 0;
                 Ambient = ColorF.FromARGB(0, 0, 0, 0);
                 EdgeColor = ColorF.FromARGB(0, 0, 0, 0);
-                EdgeWidth= 0;
+                EdgeWidth = 0;
                 TextureRatio = ColorF.FromARGB(0, 0, 0, 0);
                 SphereRatio = ColorF.FromARGB(0, 0, 0, 0);
                 ToonRatio = ColorF.FromARGB(0, 0, 0, 0);

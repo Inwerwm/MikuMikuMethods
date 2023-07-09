@@ -2,7 +2,6 @@
 using MikuMikuMethods.Pmm;
 using MikuMikuMethods.Pmm.ElementState;
 using MikuMikuMethods.Pmm.Frame;
-using System.Text;
 
 namespace UnitTest;
 

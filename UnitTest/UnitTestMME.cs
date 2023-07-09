@@ -33,11 +33,11 @@ public class UnitTestMME
         }
 
         List<EmmObject> keys = new();
-        keys.Add(new EmmModel(1,"モデル1"));
-        keys.Add(new EmmModel(2,"モデル2"));
-        keys.Add(new EmmModel(3,"モデル3"));
-        keys.Add(new EmmModel(4,"モデル4"));
-        keys.Add(new EmmModel(5,"モデル5"));
+        keys.Add(new EmmModel(1, "モデル1"));
+        keys.Add(new EmmModel(2, "モデル2"));
+        keys.Add(new EmmModel(3, "モデル3"));
+        keys.Add(new EmmModel(4, "モデル4"));
+        keys.Add(new EmmModel(5, "モデル5"));
 
         // テストのためのインスタンスを生成
         EmmEffectSettings target = new("Main");
@@ -45,7 +45,7 @@ public class UnitTestMME
         /// テスト実行
 
         // テストデータを読み込み
-        
+
         using (StreamReader reader = new("../../TestData/EffectSettings.txt", Encoding.ShiftJIS))
             MmeFileReader.ReadEffectSettings(reader, target, keys);
         // テスト書き込み

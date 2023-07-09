@@ -11,7 +11,7 @@ public class UnitTestConverterPmmPmx
     public void ModelAddingTest()
     {
         PolygonMovieMaker pmm = new(TestData.GetPath("Blank.pmm"));
-        
+
         string modelPath = TestData.GetPath("PlaneAndIK.pmx");
         PmxModel model = new PmxModel(modelPath);
 

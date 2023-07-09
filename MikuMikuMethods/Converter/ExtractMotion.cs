@@ -108,7 +108,7 @@ public static class ExtractMotion
     /// <param name="frame">変換元フレーム</param>
     /// <param name="boneName">ボーン名</param>
     /// <returns>VMD のフレームオブジェクト</returns>
-    public static VmdMotionFrame ToVmdFrame(this PmmBoneFrame frame, string boneName) => new(boneName ,(uint)frame.Frame)
+    public static VmdMotionFrame ToVmdFrame(this PmmBoneFrame frame, string boneName) => new(boneName, (uint)frame.Frame)
     {
         Position = frame.Movement,
         Rotation = frame.Rotation,

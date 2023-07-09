@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MikuMikuMethods.Mme.Element;
+﻿namespace MikuMikuMethods.Mme.Element;
 internal class EmmObjectReference : EmmObject
 {
     public EmmObject Reference { get; }
