@@ -52,7 +52,7 @@ public static class PmxFileWriter
     }
 #nullable enable
 
-    private static void CreatePropaties()
+    private static void CreateProperties()
     {
         Encoder = new(Model.Header.Encoding);
         // 共有トゥーンでない全てのテクスチャ情報
@@ -96,7 +96,7 @@ public static class PmxFileWriter
         {
             Model = model;
             Model.ValidateVersion();
-            CreatePropaties();
+            CreateProperties();
 
             WriteHeader(writer, Model.Header);
             WriteInfo(writer, Model.ModelInfo);

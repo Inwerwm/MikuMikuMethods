@@ -59,7 +59,7 @@ public static class MmeFileReader
             var objKeyShow = objectKey.Split('.');
             objectKey = objKeyShow[0];
 
-            // objKeyShow[1]が存在すればshow設定
+            // objKeyShow[1]が存在すれば show 設定
             var isShowSetting = objKeyShow.Length > 1;
 
             // サブセット添字を分離
@@ -202,7 +202,7 @@ public static class MmeFileReader
             var objKeyShow = objectKey.Split('.');
             objectKey = objKeyShow[0];
 
-            // objKeyShow[1]が存在すればshow設定
+            // objKeyShow[1]が存在すれば show 設定
             var isShowSetting = objKeyShow.Length > 1;
 
             // サブセット添字を分離

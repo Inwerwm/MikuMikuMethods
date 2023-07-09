@@ -20,7 +20,7 @@ public static class ApplyVmd
     {
         if (cameraVmd.Kind != VmdKind.Camera) throw new ArgumentException("The Model VMD was passed as the argument where the Camera VMD was expected.");
 
-        if (options is null) options = new CameraMotionApplyingOptions();
+        options ??= new CameraMotionApplyingOptions();
 
         if (options.Camera)
         {
@@ -58,7 +58,7 @@ public static class ApplyVmd
     {
         if (modelVmd.Kind != VmdKind.Model) throw new ArgumentException("The Camera VMD was passed as the argument where the Model VMD was expected.");
 
-        if (options is null) options = new ModelMotionApplyingOptions();
+        options ??= new ModelMotionApplyingOptions();
 
         if (options.Motion)
         {

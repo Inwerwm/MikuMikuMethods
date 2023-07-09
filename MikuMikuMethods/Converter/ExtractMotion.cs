@@ -18,25 +18,26 @@ public static class ExtractMotion
     public static VocaloidMotionData ExtractCameraMotion(this PolygonMovieMaker pmm, CameraMotionExtractionOptions? options = default)
     {
         // 引数の既定値ではコンパイル時定数しか無理なのでここで null 時の規定値を入れる
-        if (options is null) options = new();
+        options ??= new();
 
-        // ラムダ式でキャプチャしないと options が not null であることがフロー解析で確定できない
-        Func<IPmmFrame, bool> isFrameInRange = frame => options.StartFrame <= frame.Frame && frame.Frame <= (options.EndFrame ?? uint.MaxValue);
+        bool isFrameInRange(IPmmFrame frame) => options.StartFrame <= frame.Frame && frame.Frame <= (options.EndFrame ?? uint.MaxValue);
 
-        var vmd = new VocaloidMotionData();
-        vmd.ModelName = VocaloidMotionData.CameraTypeVMDName;
+        var vmd = new VocaloidMotionData
+        {
+            ModelName = VocaloidMotionData.CameraTypeVMDName
+        };
 
         if (options.Camera)
         {
-            vmd.CameraFrames.AddRange(pmm.Camera.Frames.Where(isFrameInRange).Select(f => ((PmmCameraFrame)f).ToVmdFrame()));
+            vmd.CameraFrames.AddRange(pmm.Camera.Frames.Where(isFrameInRange).Select(f => f.ToVmdFrame()));
         }
         if (options.Light)
         {
-            vmd.LightFrames.AddRange(pmm.Light.Frames.Where(isFrameInRange).Select(f => ((PmmLightFrame)f).ToVmdFrame()));
+            vmd.LightFrames.AddRange(pmm.Light.Frames.Where(isFrameInRange).Select(f => f.ToVmdFrame()));
         }
         if (options.Shadow)
         {
-            vmd.ShadowFrames.AddRange(pmm.SelfShadow.Frames.Where(isFrameInRange).Select(f => ((PmmSelfShadowFrame)f).ToVmdFrame()));
+            vmd.ShadowFrames.AddRange(pmm.SelfShadow.Frames.Where(isFrameInRange).Select(f => f.ToVmdFrame()));
         }
 
         return vmd;
@@ -53,15 +54,14 @@ public static class ExtractMotion
         // 引数の既定値ではコンパイル時定数しか無理なのでここで null 時の規定値を入れる
         options ??= new();
 
-        // ラムダ式でキャプチャしないと options が not null であることがフロー解析で確定できない
-        Func<IPmmFrame, bool> isFrameInRange = frame => options.StartFrame <= frame.Frame && frame.Frame <= (options.EndFrame ?? uint.MaxValue);
+        bool isFrameInRange(IPmmFrame frame) => options.StartFrame <= frame.Frame && frame.Frame <= (options.EndFrame ?? uint.MaxValue);
 
         return new()
         {
             ModelName = model.Name,
-            MotionFrames = options.Motion ? model.Bones.SelectMany(bone => bone.Frames.Where(isFrameInRange).Select(f => ((PmmBoneFrame)f).ToVmdFrame(bone.Name))).ToList() : new(),
-            MorphFrames = options.Morph ? model.Morphs.SelectMany(morph => morph.Frames.Where(isFrameInRange).Select(f => ((PmmMorphFrame)f).ToVmdFrame(morph.Name))).ToList() : new(),
-            PropertyFrames = options.Property ? model.ConfigFrames.Where(isFrameInRange).Select(f => ((PmmModelConfigFrame)f).ToVmdFrame()).ToList() : new(),
+            MotionFrames = options.Motion ? model.Bones.SelectMany(bone => bone.Frames.Where(isFrameInRange).Select(f => f.ToVmdFrame(bone.Name))).ToList() : new(),
+            MorphFrames = options.Morph ? model.Morphs.SelectMany(morph => morph.Frames.Where(isFrameInRange).Select(f => f.ToVmdFrame(morph.Name))).ToList() : new(),
+            PropertyFrames = options.Property ? model.ConfigFrames.Where(isFrameInRange).Select(f => f.ToVmdFrame()).ToList() : new(),
         };
     }
 
