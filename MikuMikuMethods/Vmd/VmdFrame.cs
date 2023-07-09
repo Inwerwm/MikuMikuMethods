@@ -26,21 +26,18 @@ public abstract class VmdFrame : IVmdFrame
     /// </summary>
     public abstract bool IsModelType { get; }
 
+    /// <inheritdoc/>
     public abstract object Clone();
 
+    /// <summary>
+    /// 名前を指定して <see cref="VmdFrame"/> クラスの新しいインスタンスを初期化します。
+    /// </summary>
+    /// <param name="name">フレームの名前</param>
     protected VmdFrame(string name)
     {
         Name = name;
     }
 
-    /// <summary>
-    /// 時間の前後を比較する
-    /// </summary>
-    /// <param name="other">比較対象フレーム</param>
-    /// <returns>
-    /// <para>0未満 - このフレームはother以前</para>
-    /// <para>0 - このフレームはotherと同時</para>
-    /// <para>0超 - このフレームはother以降</para>
-    /// </returns>
+    /// <inheritdoc/>
     public int CompareTo(IVmdFrame? other) => Frame.CompareTo(other?.Frame);
 }

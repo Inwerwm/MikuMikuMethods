@@ -2,8 +2,16 @@
 
 namespace MikuMikuMethods.Vmd.IO;
 
+/// <summary>
+/// VMD ファイル読込
+/// </summary>
 public static class VmdFileReader
 {
+    /// <summary>
+    /// VMD ファイルの読込
+    /// </summary>
+    /// <param name="filePath">ファイルパス</param>
+    /// <param name="vmd">データ書込み先 VMD</param>
     public static void Read(string filePath, VocaloidMotionData vmd)
     {
         using FileStream stream = new(filePath, FileMode.Open);
@@ -11,6 +19,11 @@ public static class VmdFileReader
         Read(reader, vmd);
     }
 
+    /// <summary>
+    /// VMD ファイルの読込
+    /// </summary>
+    /// <param name="reader">バイナリリーダー</param>
+    /// <param name="vmd">データ書込み先 VMD</param>
     public static void Read(BinaryReader reader, VocaloidMotionData vmd)
     {
         vmd.Header = reader.ReadString(VmdConstants.HeaderLength, Encoding.ShiftJIS, '\0');
@@ -36,19 +49,19 @@ public static class VmdFileReader
             addToList(reader);
     }
 
-    public static VmdMotionFrame ReadMotionFrame(BinaryReader reader) => new(reader.ReadString(VmdConstants.BoneNameLength, Encoding.ShiftJIS, '\0'), reader.ReadUInt32())
+    private static VmdMotionFrame ReadMotionFrame(BinaryReader reader) => new(reader.ReadString(VmdConstants.BoneNameLength, Encoding.ShiftJIS, '\0'), reader.ReadUInt32())
     {
         Position = reader.ReadVector3(),
         Rotation = reader.ReadQuaternion(),
         InterpolationCurves = InterpolationCurve.CreateByVMDFormat(reader.ReadBytes(64), VmdFrameKind.Motion)
     };
 
-    public static VmdMorphFrame ReadMorphFrame(BinaryReader reader) => new(reader.ReadString(VmdConstants.MorphNameLength, Encoding.ShiftJIS, '\0'), reader.ReadUInt32())
+    private static VmdMorphFrame ReadMorphFrame(BinaryReader reader) => new(reader.ReadString(VmdConstants.MorphNameLength, Encoding.ShiftJIS, '\0'), reader.ReadUInt32())
     {
         Weight = reader.ReadSingle()
     };
 
-    public static VmdCameraFrame ReadCameraFrame(BinaryReader reader) => new()
+    private static VmdCameraFrame ReadCameraFrame(BinaryReader reader) => new()
     {
         Frame = reader.ReadUInt32(),
         Distance = reader.ReadSingle(),
@@ -59,21 +72,21 @@ public static class VmdFileReader
         IsPerspectiveOff = reader.ReadBoolean()
     };
 
-    public static VmdLightFrame ReadLightFrame(BinaryReader reader) => new()
+    private static VmdLightFrame ReadLightFrame(BinaryReader reader) => new()
     {
         Frame = reader.ReadUInt32(),
         Color = reader.ReadSingleRGB(),
         Position = reader.ReadVector3()
     };
 
-    public static VmdShadowFrame ReadShadowFrame(BinaryReader reader) => new()
+    private static VmdShadowFrame ReadShadowFrame(BinaryReader reader) => new()
     {
         Frame = reader.ReadUInt32(),
         Mode = (Common.SelfShadow)reader.ReadByte(),
         Range = reader.ReadSingle()
     };
 
-    public static VmdPropertyFrame ReadPropertyFrame(BinaryReader reader)
+    private static VmdPropertyFrame ReadPropertyFrame(BinaryReader reader)
     {
         var frame = new VmdPropertyFrame(reader.ReadUInt32())
         {

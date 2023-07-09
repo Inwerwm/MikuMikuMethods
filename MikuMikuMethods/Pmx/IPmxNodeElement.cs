@@ -3,7 +3,6 @@
 /// <summary>
 /// 表情枠要素
 /// </summary>
-/// <typeparam name="T"></typeparam>
 public interface IPmxNodeElement
 {
     /// <summary>

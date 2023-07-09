@@ -85,6 +85,11 @@ public static class PmxFileWriter
         Write(writer, model);
     }
 
+    /// <summary>
+    /// モデル書込
+    /// </summary>
+    /// <param name="writer">バイナリライター</param>
+    /// <param name="model">書き込むモデル</param>
     public static void Write(BinaryWriter writer, PmxModel model)
     {
         try
@@ -291,11 +296,11 @@ public static class PmxFileWriter
                 (bone.Rotatable, PmxBone.BoneFlag.Rotatable),
                 (bone.Movable, PmxBone.BoneFlag.Movable),
                 (bone.Visible, PmxBone.BoneFlag.Visible),
-                (bone.Controlable, PmxBone.BoneFlag.Controlable),
+                (bone.Controllable, PmxBone.BoneFlag.Controllable),
                 (bone.IsIK, PmxBone.BoneFlag.IsIK),
                 (bone.IsLocalAddition, PmxBone.BoneFlag.AddLocalTarget),
                 (bone.IsRotateAddition, PmxBone.BoneFlag.AddRotation),
-                (bone.IsMoveAddtion, PmxBone.BoneFlag.AddMoving),
+                (bone.IsMoveAddition, PmxBone.BoneFlag.AddMoving),
                 (bone.IsFixedAxis, PmxBone.BoneFlag.FixAxis),
                 (bone.IsLocalAxis, PmxBone.BoneFlag.LocalAxis),
                 (bone.IsAfterPhysic, PmxBone.BoneFlag.TrAfterPhysic),
@@ -309,10 +314,10 @@ public static class PmxFileWriter
         else
             BoneID.Write(writer, bone.ConnectionTargetBone == null ? -1 : BoneMap[bone.ConnectionTargetBone]);
 
-        if (bone.IsRotateAddition || bone.IsMoveAddtion)
+        if (bone.IsRotateAddition || bone.IsMoveAddition)
         {
             BoneID.Write(writer, bone.AdditionParent == null ? -1 : BoneMap[bone.AdditionParent]);
-            writer.Write(bone.AdditonRatio);
+            writer.Write(bone.AdditionRatio);
         }
 
         if (bone.IsFixedAxis)
@@ -423,7 +428,7 @@ public static class PmxFileWriter
             var of = (PmxOffsetImpulse)offset;
             BodyID.Write(writer, of.Target == null ? -1 : BodyMap[of.Target]);
             writer.Write(of.IsLocal);
-            writer.Write(of.MovingSpead);
+            writer.Write(of.MovingSpeed);
             writer.Write(of.RotationTorque);
         }
     }

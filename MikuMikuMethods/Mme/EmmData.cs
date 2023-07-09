@@ -62,6 +62,10 @@ public class EmmData
         MmeFileWriter.WriteEmmData(filePath, this);
     }
 
+    /// <summary>
+    /// オブジェクトを除去する
+    /// </summary>
+    /// <param name="targetObject"></param>
     public void RemoveObject(EmmObject targetObject)
     {
         Objects.Remove(targetObject);

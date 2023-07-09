@@ -2,11 +2,20 @@
 
 namespace MikuMikuMethods.Pmm.Frame;
 
+/// <summary>
+/// モデル設定フレーム
+/// </summary>
 public class PmmModelConfigFrame : PmmModelConfigState, IPmmFrame
 {
+    /// <inheritdoc/>
     public int Frame { get; set; }
+    /// <inheritdoc/>
     public bool IsSelected { get; set; }
 
+    /// <summary>
+    /// ディープコピー
+    /// </summary>
+    /// <returns>複製</returns>
     public new PmmModelConfigFrame DeepCopy() => new()
     {
         Frame = Frame,
@@ -16,6 +25,11 @@ public class PmmModelConfigFrame : PmmModelConfigState, IPmmFrame
         Visible = Visible
     };
 
+    /// <summary>
+    /// モデル移行用ディープコピー
+    /// </summary>
+    /// <param name="boneMap">移行前ボーンと移行先ボーンの対応辞書</param>
+    /// <returns>複製</returns>
     public new PmmModelConfigFrame DeepCopy(Dictionary<PmmBone, PmmBone> boneMap) => new()
     {
         Frame = Frame,
@@ -27,5 +41,6 @@ public class PmmModelConfigFrame : PmmModelConfigState, IPmmFrame
 
     IPmmFrame IPmmFrame.DeepCopy() => DeepCopy();
 
+    /// <inheritdoc/>
     public override string ToString() => Frame.ToString();
 }

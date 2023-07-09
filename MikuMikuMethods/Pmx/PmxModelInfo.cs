@@ -22,5 +22,6 @@ public class PmxModelInfo : IPmxData
     /// </summary>
     public string CommentEn { get; set; } = "";
 
+    /// <inheritdoc/>
     public override string ToString() => $"{Name}";
 }

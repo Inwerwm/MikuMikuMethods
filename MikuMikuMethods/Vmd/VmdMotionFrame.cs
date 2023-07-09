@@ -28,7 +28,7 @@ public class VmdMotionFrame : VmdModelTypeFrame, IVmdInterpolatable
     public ReadOnlyDictionary<InterpolationItem, InterpolationCurve> InterpolationCurves { get; internal init; } = InterpolationCurve.CreateBoneCurves();
 
     /// <summary>
-    /// コンストラクタ
+    /// ボーン名と初期フレーム時間を指定して <see cref="VmdMotionFrame"/> クラスの新しいインスタンスを初期化します。
     /// </summary>
     /// <param name="name">ボーン名</param>
     /// <param name="frame">フレーム時間</param>
@@ -37,6 +37,12 @@ public class VmdMotionFrame : VmdModelTypeFrame, IVmdInterpolatable
         Frame = frame;
     }
 
+    /// <summary>
+    /// ボーン名、初期フレーム時間、補間曲線のディクショナリを指定して <see cref="VmdMotionFrame"/> クラスの新しいインスタンスを初期化します。
+    /// </summary>
+    /// <param name="name">ボーン名</param>
+    /// <param name="frame">フレーム時間</param>
+    /// <param name="interpolationCurves">フレーム間の補間曲線のディクショナリ</param>
     public VmdMotionFrame(string name, uint frame, IDictionary<InterpolationItem, InterpolationCurve> interpolationCurves) : this(name, frame)
     {
         var mutableCurves = InterpolationCurve.CreateMutableBoneCurves();
@@ -45,6 +51,7 @@ public class VmdMotionFrame : VmdModelTypeFrame, IVmdInterpolatable
         InterpolationCurves = new(mutableCurves);
     }
 
+    /// <inheritdoc/>
     public override object Clone() => new VmdMotionFrame(Name, Frame)
     {
         Position = Position,

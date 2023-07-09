@@ -40,5 +40,6 @@ public record PmxTexture
         ToonIndex = toonIndex;
     }
 
+    /// <inheritdoc/>
     public override string ToString() => $"{Path}";
 }

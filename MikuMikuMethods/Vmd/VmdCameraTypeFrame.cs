@@ -5,6 +5,7 @@
 /// </summary>
 public abstract class VmdCameraTypeFrame : VmdFrame
 {
+    /// <inheritdoc/>
     protected VmdCameraTypeFrame(string name) : base(name)
     {
     }

@@ -60,7 +60,7 @@ public class PmxBone : IPmxData
     /// <summary>
     /// 操作可能か
     /// </summary>
-    public bool Controlable { get; set; }
+    public bool Controllable { get; set; }
 
     /// <summary>
     /// IKか
@@ -82,7 +82,7 @@ public class PmxBone : IPmxData
     /// <summary>
     /// 移動付与するか
     /// </summary>
-    public bool IsMoveAddtion { get; set; }
+    public bool IsMoveAddition { get; set; }
 
     /// <summary>
     /// 付与親
@@ -91,7 +91,7 @@ public class PmxBone : IPmxData
     /// <summary>
     /// 付与率
     /// </summary>
-    public float AdditonRatio { get; set; }
+    public float AdditionRatio { get; set; }
 
     /// <summary>
     /// 軸固定か
@@ -151,7 +151,7 @@ public class PmxBone : IPmxData
         Rotatable = 0x0002,
         Movable = 0x0004,
         Visible = 0x0008,
-        Controlable = 0x0010,
+        Controllable = 0x0010,
         IsIK = 0x0020,
 
         AddLocalTarget = 0x0080,
@@ -163,5 +163,6 @@ public class PmxBone : IPmxData
         TrOutsideParent = 0x2000
     }
 
+    /// <inheritdoc/>
     public override string ToString() => $"{Name} - {Position}";
 }

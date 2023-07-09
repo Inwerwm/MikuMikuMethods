@@ -2,6 +2,9 @@
 
 namespace MikuMikuMethods.Pmm.ElementState;
 
+/// <summary>
+/// 重力の状態
+/// </summary>
 public class PmmGravityState : ICloneable
 {
 
@@ -19,6 +22,10 @@ public class PmmGravityState : ICloneable
     /// </summary>
     public Vector3 Direction { get; set; } = new(0, -1, 0);
 
+    /// <summary>
+    /// ディープコピー
+    /// </summary>
+    /// <returns>複製</returns>
     public PmmGravityState DeepCopy() => new()
     {
         Noize = Noize,

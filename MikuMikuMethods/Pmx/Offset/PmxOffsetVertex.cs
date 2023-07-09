@@ -17,8 +17,14 @@ public class PmxOffsetVertex : IPmxOffset
     /// </summary>
     public Vector3 Offset { get; set; }
 
+    /// <inheritdoc/>
     public override string ToString() => $"{Target.Position} : {Offset}";
 
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    /// <param name="target">対象頂点</param>
+    /// <param name="offset">移動量</param>
     public PmxOffsetVertex(PmxVertex target, Vector3 offset = default)
     {
         Target = target;

@@ -4,6 +4,9 @@ using MikuMikuMethods.Vmd;
 
 namespace MikuMikuMethods.Converter;
 
+/// <summary>
+/// PMM から VMD を抽出する拡張メソッド
+/// </summary>
 public static class ExtractMotion
 {
     /// <summary>
@@ -62,6 +65,11 @@ public static class ExtractMotion
         };
     }
 
+    /// <summary>
+    /// PMM のフレームから VMD のフレームに変換する
+    /// </summary>
+    /// <param name="frame">変換元フレーム</param>
+    /// <returns>VMD のフレームオブジェクト</returns>
     public static VmdCameraFrame ToVmdFrame(this PmmCameraFrame frame) => new((uint)frame.Frame)
     {
         Distance = frame.Distance,
@@ -72,18 +80,34 @@ public static class ExtractMotion
         InterpolationCurves = new(frame.InterpolationCurves),
     };
 
+    /// <summary>
+    /// PMM のフレームから VMD のフレームに変換する
+    /// </summary>
+    /// <param name="frame">変換元フレーム</param>
+    /// <returns>VMD のフレームオブジェクト</returns>
     public static VmdLightFrame ToVmdFrame(this PmmLightFrame frame) => new((uint)frame.Frame)
     {
         Color = frame.Color,
         Position = frame.Position,
     };
 
+    /// <summary>
+    /// PMM のフレームから VMD のフレームに変換する
+    /// </summary>
+    /// <param name="frame">変換元フレーム</param>
+    /// <returns>VMD のフレームオブジェクト</returns>
     public static VmdShadowFrame ToVmdFrame(this PmmSelfShadowFrame frame) => new((uint)frame.Frame)
     {
         Mode = frame.ShadowMode,
         Range = frame.ShadowRange,
     };
 
+    /// <summary>
+    /// PMM のフレームから VMD のフレームに変換する
+    /// </summary>
+    /// <param name="frame">変換元フレーム</param>
+    /// <param name="boneName">ボーン名</param>
+    /// <returns>VMD のフレームオブジェクト</returns>
     public static VmdMotionFrame ToVmdFrame(this PmmBoneFrame frame, string boneName) => new(boneName ,(uint)frame.Frame)
     {
         Position = frame.Movement,
@@ -91,11 +115,22 @@ public static class ExtractMotion
         InterpolationCurves = new(frame.InterpolationCurves),
     };
 
+    /// <summary>
+    /// PMM のフレームから VMD のフレームに変換する
+    /// </summary>
+    /// <param name="frame">変換元フレーム</param>
+    /// <param name="morphName">モーフ名</param>
+    /// <returns>VMD のフレームオブジェクト</returns>
     public static VmdMorphFrame ToVmdFrame(this PmmMorphFrame frame, string morphName) => new(morphName, (uint)frame.Frame)
     {
         Weight = frame.Weight,
     };
 
+    /// <summary>
+    /// PMM のフレームから VMD のフレームに変換する
+    /// </summary>
+    /// <param name="frame">変換元フレーム</param>
+    /// <returns>VMD のフレームオブジェクト</returns>
     public static VmdPropertyFrame ToVmdFrame(this PmmModelConfigFrame frame) => new((uint)frame.Frame)
     {
         IsVisible = frame.Visible,

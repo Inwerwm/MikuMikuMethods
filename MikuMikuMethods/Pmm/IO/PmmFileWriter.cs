@@ -3,8 +3,16 @@ using MikuMikuMethods.Pmm.Frame;
 
 namespace MikuMikuMethods.Pmm.IO;
 
+/// <summary>
+/// PMM 書込みクラス
+/// </summary>
 public static class PmmFileWriter
 {
+    /// <summary>
+    /// PMM ファイルの書き込み
+    /// </summary>
+    /// <param name="filePath">ファイルパス</param>
+    /// <param name="pmm">書込み対象 PMM ファイル</param>
     public static void Write(string filePath, PolygonMovieMaker pmm)
     {
         try
@@ -19,6 +27,11 @@ public static class PmmFileWriter
         }
     }
 
+    /// <summary>
+    /// PMMファイルの書込み
+    /// </summary>
+    /// <param name="writer">バイナリライター</param>
+    /// <param name="pmm">書込み対象 PMM ファイル</param>
     public static void Write(BinaryWriter writer, PolygonMovieMaker pmm)
     {
         writer.Write(pmm.Version, 30, Encoding.ShiftJIS);
@@ -89,7 +102,7 @@ public static class PmmFileWriter
         writer.Write(pmm.BackGround.Image ?? "", 256, Encoding.ShiftJIS);
         writer.Write(pmm.BackGround.Image is not null);
 
-        writer.Write(pmm.RenderConfig.InfomationVisible);
+        writer.Write(pmm.RenderConfig.InformationVisible);
         writer.Write(pmm.RenderConfig.AxisVisible);
         writer.Write(pmm.RenderConfig.EnableGrandShadow);
 

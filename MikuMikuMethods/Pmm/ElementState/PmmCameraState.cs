@@ -2,6 +2,9 @@
 
 namespace MikuMikuMethods.Pmm.ElementState;
 
+/// <summary>
+/// カメラの状態
+/// </summary>
 public class PmmCameraState : ICloneable
 {
     /// <summary>
@@ -33,6 +36,10 @@ public class PmmCameraState : ICloneable
     /// </summary>
     public int ViewAngle { get; set; } = 30;
 
+    /// <summary>
+    /// ディープコピー
+    /// </summary>
+    /// <returns>複製</returns>
     public PmmCameraState DeepCopy() => new()
     {
         EyePosition = EyePosition,
@@ -44,6 +51,13 @@ public class PmmCameraState : ICloneable
         ViewAngle = ViewAngle
     };
 
+
+    /// <summary>
+    /// PMM移行用ディープコピー
+    /// </summary>
+    /// <param name="followingModel">移行先の対応する参照親モデル</param>
+    /// <param name="followingBone">移行先の対応する参照親ボーン</param>
+    /// <returns>複製</returns>
     public PmmCameraState DeepCopy(PmmModel? followingModel, PmmBone? followingBone) => new()
     {
         EyePosition = EyePosition,

@@ -2,8 +2,16 @@
 
 namespace MikuMikuMethods.Vmd.IO;
 
+/// <summary>
+/// VMD ファイルへの書き込みを行う静的クラス。
+/// </summary>
 public static class VmdFileWriter
 {
+    /// <summary>
+    /// 指定されたパスに <see cref="VocaloidMotionData"/> インスタンスを書き込みます。
+    /// </summary>
+    /// <param name="filePath">書き込み先のファイルパス</param>
+    /// <param name="vmd">書き込む <see cref="VocaloidMotionData"/> オブジェクト</param>
     public static void Write(string filePath, VocaloidMotionData vmd)
     {
         using FileStream file = new(filePath, FileMode.Create);
@@ -11,6 +19,11 @@ public static class VmdFileWriter
         Write(writer, vmd);
     }
 
+    /// <summary>
+    /// 与えられた <see cref="BinaryWriter"/> を用いて <see cref="VocaloidMotionData"/> インスタンスを書き込みます。
+    /// </summary>
+    /// <param name="writer"><see cref="VocaloidMotionData"/> データを書き込むための <see cref="BinaryWriter"/> オブジェクト</param>
+    /// <param name="vmd">書き込む <see cref="VocaloidMotionData"/> オブジェクト</param>
     public static void Write(BinaryWriter writer, VocaloidMotionData vmd)
     {
         writer.Write(vmd.Header, VmdConstants.HeaderLength, Encoding.ShiftJIS);
@@ -32,7 +45,7 @@ public static class VmdFileWriter
             writeAction(writer, f);
     }
 
-    public static void WriteMotionFrame(BinaryWriter writer, VmdMotionFrame frame)
+    private static void WriteMotionFrame(BinaryWriter writer, VmdMotionFrame frame)
     {
         writer.Write(frame.Name, VmdConstants.BoneNameLength, Encoding.ShiftJIS);
         writer.Write(frame.Frame);
@@ -41,14 +54,14 @@ public static class VmdFileWriter
         writer.Write(InterpolationCurve.CreateVMDFormatBytes(frame.InterpolationCurves, frame.FrameKind));
     }
 
-    public static void WriteMorphFrame(BinaryWriter writer, VmdMorphFrame frame)
+    private static void WriteMorphFrame(BinaryWriter writer, VmdMorphFrame frame)
     {
         writer.Write(frame.Name, VmdConstants.MorphNameLength, Encoding.ShiftJIS);
         writer.Write(frame.Frame);
         writer.Write(frame.Weight);
     }
 
-    public static void WriteCameraFrame(BinaryWriter writer, VmdCameraFrame frame)
+    private static void WriteCameraFrame(BinaryWriter writer, VmdCameraFrame frame)
     {
         writer.Write(frame.Frame);
         writer.Write(frame.Distance);
@@ -59,21 +72,21 @@ public static class VmdFileWriter
         writer.Write(frame.IsPerspectiveOff);
     }
 
-    public static void WriteLightFrame(BinaryWriter writer, VmdLightFrame frame)
+    private static void WriteLightFrame(BinaryWriter writer, VmdLightFrame frame)
     {
         writer.Write(frame.Frame);
         writer.Write(frame.Color, false);
         writer.Write(frame.Position);
     }
 
-    public static void WriteShadowFrame(BinaryWriter writer, VmdShadowFrame frame)
+    private static void WriteShadowFrame(BinaryWriter writer, VmdShadowFrame frame)
     {
         writer.Write(frame.Frame);
         writer.Write((byte)frame.Mode);
         writer.Write(frame.Range);
     }
 
-    public static void WritePropertyFrame(BinaryWriter writer, VmdPropertyFrame frame)
+    private static void WritePropertyFrame(BinaryWriter writer, VmdPropertyFrame frame)
     {
         writer.Write(frame.Frame);
         writer.Write(frame.IsVisible);

@@ -3,6 +3,9 @@ using System.Numerics;
 
 namespace MikuMikuMethods.Pmm.ElementState;
 
+/// <summary>
+/// アクセサリの状態
+/// </summary>
 public class PmmAccessoryState : ICloneable
 {
     private float transparency;
@@ -13,7 +16,13 @@ public class PmmAccessoryState : ICloneable
         set => (Visible, Transparency) = SeparateTransAndVisible(value);
     }
 
+    /// <summary>
+    /// 表示状態
+    /// </summary>
     public bool Visible { get; set; } = true;
+    /// <summary>
+    /// 透過度
+    /// </summary>
     public float Transparency
     {
         get => transparency;
@@ -51,6 +60,10 @@ public class PmmAccessoryState : ICloneable
     /// </summary>
     public bool EnableShadow { get; set; }
 
+    /// <summary>
+    /// ディープコピー
+    /// </summary>
+    /// <returns>複製</returns>
     public PmmAccessoryState DeepCopy() => new()
     {
         TransAndVisible = TransAndVisible,
@@ -62,6 +75,12 @@ public class PmmAccessoryState : ICloneable
         Scale = Scale,
     };
 
+    /// <summary>
+    /// PMM移行用ディープコピー
+    /// </summary>
+    /// <param name="parentModel">移行先の対応する参照親モデル</param>
+    /// <param name="parentBone">移行先の対応する参照親ボーン</param>
+    /// <returns>複製</returns>
     public PmmAccessoryState DeepCopy(PmmModel? parentModel, PmmBone? parentBone) => new()
     {
         TransAndVisible = TransAndVisible,

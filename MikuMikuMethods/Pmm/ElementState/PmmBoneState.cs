@@ -2,6 +2,9 @@
 
 namespace MikuMikuMethods.Pmm.ElementState;
 
+/// <summary>
+/// ボーンの状態
+/// </summary>
 public class PmmBoneState : ICloneable
 {
     /// <summary>
@@ -19,6 +22,10 @@ public class PmmBoneState : ICloneable
     /// </summary>
     public bool EnablePhysic { get; set; } = true;
 
+    /// <summary>
+    /// ディープコピー
+    /// </summary>
+    /// <returns>複製</returns>
     public PmmBoneState DeepCopy() => new()
     {
         Movement = Movement,

@@ -96,5 +96,6 @@ public class PmxJoint : IPmxData
         Hinge
     }
 
+    /// <inheritdoc/>
     public override string ToString() => $"{Name} - {Position}";
 }

@@ -104,5 +104,6 @@ public class PmxOffsetMaterial : IPmxOffset
         Addition,
     }
 
+    /// <inheritdoc/>
     public override string ToString() => $"{Target?.Name} : {Operation}";
 }

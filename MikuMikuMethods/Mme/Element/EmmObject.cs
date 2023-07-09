@@ -24,6 +24,7 @@ public abstract class EmmObject
     /// コンストラクタ
     /// </summary>
     /// <param name="index">オブジェクト番号</param>
+    /// <param name="path">ファイルパス</param>
     protected EmmObject(int index, string path)
     {
         Index = index;

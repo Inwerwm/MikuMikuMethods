@@ -18,19 +18,27 @@ public class PmxOffsetImpulse : IPmxOffset
     /// <summary>
     /// 移動速度
     /// </summary>
-    public Vector3 MovingSpead { get; set; }
+    public Vector3 MovingSpeed { get; set; }
     /// <summary>
     /// 回転トルク
     /// </summary>
     public Vector3 RotationTorque { get; set; }
 
-    public override string ToString() => $"{Target.Name} : {{{MovingSpead} - {RotationTorque}}}";
+    /// <inheritdoc/>
+    public override string ToString() => $"{Target.Name} : {{{MovingSpeed} - {RotationTorque}}}";
 
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    /// <param name="target">対象剛体</param>
+    /// <param name="isLocal">ローカルフラグ</param>
+    /// <param name="movingSpead">移動速度</param>
+    /// <param name="rotationTorque">回転トルク</param>
     public PmxOffsetImpulse(PmxBody target, bool isLocal = default, Vector3 movingSpead = default, Vector3 rotationTorque = default)
     {
         Target = target;
         IsLocal = isLocal;
-        MovingSpead = movingSpead;
+        MovingSpeed = movingSpead;
         RotationTorque = rotationTorque;
     }
 

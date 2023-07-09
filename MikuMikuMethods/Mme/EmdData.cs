@@ -23,6 +23,9 @@ public class EmdData
     /// </summary>
     public List<EmmMaterial> Subsets { get; init; }
 
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
     public EmdData()
     {
         Version = 3;
@@ -30,6 +33,10 @@ public class EmdData
         Subsets = new();
     }
 
+    /// <summary>
+    /// <see cref="EmmMaterial"/> から変換するコンストラクタ
+    /// </summary>
+    /// <param name="material">材質</param>
     public EmdData(EmmMaterial material)
     {
         Version = 3;
@@ -37,11 +44,19 @@ public class EmdData
         Subsets = new();
     }
 
+    /// <summary>
+    /// ファイルから読み込んで作成するコンストラクタ
+    /// </summary>
+    /// <param name="filePath">ファイルパス</param>
     public EmdData(string filePath) : this()
     {
         Read(filePath);
     }
 
+    /// <summary>
+    /// ファイルから情報を読み込む
+    /// </summary>
+    /// <param name="filePath">ファイルパス</param>
     public void Read(string filePath)
     {
         MmeFileReader.ReadEmdData(filePath, this);

@@ -39,6 +39,7 @@ internal static class BinaryRead
     /// <summary>
     /// 指定文字数の文字列をバイナリから読み込む
     /// </summary>
+    /// <param name="reader">リーダー</param>
     /// <param name="length">文字数</param>
     /// <param name="encoding">エンコード形式</param>
     /// <param name="endChar">終端文字 この文字以降を読み飛ばす</param>
@@ -89,6 +90,7 @@ internal static class BinaryWrite
     /// <summary>
     /// Writes a 2 dimension vector including two four-byte floating-point value to the current stream and advances the stream position by 8 bytes.
     /// </summary>
+    /// <param name="writer">The binary writer to which the value will be written.</param>
     /// <param name="value">The 2 dimension vector including two four-byte floating-point value to write.</param>
     public static void Write(this BinaryWriter writer, Vector2 value)
     {
@@ -99,6 +101,7 @@ internal static class BinaryWrite
     /// <summary>
     /// Writes a 3 dimension vector including three four-byte floating-point value to the current stream and advances the stream position by 12 bytes.
     /// </summary>
+    /// <param name="writer">The binary writer to which the value will be written.</param>
     /// <param name="value">The 3 dimension vector including three four-byte floating-point value to write.</param>
     public static void Write(this BinaryWriter writer, Vector3 value)
     {
@@ -110,6 +113,7 @@ internal static class BinaryWrite
     /// <summary>
     /// Writes a 4 dimension vector including four four-byte floating-point value to the current stream and advances the stream position by 16 bytes.
     /// </summary>
+    /// <param name="writer">The binary writer to which the value will be written.</param>
     /// <param name="value">The 4 dimension vector including four four-byte floating-point value to write.</param>
     public static void Write(this BinaryWriter writer, Vector4 value)
     {
@@ -122,6 +126,7 @@ internal static class BinaryWrite
     /// <summary>
     /// Writes a quaternion including four four-byte floating-point value to the current stream and advances the stream position by 16 bytes.
     /// </summary>
+    /// <param name="writer">The binary writer to which the value will be written.</param>
     /// <param name="value">The quaternion including four four-byte floating-point value to write.</param>
     public static void Write(this BinaryWriter writer, Quaternion value)
     {
@@ -135,6 +140,7 @@ internal static class BinaryWrite
     /// 指定長で文字列をバイナリに書き込み
     /// <para>文字列の最後には<c>'\0'</c>が付加される</para>
     /// </summary>
+    /// <param name="writer">値を書き込むためのバイナリライター</param>
     /// <param name="value">書き込む文字列</param>
     /// <param name="length">書き込む長さ</param>
     /// <param name="encoding">エンコード形式</param>
@@ -153,6 +159,7 @@ internal static class BinaryWrite
     /// <summary>
     /// 浮動小数点色をバイナリに書き込み
     /// </summary>
+    /// <param name="writer">値を書き込むためのバイナリライター</param>
     /// <param name="value">書き込む色</param>
     /// <param name="isWriteAlpha">アルファ値の情報を書き込むか</param>
     public static void Write(this BinaryWriter writer, ColorF value, bool isWriteAlpha)
@@ -167,6 +174,7 @@ internal static class BinaryWrite
     /// <summary>
     /// 4バイト整数色をバイナリに書き込み
     /// </summary>
+    /// <param name="writer">値を書き込むためのバイナリライター</param>
     /// <param name="value">書き込む色</param>
     /// <param name="isWriteAlpha">アルファ値の情報を書き込むか</param>
     public static void Write(this BinaryWriter writer, Color value, bool isWriteAlpha)

@@ -16,15 +16,16 @@ public class VmdMorphFrame : VmdModelTypeFrame
     public float Weight { get; set; }
 
     /// <summary>
-    /// コンストラクタ
+    /// モーフ名と初期フレーム時間を指定して <see cref="VmdMorphFrame"/> クラスの新しいインスタンスを初期化します。
     /// </summary>
-    /// <param name="name">ボーン名</param>
+    /// <param name="name">モーフ名</param>
     /// <param name="frame">フレーム時間</param>
     public VmdMorphFrame(string name, uint frame = 0) : base(name)
     {
         Frame = frame;
     }
 
+    /// <inheritdoc/>
     public override object Clone() => new VmdMorphFrame(Name, Frame)
     {
         Weight = Weight

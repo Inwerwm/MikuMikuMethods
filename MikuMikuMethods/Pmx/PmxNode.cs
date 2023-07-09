@@ -24,5 +24,6 @@ public class PmxNode : IPmxData
     /// </summary>
     public List<IPmxNodeElement> Elements { get; } = new();
 
+    /// <inheritdoc/>
     public override string ToString() => $"{Name}";
 }

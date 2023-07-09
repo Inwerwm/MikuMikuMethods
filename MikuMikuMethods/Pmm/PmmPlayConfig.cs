@@ -1,5 +1,8 @@
 ﻿namespace MikuMikuMethods.Pmm;
 
+/// <summary>
+/// 再生設定
+/// </summary>
 public class PmmPlayConfig : ICloneable
 {
     /// <summary>
@@ -33,8 +36,13 @@ public class PmmPlayConfig : ICloneable
     /// </summary>
     public TrackingTarget CameraTrackingTarget { get; set; } = TrackingTarget.None;
 
+    /// <inheritdoc/>
     public object Clone() => DeepCopy();
 
+    /// <summary>
+    /// ディープコピー
+    /// </summary>
+    /// <returns>複製</returns>
     public PmmPlayConfig DeepCopy() => new()
     {
         CameraTrackingTarget = CameraTrackingTarget,

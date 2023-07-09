@@ -1,5 +1,8 @@
 ﻿namespace MikuMikuMethods.Pmm.Frame;
 
+/// <summary>
+/// PMMデータのフレーム情報インターフェイス
+/// </summary>
 public interface IPmmFrame
 {
     /// <summary>
@@ -11,5 +14,9 @@ public interface IPmmFrame
     /// </summary>
     bool IsSelected { get; set; }
 
+    /// <summary>
+    /// ディープコピー
+    /// </summary>
+    /// <returns>複製</returns>
     public IPmmFrame DeepCopy();
 }

@@ -23,9 +23,9 @@ public class VmdShadowFrame : VmdCameraTypeFrame
     public float Range { get; set; }
 
     /// <summary>
-    /// コンストラクタ
+    /// フレーム時間を指定して <see cref="VmdShadowFrame"/> クラスの新しいインスタンスを初期化します。
     /// </summary>
-    /// <param name="frame">フレーム</param>
+    /// <param name="frame">フレーム時間</param>
     public VmdShadowFrame(uint frame = 0) : base("SelfShadow")
     {
         Frame = frame;
@@ -33,6 +33,7 @@ public class VmdShadowFrame : VmdCameraTypeFrame
         Range = 8875 * 0.00001f;
     }
 
+    /// <inheritdoc/>
     public override object Clone() => new VmdShadowFrame(Frame)
     {
         Mode = Mode,

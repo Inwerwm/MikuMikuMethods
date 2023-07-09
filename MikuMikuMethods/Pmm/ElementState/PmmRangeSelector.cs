@@ -59,6 +59,10 @@ public record PmmRangeSelector(int Index) : ICloneable
         };
     }
 
+    /// <summary>
+    /// ディープコピー
+    /// </summary>
+    /// <returns>複製</returns>
     public PmmRangeSelector DeepCopy() => this with { };
 
     object ICloneable.Clone() => DeepCopy();

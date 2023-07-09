@@ -10,9 +10,6 @@ public class EmmAccessory : EmmObject
     /// </summary>
     public override string Name => $"Acs{Index}";
 
-    /// <summary>
-    /// コンストラクタ
-    /// </summary>
-    /// <param name="index">オブジェクト番号</param>
+    /// <inheritdoc/>
     public EmmAccessory(int index, string path) : base(index, path) { }
 }

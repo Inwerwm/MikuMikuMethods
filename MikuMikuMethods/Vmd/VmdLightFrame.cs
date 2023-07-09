@@ -23,19 +23,20 @@ public class VmdLightFrame : VmdCameraTypeFrame
     public Vector3 Position { get; set; }
 
     /// <summary>
-    /// コンストラクタ
+    /// フレーム時間を指定して <see cref="VmdLightFrame"/> クラスの新しいインスタンスを初期化します。
     /// </summary>
-    /// <param name="frame">フレーム</param>
-    public VmdLightFrame(uint frame = 0):base("Light")
+    /// <param name="frame">フレーム時間</param>
+    public VmdLightFrame(uint frame = 0) : base("Light")
     {
         Frame = frame;
         Color = new(154, 154, 154);
         Position = new Vector3(-0.5f, -1.0f, 0.5f);
     }
 
+    /// <inheritdoc/>
     public override object Clone() => new VmdLightFrame(Frame)
     {
-        Color = Color,
+        Color = Color with { },
         Name = Name,
         Position = Position
     };

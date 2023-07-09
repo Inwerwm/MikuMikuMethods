@@ -109,7 +109,7 @@ internal static class TestData
 
         // 履歴出力付きファイル読み込みオブジェクトを作成
         using var file = new FileStream(GetPath(filenameStem + ".pmm"), FileMode.Open);
-        using var reader = new BinaryReaderWithEvent(file, Encoding.ShiftJIS);
+        using var reader = new ObservableBinaryReader(file, Encoding.ShiftJIS);
         reader.OnRead += (value, type) =>
         {
             var prefix = $"{type.Name}";

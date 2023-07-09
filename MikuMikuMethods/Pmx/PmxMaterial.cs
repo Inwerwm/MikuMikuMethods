@@ -178,5 +178,6 @@ public class PmxMaterial : IPmxData
         Line = 0x80
     }
 
+    /// <inheritdoc/>
     public override string ToString() => $"{Name}";
 }

@@ -3,14 +3,27 @@ using System.Text.RegularExpressions;
 
 namespace MikuMikuMethods.Mme.IO;
 
+/// <summary>
+/// MME ファイル読込
+/// </summary>
 public static class MmeFileReader
 {
+    /// <summary>
+    /// EMD ファイルを読み込む
+    /// </summary>
+    /// <param name="filePath">ファイルパス</param>
+    /// <param name="emd">書込み先 EMD</param>
     public static void ReadEmdData(string filePath, EmdData emd)
     {
         using StreamReader reader = new(filePath, Encoding.ShiftJIS);
         ReadEmdData(reader, emd);
     }
 
+    /// <summary>
+    /// EMD ファイルを読み込む
+    /// </summary>
+    /// <param name="reader">ストリームリーダー</param>
+    /// <param name="emd">書込み先 EMD</param>
     public static void ReadEmdData(StreamReader reader, EmdData emd)
     {
         if (reader.CurrentEncoding != Encoding.ShiftJIS)
@@ -80,11 +93,23 @@ public static class MmeFileReader
         }
     }
 
+    /// <summary>
+    /// EMM ファイルを読み込む
+    /// </summary>
+    /// <param name="filePath">ファイルパス</param>
+    /// <param name="emm">書込み先 EMM</param>
+
     public static void ReadEmmData(string filePath, EmmData emm)
     {
         using StreamReader reader = new(filePath, Encoding.ShiftJIS);
         ReadEmmData(reader, emm);
     }
+
+    /// <summary>
+    /// EMM ファイルを読み込む
+    /// </summary>
+    /// <param name="reader">ストリームリーダー</param>
+    /// <param name="emm">書込み先 EMM</param>
 
     public static void ReadEmmData(StreamReader reader, EmmData emm)
     {
@@ -149,6 +174,8 @@ public static class MmeFileReader
     /// 読み込み
     /// </summary>
     /// <param name="reader">[.*]の次行が読み込まれる状態であること</param>
+    /// <param name="effect">書込み先設定情報</param>
+    /// <param name="objects">オブジェクトのリスト</param>
     internal static void ReadEffectSettings(StreamReader reader, EmmEffectSettings effect, List<EmmObject> objects)
     {
         string? line;

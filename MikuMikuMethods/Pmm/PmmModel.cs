@@ -99,13 +99,24 @@ public class PmmModel : ICloneable
     /// </summary>
     public bool EnableSelfShadow { get; set; } = true;
 
+    /// <summary>
+    /// キーフレーム編集画面の状態
+    /// </summary>
     public PmmModelSpecificKeyFrameEditorState SpecificEditorState { get; private init; } = new();
 
+    /// <summary>
+    /// 現在のモデル設定
+    /// </summary>
     public PmmModelConfigState CurrentConfig { get; private init; } = new();
 
     /// <inheritdoc/>
     public override string ToString() => $"{Name} - {Path}";
 
+    /// <summary>
+    /// PMM移行用ディープコピー
+    /// </summary>
+    /// <param name="boneMap">移行前ボーンと移行先ボーンの対応辞書</param>
+    /// <returns>複製</returns>
     public PmmModel DeepCopy(out Dictionary<PmmBone, PmmBone> boneMap)
     {
         var _boneMap = Bones.ToDictionary(bone => bone, bone => bone.DeepCopy());
@@ -137,7 +148,12 @@ public class PmmModel : ICloneable
         return clone;
     }
 
+    /// <summary>
+    /// ディープコピー
+    /// </summary>
+    /// <returns>複製</returns>
     public PmmModel DeepCopy() => DeepCopy(out _);
 
+    /// <inheritdoc/>
     public object Clone() => DeepCopy();
 }

@@ -116,5 +116,6 @@ public class PmxMorph : IPmxData
         Impulse
     }
 
+    /// <inheritdoc/>
     public override string ToString() => $"{Name} - {Type} Morph";
 }

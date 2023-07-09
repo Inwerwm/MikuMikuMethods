@@ -21,8 +21,15 @@ public class PmxOffsetBone : IPmxOffset
     /// </summary>
     public Quaternion Rotate { get; set; }
 
+    /// <inheritdoc/>
     public override string ToString() => $"{Target.Name} : {{{Offset} - {Rotate}}}";
 
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    /// <param name="target">対象ボーン</param>
+    /// <param name="offset">移動量</param>
+    /// <param name="rotate">回転量</param>
     public PmxOffsetBone(PmxBone target, Vector3 offset = default, Quaternion rotate = default)
     {
         Target = target;

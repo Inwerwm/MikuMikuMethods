@@ -74,6 +74,9 @@ public class PolygonMovieMaker : ICloneable
     /// </summary>
     public PmmPlayConfig PlayConfig { get; private init; } = new();
 
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
     public PolygonMovieMaker()
     {
         AccessoriesSubstance.CollectionChanged += CreateOrderListSynchronizer(new[] { AccessoryRenderOrder });
@@ -125,36 +128,69 @@ public class PolygonMovieMaker : ICloneable
         }.AsParallel().Select(f => f.Invoke()).Max();
     }
 
+    /// <summary>
+    /// 描画順を設定
+    /// </summary>
+    /// <param name="accessory">アクセサリ</param>
+    /// <param name="renderOrder">描画順</param>
+    /// <exception cref="ArgumentException">PMMに所属していないアクセサリが渡された場合</exception>
     public void SetRenderOrder(PmmAccessory accessory, byte renderOrder)
     {
         if (!Accessories.Contains(accessory)) throw new ArgumentException("The accessory for which the Render Order setting was tried does not contain the PMM.");
         AccessoryRenderOrder.Move(renderOrder, accessory);
     }
 
+    /// <summary>
+    /// 描画順を取得
+    /// </summary>
+    /// <param name="accessory">アクセサリ</param>
+    /// <returns>描画順 PMM に所属していないアクセサリが指定された場合は null</returns>
     public byte? GetRenderOrder(PmmAccessory accessory)
     {
         int order = AccessoryRenderOrder.IndexOf(accessory);
         return order < 0 ? null : (byte)order;
     }
 
+    /// <summary>
+    /// 描画順を設定
+    /// </summary>
+    /// <param name="model">モデル</param>
+    /// <param name="renderOrder">描画順</param>
+    /// <exception cref="ArgumentException">PMMに所属していないモデルが渡された場合</exception>
     public void SetRenderOrder(PmmModel model, byte renderOrder)
     {
         if (!Models.Contains(model)) throw new ArgumentException("The model for which the Render Order setting was tried does not contain the PMM.");
         ModelRenderOrder.Move(renderOrder, model);
     }
 
+    /// <summary>
+    /// 描画順を取得
+    /// </summary>
+    /// <param name="model">モデル</param>
+    /// <returns>描画順 PMM に所属していないモデルが指定された場合は null</returns>
     public byte? GetRenderOrder(PmmModel model)
     {
         int order = ModelRenderOrder.IndexOf(model);
         return order < 0 ? null : (byte)order;
     }
 
+    /// <summary>
+    /// 計算順を設定
+    /// </summary>
+    /// <param name="model">モデル</param>
+    /// <param name="calculateOrder">計算順</param>
+    /// <exception cref="ArgumentException">PMMに所属していないモデルが渡された場合</exception>
     public void SetCalculateOrder(PmmModel model, byte calculateOrder)
     {
         if (!Models.Contains(model)) throw new ArgumentException("The model for which the Calculate Order setting was tried does not contain the PMM.");
         ModelCalculateOrder.Move(calculateOrder, model);
     }
 
+    /// <summary>
+    /// 計算順を取得
+    /// </summary>
+    /// <param name="model">モデル</param>
+    /// <returns>計算順 PMM に所属していないモデルが指定された場合は null</returns>
     public byte? GetCalculateOrder(PmmModel model)
     {
         var order = ModelCalculateOrder.IndexOf(model);
@@ -216,6 +252,10 @@ public class PolygonMovieMaker : ICloneable
             }
         };
 
+    /// <summary>
+    /// ディープコピー
+    /// </summary>
+    /// <returns>複製</returns>
     public PolygonMovieMaker DeepCopy()
     {
         var cloneModels = Models.Select(model => (Origin: model, Clone: model.DeepCopy(out var bm), BoneMap: bm));
@@ -251,5 +291,6 @@ public class PolygonMovieMaker : ICloneable
         return clone;
     }
 
+    /// <inheritdoc/>
     public object Clone() => DeepCopy();
 }

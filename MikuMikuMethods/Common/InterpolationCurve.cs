@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using MikuMikuMethods.Common;
+using System.Collections.ObjectModel;
 
 namespace MikuMikuMethods;
 
@@ -38,14 +39,14 @@ public enum InterpolationItem
 /// </summary>
 public class InterpolationCurve : ICloneable, IEquatable<InterpolationCurve>
 {
-    private BytePoint _earlyControlPoint;
-    private BytePoint _lateControlPoint;
+    private Point2<byte> _earlyControlPoint;
+    private Point2<byte> _lateControlPoint;
 
     /// <summary>
     /// 始点側制御点
     /// [0,127]
     /// </summary>
-    public BytePoint EarlyControlPoint
+    public Point2<byte> EarlyControlPoint
     {
         get => _earlyControlPoint;
         set
@@ -59,7 +60,7 @@ public class InterpolationCurve : ICloneable, IEquatable<InterpolationCurve>
     /// 終点側制御点
     /// [0,127]
     /// </summary>
-    public BytePoint LateControlPoint
+    public Point2<byte> LateControlPoint
     {
         get => _lateControlPoint;
         set
@@ -74,7 +75,7 @@ public class InterpolationCurve : ICloneable, IEquatable<InterpolationCurve>
     /// 始点側制御点
     /// [0.0,1.0]
     /// </summary>
-    public FloatPoint EarlyControlPointFloat
+    public Point2<float> EarlyControlPointFloat
     {
         get => (EarlyControlPoint.X / 127.0f, EarlyControlPoint.Y / 127.0f);
         set

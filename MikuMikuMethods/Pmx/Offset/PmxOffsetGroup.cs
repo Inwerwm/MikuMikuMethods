@@ -14,8 +14,14 @@ public class PmxOffsetGroup : IPmxOffset
     /// </summary>
     public float Ratio { get; set; }
 
+    /// <inheritdoc/>
     public override string ToString() => $"{Target.Name} - {Ratio:###.00}";
 
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    /// <param name="target">対象モーフ</param>
+    /// <param name="ratio">適用率</param>
     public PmxOffsetGroup(PmxMorph target, float ratio = default)
     {
         Target = target;

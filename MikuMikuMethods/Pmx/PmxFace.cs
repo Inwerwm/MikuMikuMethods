@@ -53,5 +53,6 @@ public class PmxFace : IPmxData
             FetchEdge(2, 0)
     };
 
+    /// <inheritdoc/>
     public override string ToString() => "{ " + Vertices.Select(v => v.ToString()).Aggregate((acm, elm) => $"{acm}, {elm}") + " }";
 }

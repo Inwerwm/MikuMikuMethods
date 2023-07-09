@@ -1,5 +1,8 @@
 ﻿namespace MikuMikuMethods.Pmm.ElementState;
 
+/// <summary>
+/// モーフの状態
+/// </summary>
 public class PmmMorphState : ICloneable
 {
     /// <summary>
@@ -7,6 +10,10 @@ public class PmmMorphState : ICloneable
     /// </summary>
     public float Weight { get; set; }
 
+    /// <summary>
+    /// ディープコピー
+    /// </summary>
+    /// <returns>複製</returns>
     public PmmMorphState DeepCopy() => new() { Weight = Weight };
 
     /// <inheritdoc/>

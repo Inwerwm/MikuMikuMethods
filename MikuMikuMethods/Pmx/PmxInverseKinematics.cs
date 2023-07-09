@@ -25,6 +25,7 @@ public class PmxInverseKinematics
     /// </summary>
     public List<PmxIKLink> Links { get; } = new();
 
+    /// <inheritdoc/>
     public override string ToString() => $"{Target?.Name} - {LoopNum} : {LimitAngle:###.00}";
 }
 
@@ -51,5 +52,6 @@ public class PmxIKLink
     /// </summary>
     public Vector3 LowerLimit { get; set; }
 
+    /// <inheritdoc/>
     public override string ToString() => $"Link: {Bone?.Name}{(EnableAngleLimit ? "(Limited)" : "")}";
 }

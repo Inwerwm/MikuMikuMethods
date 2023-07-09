@@ -1,5 +1,8 @@
 ﻿namespace MikuMikuMethods.Pmm;
 
+/// <summary>
+/// 各種操作パネルの開閉状態
+/// </summary>
 public class PmmPanelPane : ICloneable
 {
     /// <summary>
@@ -27,8 +30,13 @@ public class PmmPanelPane : ICloneable
     /// </summary>
     public bool DoesOpenSelfShadowPanel { get; set; } = true;
 
+    /// <inheritdoc/>
     public object Clone() => DeepCopy();
 
+    /// <summary>
+    /// ディープコピー
+    /// </summary>
+    /// <returns>複製</returns>
     public PmmPanelPane DeepCopy() => new()
     {
         DoesOpenAccessaryPanel = DoesOpenAccessaryPanel,

@@ -1,13 +1,28 @@
 ﻿namespace MikuMikuMethods.Common;
-public class BinaryReaderWithEvent : BinaryReader
+
+/// <summary>
+/// バイナリデータが読み込まれたときに通知を提供する <see cref="BinaryReader"/> です。
+/// </summary>
+public class ObservableBinaryReader : BinaryReader
 {
+    /// <summary>
+    /// バイナリデータが読み込まれたときに呼び出されるイベントハンドラ
+    /// </summary>
+    /// <param name="value">読み取った値</param>
+    /// <param name="type">読み取った型</param>
     public delegate void ReadValueEventHandler(object value, Type type);
+
+    /// <summary>
+    /// バイナリデータが読み込まれたときに呼び出されます。
+    /// </summary>
     public event ReadValueEventHandler? OnRead;
 
-    public BinaryReaderWithEvent(Stream input, System.Text.Encoding encoding) : base(input, encoding)
+    /// <inheritdoc/>
+    public ObservableBinaryReader(Stream input, System.Text.Encoding encoding) : base(input, encoding)
     {
     }
 
+    /// <inheritdoc/>
     public override bool ReadBoolean()
     {
         bool v = base.ReadBoolean();
@@ -15,6 +30,7 @@ public class BinaryReaderWithEvent : BinaryReader
         return v;
     }
 
+    /// <inheritdoc/>
     public override byte ReadByte()
     {
         byte v = base.ReadByte();
@@ -22,6 +38,7 @@ public class BinaryReaderWithEvent : BinaryReader
         return v;
     }
 
+    /// <inheritdoc/>
     public override byte[] ReadBytes(int count)
     {
         byte[] v = base.ReadBytes(count);
@@ -29,6 +46,7 @@ public class BinaryReaderWithEvent : BinaryReader
         return v;
     }
 
+    /// <inheritdoc/>
     public override int ReadInt32()
     {
         int v = base.ReadInt32();
@@ -36,6 +54,7 @@ public class BinaryReaderWithEvent : BinaryReader
         return v;
     }
 
+    /// <inheritdoc/>
     public override float ReadSingle()
     {
         float v = base.ReadSingle();
@@ -43,6 +62,7 @@ public class BinaryReaderWithEvent : BinaryReader
         return v;
     }
 
+    /// <inheritdoc/>
     public override int Read()
     {
         int v = base.Read();
@@ -50,6 +70,7 @@ public class BinaryReaderWithEvent : BinaryReader
         return v;
     }
 
+    /// <inheritdoc/>
     public override int Read(byte[] buffer, int index, int count)
     {
         int v = base.Read(buffer, index, count);
@@ -57,6 +78,7 @@ public class BinaryReaderWithEvent : BinaryReader
         return v;
     }
 
+    /// <inheritdoc/>
     public override int Read(char[] buffer, int index, int count)
     {
         int v = base.Read(buffer, index, count);
@@ -64,6 +86,7 @@ public class BinaryReaderWithEvent : BinaryReader
         return v;
     }
 
+    /// <inheritdoc/>
     public override int Read(Span<byte> buffer)
     {
         int v = base.Read(buffer);
@@ -71,6 +94,7 @@ public class BinaryReaderWithEvent : BinaryReader
         return v;
     }
 
+    /// <inheritdoc/>
     public override int Read(Span<char> buffer)
     {
         int v = base.Read(buffer);
@@ -78,6 +102,7 @@ public class BinaryReaderWithEvent : BinaryReader
         return v;
     }
 
+    /// <inheritdoc/>
     public override char ReadChar()
     {
         char v = base.ReadChar();
@@ -85,6 +110,7 @@ public class BinaryReaderWithEvent : BinaryReader
         return v;
     }
 
+    /// <inheritdoc/>
     public override char[] ReadChars(int count)
     {
         char[] v = base.ReadChars(count);
@@ -92,6 +118,7 @@ public class BinaryReaderWithEvent : BinaryReader
         return v;
     }
 
+    /// <inheritdoc/>
     public override decimal ReadDecimal()
     {
         decimal v = base.ReadDecimal();
@@ -99,6 +126,7 @@ public class BinaryReaderWithEvent : BinaryReader
         return v;
     }
 
+    /// <inheritdoc/>
     public override double ReadDouble()
     {
         double v = base.ReadDouble();
@@ -106,6 +134,7 @@ public class BinaryReaderWithEvent : BinaryReader
         return v;
     }
 
+    /// <inheritdoc/>
     public override Half ReadHalf()
     {
         Half v = base.ReadHalf();
@@ -113,6 +142,7 @@ public class BinaryReaderWithEvent : BinaryReader
         return v;
     }
 
+    /// <inheritdoc/>
     public override short ReadInt16()
     {
         short v = base.ReadInt16();
@@ -120,6 +150,7 @@ public class BinaryReaderWithEvent : BinaryReader
         return v;
     }
 
+    /// <inheritdoc/>
     public override long ReadInt64()
     {
         long v = base.ReadInt64();
@@ -127,6 +158,7 @@ public class BinaryReaderWithEvent : BinaryReader
         return v;
     }
 
+    /// <inheritdoc/>
     public override sbyte ReadSByte()
     {
         sbyte v = base.ReadSByte();
@@ -134,6 +166,7 @@ public class BinaryReaderWithEvent : BinaryReader
         return v;
     }
 
+    /// <inheritdoc/>
     public override string ReadString()
     {
         string v = base.ReadString();
@@ -141,6 +174,7 @@ public class BinaryReaderWithEvent : BinaryReader
         return v;
     }
 
+    /// <inheritdoc/>
     public override ushort ReadUInt16()
     {
         ushort v = base.ReadUInt16();
@@ -148,6 +182,7 @@ public class BinaryReaderWithEvent : BinaryReader
         return v;
     }
 
+    /// <inheritdoc/>
     public override uint ReadUInt32()
     {
         uint v = base.ReadUInt32();
@@ -155,6 +190,7 @@ public class BinaryReaderWithEvent : BinaryReader
         return v;
     }
 
+    /// <inheritdoc/>
     public override ulong ReadUInt64()
     {
         ulong v = base.ReadUInt64();

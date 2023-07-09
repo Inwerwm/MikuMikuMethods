@@ -21,15 +21,16 @@ public class VmdPropertyFrame : VmdModelTypeFrame
     public Dictionary<string, bool> IKEnabled { get; init; }
 
     /// <summary>
-    /// コンストラクタ
+    /// フレーム時間を指定して <see cref="VmdPropertyFrame"/> クラスの新しいインスタンスを初期化します。
     /// </summary>
-    /// <param name="frame">フレーム</param>
+    /// <param name="frame">フレーム時間</param>
     public VmdPropertyFrame(uint frame = 0) : base("Property")
     {
         Frame = frame;
         IKEnabled = new();
     }
 
+    /// <inheritdoc/>
     public override object Clone() => new VmdPropertyFrame(Frame)
     {
         IKEnabled = new(IKEnabled),

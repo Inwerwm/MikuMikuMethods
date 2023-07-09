@@ -3,8 +3,20 @@ using MikuMikuMethods.Pmx;
 using System.Collections.Immutable;
 
 namespace MikuMikuMethods.Converter;
+
+/// <summary>
+/// PMX モデルを PMM モデルに変換する拡張メソッド
+/// </summary>
 public static class ModelConverter
 {
+    /// <summary>
+    /// PMX から PMM へモデルを変換する
+    /// </summary>
+    /// <param name="pmxModel">変換元モデル</param>
+    /// <param name="pmxPath">変換元モデルのファイルパス</param>
+    /// <returns>PMM のモデルオブジェクト</returns>
+    /// <exception cref="FileNotFoundException">指定されたパスにファイルが存在しなかった場合</exception>
+    /// <exception cref="ArgumentException">モデルの表示枠に不正な要素が存在した場合</exception>
     public static PmmModel ToPmmModel(this PmxModel pmxModel, string pmxPath)
     {
         string pmxFullPath = Path.GetFullPath(pmxPath);

@@ -2,9 +2,14 @@
 
 namespace MikuMikuMethods.Pmm.Frame;
 
+/// <summary>
+/// セルフ影フレーム
+/// </summary>
 public partial class PmmSelfShadowFrame : IPmmFrame
 {
+    /// <inheritdoc/>
     public int Frame { get; set; }
+    /// <inheritdoc/>
     public bool IsSelected { get; set; }
     /// <summary>
     /// 影モード
@@ -16,6 +21,10 @@ public partial class PmmSelfShadowFrame : IPmmFrame
     /// </summary>
     public float ShadowRange { get; set; }
 
+    /// <summary>
+    /// ディープコピー
+    /// </summary>
+    /// <returns>複製</returns>
     public PmmSelfShadowFrame DeepCopy() => new()
     {
         Frame = Frame,
@@ -26,5 +35,6 @@ public partial class PmmSelfShadowFrame : IPmmFrame
 
     IPmmFrame IPmmFrame.DeepCopy() => DeepCopy();
 
+    /// <inheritdoc/>
     public override string ToString() => Frame.ToString();
 }

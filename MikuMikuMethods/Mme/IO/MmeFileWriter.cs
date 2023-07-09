@@ -1,7 +1,15 @@
 ﻿namespace MikuMikuMethods.Mme.IO;
 
+/// <summary>
+/// MME 関連ファイル書込みクラス
+/// </summary>
 public static class MmeFileWriter
 {
+    /// <summary>
+    /// EMD ファイルを書き込む
+    /// </summary>
+    /// <param name="filePath">作成ファイルパス</param>
+    /// <param name="emd">書込む EMD データ</param>
     public static void WriteEmdData(string filePath, EmdData emd)
     {
         using FileStream file = new(filePath, FileMode.Create);
@@ -9,6 +17,12 @@ public static class MmeFileWriter
         WriteEmdData(writer, emd);
     }
 
+    /// <summary>
+    /// EMD ファイルを書き込む
+    /// </summary>
+    /// <param name="writer">ライター</param>
+    /// <param name="emd">書込む EMD データ</param>
+    /// <exception cref="ArgumentException">ライターのエンコードが ShiftJis と違う場合</exception>
     public static void WriteEmdData(StreamWriter writer, EmdData emd)
     {
         if (writer.Encoding != Encoding.ShiftJIS)
@@ -37,6 +51,11 @@ public static class MmeFileWriter
         writer.WriteLine();
     }
 
+    /// <summary>
+    /// EMM ファイルを書き込む
+    /// </summary>
+    /// <param name="filePath">作成ファイルパス</param>
+    /// <param name="emm">書込む EMM データ</param>
     public static void WriteEmmData(string filePath, EmmData emm)
     {
         using FileStream file = new(filePath, FileMode.Create);
@@ -44,6 +63,12 @@ public static class MmeFileWriter
         WriteEmmData(writer, emm);
     }
 
+    /// <summary>
+    /// EMM ファイルを書き込む
+    /// </summary>
+    /// <param name="writer">ライター</param>
+    /// <param name="emm">書込む EMM データ</param>
+    /// <exception cref="ArgumentException">ライターのエンコードが ShiftJis と違う場合</exception>
     public static void WriteEmmData(StreamWriter writer, EmmData emm)
     {
         if (writer.Encoding != Encoding.ShiftJIS)

@@ -5,26 +5,44 @@ using MikuMikuMethods.Pmm.Frame;
 
 namespace MikuMikuMethods.Pmm.IO;
 
+/// <summary>
+/// PMMファイルの読込クラス
+/// </summary>
 public static class PmmFileReader
 {
+    /// <summary>
+    /// 読込セクションの変更時イベントのイベントハンドラ
+    /// </summary>
+    /// <param name="section">変更後のイベント</param>
     public delegate void OnSectionChangeEventHandler(DataSection section);
+    /// <summary>
+    /// 読込セクションの変更イベント
+    /// </summary>
     public static event OnSectionChangeEventHandler? OnChangeSection;
 
     private static Dictionary<PmmModelConfigFrame, Dictionary<PmmBone, (int ModelID, int BoneID)>> OutsideParentRelation { get; set; } = new();
     private static Dictionary<PmmModelConfigState, Dictionary<PmmBone, (int ModelID, int BoneID)>> OutsideParentRelationCurrent { get; set; } = new();
     private static Dictionary<int, PmmModel> ModelIdMap { get; set; } = new();
 
-    private static DataSection current = new("", null, "");
+    private static DataSection _current = new("", null, "");
+    /// <summary>
+    /// 現在の読込セクション
+    /// </summary>
     public static DataSection Current
     {
-        get => current;
+        get => _current;
         private set
         {
-            current = value;
+            _current = value;
             OnChangeSection?.Invoke(value);
         }
     }
 
+    /// <summary>
+    /// PMM ファイルの読込
+    /// </summary>
+    /// <param name="filePath">ファイルパス</param>
+    /// <param name="pmm">情報書込み対象の PMM データ</param>
     public static void Read(string filePath, PolygonMovieMaker pmm)
     {
         try
@@ -39,6 +57,11 @@ public static class PmmFileReader
         }
     }
 
+    /// <summary>
+    /// PMM ファイルの読込
+    /// </summary>
+    /// <param name="reader">読込用バイナリリーダー</param>
+    /// <param name="pmm">情報書込み対象の PMM データ</param>
     public static void Read(BinaryReader reader, PolygonMovieMaker pmm)
     {
         try
@@ -288,7 +311,7 @@ public static class PmmFileReader
         pmm.BackGround.Image = existsBgi ? bgiPath : null;
 
         // 描画設定の読込
-        pmm.RenderConfig.InfomationVisible = reader.ReadBoolean();
+        pmm.RenderConfig.InformationVisible = reader.ReadBoolean();
         pmm.RenderConfig.AxisVisible = reader.ReadBoolean();
         pmm.RenderConfig.EnableGrandShadow = reader.ReadBoolean();
 

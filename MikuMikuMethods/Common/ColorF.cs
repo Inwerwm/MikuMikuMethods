@@ -24,33 +24,53 @@ public record ColorF
     /// </summary>
     public float A { get; init; }
 
+    /// <summary>
+    /// RGB値を-1.0から1.0の範囲で指定して初期化します。透明度は1に設定されます。
+    /// </summary>
     public ColorF(float red, float green, float blue)
+        : this(1f, red, green, blue)
     {
-        A = 1;
-        R = red;
-        G = green;
-        B = blue;
     }
+
+    /// <summary>
+    /// RGB値を-255から255の範囲で指定して初期化します。透明度は1に設定されます。
+    /// </summary>
     public ColorF(int red, int green, int blue)
+        : this(1f, red / 255.0f, green / 255.0f, blue / 255.0f)
     {
-        A = 1;
-        R = red / 255.0f;
-        G = green / 255.0f;
-        B = blue / 255.0f;
     }
+
+    /// <summary>
+    /// 透明度とRGB値を-1.0から1.0の範囲で指定して初期化します。
+    /// </summary>
     public ColorF(float alpha, float red, float green, float blue)
     {
-        A = alpha;
-        R = red;
-        G = green;
-        B = blue;
+        A = Clamp(alpha, -1f, 1f);
+        R = Clamp(red, -1f, 1f);
+        G = Clamp(green, -1f, 1f);
+        B = Clamp(blue, -1f, 1f);
     }
+
+    /// <summary>
+    /// 透明度とRGB値を-255から255の範囲で指定して初期化します。
+    /// </summary>
     public ColorF(int alpha, int red, int green, int blue)
+        : this(alpha / 255.0f, red / 255.0f, green / 255.0f, blue / 255.0f)
     {
-        A = alpha / 255.0f;
-        R = red / 255.0f;
-        G = green / 255.0f;
-        B = blue / 255.0f;
+    }
+
+    /// <summary>
+    /// 指定した値を指定した範囲内に収めます。
+    /// </summary>
+    /// <param name="value">クランプする値</param>
+    /// <param name="min">値の下限</param>
+    /// <param name="max">値の上限</param>
+    /// <returns>クランプされた値</returns>
+    private static float Clamp(float value, float min, float max)
+    {
+        if (value < min) return min;
+        if (value > max) return max;
+        return value;
     }
 
     /// <summary>

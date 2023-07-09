@@ -3,8 +3,14 @@ using MikuMikuMethods.Pmm.Frame;
 
 namespace MikuMikuMethods.Pmm;
 
+/// <summary>
+/// 重力
+/// </summary>
 public class PmmPhysics : ICloneable
 {
+    /// <summary>
+    /// 現在の重力の状態
+    /// </summary>
     public PmmGravityState CurrentGravity { get; private init; } = new()
     {
         Noize = null,
@@ -48,6 +54,10 @@ public class PmmPhysics : ICloneable
     /// </summary>
     public bool EnableGroundPhysics { get; set; } = true;
 
+    /// <summary>
+    /// ディープコピー
+    /// </summary>
+    /// <returns>複製</returns>
     public PmmPhysics DeepCopy() => new()
     {
         CurrentGravity = CurrentGravity.DeepCopy(),
@@ -56,5 +66,6 @@ public class PmmPhysics : ICloneable
         EnableGroundPhysics = EnableGroundPhysics,
     };
 
+    /// <inheritdoc/>
     public object Clone() => DeepCopy();
 }

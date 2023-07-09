@@ -63,9 +63,10 @@ public static class PmxFileReader
     }
 
     /// <summary>
-    /// モデル読込
+    /// ファイルから読み込んだ情報をモデルに適用する。
     /// </summary>
     /// <param name="filePath">読み込むモデルファイルのパス</param>
+    /// <param name="model">書込み対象インスタンス</param>
     public static void Read(string filePath, PmxModel model)
     {
         using FileStream stream = new(filePath, FileMode.Open);
@@ -73,6 +74,11 @@ public static class PmxFileReader
         Read(reader, model);
     }
 
+    /// <summary>
+    /// バイナリから読み込んだ情報をモデルに適用する。
+    /// </summary>
+    /// <param name="reader">モデルファイルのバイナリリーダー</param>
+    /// <param name="model">書込み対象インスタンス</param>
     public static void Read(BinaryReader reader, PmxModel model)
     {
         try
@@ -320,7 +326,7 @@ public static class PmxFileReader
         bone.Rotatable = boneFlag.HasFlag(PmxBone.BoneFlag.Rotatable);
         bone.Movable = boneFlag.HasFlag(PmxBone.BoneFlag.Movable);
         bone.Visible = boneFlag.HasFlag(PmxBone.BoneFlag.Visible);
-        bone.Controlable = boneFlag.HasFlag(PmxBone.BoneFlag.Controlable);
+        bone.Controllable = boneFlag.HasFlag(PmxBone.BoneFlag.Controllable);
         bone.IsLocalAddition = boneFlag.HasFlag(PmxBone.BoneFlag.AddLocalTarget);
         bone.IsAfterPhysic = boneFlag.HasFlag(PmxBone.BoneFlag.TrAfterPhysic);
 
@@ -338,9 +344,9 @@ public static class PmxFileReader
         if (boneFlag.HasFlag(PmxBone.BoneFlag.AddRotation) || boneFlag.HasFlag(PmxBone.BoneFlag.AddMoving))
         {
             bone.IsRotateAddition = boneFlag.HasFlag(PmxBone.BoneFlag.AddRotation);
-            bone.IsMoveAddtion = boneFlag.HasFlag(PmxBone.BoneFlag.AddMoving);
+            bone.IsMoveAddition = boneFlag.HasFlag(PmxBone.BoneFlag.AddMoving);
             TmpAdditionParentBoneIndices.Add((bone, id.Read(reader)));
-            bone.AdditonRatio = reader.ReadSingle();
+            bone.AdditionRatio = reader.ReadSingle();
         }
 
         if (boneFlag.HasFlag(PmxBone.BoneFlag.FixAxis))
@@ -396,22 +402,22 @@ public static class PmxFileReader
     private static PmxMorph ReadMorph(BinaryReader reader)
     {
         var name = Encoder.Read(reader);
-        var naen = Encoder.Read(reader);
+        var nameEn = Encoder.Read(reader);
 
         var panel = reader.ReadByte();
 
         var morph = new PmxMorph((PmxMorph.MorphType)reader.ReadByte())
         {
             Name = name,
-            NameEn = naen,
+            NameEn = nameEn,
             Panel = (PmxMorph.MorphPanel)panel,
         };
 
-        var vid = new Indexer(Model.Header.SizeOfVertexIndex, true);
-        var bnid = new Indexer(Model.Header.SizeOfBoneIndex, false);
-        var moid = new Indexer(Model.Header.SizeOfMorphIndex, false);
-        var mtid = new Indexer(Model.Header.SizeOfMaterialIndex, false);
-        var bdid = new Indexer(Model.Header.SizeOfBodyIndex, false);
+        var vertexId = new Indexer(Model.Header.SizeOfVertexIndex, true);
+        var boneId = new Indexer(Model.Header.SizeOfBoneIndex, false);
+        var morphId = new Indexer(Model.Header.SizeOfMorphIndex, false);
+        var materialId = new Indexer(Model.Header.SizeOfMaterialIndex, false);
+        var bodyId = new Indexer(Model.Header.SizeOfBodyIndex, false);
 
         var numOfOffset = reader.ReadInt32();
         morph.Offsets.AddRange(Enumerable.Range(0, numOfOffset).Select<int, IPmxOffset>(_ => morph.Type switch
@@ -435,26 +441,26 @@ public static class PmxFileReader
         PmxOffsetGroup CreateGroupOffset()
         {
             var of = new PmxOffsetGroup();
-            TmpGroupedMorphIndices.Add((of, moid.Read(reader)));
+            TmpGroupedMorphIndices.Add((of, morphId.Read(reader)));
             of.Ratio = reader.ReadSingle();
             return of;
         }
-        PmxOffsetVertex CreateVertexOffset() => new(Model.Vertices[vid.Read(reader)])
+        PmxOffsetVertex CreateVertexOffset() => new(Model.Vertices[vertexId.Read(reader)])
         {
             Offset = reader.ReadVector3()
         };
-        PmxOffsetBone CreateBoneOffset() => new(Model.Bones[bnid.Read(reader)])
+        PmxOffsetBone CreateBoneOffset() => new(Model.Bones[boneId.Read(reader)])
         {
             Offset = reader.ReadVector3(),
             Rotate = reader.ReadQuaternion()
         };
-        PmxOffsetUV CreateUVOffset() => new(Model.Vertices[vid.Read(reader)])
+        PmxOffsetUV CreateUVOffset() => new(Model.Vertices[vertexId.Read(reader)])
         {
             Offset = reader.ReadVector4()
         };
         PmxOffsetMaterial CreateMaterialOffset()
         {
-            var targetId = mtid.Read(reader);
+            var targetId = materialId.Read(reader);
             return new PmxOffsetMaterial((PmxOffsetMaterial.OperationType)reader.ReadByte())
             {
                 Target = targetId < 0 ? null : Model.Materials[targetId],
@@ -474,9 +480,9 @@ public static class PmxFileReader
         PmxOffsetImpulse CreateImpulseOffset()
         {
             var of = new PmxOffsetImpulse();
-            TmpImpulseTargetBodyIndices.Add((of, bdid.Read(reader)));
+            TmpImpulseTargetBodyIndices.Add((of, bodyId.Read(reader)));
             of.IsLocal = reader.ReadBoolean();
-            of.MovingSpead = reader.ReadVector3();
+            of.MovingSpeed = reader.ReadVector3();
             of.RotationTorque = reader.ReadVector3();
             return of;
         }

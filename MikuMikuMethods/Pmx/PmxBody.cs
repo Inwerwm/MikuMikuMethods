@@ -90,7 +90,7 @@ public class PmxBody : IPmxData
         /// <summary>
         /// カプセル
         /// </summary>
-        Capsure
+        Capsule
     }
 
     /// <summary>
@@ -112,5 +112,6 @@ public class PmxBody : IPmxData
         Register
     }
 
+    /// <inheritdoc/>
     public override string ToString() => $"{Name} - {Position}";
 }

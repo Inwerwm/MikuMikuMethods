@@ -3,6 +3,9 @@ using System.Numerics;
 
 namespace MikuMikuMethods.Pmm.ElementState;
 
+/// <summary>
+/// ライトの状態
+/// </summary>
 public class PmmLightState : ICloneable
 {
     /// <summary>
@@ -14,6 +17,10 @@ public class PmmLightState : ICloneable
     /// </summary>
     public Vector3 Position { get; set; } = new(-0.5f, -1.0f, 0.5f);
 
+    /// <summary>
+    /// ディープコピー
+    /// </summary>
+    /// <returns>複製</returns>
     public PmmLightState DeepCopy() => new()
     {
         Color = Color with { },

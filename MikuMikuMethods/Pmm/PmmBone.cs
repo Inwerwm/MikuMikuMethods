@@ -3,9 +3,16 @@ using MikuMikuMethods.Pmm.Frame;
 
 namespace MikuMikuMethods.Pmm;
 
+/// <summary>
+/// ボーン
+/// </summary>
 public class PmmBone : IPmmModelElement
 {
+    /// <inheritdoc/>
     public string Name { get; }
+    /// <summary>
+    /// フレーム
+    /// </summary>
     public List<PmmBoneFrame> Frames { get; private init; } = new();
     /// <summary>
     /// IKボーンか
@@ -34,8 +41,13 @@ public class PmmBone : IPmmModelElement
         Name = name;
     }
 
+    /// <inheritdoc/>
     public override string ToString() => Name;
 
+    /// <summary>
+    /// ディープコピー
+    /// </summary>
+    /// <returns>複製</returns>
     public PmmBone DeepCopy() => new(this.Name)
     {
         Frames = this.Frames.Select(f => f.DeepCopy()).ToList(),
@@ -46,5 +58,6 @@ public class PmmBone : IPmmModelElement
         IsCommitted = this.IsCommitted
     };
 
+    /// <inheritdoc/>
     public object Clone() => DeepCopy();
 }

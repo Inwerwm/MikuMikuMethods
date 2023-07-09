@@ -20,6 +20,10 @@ public class PmmModelSpecificKeyFrameEditorState : ICloneable
     /// </summary>
     public PmmRangeSelector RangeSelector { get; set; } = PmmRangeSelector.SelectedBones;
 
+    /// <summary>
+    /// ディープコピー
+    /// </summary>
+    /// <returns>複製</returns>
     public PmmModelSpecificKeyFrameEditorState DeepCopy() => new()
     {
         VerticalScrollState = VerticalScrollState,

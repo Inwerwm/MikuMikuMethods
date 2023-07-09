@@ -51,5 +51,6 @@ public class PmxVertex : IPmxData
     /// </summary>
     public float EdgeScale { get; set; }
 
+    /// <inheritdoc/>
     public override string ToString() => $"{Position}";
 }

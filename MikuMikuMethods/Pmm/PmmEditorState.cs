@@ -1,5 +1,8 @@
 ﻿namespace MikuMikuMethods.Pmm;
 
+/// <summary>
+/// キーフレームエディタの状態
+/// </summary>
 public class PmmEditorState
 {
     /// <summary>
@@ -65,6 +68,12 @@ public class PmmEditorState
         None
     }
 
+    /// <summary>
+    /// PMM移行用ディープコピー
+    /// </summary>
+    /// <param name="modelMap">移行前モデルと移行先モデルの対応辞書</param>
+    /// <param name="accessoryMap">移行前アクセサリと移行先アクセサリの対応辞書</param>
+    /// <returns>複製</returns>
     public PmmEditorState DeepCopy(Dictionary<PmmModel, PmmModel> modelMap, Dictionary<PmmAccessory, PmmAccessory> accessoryMap) => new()
     {
         Width = this.Width,

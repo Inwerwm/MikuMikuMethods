@@ -101,5 +101,6 @@ public class PmxModel : IPmxData
                        ? 2.1f : 2.0f;
     }
 
+    /// <inheritdoc/>
     public override string ToString() => $"{Header} : {ModelInfo}";
 }

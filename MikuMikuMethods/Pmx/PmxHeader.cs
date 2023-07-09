@@ -19,7 +19,7 @@ public class PmxHeader : IPmxData
         set
         {
             if (value < 2.0 || 2.1 < value)
-                throw new ArgumentOutOfRangeException("対応バージョンは2.0～2.1までです。");
+                throw new ArgumentOutOfRangeException(nameof(Version), "対応バージョンは2.0～2.1までです。");
             version = value;
         }
     }
@@ -64,7 +64,7 @@ public class PmxHeader : IPmxData
             if (ZeroAndOne.Contains(value))
                 encodingFormat = value;
             else
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException(nameof(EncodingFormat));
         }
     }
 
@@ -80,7 +80,7 @@ public class PmxHeader : IPmxData
             if (RangeOfAdditionalUV.Contains(value))
                 numOfAdditionalUV = value;
             else
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException(nameof(NumOfAdditionalUV));
         }
     }
     /// <summary>
@@ -95,7 +95,7 @@ public class PmxHeader : IPmxData
             if (IndexSize.Contains(value))
                 sizeOfVertexIndex = value;
             else
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException(nameof(SizeOfVertexIndex));
         }
     }
     /// <summary>
@@ -110,7 +110,7 @@ public class PmxHeader : IPmxData
             if (IndexSize.Contains(value))
                 sizeOfTextureIndex = value;
             else
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException(nameof(SizeOfTextureIndex));
         }
     }
     /// <summary>
@@ -125,7 +125,7 @@ public class PmxHeader : IPmxData
             if (IndexSize.Contains(value))
                 sizeOfMaterialIndex = value;
             else
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException(nameof(SizeOfMaterialIndex));
         }
     }
     /// <summary>
@@ -140,7 +140,7 @@ public class PmxHeader : IPmxData
             if (IndexSize.Contains(value))
                 sizeOfBoneIndex = value;
             else
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException(nameof(SizeOfBoneIndex));
         }
     }
     /// <summary>
@@ -155,7 +155,7 @@ public class PmxHeader : IPmxData
             if (IndexSize.Contains(value))
                 sizeOfMorphIndex = value;
             else
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException(nameof(SizeOfMorphIndex));
         }
     }
     /// <summary>
@@ -185,10 +185,15 @@ public class PmxHeader : IPmxData
         _ => throw new FormatException("エンコード情報が不正です。")
     };
 
+    /// <summary>
+    /// コンストラクタ
+    /// </summary>
+    /// <param name="version">バージョン</param>
     public PmxHeader(float version = 2.1f)
     {
         Version = version;
     }
 
+    /// <inheritdoc/>
     public override string ToString() => $"{FormatName}{Version:0.0}";
 }

@@ -1,5 +1,8 @@
 ﻿namespace MikuMikuMethods.Pmm.ElementState;
 
+/// <summary>
+/// モデル設定の状態
+/// </summary>
 public class PmmModelConfigState : ICloneable
 {
     /// <summary>
@@ -26,6 +29,10 @@ public class PmmModelConfigState : ICloneable
     /// </summary>
     public Dictionary<PmmBone, PmmOutsideParentState> OutsideParent { get; protected init; } = new();
 
+    /// <summary>
+    /// ディープコピー
+    /// </summary>
+    /// <returns>複製</returns>
     public PmmModelConfigState DeepCopy() => new()
     {
         Visible = Visible,
@@ -33,6 +40,11 @@ public class PmmModelConfigState : ICloneable
         OutsideParent = OutsideParent.ToDictionary(p => p.Key, p => p.Value.DeepCopy()),
     };
 
+    /// <summary>
+    /// モデル移行用ディープコピー
+    /// </summary>
+    /// <param name="boneMap">移行前ボーンと移行先ボーンの対応辞書</param>
+    /// <returns>複製</returns>
     public PmmModelConfigState DeepCopy(Dictionary<PmmBone, PmmBone> boneMap) => new()
     {
         Visible = Visible,

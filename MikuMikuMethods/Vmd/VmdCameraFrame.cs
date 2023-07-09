@@ -44,7 +44,7 @@ public class VmdCameraFrame : VmdCameraTypeFrame, IVmdInterpolatable
     public ReadOnlyDictionary<InterpolationItem, InterpolationCurve> InterpolationCurves { get; internal init; } = InterpolationCurve.CreateCameraCurves();
 
     /// <summary>
-    /// コンストラクタ
+    /// 初期フレーム時間を指定して <see cref="VmdCameraFrame"/> クラスの新しいインスタンスを初期化します。
     /// </summary>
     /// <param name="frame">フレーム時間</param>
     public VmdCameraFrame(uint frame = 0) : base("Camera")
@@ -53,6 +53,11 @@ public class VmdCameraFrame : VmdCameraTypeFrame, IVmdInterpolatable
         ViewAngle = 30;
     }
 
+    /// <summary>
+    /// 初期フレーム時間と補間曲線のディクショナリを指定して <see cref="VmdCameraFrame"/> クラスの新しいインスタンスを初期化します。
+    /// </summary>
+    /// <param name="frame">フレーム時間</param>
+    /// <param name="interpolationCurves">フレーム間の補間曲線のディクショナリ</param>
     public VmdCameraFrame(uint frame, IDictionary<InterpolationItem, InterpolationCurve> interpolationCurves) : this(frame)
     {
         var mutableCurves = InterpolationCurve.CreateMutableCameraCurves();
@@ -61,6 +66,7 @@ public class VmdCameraFrame : VmdCameraTypeFrame, IVmdInterpolatable
         InterpolationCurves = new(mutableCurves);
     }
 
+    /// <inheritdoc/>
     public override object Clone() => new VmdCameraFrame(Frame)
     {
         Distance = Distance,

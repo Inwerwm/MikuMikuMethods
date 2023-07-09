@@ -46,8 +46,13 @@ public class PmmBackGroundMedia : ICloneable
     /// </summary>
     public Point2<int> ImageOffset { get; set; } = new(0, 0);
 
+    /// <inheritdoc/>
     public object Clone() => DeepCopy();
 
+    /// <summary>
+    /// ディープコピー
+    /// </summary>
+    /// <returns>複製</returns>
     public PmmBackGroundMedia DeepCopy() => new()
     {
         Audio = this.Audio,
